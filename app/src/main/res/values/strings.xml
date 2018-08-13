@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Amrita Repository</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="clouDspace">dspace.</string>
+    <string name="nav_header_title">Amrita Repository</string>
+    <string name="numbers">123456789/</string>
+    <string name="amrita">amritanet.edu:</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Report a bug</string>
+    <string name="intranet">intranet.cb.amrita.edu</string>
+    <string name="timetable">/TimeTable/PDF/</string>
+    <string name="wifiworking">Working</string>
+    <string name="wifinotworking">Not working</string>
+    <string name="category_docs">Documents</string>
+    <string name="facultyname">Enter faculty name</string>
+    <string name="facultyurl">http://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
+    <string name="versionName">Version 1.2</string>
+    <string name="port">8080</string>
+    <string name="category_images">Images</string>
+    <string name="proxyurl">https://anokha.amrita.edu/app/proxy.php</string>
+    <string name="incompletefield">Please input all fields</string>
+    <string name="xmlUi">/xmlui/handle/</string>
+    <string name="protocol">http://</string>
+    <string name="wifi_warning">Please ensure you are connected to Amrita Wifi to have a smooth experience.</string>
+</resources>

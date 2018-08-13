@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fontFamily="@font/dustismo"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_downloads"
+            android:icon="@drawable/ic_get_app_black_24dp"
+            android:title="Downloads"
+            android:checkable="false"/>
+        <item
+            android:id="@+id/nav_timetable"
+            android:icon="@drawable/ic_baseline_calendar_today_24px"
+            android:title="Academic Timetable"
+            android:checkable="false"/>
+        <item
+            android:id="@+id/nav_facultytimetable"
+            android:icon="@drawable/professor"
+            android:title="Faculty Timetable"
+            android:checkable="false"/>
+        <item
+            android:id="@+id/nav_campuswifi"
+            android:icon="@mipmap/ic_wifi"
+            android:title="Campus Wifi Status"
+            android:checkable="false"/>
+
+    </group>
+
+    <item android:title="Tools">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="About"
+                />
+            <item
+                android:id="@+id/nav_review"
+                android:icon="@drawable/ic_stars_black_24dp"
+                android:title="Leave a review"
+                />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share this app"/>
+
+        </menu>
+    </item>
+
+</menu>

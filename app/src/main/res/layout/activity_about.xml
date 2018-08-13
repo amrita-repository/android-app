@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:fillViewport="false">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
+
+        <ImageView
+            android:id="@+id/aboutlogo"
+            android:layout_width="100dp"
+            android:layout_height="141.4dp"
+            android:layout_gravity="center"
+            android:src="@drawable/logosq" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+            android:fontFamily="@font/cunia"
+            android:text="Amrita\nRepository"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/versioncode"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/cunia"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/versionName"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/cunia"
+            android:text="By Rajkumar"
+            android:textAppearance="@android:style/TextAppearance.Small"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:text="Third Party Libraries : jSoup"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/dustismo"
+            android:text="For more details :"
+            android:textAppearance="@android:style/TextAppearance.Small" />
+
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:fontFamily="@font/dustismo"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18dp"
+            android:paddingBottom="30dp"
+            android:text="rajkumaar.co.in"
+            android:textAppearance="@android:style/TextAppearance.Small" />
+    </LinearLayout>
+
+
+</RelativeLayout>

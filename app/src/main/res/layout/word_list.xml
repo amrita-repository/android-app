@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/swipe_downloads"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/colorBackground"
+    android:layout_height="match_parent">
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:longClickable="true"
+        android:id="@+id/dlist"
+        android:orientation="vertical"
+        android:drawSelectorOnTop="true"/>
+    <TextView
+        android:id="@+id/dempty_view"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:text="No downloads yet!"
+        android:textAppearance="?android:textAppearanceMedium"/>
+
+    <ImageView
+        android:id="@+id/dempty_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/dempty_view"
+        android:src="@drawable/ic_baseline_sentiment_very_dissatisfied_24px"
+        android:textAppearance="?android:textAppearanceMedium"/>
+</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
