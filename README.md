@@ -30,7 +30,7 @@ Unless explicitly stated otherwise all files in this repository are licensed und
         
     MIT License
     
-    Copyright (c) 2018 Rajkumar S
+    Copyright (c) 2018 RAJKUMAR S
     
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
