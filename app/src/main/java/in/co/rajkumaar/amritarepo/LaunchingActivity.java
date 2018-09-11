@@ -30,15 +30,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 public class LaunchingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         super.onCreate(savedInstanceState);
         if (ContextCompat.checkSelfPermission(LaunchingActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -48,6 +51,7 @@ public class LaunchingActivity extends AppCompatActivity
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         }
+
         new clearCache().clear();
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         setContentView(R.layout.activity_launching);
@@ -80,15 +84,6 @@ public class LaunchingActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_SHORT)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -101,13 +96,6 @@ public class LaunchingActivity extends AppCompatActivity
 
         navigationView.getMenu().getItem(0).setChecked(true);
 
-//        Button linkDownloads=findViewById(R.id.linkDownloads);
-//        linkDownloads.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                new Intent(LaunchingActivity.this,DownloadsActivity.class);
-//            }
-//        });
         Button button=findViewById(R.id.sembutton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

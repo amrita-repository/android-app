@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "849931355030",
+    "firebase_url": "https://amritarepo.firebaseio.com",
+    "project_id": "amritarepo",
+    "storage_bucket": "amritarepo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849931355030:android:e36573201cb0d355",
+        "android_client_info": {
+          "package_name": "in.co.rajkumaar.amritarepo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849931355030-jq29dtr5e4ticvdorvm5mmhloa9gg1pu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.co.rajkumaar.amritarepo",
+            "certificate_hash": "8fafd59ddca9ddef6c6dfa57130bd8dff538057b"
+          }
+        },
+        {
+          "client_id": "849931355030-pogfrq7mg0orivnsn0o4ivprden4utrl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGn0lckBR8kYm27jGWFd0C85j0VMQmteA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849931355030-pogfrq7mg0orivnsn0o4ivprden4utrl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
