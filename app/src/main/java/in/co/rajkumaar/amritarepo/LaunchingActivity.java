@@ -1,13 +1,18 @@
 package in.co.rajkumaar.amritarepo;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -15,6 +20,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,13 +38,19 @@ import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 public class LaunchingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    Document doc;
+    int version=0,realVersion=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -55,6 +67,8 @@ public class LaunchingActivity extends AppCompatActivity
         new clearCache().clear();
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         setContentView(R.layout.activity_launching);
+        if(isNetworkAvailable())
+            new checkVersion().execute();
 
 
         // Spinner element
@@ -81,6 +95,9 @@ public class LaunchingActivity extends AppCompatActivity
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE) ;
+        spinner.setSelection(pref.getInt("pos",0));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -100,7 +117,18 @@ public class LaunchingActivity extends AppCompatActivity
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Bundle params = new Bundle();
+                params.putString("Department", spinner.getSelectedItem().toString());
+                Log.e("Dept",spinner.getSelectedItem().toString());
+                mFirebaseAnalytics.logEvent("EventDept", params);
                 int pos=spinner.getSelectedItemPosition();
+
+                SharedPreferences pref = LaunchingActivity.this.getSharedPreferences("user",Context.MODE_PRIVATE) ;
+                SharedPreferences.Editor ed = pref.edit();
+                ed.putInt("pos",pos);
+                ed.apply();
+
                 if(isNetworkAvailable()){
                         if(pos>0)
                         {
@@ -142,9 +170,32 @@ public class LaunchingActivity extends AppCompatActivity
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar
                 .make(parentLayout, message, Snackbar.LENGTH_SHORT);
-        //snackbar.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.darker_gray));
-        //((TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text)).setTextColor(Color.WHITE);
         snackbar.show();
+    }
+    public void checkUpdate(){
+
+                if(realVersion!=version){
+                    Log.e("Real : "+realVersion," HAving :"+version);
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
+                    alertDialog.setMessage("An update is available for Amrita Repository.");
+                    alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName()));
+                            if(intent.resolveActivity(getPackageManager())!=null)
+                                startActivity(intent);
+                        }
+                    });
+                    alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    alertDialog.show();
+                }
+
     }
     boolean doubleBackToExitPressedOnce = false;
     @Override
@@ -195,7 +246,6 @@ public class LaunchingActivity extends AppCompatActivity
                     "mailto","rajkumaar2304@gmail.com", null));
             it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
             it.putExtra(Intent.EXTRA_EMAIL, new String[] {"rajkumaar2304@gmail.com"});
-            //it.setType("text/plain");
             if(it.resolveActivity(getPackageManager())!=null)
             startActivity(it);
         }
@@ -224,7 +274,7 @@ public class LaunchingActivity extends AppCompatActivity
         else if(id==R.id.nav_campuswifi)
             if(isNetworkAvailable())
             startActivity(new Intent(this,WifiStatus.class));
-        else
+            else
             showSnackbar("Device not connected to internet");
 
 
@@ -245,7 +295,6 @@ public class LaunchingActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_about) {
             startActivity(new Intent(this,AboutActivity.class));
-
         }
         else if(id==R.id.nav_review){
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -257,12 +306,36 @@ public class LaunchingActivity extends AppCompatActivity
             else{
                 Toast.makeText(this,"Error Opening Play Store.",Toast.LENGTH_SHORT).show();
             }
-
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+    private class checkVersion extends AsyncTask<Void,Void,Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                doc = Jsoup.connect("http://rajkumaar.co.in/repoversion").execute().parse();
+                realVersion = Integer.parseInt(doc.title());
+            }catch (IOException e){
+                e.printStackTrace();
+        }
+            return null;
+    }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            try {
+                PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                version = pInfo.versionCode;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            checkUpdate();
+            super.onPostExecute(aVoid);
+        }
+    }
 }
+

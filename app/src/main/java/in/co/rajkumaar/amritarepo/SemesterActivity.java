@@ -1,12 +1,19 @@
 package in.co.rajkumaar.amritarepo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -33,6 +40,7 @@ public class SemesterActivity extends AppCompatActivity {
     int statusCode;
     List<String> sems=new ArrayList<>();
     List<String> links=new ArrayList<>();
+    ArrayAdapter<String> semsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,47 +77,29 @@ public class SemesterActivity extends AppCompatActivity {
 
         }
 
-
+        if(isNetworkAvailable())
         new Load().execute();
+        else
+            showSnackbar("Device not connected to Internet");
+    }
 
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        swipeLayout.setColorScheme(R.color.colorAccent);
-        final ListView listView=findViewById(R.id.list);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener()
-        {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState)
-            {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-            {
-                int topRowVerticalPosition = (listView == null || listView.getChildCount() == 0) ? 0 : listView.getChildAt(0).getTop();
-                swipeLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
-            }
-        });
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                SemesterActivity.this.recreate();
-
-            }
-
-
-
-        });
-
-
-
-
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    private void showSnackbar(String message) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar
+                .make(parentLayout, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 
     private class Load extends AsyncTask<Void,Void,Void> {
         String proxy=getString(R.string.proxyurl);
         Document document=null;
+        Elements elements;
         @Override
         protected Void doInBackground(Void... voids) {
             sems.clear();
@@ -128,13 +118,12 @@ public class SemesterActivity extends AppCompatActivity {
                     statusCode=Jsoup.connect(proxy).method(Connection.Method.POST).data("data", semUrl).execute().statusCode();
                 }catch (IOException e2)
                 {
-
                     e2.printStackTrace();
                 }
                 e1.printStackTrace();}
             finally {
                 if(document!=null){
-                Elements elements = document.select("div[id=aspect_artifactbrowser_CommunityViewer_div_community-view]").select("ul[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]").get(0).select("a[href]");
+                elements = document.select("div[id=aspect_artifactbrowser_CommunityViewer_div_community-view]").select("ul[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]").get(0).select("a[href]");
                 for (int i = 0; i < elements.size(); ++i) {
                     sems.add(elements.get(i).text());
                     links.add(elements.get(i).attr("href"));
@@ -145,8 +134,6 @@ public class SemesterActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            if(document==null)
-                SemesterActivity.this.recreate();
             ProgressBar progressBar=findViewById(R.id.loading_indicator);
             progressBar.setVisibility(View.GONE);
             if(statusCode!=200)
@@ -155,33 +142,45 @@ public class SemesterActivity extends AppCompatActivity {
                 emptyView.setVisibility(View.VISIBLE);
                 ImageView imageView=findViewById(R.id.empty_imageview);
                 imageView.setVisibility(View.VISIBLE);
-
                 TextView wifiwarning=findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.VISIBLE);
             }
-            else{
+            else {
+                if (elements != null) {
+                    ImageView imageView = findViewById(R.id.empty_imageview);
+                    imageView.setVisibility(View.GONE);
+                    TextView textView = findViewById(R.id.empty_view);
+                    textView.setVisibility(View.GONE);
+                    TextView wifiwarning = findViewById(R.id.wifiwarning);
+                    wifiwarning.setVisibility(View.GONE);
+                    ListView listView = findViewById(R.id.list);
+                    semsAdapter = new ArrayAdapter<String>(SemesterActivity.this, android.R.layout.simple_list_item_1, sems);
+                    listView.setAdapter(semsAdapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            if (isNetworkAvailable()) {
+                                Intent intent = new Intent(SemesterActivity.this, AssessmentsActivity.class);
+                                intent.putExtra("href", externLink + links.get(i));
+                                intent.putExtra("pageTitle", sems.get(i));
+                                startActivity(intent);
+                            } else
+                                showSnackbar("Device not connected to Internet");
+                        }
+                    });
 
-                ImageView imageView=findViewById(R.id.empty_imageview);
-                imageView.setVisibility(View.GONE);
-            TextView textView=findViewById(R.id.empty_view);
-            textView.setVisibility(View.GONE);
 
-                TextView wifiwarning=findViewById(R.id.wifiwarning);
-                wifiwarning.setVisibility(View.GONE);
-            ListView listView=findViewById(R.id.list);
-            ArrayAdapter<String> semsAdapter=new ArrayAdapter<String>(SemesterActivity.this,android.R.layout.simple_list_item_1,sems);
-            listView.setAdapter(semsAdapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent=new Intent(SemesterActivity.this,AssessmentsActivity.class);
-                    intent.putExtra("href",externLink+links.get(i));
-                    intent.putExtra("pageTitle",sems.get(i));
-                    startActivity(intent);
+                    listView.setVisibility(View.VISIBLE);
                 }
-            });
+                else{
+                    ImageView imageView = findViewById(R.id.empty_imageview);
+                    imageView.setVisibility(View.VISIBLE);
+                    TextView textView = findViewById(R.id.empty_view);
+                    textView.setText("Some error occurred. Please report to the developer.");
+                    textView.setVisibility(View.VISIBLE);
 
-            listView.setVisibility(View.VISIBLE);}
+                }
+            }
         }
 
     }
@@ -189,7 +188,6 @@ public class SemesterActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 }

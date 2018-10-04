@@ -1,8 +1,12 @@
 package in.co.rajkumaar.amritarepo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,37 +55,10 @@ public class AssessmentsActivity extends AppCompatActivity {
         wifiwarning.setVisibility(View.GONE);
         ImageView imageView=findViewById(R.id.empty_imageview);
         imageView.setVisibility(View.GONE);
-
-        new Load().execute();
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        swipeLayout.setColorScheme(R.color.colorAccent);
-        final ListView listView=findViewById(R.id.list);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener()
-        {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState)
-            {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-            {
-                int topRowVerticalPosition = (listView == null || listView.getChildCount() == 0) ? 0 : listView.getChildAt(0).getTop();
-                swipeLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
-            }
-        });
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                AssessmentsActivity.this.recreate();
-
-            }
-
-
-
-        });
+        if(isNetworkAvailable())
+            new Load().execute();
+        else
+            showSnackbar("Device not connected to Internet");
     }
     private class Load extends AsyncTask<Void,Void,Void> {
         String proxy=getString(R.string.proxyurl);
@@ -123,8 +100,6 @@ public class AssessmentsActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            if(document==null)
-                AssessmentsActivity.this.recreate();
             ProgressBar progressBar=findViewById(R.id.loading_indicator);
             progressBar.setVisibility(View.GONE);
             if(statusCode!=200)
@@ -150,13 +125,15 @@ public class AssessmentsActivity extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    if(isNetworkAvailable()){
                     Intent intent=new Intent(AssessmentsActivity.this,SubjectsActivity.class);
                     intent.putExtra("href",externLink+links.get(i));
                     intent.putExtra("pageTitle",assessments.get(i));
-                    startActivity(intent);
+                    startActivity(intent);}
+                    else
+                        showSnackbar("Device not connected to Internet");
                 }
             });
-
             listView.setVisibility(View.VISIBLE);}
         }
     }
@@ -164,7 +141,19 @@ public class AssessmentsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    private void showSnackbar(String message) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar
+                .make(parentLayout, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

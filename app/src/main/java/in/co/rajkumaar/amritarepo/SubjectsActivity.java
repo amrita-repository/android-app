@@ -72,52 +72,20 @@ public class SubjectsActivity extends AppCompatActivity {
         textView.setVisibility(View.GONE);
         ImageView imageView=findViewById(R.id.empty_imageview);
         imageView.setVisibility(View.GONE);
-
-        new clearCache().clear();
         TextView wifiwarning=findViewById(R.id.wifiwarning);
         wifiwarning.setVisibility(View.GONE);
         Bundle bundle = getIntent().getExtras();
         href = "" + bundle.get("href");
         this.setTitle(""+bundle.get("pageTitle"));
+        new clearCache().clear();
         new Load().execute();
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-        swipeLayout.setColorScheme(R.color.colorAccent);
-        final ListView listView=findViewById(R.id.list);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener()
-        {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState)
-            {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-            {
-                int topRowVerticalPosition = (listView == null || listView.getChildCount() == 0) ? 0 : listView.getChildAt(0).getTop();
-                swipeLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
-            }
-        });
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                SubjectsActivity.this.recreate();
-
-            }
-
-
-
-        });
     }
     private class Load extends AsyncTask<Void, Void, Void> {
         Document nextDoc,document=null;
         @Override
         protected Void doInBackground(Void... voids) {
-
             assessments.clear();
             links.clear();
-
             try {
                 // Connect to the web site
                 statusCode=Jsoup.connect(href).execute().statusCode();
@@ -153,10 +121,8 @@ public class SubjectsActivity extends AppCompatActivity {
                 }
 
                 ex.printStackTrace();
-                //SubjectsActivity.this.recreate();
             }
             if(nextDoc!=null){
-            //Document nextDoc=Jsoup.connect(nextUrl).get();
             Elements nextLinks = nextDoc.select("div[id=aspect_artifactbrowser_ItemViewer_div_item-view]").get(0).select("div[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]").select("a[href]");
             Elements nextElements = nextDoc.select("div[id=aspect_artifactbrowser_ItemViewer_div_item-view]").get(0).select("span[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]");
             for (int i = 0; i < nextElements.size(); ++i)
@@ -165,15 +131,12 @@ public class SubjectsActivity extends AppCompatActivity {
                 }
             for (int i = 0; i < nextLinks.size(); i += 2)
                 links.add(nextLinks.get(i).attr("href"));
-            //links.add(elements.get(i).attr("href"));
         }}}
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            if(document==null || nextDoc==null)
-                SubjectsActivity.this.recreate();
             ProgressBar progressBar = findViewById(R.id.loading_indicator);
             progressBar.setVisibility(View.GONE);
             if(statusCode!=200)
@@ -182,7 +145,6 @@ public class SubjectsActivity extends AppCompatActivity {
                 emptyView.setVisibility(View.VISIBLE);
                 ImageView imageView=findViewById(R.id.empty_imageview);
                 imageView.setVisibility(View.VISIBLE);
-
                 TextView wifiwarning=findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.VISIBLE);
             }
@@ -192,7 +154,6 @@ public class SubjectsActivity extends AppCompatActivity {
                 emptyView.setVisibility(View.GONE);
                 ImageView imageView=findViewById(R.id.empty_imageview);
                 imageView.setVisibility(View.GONE);
-
                 TextView wifiwarning=findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.GONE);
             ListView listView = findViewById(R.id.list);
@@ -213,14 +174,7 @@ public class SubjectsActivity extends AppCompatActivity {
                        public void onClick(DialogInterface dialogInterface, int pos) {
                            if(pos==0) {
                                String link=links.get(p).substring(0, links.get(p).indexOf("?"));
-//                               Intent intent = new Intent(Intent.ACTION_VIEW);
-//                                intent.setData(Uri.parse(externLink+ link));
-//
-//                                if(intent.resolveActivity(getPackageManager())!=null)
-//                               startActivity(intent);
                                new OpenTask(SubjectsActivity.this,externLink+link,1);
-                               //startActivity(new Intent(SubjectsActivity.this,PDFWebView.class).putExtra("value",externLink+link));
-                               //new PDF().execute(externLink+link);
                            }
                            else if(pos==1)
                            {
@@ -256,12 +210,6 @@ public class SubjectsActivity extends AppCompatActivity {
             listView.setVisibility(View.VISIBLE);}
         }
     }
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     @Override
     public void onBackPressed() {
@@ -269,7 +217,10 @@ public class SubjectsActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
-
-
-
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }

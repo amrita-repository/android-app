@@ -51,7 +51,7 @@ public class FacultyTimetable extends AppCompatActivity {
         setContentView(R.layout.activity_faculty);
         new clearCache().clear();
         dialog= new ProgressDialog(FacultyTimetable.this);
-        if (dialog != null && dialog.isShowing()) {
+        if (dialog.isShowing()) {
             dialog.dismiss();
         }
         final Spinner year=findViewById(R.id.faculty_year);
@@ -108,15 +108,13 @@ public class FacultyTimetable extends AppCompatActivity {
                 hideKeyboard();
                 if(!isNetworkAvailable())
                     showSnackbar("Device not connected to internet");
-                    //Toast.makeText(FacultyTimetable.this,"Device not connected to internet.",Toast.LENGTH_SHORT).show();
                 else {
-                    String name = null, acadsem;
+                    String name,acadsem;
                     int acadyear;
                     acadyear = year.getSelectedItemPosition();
                     name = actv.getText().toString();
                     if(actv.getText().toString().isEmpty() || acadyear==0 || sem.getSelectedItemPosition()==0)
                         showSnackbar(getString(R.string.incompletefield));
-                        //Toast.makeText(FacultyTimetable.this,"Please complete all fields",Toast.LENGTH_SHORT).show();
                     else{
                     switch (sem.getSelectedItemPosition()) {
                         case 1:
@@ -175,9 +173,6 @@ public class FacultyTimetable extends AppCompatActivity {
                             Log.e("Download url",getString(R.string.facultyurl)+url);
                             new PostRequest().execute(name, yearAdapter.getItem(acadyear), acadsem,"2");
 
-
-                                //Toast.makeText(FacultyTimetable.this,"Resource not found",Toast.LENGTH_SHORT).show();
-
                         } else {
                             Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
                         }
@@ -197,14 +192,13 @@ public class FacultyTimetable extends AppCompatActivity {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar
                 .make(parentLayout, message, Snackbar.LENGTH_SHORT);
-        //snackbar.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.darker_gray));
-        //((TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text)).setTextColor(Color.WHITE);
         snackbar.show();
     }
     public void hideKeyboard(){
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        if(inputManager.isAcceptingText())
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
@@ -248,8 +242,6 @@ public class FacultyTimetable extends AppCompatActivity {
             else if(choice==2){
                 new DownloadTask(FacultyTimetable.this, getString(R.string.facultyurl)+url, 0);
             }
-
-            //startActivity(new Intent(MainActivity.this,POSTResponse.class).putExtras(doc1));
         }
 
         @Override
@@ -297,15 +289,6 @@ public class FacultyTimetable extends AppCompatActivity {
                 while (!res.isEmpty() && i<res.size()){
                     Log.e("Elements ",String.valueOf(res.get(i)));
                 i++;}
-
-
-                //for(int i=0;i<res.size();++i)
-
-                //names[i]=result.get(i).text();
-
-
-             //Log.e("GET RESULT", names[1]);
-
 //
             } catch (IOException e) {
                 e.printStackTrace();
@@ -353,10 +336,6 @@ public class FacultyTimetable extends AppCompatActivity {
             mEdittextview.dismissDropDown();
             search=mEdittextview.getText().toString();
             new Load().execute(search);
-
-
-
-
         }
     }
 }
