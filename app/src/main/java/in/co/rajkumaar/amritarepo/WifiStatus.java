@@ -37,7 +37,10 @@ public class WifiStatus extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                WifiStatus.this.recreate();
+                if(isNetworkAvailable())
+                    new Load().execute();
+                else
+                    showSnackbar("Device not connected to internet");
             }
         });
 
@@ -50,10 +53,7 @@ public class WifiStatus extends AppCompatActivity {
     }
     private void showSnackbar(String message) {
         View parentLayout = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar
-                .make(parentLayout, message, Snackbar.LENGTH_SHORT);
-        //snackbar.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), android.R.color.darker_gray));
-        //((TextView) snackbar.getView().findViewById(android.support.design.R.id.snackbar_text)).setTextColor(Color.WHITE);
+        Snackbar snackbar = Snackbar.make(parentLayout, message, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
     public boolean isNetworkAvailable() {
@@ -124,9 +124,6 @@ public class WifiStatus extends AppCompatActivity {
                 image3.setImageResource(R.mipmap.ic_error);
                 textView6.setText(getText(R.string.wifinotworking));
             }
-
-
-
             for(int i=0;i<result.size();++i)
                 Log.e("JSON Parsed data",result.get(i));
             super.onPostExecute(aVoid);

@@ -35,18 +35,28 @@ public class DocumentsFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    SwipeRefreshLayout swipeRefreshLayout;
+    final String dirPath= Environment.getExternalStorageDirectory() + "/AmritaRepo";
+    File dir = new File(dirPath);
+    File[] files;
+    ListView listView;
     private List<String> fileList = new ArrayList<String>();
     ArrayAdapter<String> fileAdapter;
+
+    public void reproduce(View rootView){
+        retrieveFiles();
+        displayList(rootView);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.word_list, container, false);
+        final View rootView = inflater.inflate(R.layout.word_list, container, false);
 
-
-        final SwipeRefreshLayout swipeRefreshLayout=rootView.findViewById(R.id.swipe_downloads);
+        swipeRefreshLayout=rootView.findViewById(R.id.swipe_downloads);
         swipeRefreshLayout.setColorScheme(R.color.colorAccent);
-        final ListView listView=rootView.findViewById(R.id.dlist);
+        listView=rootView.findViewById(R.id.dlist);
         listView.setOnScrollListener(new AbsListView.OnScrollListener()
         {
             @Override
@@ -62,17 +72,20 @@ public class DocumentsFragment extends Fragment {
                 swipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
             }
         });
+        retrieveFiles();
+        displayList(rootView);
+        swipeRefreshLayout.setRefreshing(false);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getActivity().recreate();
+                reproduce(rootView);
             }
         });
+        return rootView;
+    }
 
-        final String dirPath= Environment.getExternalStorageDirectory() + "/AmritaRepo";
-        File dir = new File(dirPath);
-
-        File[] files = dir.listFiles();
+    public void retrieveFiles(){
+        files = dir.listFiles();
         fileList.clear();
         if(files!=null) {
             for (File file : files) {
@@ -80,7 +93,11 @@ public class DocumentsFragment extends Fragment {
                 if (name.contains(".pdf"))
                     fileList.add(file.getName());
             }
-            if(!fileList.isEmpty()){
+        }
+    }
+
+    public void displayList(final View rootView){
+        if(!fileList.isEmpty()){
             fileAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, fileList);
             final ListView downloads = listView;
 
@@ -91,22 +108,14 @@ public class DocumentsFragment extends Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     final File pdfFile = new File(dirPath + "/" + fileList.get(i));
                     if (pdfFile.exists()) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        Uri data = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", pdfFile);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.setDataAndType(data, "application/pdf");
+                        if (intent.resolveActivity(getContext().getPackageManager()) != null)
+                            startActivity(Intent.createChooser(intent, "Open the file"));
 
-//                                    MimeTypeMap map = MimeTypeMap.getSingleton();
-//                                    String ext = MimeTypeMap.getFileExtensionFromUrl(pdfFile.getName());
-//                                    String type = map.getMimeTypeFromExtension(ext);
-//
-//                                    if (type == null)
-//                                        type = "*/*";
-
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    Uri data = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", pdfFile);
-                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    intent.setDataAndType(data, "application/pdf");
-                                    if (intent.resolveActivity(getContext().getPackageManager()) != null)
-                                        startActivity(Intent.createChooser(intent, "Open the file"));
-
-                            }
+                    }
 
 
 
@@ -118,6 +127,7 @@ public class DocumentsFragment extends Fragment {
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                     final File pdfFile = new File(dirPath + "/" + fileList.get(i));
+                    final String renamingFileName=fileList.get(i);
                     if (pdfFile.exists()) {
                         final ArrayList<String> qPaperOptions=new ArrayList<>();
                         qPaperOptions.add("Open");
@@ -129,14 +139,6 @@ public class DocumentsFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int pos) {
                                 if (pos == 0) {
-//                                    MimeTypeMap map = MimeTypeMap.getSingleton();
-//                                    String ext = MimeTypeMap.getFileExtensionFromUrl(pdfFile.getName());
-//                                    String type = map.getMimeTypeFromExtension(ext);
-//                                    String type = map.getMimeTypeFromExtension(fileExt(pdfFile.getName()).substring(1));
-//
-//                                    if (type == null)
-//                                        type = "*/*";
-
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
                                     Uri data = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", pdfFile);
                                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -149,10 +151,10 @@ public class DocumentsFragment extends Fragment {
                                     alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-
                                             pdfFile.delete();
                                             Toast.makeText(getActivity(),"File Deleted",Toast.LENGTH_SHORT).show();
-                                            getActivity().recreate();
+                                            reproduce(rootView);
+
 
                                         }
                                     });
@@ -168,7 +170,8 @@ public class DocumentsFragment extends Fragment {
                                 else if(pos==2)
                                 {
                                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                                    alertDialog.setMessage("Rename file");
+                                    alertDialog.setMessage("Rename file : \n"+renamingFileName);
+
                                     LinearLayout layout = new LinearLayout(getActivity());
                                     layout.setOrientation(LinearLayout.VERTICAL);
                                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -176,14 +179,13 @@ public class DocumentsFragment extends Fragment {
                                     params.setMargins(40, 0, 50, 0);
                                     final EditText textBox = new EditText(getActivity());
                                     layout.addView(textBox, params);
-
                                     alertDialog.setView(layout);
 
                                     alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            pdfFile.renameTo(new File(dirPath + "/" + textBox.getText()+".pdf"));
-                                            getActivity().recreate();
+                                                pdfFile.renameTo(new File(dirPath + "/" + textBox.getText() + ".pdf"));
+                                                reproduce(rootView);
                                         }
                                     });
                                     alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -199,52 +201,21 @@ public class DocumentsFragment extends Fragment {
                         });
 
                         alertDialog.show();
-
-
-
-
-
-
                     } else {
                         Toast.makeText(getContext(), "Error Opening File", Toast.LENGTH_SHORT).show();
                     }
-                return true;}
-            });}else
-            {
-                TextView empty=rootView.findViewById(R.id.dempty_view);
-                empty.setVisibility(View.VISIBLE);
-                ImageView emptyimage=rootView.findViewById(R.id.dempty_imageview);
-                emptyimage.setVisibility(View.VISIBLE);
-            }
-
-        }else {
+                    return true;}
+            });}
+        else {
+            if(fileAdapter!=null)
+            fileAdapter.clear();
             TextView empty=rootView.findViewById(R.id.dempty_view);
             empty.setVisibility(View.VISIBLE);
             ImageView emptyimage=rootView.findViewById(R.id.dempty_imageview);
             emptyimage.setVisibility(View.VISIBLE);
-            //Toast.makeText(getContext(), "You've not yet downloaded any file", Toast.LENGTH_SHORT).show();
-
-        }
-        return rootView;
-    }
-    private String fileExt(String url) {
-        if (url.indexOf("?") > -1) {
-            url = url.substring(0, url.indexOf("?"));
-        }
-        if (url.lastIndexOf(".") == -1) {
-            return null;
-        } else {
-            String ext = url.substring(url.lastIndexOf(".") + 1);
-            if (ext.indexOf("%") > -1) {
-                ext = ext.substring(0, ext.indexOf("%"));
-            }
-            if (ext.indexOf("/") > -1) {
-                ext = ext.substring(0, ext.indexOf("/"));
-            }
-            return ext.toLowerCase();
-
         }
     }
+
 
 }
 
