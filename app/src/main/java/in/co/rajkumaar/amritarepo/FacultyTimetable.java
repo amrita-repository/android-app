@@ -285,11 +285,6 @@ public class FacultyTimetable extends AppCompatActivity {
                     res.add(line);
                 }
                 Log.e("Size of result ",String.valueOf(res.size()));
-                int i=0;
-                while (!res.isEmpty() && i<res.size()){
-                    Log.e("Elements ",String.valueOf(res.get(i)));
-                i++;}
-//
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -299,8 +294,9 @@ public class FacultyTimetable extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             AutoCompleteTextView actv =  (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
-            if(!res.isEmpty() && res!=null)
-            {adapter= new ArrayAdapter<String>
+            if(res.size()>0)
+            {
+                adapter= new ArrayAdapter<String>
                     (FacultyTimetable.this,android.R.layout.simple_spinner_dropdown_item,res);
             actv.setThreshold(1);
             actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
@@ -315,7 +311,7 @@ public class FacultyTimetable extends AppCompatActivity {
         private Context mContext;
         AutoCompleteTextView mEdittextview;
 
-        public addListenerOnTextChange(Context context, AutoCompleteTextView edittextview) {
+        private addListenerOnTextChange(Context context, AutoCompleteTextView edittextview) {
             super();
             this.mContext = context;
             this.mEdittextview= edittextview;

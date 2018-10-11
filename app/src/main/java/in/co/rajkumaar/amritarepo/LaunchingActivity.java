@@ -48,6 +48,9 @@ import java.util.List;
 public class LaunchingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
+    static boolean active = false;
+
+
     private FirebaseAnalytics mFirebaseAnalytics;
     Document doc;
     int version=0,realVersion=0;
@@ -174,27 +177,30 @@ public class LaunchingActivity extends AppCompatActivity
     }
     public void checkUpdate(){
 
-                if(realVersion!=version){
-                    Log.e("Real : "+realVersion," HAving :"+version);
-                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
-                    alertDialog.setMessage("An update is available for Amrita Repository.");
-                    alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName()));
-                            if(intent.resolveActivity(getPackageManager())!=null)
-                                startActivity(intent);
-                        }
-                    });
-                    alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
+        if(active) {
+            if (realVersion != version) {
+                Log.e("Real : " + realVersion, " HAving :" + version);
+                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
+                alertDialog.setMessage("An update is available for Amrita Repository.");
+                alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
+                        if (intent.resolveActivity(getPackageManager()) != null)
+                            startActivity(intent);
+                    }
+                });
+                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                if (active)
                     alertDialog.show();
-                }
+            }
+        }
 
     }
     boolean doubleBackToExitPressedOnce = false;
@@ -333,9 +339,28 @@ public class LaunchingActivity extends AppCompatActivity
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
+
             checkUpdate();
             super.onPostExecute(aVoid);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        active=false;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 }
 
