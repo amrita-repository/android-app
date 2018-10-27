@@ -127,6 +127,8 @@ public class TimetableActivity extends AppCompatActivity {
 
 
         years.add("[Choose year]");
+        years.add("2015-16");
+        years.add("2016-17");
         years.add("2017-18");
         years.add("2018-19");
         years.add("2019-20");
@@ -138,7 +140,7 @@ public class TimetableActivity extends AppCompatActivity {
         if(!yearAdapter.isEmpty()){
 
             year.setAdapter(yearAdapter);
-            year.setSelection(2);}
+            year.setSelection(0);}
         year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -175,7 +177,7 @@ public class TimetableActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(userBatch>0 && userBranch>0 && userCourse>0 && userSem>0 && userYear>0){
-                TIMETABLE_URL="http://intranet.cb.amrita.edu/TimeTable/PDF/";
+                TIMETABLE_URL="https://intranet.cb.amrita.edu/TimeTable/PDF/";
                 buildTimetableUrl();
                 Intent intent=new Intent(TimetableActivity.this,WebViewActivity.class);
                 intent.putExtra("webview",TIMETABLE_URL);
@@ -208,7 +210,7 @@ public class TimetableActivity extends AppCompatActivity {
                 else{
                     if(isNetworkAvailable())
                     {
-                        String protocol=getString(R.string.protocol);
+                        String protocol="https://";
                         String intranet=getString(R.string.intranet);
                         String timetable=getString(R.string.timetable);
                             TIMETABLE_URL=protocol+intranet+timetable;
@@ -239,11 +241,13 @@ public class TimetableActivity extends AppCompatActivity {
     public void buildTimetableUrl(){
         switch (userYear)
         {
-            case 1:TIMETABLE_URL+="2017_18"+"/"; break;
-            case 2:TIMETABLE_URL+="2018_19"+"/"; break;
-            case 3:TIMETABLE_URL+="2019_20"+"/"; break;
-            case 4:TIMETABLE_URL+="2020_21"+"/"; break;
-            case 5:TIMETABLE_URL+="2021_22"+"/"; break;
+            case 1:TIMETABLE_URL+="2015_16"+"/"; break;
+            case 2:TIMETABLE_URL+="2016_17"+"/"; break;
+            case 3:TIMETABLE_URL+="2017_18"+"/"; break;
+            case 4:TIMETABLE_URL+="2018_19"+"/"; break;
+            case 5:TIMETABLE_URL+="2019_20"+"/"; break;
+            case 6:TIMETABLE_URL+="2020_21"+"/"; break;
+            case 7:TIMETABLE_URL+="2021_22"+"/"; break;
         }
         TIMETABLE_URL+=courses.get(userCourse)+"/";
         TIMETABLE_URL+=branches.get(userBranch)+"/";

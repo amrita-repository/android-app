@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -121,19 +122,23 @@ public class SemesterActivity extends AppCompatActivity {
                     e2.printStackTrace();
                 }
                 e1.printStackTrace();}
-            finally {
-                if(document!=null){
-                elements = document.select("div[id=aspect_artifactbrowser_CommunityViewer_div_community-view]").select("ul[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]").get(0).select("a[href]");
-                for (int i = 0; i < elements.size(); ++i) {
-                    sems.add(elements.get(i).text());
-                    links.add(elements.get(i).attr("href"));
-                }}
-            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            try{
+                if(document!=null){
+                    elements = document.select("div[id=aspect_artifactbrowser_CommunityViewer_div_community-view]").select("ul[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]").get(0).select("a[href]");
+                    for (int i = 0; i < elements.size(); ++i) {
+                        sems.add(elements.get(i).text());
+                        links.add(elements.get(i).attr("href"));
+                    }}
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
+                Toast.makeText(SemesterActivity.this,"Some error occurred. Please try using Amrita Wi-Fi. If problem still persists, report to the developer.",Toast.LENGTH_LONG).show();
+                SemesterActivity.this.finish();
+            }
             ProgressBar progressBar=findViewById(R.id.loading_indicator);
             progressBar.setVisibility(View.GONE);
             if(statusCode!=200)

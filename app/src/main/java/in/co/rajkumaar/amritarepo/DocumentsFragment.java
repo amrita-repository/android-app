@@ -113,7 +113,7 @@ public class DocumentsFragment extends Fragment {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         intent.setDataAndType(data, "application/pdf");
                         if (intent.resolveActivity(getContext().getPackageManager()) != null)
-                            startActivity(Intent.createChooser(intent, "Open the file"));
+                            startActivity(intent);
 
                     }
 

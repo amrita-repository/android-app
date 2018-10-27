@@ -102,7 +102,7 @@ public class DownloadTask {
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.setDataAndType(data,type);
                     if(intent.resolveActivity(context.getPackageManager())!=null)
-                    context.startActivity(Intent.createChooser(intent,"Open the file"));
+                    context.startActivity(intent);
 
 
                 } else {
