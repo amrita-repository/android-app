@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -122,21 +123,28 @@ public class SubjectsActivity extends AppCompatActivity {
 
                 ex.printStackTrace();
             }
-            if(nextDoc!=null){
-            Elements nextLinks = nextDoc.select("div[id=aspect_artifactbrowser_ItemViewer_div_item-view]").get(0).select("div[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]").select("a[href]");
-            Elements nextElements = nextDoc.select("div[id=aspect_artifactbrowser_ItemViewer_div_item-view]").get(0).select("span[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]");
-            for (int i = 0; i < nextElements.size(); ++i)
-                if (!nextElements.get(i).attr("title").isEmpty()) {
-                    assessments.add(nextElements.get(i).attr("title"));
-                }
-            for (int i = 0; i < nextLinks.size(); i += 2)
-                links.add(nextLinks.get(i).attr("href"));
-        }}}
+            }}
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            try{
+            if(nextDoc!=null){
+                Elements nextLinks = nextDoc.select("div[id=aspect_artifactbrowser_ItemViewer_div_item-view]").get(0).select("div[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]").select("a[href]");
+                Elements nextElements = nextDoc.select("div[id=aspect_artifactbrowser_ItemViewer_div_item-view]").get(0).select("span[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]");
+                for (int i = 0; i < nextElements.size(); ++i)
+                    if (!nextElements.get(i).attr("title").isEmpty()) {
+                        assessments.add(nextElements.get(i).attr("title"));
+                    }
+                for (int i = 0; i < nextLinks.size(); i += 2)
+                    links.add(nextLinks.get(i).attr("href"));
+            }}catch (IndexOutOfBoundsException e)
+            {
+                e.printStackTrace();
+                Toast.makeText(SubjectsActivity.this,"Some error occurred. Please report to the developer.",Toast.LENGTH_LONG).show();
+                SubjectsActivity.this.finish();
+            }
             ProgressBar progressBar = findViewById(R.id.loading_indicator);
             progressBar.setVisibility(View.GONE);
             if(statusCode!=200)

@@ -14,7 +14,7 @@
     <string name="wifinotworking">Not working</string>
     <string name="category_docs">Documents</string>
     <string name="facultyname">Enter faculty name</string>
-    <string name="facultyurl">http://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
+    <string name="facultyurl">https://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
     <string name="port">8080</string>
     <string name="category_images">Images</string>
     <string name="proxyurl">https://anokha.amrita.edu/app/proxy.php</string>
@@ -25,5 +25,5 @@
 
 
 
-    <string name="versionName">Version 1.4</string>
+    <string name="versionName">Version 1.5.1</string>
 </resources>

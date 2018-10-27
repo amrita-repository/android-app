@@ -112,7 +112,7 @@ public class ImagesFragment extends Fragment {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         intent.setDataAndType(data, "image/jpeg");
                         if (intent.resolveActivity(getContext().getPackageManager()) != null)
-                            startActivity(Intent.createChooser(intent, "Open the file"));
+                            startActivity(intent);
                     } else {
                         Toast.makeText(getContext(), "Error Opening File", Toast.LENGTH_SHORT).show();
                     }

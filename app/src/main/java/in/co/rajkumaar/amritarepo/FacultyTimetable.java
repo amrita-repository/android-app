@@ -247,10 +247,8 @@ public class FacultyTimetable extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... strings) {
             choice=Integer.parseInt(strings[3]);
-
-
             try {
-                Connection.Response login = Jsoup.connect("http://intranet.cb.amrita.edu/TimeTable/Faculty/index.php")
+                Connection.Response login = Jsoup.connect("https://intranet.cb.amrita.edu/TimeTable/Faculty/index.php")
                         .method(Connection.Method.POST)
                         .data("year", strings[1])
                         .data("sem", strings[2])
@@ -276,7 +274,7 @@ public class FacultyTimetable extends AppCompatActivity {
         protected Void doInBackground(String... searching) {
             BufferedReader br ;
             try {
-                URL url = new URL("http://intranet.cb.amrita.edu/TimeTable/Faculty/get_staff_list.php?q="+searching[0]);
+                URL url = new URL("https://intranet.cb.amrita.edu/TimeTable/Faculty/get_staff_list.php?q="+searching[0]);
                 br = new BufferedReader(new InputStreamReader(url.openStream()));
 
                 res.clear();
@@ -294,16 +292,20 @@ public class FacultyTimetable extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             AutoCompleteTextView actv =  (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
-            if(res.size()>0)
-            {
-                adapter= new ArrayAdapter<String>
-                    (FacultyTimetable.this,android.R.layout.simple_spinner_dropdown_item,res);
-            actv.setThreshold(1);
-            actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-            actv.setTextColor(Color.BLACK);
-            actv.showDropDown();}
-            else{
-                actv.dismissDropDown();
+            try{
+                if(res.size()>0)
+                {
+                    adapter= new ArrayAdapter<String>
+                            (FacultyTimetable.this,android.R.layout.simple_spinner_dropdown_item,res);
+                    actv.setThreshold(1);
+                    actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+                    actv.setTextColor(Color.BLACK);
+                    actv.showDropDown();}
+                else{
+                    actv.dismissDropDown();
+                }
+            }catch (IndexOutOfBoundsException e){
+                e.printStackTrace();
             }
         }
     }

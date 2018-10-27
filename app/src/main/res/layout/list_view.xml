@@ -26,6 +26,7 @@
         android:id="@+id/empty_imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/empty_view"
         android:src="@drawable/ic_baseline_sentiment_very_dissatisfied_24px"/>

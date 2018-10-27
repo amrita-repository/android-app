@@ -178,7 +178,7 @@ public class LaunchingActivity extends AppCompatActivity
     public void checkUpdate(){
 
         if(active) {
-            if (realVersion != version) {
+            if (realVersion > version) {
                 Log.e("Real : " + realVersion, " HAving :" + version);
                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
                 alertDialog.setMessage("An update is available for Amrita Repository.");
@@ -323,11 +323,27 @@ public class LaunchingActivity extends AppCompatActivity
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                doc = Jsoup.connect("http://rajkumaar.co.in/repoversion").execute().parse();
-                realVersion = Integer.parseInt(doc.title());
+                int statusCode=Jsoup.connect("http://rajkumaar.co.in/repoversion").execute().statusCode();
+                if(statusCode==200) {
+                    doc = Jsoup.connect("http://rajkumaar.co.in/repoversion").execute().parse();
+                    realVersion = Integer.parseInt(doc.title());
+                }
             }catch (IOException e){
                 e.printStackTrace();
-        }
+                try {
+                    int statusCode=Jsoup.connect("https://rajkumaar.co.in/repoversion").execute().statusCode();
+                    if(statusCode==200) {
+                        doc = Jsoup.connect("https://rajkumaar.co.in/repoversion").execute().parse();
+                        realVersion = Integer.parseInt(doc.title());
+                    }
+                }catch (IOException e1){
+                    e1.printStackTrace();
+                }catch (NumberFormatException e2){
+                    e.printStackTrace();
+                }
+        }catch (NumberFormatException e2){
+                e2.printStackTrace();
+            }
             return null;
     }
 
@@ -336,11 +352,10 @@ public class LaunchingActivity extends AppCompatActivity
             try {
                 PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                 version = pInfo.versionCode;
+                checkUpdate();
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-
-            checkUpdate();
             super.onPostExecute(aVoid);
         }
     }
