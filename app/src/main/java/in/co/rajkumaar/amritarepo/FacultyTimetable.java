@@ -229,18 +229,22 @@ public class FacultyTimetable extends AppCompatActivity {
             if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
-            Elements ele=doc1.select("iframe[src]");
-            url=ele.attr("src");
-            Log.e("URL",url);
-            if(choice==1){
-                if(url!=null && !url.isEmpty())
-                    startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.facultyurl)+url)));
+            try {
+                Elements ele = doc1.select("iframe[src]");
+                url = ele.attr("src");
+                Log.e("URL", url);
+                if (choice == 1) {
+                    if (url != null && !url.isEmpty())
+                        startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.facultyurl) + url)));
 
-                else
-                    showSnackbar("Resource not found");
-            }
-            else if(choice==2){
-                new DownloadTask(FacultyTimetable.this, getString(R.string.facultyurl)+url, 0);
+                    else
+                        showSnackbar("Resource not found");
+                } else if (choice == 2) {
+                    new DownloadTask(FacultyTimetable.this, getString(R.string.facultyurl) + url, 0);
+                }
+            }catch (NullPointerException e){
+                e.printStackTrace();
+                showSnackbar("Some error occurred.");
             }
         }
 
@@ -306,6 +310,7 @@ public class FacultyTimetable extends AppCompatActivity {
                 }
             }catch (IndexOutOfBoundsException e){
                 e.printStackTrace();
+                showSnackbar("Some error occurred.");
             }
         }
     }
