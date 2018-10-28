@@ -104,26 +104,31 @@ public class SubjectsActivity extends AppCompatActivity {
             }
             finally
 
-        {
-            if(document!=null){
-            Elements elements = document.select("div[xmlns=http://di.tamu.edu/DRI/1.0/]").get(0).select("ul").get(0).select("li").get(0).select("a[href]");
-            String nextUrl = externLink + elements.get(0).attr("href");
-            nextDoc=null;
-            try{
-                nextDoc=Jsoup.connect(nextUrl).get();
+            {
+                try {
+                    if (document != null) {
+                        Elements elements = document.select("div[xmlns=http://di.tamu.edu/DRI/1.0/]").get(0).select("ul").get(0).select("li").get(0).select("a[href]");
+                        String nextUrl = externLink + elements.get(0).attr("href");
+                        nextDoc = null;
+                        try {
+                            nextDoc = Jsoup.connect(nextUrl).get();
 
-            }
-            catch (IOException ex){
-                try{
-                    nextDoc = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", nextUrl).execute().parse());
-                }catch(IOException r)
-                {
-                    r.printStackTrace();
+                        } catch (IOException ex) {
+                            try {
+                                nextDoc = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", nextUrl).execute().parse());
+                            } catch (IOException r) {
+                                r.printStackTrace();
+                            }
+
+                            ex.printStackTrace();
+                        }
+                    }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+            }catch(IndexOutOfBoundsException e){
+                    e.printStackTrace();
                 }
-
-                ex.printStackTrace();
             }
-            }}
             return null;
         }
 
