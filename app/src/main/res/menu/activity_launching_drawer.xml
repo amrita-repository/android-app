@@ -25,11 +25,18 @@
             android:icon="@drawable/professor"
             android:title="Faculty Timetable"
             android:checkable="false"/>
+
+        <item
+            android:id="@+id/nav_exams"
+            android:icon="@drawable/handwithpen"
+            android:title="Examination Schedule"
+            android:checkable="false"/>
         <item
             android:id="@+id/nav_campuswifi"
             android:icon="@mipmap/ic_wifi"
             android:title="Campus Wifi Status"
             android:checkable="false"/>
+
 
     </group>
 

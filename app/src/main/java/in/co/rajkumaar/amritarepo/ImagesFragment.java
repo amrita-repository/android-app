@@ -98,7 +98,7 @@ public class ImagesFragment extends Fragment {
 
     public void listFiles(final View rootView){
         if(!fileList.isEmpty()){
-            fileAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, fileList);
+            fileAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list_item, fileList);
             final ListView downloads = listView;
 
             downloads.setAdapter(fileAdapter);

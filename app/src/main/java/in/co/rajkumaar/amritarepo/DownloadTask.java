@@ -55,6 +55,11 @@ public class DownloadTask {
             downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());
             downloadFileName = downloadFileName.substring(0, downloadFileName.indexOf("?"));
             downloadFileName = downloadFileName.replaceAll("%20", "_");
+        }else if(act==2){
+            ch=2;
+            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());
+            downloadFileName = downloadFileName.replaceAll("%20", "_");
+            downloadFileName = downloadFileName.replaceAll("%26", "&");
         }
         //Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
@@ -100,7 +105,7 @@ public class DownloadTask {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider",file);
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intent.setDataAndType(data,type);
+                    intent.setDataAndType(data,getMime(downloadFileName));
                     if(intent.resolveActivity(context.getPackageManager())!=null)
                     context.startActivity(intent);
 
@@ -229,6 +234,23 @@ public class DownloadTask {
             }
 
             return null;
+        }
+    }
+    String getMime(String url){
+        if (url.contains(".doc") || url.contains(".docx")) {
+            // Word document
+            return "application/msword";
+        } else if(url.contains(".pdf")) {
+            // PDF file
+            return "application/pdf";
+        } else if(url.contains(".xls") || url.contains(".xlsx")) {
+            // Excel file
+            return "application/vnd.ms-excel";
+        } else if(url.contains(".jpg") || url.contains(".jpeg") || url.contains(".png")) {
+            // JPG file
+            return "image/jpeg";
+        }else{
+            return "application/pdf";
         }
     }
 }
