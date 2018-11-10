@@ -26,6 +26,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_sem_selection"
-        app:menu="@menu/activity_sem_selection_drawer" />
+        app:menu="@menu/activity_launching_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

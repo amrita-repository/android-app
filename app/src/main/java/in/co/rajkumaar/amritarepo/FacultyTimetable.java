@@ -79,6 +79,10 @@ public class FacultyTimetable extends AppCompatActivity {
         });
         ArrayList<String> years=new ArrayList<>();
         years.add("[Choose year]");
+
+        years.add("2015_16");
+        years.add("2016_17");
+        years.add("2017_18");
         years.add("2018_19");
         years.add("2019_20");
         years.add("2020_21");
@@ -281,13 +285,24 @@ public class FacultyTimetable extends AppCompatActivity {
                 URL url = new URL("https://intranet.cb.amrita.edu/TimeTable/Faculty/get_staff_list.php?q="+searching[0]);
                 br = new BufferedReader(new InputStreamReader(url.openStream()));
 
-                res.clear();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        res.clear();
+                    }
+                });
                 String line;
                 while ((line = br.readLine()) != null) {
-                    res.add(line);
+                    final String lin=line;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            res.add(lin);
+                        }
+                    });
                 }
                 Log.e("Size of result ",String.valueOf(res.size()));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -295,20 +310,25 @@ public class FacultyTimetable extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            AutoCompleteTextView actv =  (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
+
             try{
-                if(res.size()>0)
+                AutoCompleteTextView actv =  (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
+                if(!res.isEmpty())
                 {
+                    Log.e("First ",String.valueOf(res.size()));
                     adapter= new ArrayAdapter<String>
                             (FacultyTimetable.this,android.R.layout.simple_spinner_dropdown_item,res);
                     actv.setThreshold(1);
                     actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                     actv.setTextColor(Color.BLACK);
-                    actv.showDropDown();}
+                    actv.showDropDown();
+                    Log.e("Second ",String.valueOf(res.size()));
+                }
                 else{
+                    Log.e("Third ",String.valueOf(res.size()));
                     actv.dismissDropDown();
                 }
-            }catch (IndexOutOfBoundsException e){
+            }catch (Exception e){
                 e.printStackTrace();
                 showSnackbar("Some error occurred.");
             }
@@ -335,10 +355,15 @@ public class FacultyTimetable extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            res.clear();
-            mEdittextview.dismissDropDown();
-            search=mEdittextview.getText().toString();
-            new Load().execute(search);
+            try {
+                res.clear();
+                mEdittextview.dismissDropDown();
+                search = mEdittextview.getText().toString();
+                new Load().execute(search);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
+
     }
 }

@@ -23,7 +23,9 @@
     <string name="protocol">http://</string>
     <string name="wifi_warning">Please ensure you are connected to Amrita Wifi to have a smooth experience.</string>
 
+    <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
 
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
-    <string name="versionName">Version 1.5.1</string>
+    <string name="versionName">Version 1.6</string>
 </resources>

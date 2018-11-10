@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="in.co.rajkumaar.amritarepo">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,13 +10,27 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@drawable/logosq"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logosq"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".LaunchingActivity"
             android:label="@string/app_name"
@@ -43,9 +58,9 @@
         <activity
             android:name=".TimetableActivity"
             android:label="Timetable"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            android:parentActivityName=".LaunchingActivity" />
+            android:parentActivityName=".LaunchingActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name=".GenericFileProvider"
@@ -56,6 +71,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <activity
             android:name=".AssessmentsActivity"
             android:label="Assessments"
@@ -69,9 +85,9 @@
         <activity
             android:name=".FacultyTimetable"
             android:label="Faculty Timetable"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
-            android:parentActivityName=".LaunchingActivity" />
+            android:parentActivityName=".LaunchingActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".WebViewActivity"
             android:parentActivityName=".TimetableActivity" />
@@ -79,7 +95,14 @@
             android:name=".WifiStatus"
             android:label="Campus Wifi Status"
             android:parentActivityName=".LaunchingActivity" />
-
+        <activity
+            android:name=".ExamSchedule"
+            android:label="Examination Schedule"
+            android:launchMode="singleTop"
+            android:parentActivityName=".LaunchingActivity" />
+        <activity android:name=".ExamsUnderEachDept"
+            android:label="Examinations"
+            android:parentActivityName=".ExamSchedule"/>
     </application>
 
 </manifest>

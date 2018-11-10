@@ -90,7 +90,7 @@ public class DocumentsFragment extends Fragment {
         if(files!=null) {
             for (File file : files) {
                 String name = file.getName();
-                if (name.contains(".pdf"))
+                if (name.contains(".pdf") || name.contains(".xls") || name.contains(".xlsx"))
                     fileList.add(file.getName());
             }
         }
@@ -98,7 +98,7 @@ public class DocumentsFragment extends Fragment {
 
     public void displayList(final View rootView){
         if(!fileList.isEmpty()){
-            fileAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, fileList);
+            fileAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list_item, fileList);
             final ListView downloads = listView;
 
             downloads.setAdapter(fileAdapter);
@@ -111,7 +111,7 @@ public class DocumentsFragment extends Fragment {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         Uri data = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", pdfFile);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.setDataAndType(data, "application/pdf");
+                        intent.setDataAndType(data, getMime(pdfFile.toString()));
                         if (intent.resolveActivity(getContext().getPackageManager()) != null)
                             startActivity(intent);
 
@@ -142,7 +142,7 @@ public class DocumentsFragment extends Fragment {
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
                                     Uri data = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", pdfFile);
                                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    intent.setDataAndType(data, "application/pdf");
+                                    intent.setDataAndType(data, getMime(pdfFile.toString()));
                                     if (intent.resolveActivity(getContext().getPackageManager()) != null)
                                         startActivity(Intent.createChooser(intent, "Open the file"));
                                 } else if (pos == 1) {
@@ -213,6 +213,24 @@ public class DocumentsFragment extends Fragment {
             empty.setVisibility(View.VISIBLE);
             ImageView emptyimage=rootView.findViewById(R.id.dempty_imageview);
             emptyimage.setVisibility(View.VISIBLE);
+        }
+    }
+
+    String getMime(String url){
+        if (url.contains(".doc") || url.contains(".docx")) {
+            // Word document
+            return "application/msword";
+        } else if(url.contains(".pdf")) {
+            // PDF file
+            return "application/pdf";
+        } else if(url.contains(".xls") || url.contains(".xlsx")) {
+            // Excel file
+            return "application/vnd.ms-excel";
+        } else if(url.contains(".jpg") || url.contains(".jpeg") || url.contains(".png")) {
+            // JPG file
+            return "image/jpeg";
+        }else{
+            return "application/pdf";
         }
     }
 
