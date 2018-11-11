@@ -152,7 +152,7 @@ public class DocumentsFragment extends Fragment {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             pdfFile.delete();
-                                            Toast.makeText(getActivity(),"File Deleted",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(),renamingFileName+" Deleted",Toast.LENGTH_SHORT).show();
                                             reproduce(rootView);
 
 

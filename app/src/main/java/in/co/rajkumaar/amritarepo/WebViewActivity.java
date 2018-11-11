@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -60,6 +61,7 @@ public class WebViewActivity extends AppCompatActivity {
         try {
             // load the urlz
             mywebview.loadUrl(webviewlink);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

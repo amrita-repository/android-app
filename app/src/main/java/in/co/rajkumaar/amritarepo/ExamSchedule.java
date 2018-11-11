@@ -1,7 +1,11 @@
 package in.co.rajkumaar.amritarepo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,12 +39,7 @@ public class ExamSchedule extends AppCompatActivity {
         links=new ArrayList<>();
         listView=findViewById(R.id.list);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(ExamSchedule.this,ExamsUnderEachDept.class).putExtra("block",position));
-            }
-        });
+
 
 
         new retrieveSchedule().execute();
@@ -85,6 +84,15 @@ public class ExamSchedule extends AppCompatActivity {
 
                 scheduleBlockArrayAdapter=new ArrayAdapter<>(ExamSchedule.this,R.layout.custom_list_item,headings);
                 listView.setAdapter(scheduleBlockArrayAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if(isNetworkAvailable())
+                            startActivity(new Intent(ExamSchedule.this,ExamsUnderEachDept.class).putExtra("block",position));
+                        else
+                            Snackbar.make(view,"Device not connected to Internet.",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
 
 
             }catch (Exception e){
@@ -94,4 +102,12 @@ public class ExamSchedule extends AppCompatActivity {
             super.onPostExecute(aVoid);
         }
     }
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
 }

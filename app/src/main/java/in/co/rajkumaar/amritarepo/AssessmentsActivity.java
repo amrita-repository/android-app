@@ -19,6 +19,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -49,6 +53,15 @@ public class AssessmentsActivity extends AppCompatActivity {
         href=""+bundle.get("href");
         this.setTitle(""+bundle.get("pageTitle"));
         setContentView(R.layout.list_view);
+
+        AdView mAdView;
+        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
+
+
         TextView textView=findViewById(R.id.empty_view);
         textView.setVisibility(View.GONE);
         TextView wifiwarning=findViewById(R.id.wifiwarning);

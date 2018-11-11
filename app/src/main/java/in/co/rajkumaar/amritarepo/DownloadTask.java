@@ -60,6 +60,8 @@ public class DownloadTask {
             downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());
             downloadFileName = downloadFileName.replaceAll("%20", "_");
             downloadFileName = downloadFileName.replaceAll("%26", "&");
+            downloadFileName = downloadFileName.replaceAll("%28", "(");
+            downloadFileName = downloadFileName.replaceAll("%29", ")");
         }
         //Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
@@ -108,6 +110,8 @@ public class DownloadTask {
                     intent.setDataAndType(data,getMime(downloadFileName));
                     if(intent.resolveActivity(context.getPackageManager())!=null)
                     context.startActivity(intent);
+                    else
+                        Toast.makeText(context,"Sorry, there's no appropriate app in the device to open this file.",Toast.LENGTH_LONG).show();
 
 
                 } else {
@@ -236,7 +240,7 @@ public class DownloadTask {
             return null;
         }
     }
-    String getMime(String url){
+    private String getMime(String url){
         if (url.contains(".doc") || url.contains(".docx")) {
             // Word document
             return "application/msword";

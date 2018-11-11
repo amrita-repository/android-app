@@ -25,6 +25,9 @@
 
     <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
 
+
+    <string name="banner_id">ca-app-pub-9174356806392379/5586578490</string>
+
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
     <string name="versionName">Version 1.6</string>

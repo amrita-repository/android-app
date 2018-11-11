@@ -32,6 +32,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.jsoup.Jsoup;
@@ -44,6 +47,7 @@ public class LaunchingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     static boolean active = false;
+
 
 
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -65,6 +69,12 @@ public class LaunchingActivity extends AppCompatActivity
         new clearCache().clear();
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         setContentView(R.layout.activity_launching);
+        AdView mAdView;
+        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
         if(isNetworkAvailable())
             new checkVersion().execute();
 
@@ -297,7 +307,10 @@ public class LaunchingActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             startActivity(new Intent(this,AboutActivity.class));
         }else if(id == R.id.nav_exams){
+             if(isNetworkAvailable())
              startActivity(new Intent(this,ExamSchedule.class));
+             else
+                 showSnackbar("Device not connected to internet");
         }
         else if(id==R.id.nav_review){
             Intent intent = new Intent(Intent.ACTION_VIEW);

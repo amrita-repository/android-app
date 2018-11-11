@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-
-    android:background="@color/colorBackground"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="25dp"
-    android:orientation="vertical"
-    tools:context=".TimetableActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        tools:context=".TimetableActivity">
     <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -26,18 +20,25 @@
 
     <Spinner
         android:id="@+id/acad_year"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="40dp" />
     <Spinner
         android:id="@+id/acad_course"
+        android:layout_below="@id/acad_year"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"/>
     <Spinner
         android:id="@+id/acad_branch"
+
+        android:layout_below="@id/acad_course"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -45,11 +46,17 @@
     <Spinner
         android:id="@+id/acad_sem"
         android:layout_gravity="center"
+
+        android:layout_below="@id/acad_branch"
+        android:layout_centerHorizontal="true"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp" />
     <Spinner
         android:id="@+id/acad_batch"
+
+        android:layout_below="@id/acad_sem"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -58,6 +65,9 @@
         android:id="@+id/timeTableViewButton"
         android:layout_gravity="center"
         android:layout_width="200dp"
+
+        android:layout_below="@id/acad_batch"
+        android:layout_centerHorizontal="true"
         android:background="@color/colorPrimary"
         android:textColor="@color/colorBackground"
         android:layout_height="wrap_content"
@@ -66,7 +76,18 @@
         android:layout_marginTop="25dp"
         android:text="View"/>
 
+    <com.google.android.gms.ads.AdView
+        android:layout_alignParentBottom="true"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_id">
+    </com.google.android.gms.ads.AdView>
     <Button
+        android:layout_below="@id/timeTableViewButton"
+        android:layout_centerHorizontal="true"
         android:id="@+id/timeTableDownloadButton"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
@@ -79,5 +100,5 @@
         android:textColor="@color/colorBackground" />
 
 
-</LinearLayout>
-</ScrollView>
+
+    </RelativeLayout>
