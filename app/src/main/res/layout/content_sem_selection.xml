@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".LaunchingActivity"
-    android:background="@color/colorBackground"
-    tools:showIn="@layout/app_bar_sem_selection">
 
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".LaunchingActivity"
+        android:background="@color/colorBackground"
+        tools:showIn="@layout/app_bar_sem_selection">
     <LinearLayout
+        android:id="@+id/main"
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:layout_centerInParent="true"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
@@ -32,16 +34,17 @@
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-
-            android:layout_marginBottom="10dp"
+            android:textSize="25sp"
             android:text="Amrita\nRepository"/>
 
 
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp">
             <Spinner android:id="@+id/semspinner"
                 android:layout_gravity="center"
@@ -69,8 +72,17 @@
             android:layout_margin="15dp"/>
 
 
+
+
     </LinearLayout>
-
-
-
-</ScrollView>
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_id">
+        </com.google.android.gms.ads.AdView>
+    </RelativeLayout>

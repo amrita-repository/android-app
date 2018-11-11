@@ -89,18 +89,20 @@ public class ExamsUnderEachDept extends AppCompatActivity {
                     if(index != -1) {
                         comp = comp.substring(0,index);
                     }
-                    texts.add(comp.trim());
-                    //Log.e("TEXT", comp.trim());
-                    adapter=new ArrayAdapter<>(ExamsUnderEachDept.this,R.layout.custom_list_item,texts);
-                    listView.setAdapter(adapter);
+                    if(!comp.trim().isEmpty()) {
+                        texts.add(comp.trim());
+                        //Log.e("TEXT", comp.trim());
+                        links.add(ul_lists.get(block).select("li").get(j).select("a[href]").attr("href"));
+                        adapter = new ArrayAdapter<>(ExamsUnderEachDept.this, R.layout.custom_list_item, texts);
+                        listView.setAdapter(adapter);
 
-                    links.add(ul_lists.get(block).select("li").get(j).select("a[href]").attr("href"));
-                    //Log.e("LINK", ul_lists.get(i).select("li").get(j).select("a[href]").attr("href"));
+
+                    }//Log.e("LINK", ul_lists.get(i).select("li").get(j).select("a[href]").attr("href"));
             }
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                    final ArrayList<String> qPaperOptions=new ArrayList();
+                    final ArrayList<String> qPaperOptions=new ArrayList<>();
                     qPaperOptions.add("Open");
                     qPaperOptions.add("Download");
                     final View viewLocal=view;
@@ -110,7 +112,25 @@ public class ExamsUnderEachDept extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int pos) {
                             if(pos==0) {
-                                new OpenTask(ExamsUnderEachDept.this,"https://intranet.cb.amrita.edu"+links.get(position),2);
+                                if (ContextCompat.checkSelfPermission(ExamsUnderEachDept.this,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                        != PackageManager.PERMISSION_GRANTED) {
+
+                                    ActivityCompat.requestPermissions(ExamsUnderEachDept.this,
+                                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                            1);
+                                }
+                                else{
+                                    if(isNetworkAvailable())
+                                    {
+                                        new OpenTask(ExamsUnderEachDept.this,"https://intranet.cb.amrita.edu"+links.get(position),2);
+                                    }
+                                    else{
+                                        Snackbar.make(viewLocal,"Device not connected to Internet.",Snackbar.LENGTH_SHORT).show();
+                                    }
+
+
+                                }
                             }
                             else if(pos==1)
                             {

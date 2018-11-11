@@ -16,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +38,12 @@ public class WifiStatus extends AppCompatActivity {
         setContentView(R.layout.activity_wifi_status);
         dialog= new ProgressDialog(WifiStatus.this);
 
+
+        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
         Button refresh=findViewById(R.id.wifi_status_refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override

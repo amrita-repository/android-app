@@ -23,6 +23,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -54,9 +58,17 @@ public class TimetableActivity extends AppCompatActivity {
                         1);
 
         }
-
         setContentView(R.layout.activity_timetable);
         new clearCache().clear();
+
+
+        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
+
+
         final Spinner year=findViewById(R.id.acad_year);
         yearId=year;
         final Spinner course=findViewById(R.id.acad_course);
