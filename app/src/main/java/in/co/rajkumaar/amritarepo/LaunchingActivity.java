@@ -279,7 +279,7 @@ public class LaunchingActivity extends AppCompatActivity
 
         else if(id == R.id.nav_faq){
             drawer.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this, WebViewActivity.class).putExtra("webview","https://dev.rajkumaar.co.in/faq.php")
+            startActivity(new Intent(this, WebViewActivity.class).putExtra("webview","https://dev.rajkumaar.co.in/utils/faq.php")
             .putExtra("title","Frequently Asked Questions")
                             .putExtra("zoom",false)
             );
