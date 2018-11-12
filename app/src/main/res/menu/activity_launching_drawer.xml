@@ -38,8 +38,11 @@
             android:title="Curriculum Info"
             android:checkable="false"/>
 
-
-
+        <item
+            android:id="@+id/nav_faq"
+            android:icon="@drawable/ic_help"
+            android:title="Exams FAQ"
+            android:checkable="false"/>
         <item
             android:id="@+id/nav_campuswifi"
             android:icon="@mipmap/ic_wifi"
