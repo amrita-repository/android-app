@@ -36,19 +36,21 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
+        final boolean enableLinks = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         Bundle b = getIntent().getExtras();
-        String webviewlink = "" + b.get("webview");
-        this.setTitle(webviewlink.substring(webviewlink.lastIndexOf('/'), webviewlink.length()));
+        String webviewlink = b.getString("webview");
+        this.setTitle(b.getString("title"));
         WebView mywebview = (WebView) findViewById(R.id.webView);
         mywebview.getSettings().setJavaScriptEnabled(true);
         dialog= new ProgressDialog(WebViewActivity.this);
         mywebview.setDrawingCacheBackgroundColor(getResources().getColor(R.color.colorBackground));
         mywebview.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-        mywebview.getSettings().setSupportZoom(true);
-        mywebview.getSettings().setBuiltInZoomControls(true);
+        if(b.getBoolean("zoom")) {
+            mywebview.getSettings().setSupportZoom(true);
+            mywebview.getSettings().setBuiltInZoomControls(true);
+        }
         mywebview.getSettings().setLoadWithOverviewMode(true);
         mywebview.getSettings().setUseWideViewPort(true);
         showProgressDialog();
@@ -59,7 +61,6 @@ public class WebViewActivity extends AppCompatActivity {
             }
         });
         try {
-            // load the urlz
             mywebview.loadUrl(webviewlink);
 
         } catch (Exception e) {
