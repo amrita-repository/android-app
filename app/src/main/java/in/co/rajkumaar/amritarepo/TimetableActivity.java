@@ -194,7 +194,7 @@ public class TimetableActivity extends AppCompatActivity {
                 Intent intent=new Intent(TimetableActivity.this,WebViewActivity.class);
                 intent.putExtra("webview",TIMETABLE_URL);
                 intent.putExtra("zoom",true);
-                intent.putExtra("title",courses.get(userCourse)+branches.get(userBranch)+batches.get(userBatch)+String.valueOf(sems.get(userSem)));
+                intent.putExtra("title",branches.get(userBranch)+" "+batches.get(userBatch)+" - Semester "+String.valueOf(sems.get(userSem)));
                 if(isNetworkAvailable())
                 {
                     startActivity(intent);
