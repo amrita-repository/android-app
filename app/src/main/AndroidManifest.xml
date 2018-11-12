@@ -20,7 +20,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9174356806392379~6301089510"/>
+            android:value="ca-app-pub-9174356806392379~6301089510" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/notification" />
@@ -103,9 +103,13 @@
             android:label="Examination Schedule"
             android:launchMode="singleTop"
             android:parentActivityName=".LaunchingActivity" />
-        <activity android:name=".ExamsUnderEachDept"
+        <activity
+            android:name=".ExamsUnderEachDept"
             android:label="Examinations"
-            android:parentActivityName=".ExamSchedule"/>
+            android:parentActivityName=".ExamSchedule" />
+        <activity android:name=".CurriculumActivity"
+            android:label="Curriculum Info"
+            android:parentActivityName=".LaunchingActivity"/>
     </application>
 
 </manifest>

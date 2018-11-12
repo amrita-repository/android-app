@@ -61,7 +61,7 @@ public class SubjectsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_view);
+        setContentView(R.layout.subjects_listview);
         proxy=getString(R.string.proxyurl);
         String protocol=getString(R.string.protocol);
         String cloudSpace=getString(R.string.clouDspace);
