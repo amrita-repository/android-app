@@ -29,7 +29,7 @@ public class WebViewActivity extends AppCompatActivity {
     public void showProgressDialog(){
 
         dialog.setMessage("Loading..");
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.show();
     }
 

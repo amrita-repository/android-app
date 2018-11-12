@@ -86,7 +86,7 @@ public class WifiStatus extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             dialog.setMessage("Loading..");
-            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
             dialog.show();
             super.onPreExecute();
         }
