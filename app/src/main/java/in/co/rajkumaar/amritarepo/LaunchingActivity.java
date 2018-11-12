@@ -279,10 +279,14 @@ public class LaunchingActivity extends AppCompatActivity
 
         else if(id == R.id.nav_faq){
             drawer.closeDrawer(GravityCompat.START);
+            if(isNetworkAvailable())
             startActivity(new Intent(this, WebViewActivity.class).putExtra("webview","https://dev.rajkumaar.co.in/utils/faq.php")
             .putExtra("title","Frequently Asked Questions")
                             .putExtra("zoom",false)
             );
+            else
+                showSnackbar("Device not connected to internet");
+
         }
 
         else if(id==R.id.nav_timetable)
