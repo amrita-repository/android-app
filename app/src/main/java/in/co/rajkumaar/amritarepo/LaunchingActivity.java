@@ -269,27 +269,34 @@ public class LaunchingActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         if (id == R.id.nav_downloads) {
-
+            drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this, DownloadsActivity.class));
+
         }
 
         else if(id==R.id.nav_timetable)
             {
+                drawer.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this,TimetableActivity.class));
             }
             else if(id==R.id.nav_facultytimetable){
+            drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this,FacultyTimetable.class));
         }
-        else if(id==R.id.nav_campuswifi)
-            if(isNetworkAvailable())
-            startActivity(new Intent(this,WifiStatus.class));
+        else if(id==R.id.nav_campuswifi) {
+            drawer.closeDrawer(GravityCompat.START);
+            if (isNetworkAvailable())
+                startActivity(new Intent(this, WifiStatus.class));
             else
-            showSnackbar("Device not connected to internet");
+                showSnackbar("Device not connected to internet");
+        }
 
 
          else if (id == R.id.nav_share) {
+            drawer.closeDrawer(GravityCompat.START);
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT,
@@ -305,26 +312,51 @@ public class LaunchingActivity extends AppCompatActivity
             }
 
         } else if (id == R.id.nav_about) {
+            drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this,AboutActivity.class));
         }else if(id == R.id.nav_exams){
+            drawer.closeDrawer(GravityCompat.START);
              if(isNetworkAvailable())
              startActivity(new Intent(this,ExamSchedule.class));
              else
                  showSnackbar("Device not connected to internet");
         }
         else if(id==R.id.nav_review){
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName()));
-            if(intent.resolveActivity(getPackageManager())!=null)
-            {
-                startActivity(intent);
+            drawer.closeDrawer(GravityCompat.START);
+            if(isNetworkAvailable()){
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName()));
+                if(intent.resolveActivity(getPackageManager())!=null)
+                {
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(this,"Error Opening Play Store.",Toast.LENGTH_SHORT).show();
+                }
             }
-            else{
-                Toast.makeText(this,"Error Opening Play Store.",Toast.LENGTH_SHORT).show();
-            }
+            else
+                showSnackbar("Device not connected to internet");
+            
+        }else if (id == R.id.nav_curriculum){
+            if(isNetworkAvailable()) {
+                final CharSequence[] depts = {"Computer Science Engineering", "Electronics & Communication Engineering", "Aerospace Engineering", "Civil Engineering", "Chemical Engineering", "Electrical & Electronics Engineering", "Electronics & Instrumentation Engineering", "Mechanical Engineering"};
+                AlertDialog.Builder departmentDialogBuilder = new AlertDialog.Builder(this);
+                departmentDialogBuilder.setTitle("Select your Department");
+                departmentDialogBuilder.setItems(depts, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        drawer.closeDrawer(GravityCompat.START);
+                        Intent curriculum_open = new Intent(LaunchingActivity.this, CurriculumActivity.class);
+                        curriculum_open.putExtra("department", depts[item]);
+                        startActivity(curriculum_open);
+                    }
+                });
+                AlertDialog departmentDialog = departmentDialogBuilder.create();
+                departmentDialog.show();
+            }else
+                showSnackbar("Device not connected to internet");
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+
+
         return true;
     }
 

@@ -31,6 +31,15 @@
             android:icon="@drawable/handwithpen"
             android:title="Examination Schedule"
             android:checkable="false"/>
+
+        <item
+            android:id="@+id/nav_curriculum"
+            android:icon="@drawable/curriculum"
+            android:title="Curriculum Info"
+            android:checkable="false"/>
+
+
+
         <item
             android:id="@+id/nav_campuswifi"
             android:icon="@mipmap/ic_wifi"

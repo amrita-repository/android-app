@@ -1,4 +1,4 @@
-[![Play Store Info](https://img.shields.io/badge/Play_Store-v1.5.1-36B0C1.svg?style=flat-square&v=1.5.1)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![GitHub app version](https://img.shields.io/badge/GitHub-v1.5.1-yellow.svg?style=flat-square&v=1.5.1)](https://github.com/rajkumaar23/AmritaRepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-3.1k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo)
+[![Play Store Info](https://img.shields.io/badge/Play_Store-v1.6-36B0C1.svg?style=flat-square&v=1.6)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![GitHub app version](https://img.shields.io/badge/GitHub-v1.6.1-yellow.svg?style=flat-square&v=1.6.1)](https://github.com/rajkumaar23/AmritaRepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-3.1k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo)
 
 # Amrita Repository
 ![Amrita Repository](https://github.com/rajkumaar23/AmritaRepo/blob/master/banner.jpg?raw=true)
