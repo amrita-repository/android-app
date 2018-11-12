@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -30,6 +31,7 @@ public class CurriculumActivity extends AppCompatActivity {
     ArrayList<ListView> listViews;
     LinearLayout linearLayout;
     ProgressDialog progressDialog;
+    int statuscode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +67,10 @@ public class CurriculumActivity extends AppCompatActivity {
 
     void getData(final String dept){
         AsyncHttpClient client=new AsyncHttpClient();
-        client.get("https://dev.rajkumaar.co.in/curriculum/btech.php?q="+dept, new AsyncHttpResponseHandler() {
+        client.get("https://dev.rajkumaar.co.in/utils/btech.php?q="+dept, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                statuscode=statusCode;
                 try {
                     JSONArray result = new JSONArray(new String(responseBody));
                     Log.e("JSON SIZE",result.length()+"");
@@ -104,7 +107,13 @@ public class CurriculumActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                if(statuscode==200)
                 linearLayout.setVisibility(View.VISIBLE);
+                else
+                {
+                    finish();
+                    Toast.makeText(CurriculumActivity.this,"Unexpected error occurred",Toast.LENGTH_SHORT).show();
+                }
                 if(progressDialog.isShowing())
                     progressDialog.dismiss();
                 super.onFinish();
