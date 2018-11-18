@@ -28,7 +28,16 @@
 
     <string name="banner_id">ca-app-pub-9174356806392379/5586578490</string>
 
-    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_id" translatable="false">Alerts</string>
 
-    <string name="versionName">Version 1.6.1</string>
+    <string name="versionName">Version 1.6.2</string>
+
+    <string name="disclaimer">
+        Amrita Repository is an unofficial app. The institution (Amrita Vishwa Vidyapeetham) has no link whatsoever with this application (or) it\'s working/maintenance.
+        \n\nAll educational information and content contained in this app are provided solely for general information and reference purposes. This app is provided on an \"as is\" basis. Amrita Repository makes no statement, representation, warranty or guarantee as to the accuracy, reliability or timeliness of the information and content contained in this application, which has been scraped from *.amrita.edu
+\n\nIf you find any question paper unavailable (or) inaccuracy with the data provided in this application, you may contact the department in-charge and not Amrita Repository.
+
+\n\nRajkumar,\nDeveloper of Amrita Repository
+
+    </string>
 </resources>

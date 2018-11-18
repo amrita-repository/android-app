@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -70,7 +71,6 @@ public class ExamSchedule extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
 
 
-
             try {
                 titles = document.select("div.field-items").select("p");
                 ul_lists=document.select("div.field-items").select("ul");
@@ -97,6 +97,8 @@ public class ExamSchedule extends AppCompatActivity {
 
             }catch (Exception e){
                 e.printStackTrace();
+                Toast.makeText(ExamSchedule.this,"Unexpected error. Please try again later",Toast.LENGTH_SHORT).show();
+                finish();
             }
             progressBar.setVisibility(View.GONE);
             super.onPostExecute(aVoid);

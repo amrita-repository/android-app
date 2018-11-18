@@ -7,18 +7,22 @@ import java.io.File;
 public class clearCache {
     public void clear()
     {
-            final String dirPath= Environment.getExternalStorageDirectory() + "/.AmritaRepoCache";
-            File dir = new File(dirPath);
-        final String dirPathOld= Environment.getExternalStorageDirectory() + "/AmritaRepoCache";
-        File dirOld = new File(dirPathOld);
-        if(dirOld.exists())
-            dirOld.delete();
+            try {
+                final String dirPath = Environment.getExternalStorageDirectory() + "/.AmritaRepoCache";
+                File dir = new File(dirPath);
+                final String dirPathOld = Environment.getExternalStorageDirectory() + "/AmritaRepoCache";
+                File dirOld = new File(dirPathOld);
+                if (dirOld.exists())
+                    dirOld.delete();
 
-            File[] files = dir.listFiles();
-            if(files!=null) {
-                for (File file : files) {
-                    file.delete();
+                File[] files = dir.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        file.delete();
+                    }
                 }
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
     }

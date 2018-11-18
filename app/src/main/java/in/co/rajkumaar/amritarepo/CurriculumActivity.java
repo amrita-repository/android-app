@@ -95,7 +95,7 @@ public class CurriculumActivity extends AppCompatActivity {
                         setListViewHeightBasedOnChildren(listViews.get(i));
                     }
 
-                }catch (JSONException e){
+                }catch (Exception e){
                     e.printStackTrace();
                 }
             }
@@ -107,15 +107,16 @@ public class CurriculumActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+                if(progressDialog.isShowing())
+                    progressDialog.dismiss();
                 if(statuscode==200)
                 linearLayout.setVisibility(View.VISIBLE);
                 else
                 {
                     finish();
-                    Toast.makeText(CurriculumActivity.this,"Unexpected error occurred",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CurriculumActivity.this,"Unexpected error occurred.Please try again later",Toast.LENGTH_SHORT).show();
                 }
-                if(progressDialog.isShowing())
-                    progressDialog.dismiss();
+
                 super.onFinish();
             }
         });

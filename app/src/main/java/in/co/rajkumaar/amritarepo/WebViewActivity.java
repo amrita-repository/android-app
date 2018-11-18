@@ -39,35 +39,42 @@ public class WebViewActivity extends AppCompatActivity {
         final boolean enableLinks = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-        Bundle b = getIntent().getExtras();
-        String webviewlink = b.getString("webview");
-        this.setTitle(b.getString("title"));
-        WebView mywebview = (WebView) findViewById(R.id.webView);
-        mywebview.getSettings().setJavaScriptEnabled(true);
-        dialog= new ProgressDialog(WebViewActivity.this);
-        mywebview.setDrawingCacheBackgroundColor(getResources().getColor(R.color.colorBackground));
-        mywebview.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-        if(b.getBoolean("zoom")) {
-            mywebview.getSettings().setSupportZoom(true);
-            mywebview.getSettings().setBuiltInZoomControls(true);
-        }
-        mywebview.getSettings().setLoadWithOverviewMode(true);
-        mywebview.getSettings().setUseWideViewPort(true);
-        showProgressDialog();
-        mywebview.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                dismissProgressDialog();
-            }
-        });
         try {
+            Bundle b = getIntent().getExtras();
+            String webviewlink = b.getString("webview");
+            this.setTitle(b.getString("title"));
+            WebView mywebview = (WebView) findViewById(R.id.webView);
+            mywebview.getSettings().setJavaScriptEnabled(true);
+            dialog= new ProgressDialog(WebViewActivity.this);
+            mywebview.setDrawingCacheBackgroundColor(getResources().getColor(R.color.colorBackground));
+            mywebview.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+            if(b.getBoolean("zoom")) {
+                mywebview.getSettings().setSupportZoom(true);
+                mywebview.getSettings().setBuiltInZoomControls(true);
+            }
+            mywebview.getSettings().setLoadWithOverviewMode(true);
+            mywebview.getSettings().setUseWideViewPort(true);
+            showProgressDialog();
+            mywebview.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    dismissProgressDialog();
+                }
+            });
+
             mywebview.loadUrl(webviewlink);
 
         } catch (Exception e) {
             e.printStackTrace();
+            finish();
+            Toast.makeText(WebViewActivity.this,"Unexpected error. Please try again later",Toast.LENGTH_SHORT).show();
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
 }
 
