@@ -1,16 +1,23 @@
 package in.co.rajkumaar.amritarepo;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+
+import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -37,6 +44,13 @@ public class AboutActivity extends AppCompatActivity {
 
             }
         });
+        Button disclaimer=findViewById(R.id.disclaimer);
+        disclaimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDisclaimer(AboutActivity.this);
+            }
+        });
     }
 
     @Override
@@ -44,5 +58,24 @@ public class AboutActivity extends AppCompatActivity {
         super.onBackPressed();
 
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+    }
+
+    static void showDisclaimer(Context context){
+        try {
+            Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.disclaimer);
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(dialog.getWindow().getAttributes());
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                TextView textView = dialog.findViewById(R.id.text);
+                textView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
+            }
+            dialog.show();
+            dialog.getWindow().setAttributes(lp);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

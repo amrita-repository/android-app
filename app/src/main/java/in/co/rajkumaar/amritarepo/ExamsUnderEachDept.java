@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -78,18 +79,18 @@ public class ExamsUnderEachDept extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
 
-            ul_lists=document.select("div.field-items").select("ul");
-            for(int j=0;j<ul_lists.get(block).select("li").size();++j)
-            {
+            try {
+                ul_lists = document.select("div.field-items").select("ul");
+                for (int j = 0; j < ul_lists.get(block).select("li").size(); ++j) {
 
-                    String text=ul_lists.get(block).select("li").get(j).select("li").text();
-                    String[] temp=text.split("-");
-                    String comp=text.replace(temp[temp.length-1]," ");
+                    String text = ul_lists.get(block).select("li").get(j).select("li").text();
+                    String[] temp = text.split("-");
+                    String comp = text.replace(temp[temp.length - 1], " ");
                     int index = comp.lastIndexOf('-');
-                    if(index != -1) {
-                        comp = comp.substring(0,index);
+                    if (index != -1) {
+                        comp = comp.substring(0, index);
                     }
-                    if(!comp.trim().isEmpty()) {
+                    if (!comp.trim().isEmpty()) {
                         texts.add(comp.trim());
                         //Log.e("TEXT", comp.trim());
                         links.add(ul_lists.get(block).select("li").get(j).select("a[href]").attr("href"));
@@ -98,69 +99,66 @@ public class ExamsUnderEachDept extends AppCompatActivity {
 
 
                     }//Log.e("LINK", ul_lists.get(i).select("li").get(j).select("a[href]").attr("href"));
-            }
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                    final ArrayList<String> qPaperOptions=new ArrayList<>();
-                    qPaperOptions.add("Open");
-                    qPaperOptions.add("Download");
-                    final View viewLocal=view;
-                    AlertDialog.Builder qPaperBuilder=new AlertDialog.Builder(ExamsUnderEachDept.this);
-                    ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(ExamsUnderEachDept.this, android.R.layout.simple_list_item_1, qPaperOptions);
-                    qPaperBuilder.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int pos) {
-                            if(pos==0) {
-                                if (ContextCompat.checkSelfPermission(ExamsUnderEachDept.this,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                        != PackageManager.PERMISSION_GRANTED) {
-
-                                    ActivityCompat.requestPermissions(ExamsUnderEachDept.this,
-                                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                            1);
-                                }
-                                else{
-                                    if(isNetworkAvailable())
-                                    {
-                                        new OpenTask(ExamsUnderEachDept.this,"https://intranet.cb.amrita.edu"+links.get(position),2);
-                                    }
-                                    else{
-                                        Snackbar.make(viewLocal,"Device not connected to Internet.",Snackbar.LENGTH_SHORT).show();
-                                    }
-
-
-                                }
-                            }
-                            else if(pos==1)
-                            {
-                                if (ContextCompat.checkSelfPermission(ExamsUnderEachDept.this,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                        != PackageManager.PERMISSION_GRANTED) {
-
-                                    ActivityCompat.requestPermissions(ExamsUnderEachDept.this,
-                                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                            1);
-                                }
-                                else{
-                                    if(isNetworkAvailable())
-                                    {
-                                        new DownloadTask(ExamsUnderEachDept.this,"https://intranet.cb.amrita.edu"+links.get(position),2);
-                                    }
-                                    else{
-                                        Snackbar.make(viewLocal,"Device not connected to Internet.",Snackbar.LENGTH_SHORT).show();
-                                    }
-
-
-                                }
-                            }
-                        }
-                    });
-                    qPaperBuilder.show();
-
-
                 }
-            });
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                        final ArrayList<String> qPaperOptions = new ArrayList<>();
+                        qPaperOptions.add("Open");
+                        qPaperOptions.add("Download");
+                        final View viewLocal = view;
+                        AlertDialog.Builder qPaperBuilder = new AlertDialog.Builder(ExamsUnderEachDept.this);
+                        ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(ExamsUnderEachDept.this, android.R.layout.simple_list_item_1, qPaperOptions);
+                        qPaperBuilder.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int pos) {
+                                if (pos == 0) {
+                                    if (ContextCompat.checkSelfPermission(ExamsUnderEachDept.this,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                            != PackageManager.PERMISSION_GRANTED) {
+
+                                        ActivityCompat.requestPermissions(ExamsUnderEachDept.this,
+                                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                1);
+                                    } else {
+                                        if (isNetworkAvailable()) {
+                                            new OpenTask(ExamsUnderEachDept.this, "https://intranet.cb.amrita.edu" + links.get(position), 2);
+                                        } else {
+                                            Snackbar.make(viewLocal, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
+                                        }
+
+
+                                    }
+                                } else if (pos == 1) {
+                                    if (ContextCompat.checkSelfPermission(ExamsUnderEachDept.this,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                            != PackageManager.PERMISSION_GRANTED) {
+
+                                        ActivityCompat.requestPermissions(ExamsUnderEachDept.this,
+                                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                1);
+                                    } else {
+                                        if (isNetworkAvailable()) {
+                                            new DownloadTask(ExamsUnderEachDept.this, "https://intranet.cb.amrita.edu" + links.get(position), 2);
+                                        } else {
+                                            Snackbar.make(viewLocal, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
+                                        }
+
+
+                                    }
+                                }
+                            }
+                        });
+                        qPaperBuilder.show();
+
+
+                    }
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(ExamsUnderEachDept.this,"Unexpected error. Please try again later",Toast.LENGTH_SHORT).show();
+                finish();
+            }
 
             progressBar.setVisibility(View.GONE);
             super.onPostExecute(aVoid);

@@ -135,9 +135,9 @@ public class WifiStatus extends AppCompatActivity {
                     }
                     for (int i = 0; i < result.size(); ++i)
                         Log.e("JSON Parsed data", result.get(i));
-                }catch (IndexOutOfBoundsException e){
+                }catch (Exception e){
                     e.printStackTrace();
-                    Toast.makeText(WifiStatus.this,"Unexpected error. Please try again",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WifiStatus.this,"Unexpected error. Please try again later",Toast.LENGTH_SHORT).show();
                     WifiStatus.this.finish();
                 }
             super.onPostExecute(aVoid);

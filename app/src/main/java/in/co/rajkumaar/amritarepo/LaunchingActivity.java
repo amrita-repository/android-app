@@ -57,6 +57,8 @@ public class LaunchingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         super.onCreate(savedInstanceState);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE) ;
         if (ContextCompat.checkSelfPermission(LaunchingActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -65,8 +67,15 @@ public class LaunchingActivity extends AppCompatActivity
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         }
-
-        new clearCache().clear();
+        else {
+            new clearCache().clear();
+            if(pref.getBoolean("first",true)){
+                AboutActivity.showDisclaimer(this);
+                SharedPreferences.Editor editor = getSharedPreferences("user", MODE_PRIVATE).edit();
+                editor.putBoolean("first",false);
+                editor.apply();
+            }
+        }
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         setContentView(R.layout.activity_launching);
         AdView mAdView;
@@ -103,7 +112,7 @@ public class LaunchingActivity extends AppCompatActivity
         // attaching data adapter to spinner
         spinner.setAdapter(dataAdapter);
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE) ;
+
         spinner.setSelection(pref.getInt("pos",0));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -58,12 +58,19 @@
         android:layout_above="@id/adView"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
+        <Button
+            android:id="@+id/disclaimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Disclaimer"
+            android:textColor="@color/colorBackground"
+            android:background="@color/colorPrimaryDark"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_gravity="center"
-            android:text="Third Party Libraries : jSoup"/>
+            android:text="Third Party Libraries : jsoup, asynchttpclient"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
