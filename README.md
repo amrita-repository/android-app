@@ -16,6 +16,15 @@ Your daily academic timetable at your fingertips.
 ### Faculty Timetable:
 View the timetable of all the faculties at Amrita Vishwa Vidyapeetham, Coimbatore.
 
+### Examination Schedule:
+Examination schedules for all the courses provided in the campus.
+
+### Curriculum Info:
+All new updated curriculum for all B.Tech courses in Amrita Vishwa Vidyapeetham.
+
+### FAQ - Exams:
+Commonly asked questions regarding examinations to know the rules of the game and what you must do in times of trouble.
+
 ### Campus Wi-Fi Status:
 View the current status of Intranet/Wi-Fi at Amrita Vishwa Vidyapeetham, Coimbatore.
 
