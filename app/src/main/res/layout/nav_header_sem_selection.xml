@@ -31,11 +31,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/versioncode"
         android:layout_width="wrap_content"
         android:fontFamily="@font/cunia"
         android:textColor="@android:color/black"
-        android:layout_height="wrap_content"
-        android:text="@string/versionName" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
