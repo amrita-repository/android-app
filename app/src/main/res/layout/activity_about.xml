@@ -37,7 +37,6 @@
             android:fontFamily="@font/cunia"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/versionName"
             android:textSize="15sp" />
 
         <TextView

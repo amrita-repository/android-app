@@ -42,6 +42,7 @@ public class DocumentsFragment extends Fragment {
     ListView listView;
     private List<String> fileList = new ArrayList<String>();
     ArrayAdapter<String> fileAdapter;
+    View rootView;
 
     public void reproduce(View rootView){
         retrieveFiles();
@@ -52,7 +53,7 @@ public class DocumentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.word_list, container, false);
+        rootView = inflater.inflate(R.layout.word_list, container, false);
 
         swipeRefreshLayout=rootView.findViewById(R.id.swipe_downloads);
         swipeRefreshLayout.setColorScheme(R.color.colorAccent);
@@ -214,6 +215,12 @@ public class DocumentsFragment extends Fragment {
             ImageView emptyimage=rootView.findViewById(R.id.dempty_imageview);
             emptyimage.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onResume() {
+        reproduce(rootView);
+        super.onResume();
     }
 
     String getMime(String url){

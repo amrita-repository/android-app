@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -127,6 +128,16 @@ public class LaunchingActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        TextView versionName=navigationView.getHeaderView(0).findViewById(R.id.versioncode);
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String version = pInfo.versionName;
+            versionName.setText("VERSION "+version);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         navigationView.getMenu().getItem(0).setChecked(true);
 
@@ -391,21 +402,17 @@ public class LaunchingActivity extends AppCompatActivity
                     doc = Jsoup.connect("http://rajkumaar.co.in/repoversion").execute().parse();
                     realVersion = Integer.parseInt(doc.title());
                 }
-            }catch (IOException e){
+            }catch (Exception e) {
                 e.printStackTrace();
                 try {
-                    int statusCode=Jsoup.connect("https://rajkumaar.co.in/repoversion").execute().statusCode();
-                    if(statusCode==200) {
+                    int statusCode = Jsoup.connect("https://rajkumaar.co.in/repoversion").execute().statusCode();
+                    if (statusCode == 200) {
                         doc = Jsoup.connect("https://rajkumaar.co.in/repoversion").execute().parse();
                         realVersion = Integer.parseInt(doc.title());
                     }
-                }catch (IOException e1){
+                } catch (Exception e1) {
                     e1.printStackTrace();
-                }catch (NumberFormatException e2){
-                    e.printStackTrace();
                 }
-        }catch (NumberFormatException e2){
-                e2.printStackTrace();
             }
             return null;
     }

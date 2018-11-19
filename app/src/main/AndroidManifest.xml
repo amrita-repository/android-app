@@ -107,9 +107,13 @@
             android:name=".ExamsUnderEachDept"
             android:label="Examinations"
             android:parentActivityName=".ExamSchedule" />
-        <activity android:name=".CurriculumActivity"
+        <activity
+            android:name=".CurriculumActivity"
             android:label="Curriculum Info"
-            android:parentActivityName=".LaunchingActivity"/>
+            android:parentActivityName=".LaunchingActivity" />
+        <activity android:name=".DeleteFiles"
+            android:label="Delete multiple files"
+            android:parentActivityName=".DownloadsActivity"/>
     </application>
 
 </manifest>

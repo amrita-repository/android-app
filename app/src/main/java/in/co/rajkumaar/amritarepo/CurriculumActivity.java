@@ -1,6 +1,5 @@
 package in.co.rajkumaar.amritarepo;
 
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,11 +15,8 @@ import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -107,14 +103,19 @@ public class CurriculumActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if(progressDialog.isShowing())
-                    progressDialog.dismiss();
-                if(statuscode==200)
-                linearLayout.setVisibility(View.VISIBLE);
-                else
-                {
+                try {
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+                    if (statuscode == 200)
+                        linearLayout.setVisibility(View.VISIBLE);
+                    else {
+                        finish();
+                        Toast.makeText(CurriculumActivity.this, "Unexpected error occurred.Please try again later", Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                     finish();
-                    Toast.makeText(CurriculumActivity.this,"Unexpected error occurred.Please try again later",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CurriculumActivity.this, "Unexpected error occurred.Please try again later", Toast.LENGTH_SHORT).show();
                 }
 
                 super.onFinish();

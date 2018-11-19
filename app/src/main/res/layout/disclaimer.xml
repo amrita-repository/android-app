@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Disclaimer"
         android:textStyle="bold"
+        android:fontFamily="@font/cunia"
         android:textAllCaps="true"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"/>
