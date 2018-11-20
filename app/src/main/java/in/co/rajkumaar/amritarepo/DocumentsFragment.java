@@ -99,6 +99,10 @@ public class DocumentsFragment extends Fragment {
 
     public void displayList(final View rootView){
         if(!fileList.isEmpty()){
+            TextView empty=rootView.findViewById(R.id.dempty_view);
+            empty.setVisibility(View.GONE);
+            ImageView emptyimage=rootView.findViewById(R.id.dempty_imageview);
+            emptyimage.setVisibility(View.GONE);
             fileAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list_item, fileList);
             final ListView downloads = listView;
 
