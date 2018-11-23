@@ -88,6 +88,7 @@
             android:fontFamily="@font/dustismo"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18dp"
+            android:autoLink="web"
             android:paddingBottom="30dp"
             android:text="rajkumaar.co.in"
             android:textAppearance="@android:style/TextAppearance.Small" />

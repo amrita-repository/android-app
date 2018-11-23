@@ -41,19 +41,6 @@ public class AboutActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        TextView email=findViewById(R.id.email);
-        email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://rajkumaar.co.in"));
-                if(intent.resolveActivity(getPackageManager())!=null)
-                {
-                    startActivity(Intent.createChooser(intent,"Open Link"));
-                }
-
-            }
-        });
         Button disclaimer=findViewById(R.id.disclaimer);
         disclaimer.setOnClickListener(new View.OnClickListener() {
             @Override
