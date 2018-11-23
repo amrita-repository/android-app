@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -104,6 +105,7 @@ public class AssessmentsActivity extends AppCompatActivity {
                 if (elements.size() > 1) elements = elements.get(1).select("a[href]");
                 else elements = elements.get(0).select("a[href]");
                 for (int i = 0; i < elements.size(); ++i) {
+                    Log.e("ASSESSMENTS "+i,elements.get(i).text());
                     assessments.add(elements.get(i).text());
                     links.add(elements.get(i).attr("href"));
                 }}
