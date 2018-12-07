@@ -17,7 +17,7 @@
             android:checkable="false"/>
         <item
             android:id="@+id/nav_aums"
-            android:icon="@drawable/ic_baseline_calendar_today_24px"
+            android:icon="@drawable/university"
             android:title="AUMS"
             android:checkable="false"/>
         <item
