@@ -40,4 +40,7 @@
 \n\nRajkumar,\nDeveloper of Amrita Repository
 
     </string>
+
+
+    <string name="site_change">Site\'s structure has changed. Please wait until I catch up.</string>
 </resources>

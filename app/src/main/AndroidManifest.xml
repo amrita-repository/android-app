@@ -119,9 +119,17 @@
             android:name=".aums.LoginActivity"
             android:label="AUMS Login"
             android:parentActivityName=".LaunchingActivity" />
-        <activity android:name=".aums.HomeActivity"
-            android:parentActivityName=".LaunchingActivity"
-            android:label="Home"/>
+        <activity
+            android:name=".aums.HomeActivity"
+            android:label="Home"
+            android:parentActivityName=".LaunchingActivity" />
+        <activity
+            android:name=".aums.AttendanceActivity"
+            android:label="Attendance Status"
+            android:parentActivityName=".aums.HomeActivity" />
+        <activity android:name=".aums.GradesActivity"
+            android:parentActivityName=".aums.HomeActivity"
+            android:label="Your Grades"/>
     </application>
 
 </manifest>
