@@ -23,6 +23,22 @@
           }
         },
         {
+          "client_id": "849931355030-eni29i5cda8u7q8a3bttpsapuu9rrf8e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.co.rajkumaar.amritarepo",
+            "certificate_hash": "033583b505a4728e46ef5b78128bf02550f173d9"
+          }
+        },
+        {
+          "client_id": "849931355030-u3dgl3nkussl950djb2rdoaqjaaecqev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.co.rajkumaar.amritarepo",
+            "certificate_hash": "a5b8506aa9eb0ecf27a0ac75401ae3e46cc3c0f4"
+          }
+        },
+        {
           "client_id": "849931355030-pogfrq7mg0orivnsn0o4ivprden4utrl.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -48,7 +64,8 @@
         "ads_service": {
           "status": 2
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-9174356806392379~6301089510"
     }
   ],
   "configuration_version": "1"
