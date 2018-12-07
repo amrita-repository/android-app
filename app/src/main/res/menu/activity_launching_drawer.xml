@@ -16,6 +16,11 @@
             android:title="Downloads"
             android:checkable="false"/>
         <item
+            android:id="@+id/nav_aums"
+            android:icon="@drawable/ic_baseline_calendar_today_24px"
+            android:title="AUMS"
+            android:checkable="false"/>
+        <item
             android:id="@+id/nav_timetable"
             android:icon="@drawable/ic_baseline_calendar_today_24px"
             android:title="Academic Timetable"

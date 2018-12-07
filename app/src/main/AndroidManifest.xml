@@ -111,9 +111,17 @@
             android:name=".CurriculumActivity"
             android:label="Curriculum Info"
             android:parentActivityName=".LaunchingActivity" />
-        <activity android:name=".DeleteFiles"
+        <activity
+            android:name=".DeleteFiles"
             android:label="Delete multiple files"
-            android:parentActivityName=".DownloadsActivity"/>
+            android:parentActivityName=".DownloadsActivity" />
+        <activity
+            android:name=".aums.LoginActivity"
+            android:label="AUMS Login"
+            android:parentActivityName=".LaunchingActivity" />
+        <activity android:name=".aums.HomeActivity"
+            android:parentActivityName=".LaunchingActivity"
+            android:label="Home"/>
     </application>
 
 </manifest>

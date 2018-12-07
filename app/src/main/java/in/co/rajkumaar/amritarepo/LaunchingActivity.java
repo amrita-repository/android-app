@@ -44,6 +44,9 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import in.co.rajkumaar.amritarepo.aums.LoginActivity;
+
 public class LaunchingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -307,6 +310,9 @@ public class LaunchingActivity extends AppCompatActivity
             else
                 showSnackbar("Device not connected to internet");
 
+        }
+        else if(id == R.id.nav_aums){
+            startActivity(new Intent(this,LoginActivity.class));
         }
 
         else if(id==R.id.nav_timetable)
