@@ -1,5 +1,6 @@
 package in.co.rajkumaar.amritarepo.aums;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,16 +14,25 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -34,6 +44,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
@@ -53,13 +66,51 @@ public class LoginActivity extends AppCompatActivity {
     ProgressDialog dialog;
     CheckBox remember;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+    Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        UserData.domain = "https://amritavidya2.amrita.edu:8444";
+        mFirebaseAnalytics=FirebaseAnalytics.getInstance(this);
+
+        List<String> campusDataSet = new LinkedList<>(Arrays.asList(
+                "Ettimadai",
+                "Amritapuri",
+                "Bangalore",
+                "Mysore",
+                "AIMS",
+                "Business schools",
+                "ASAS Kochi"
+        ));
+
+        spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,campusDataSet);
+        spinner.setAdapter(arrayAdapter);
+
+        UserData.domain = getServer(spinner.getSelectedItemPosition());
         domain = UserData.domain;
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                UserData.domain = getServer(position);
+                domain = UserData.domain;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        AdView mAdView;
+        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
 
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
@@ -145,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
                            });
                         } catch (Exception e) {
                             closeLoginDialog();
-                            showToast("Site's structure has changed. Please wait until I catch up.");
+                            showToast("Site'sF structure has changed. Please wait until I catch up.");
                             e.printStackTrace();
                         }
                     }
@@ -203,6 +254,7 @@ public class LoginActivity extends AppCompatActivity {
                     while ((line = bufReader.readLine()) != null) {
                         if (line.trim().startsWith("var myVar")) {
                             studentHashId = line.split("\"")[1];
+                            UserData.uuid = studentHashId;
                         }
                     }
                 } catch (Exception e) {
@@ -224,7 +276,7 @@ public class LoginActivity extends AppCompatActivity {
                         name = result[0];
                         UserData.name = name;
                         dialog.setMessage("Retrieving data");
-                        getPhoto(client);
+                        getCGPA(client);
                     } catch (Exception e) {
                         closeLoginDialog();
                     }
@@ -238,39 +290,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 closeLoginDialog();
-            }
-        });
-    }
-
-    void getPhoto(final AsyncHttpClient client){
-
-        RequestParams params = new RequestParams();
-        params.add("action","UMS-SRMHR_SHOW_PERSON_PHOTO");
-        params.add("personId",studentHashId);
-
-        client.get(domain + "/aums/FileUploadServlet",params, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        //Toast.makeText(LoginActivity.this,new String(responseBody),Toast.LENGTH_LONG).show();
-                        try {
-                            OutputStream f = new FileOutputStream(new File(Environment.getExternalStorageDirectory() + "/"
-                                    + "AmritaRepo/"+"profile.jpg"));
-                            f.write(responseBody); //your bytes
-                            f.close();
-                            //closeLoginDialog();
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                    }
-
-            @Override
-            public void onFinish() {
-                getCGPA(client);
             }
         });
     }
@@ -289,6 +308,14 @@ public class LoginActivity extends AppCompatActivity {
                     UserData.CGPA=CGPA.text().trim();
                     UserData.username = username.getText().toString();
                     UserData.loggedin=true;
+                    Bundle params = new Bundle();
+                    params.putString("Name", UserData.name);
+                    params.putString("Username",username.getText().toString());
+                    Log.e("Name",name);
+                    mFirebaseAnalytics.logEvent("AUMSLogin", params);
+                    closeLoginDialog();
+                    finish();
+                    startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                 } catch (Exception e) {
                     showToast("An error occurred while connecting to server");
                     closeLoginDialog();
@@ -300,14 +327,28 @@ public class LoginActivity extends AppCompatActivity {
                 showToast("An error occurred while connecting to server");
                 closeLoginDialog();
             }
-
-            @Override
-            public void onFinish() {
-                closeLoginDialog();
-                finish();
-                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
-            }
         });
+    }
+
+    public static String getServer(int identifier) {
+        switch (identifier) {
+            case 0:
+                return "https://amritavidya.amrita.edu:8444";
+            case 1:
+                return "https://aums-students-am.amrita.edu:8443";
+            case 2:
+                return "https://aums-blr.amrita.edu:8444";
+            case 3:
+                return "https://amritavidya-am-student.amrita.edu:8444";
+            case 4:
+                return "https://amritavidya-aims.amrita.edu:8444";
+            case 5:
+                return "https://amritavidya-am-student.amrita.edu:8444";
+            case 6:
+                return "https://amritavidya-am-student.amrita.edu:8444";
+            default:
+                return null;
+        }
     }
 
 }

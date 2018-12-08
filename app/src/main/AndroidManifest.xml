@@ -121,15 +121,20 @@
             android:parentActivityName=".LaunchingActivity" />
         <activity
             android:name=".aums.HomeActivity"
-            android:label="Home"
-            android:parentActivityName=".LaunchingActivity" />
+            android:label="AUMS Home"
+            android:parentActivityName=".LaunchingActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".aums.AttendanceActivity"
             android:label="Attendance Status"
             android:parentActivityName=".aums.HomeActivity" />
-        <activity android:name=".aums.GradesActivity"
-            android:parentActivityName=".aums.HomeActivity"
-            android:label="Your Grades"/>
+        <activity
+            android:name=".aums.GradesActivity"
+            android:label="Your Grades"
+            android:parentActivityName=".aums.HomeActivity" />
+        <activity android:name=".aums.MarksActivity"
+            android:label="Your Marks"
+            android:parentActivityName=".aums.HomeActivity"/>
     </application>
 
 </manifest>

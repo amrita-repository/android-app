@@ -3,29 +3,44 @@ package in.co.rajkumaar.amritarepo.aums;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.Handler;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
+
+import static android.view.View.GONE;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -35,6 +50,7 @@ public class HomeActivity extends AppCompatActivity {
     String semester;
     AsyncHttpClient client;
     private Map<String, String> semesterMapping;
+    ProgressBar image_progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,12 +66,13 @@ public class HomeActivity extends AppCompatActivity {
         cgpa=findViewById(R.id.cgpa);
         pic=findViewById(R.id.userImage);
         list=findViewById(R.id.list);
+        image_progress=findViewById(R.id.image_progress);
 
         client = UserData.client;
         setData();
         ArrayList<HomeItem> items = new ArrayList<>();
 
-        items.add(new HomeItem("Attendance",R.drawable.attendance));
+        items.add(new HomeItem("Attendance Status",R.drawable.attendance));
         items.add(new HomeItem("Grades",R.drawable.grades));
         items.add(new HomeItem("Marks",R.drawable.marks));
 
@@ -72,7 +89,33 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+        getPhoto(UserData.client);
 
+    }
+
+
+    void getPhoto(final AsyncHttpClient client){
+
+        RequestParams params = new RequestParams();
+        params.add("action","UMS-SRMHR_SHOW_PERSON_PHOTO");
+        params.add("personId",UserData.uuid);
+
+        client.addHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+        client.get(UserData.domain + "/aums/FileUploadServlet", params, new FileAsyncHttpResponseHandler(HomeActivity.this) {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
+                image_progress.setVisibility(GONE);
+                pic.setVisibility(View.VISIBLE);
+                pic.setImageResource(R.drawable.user);
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, File file) {
+                image_progress.setVisibility(GONE);
+                pic.setVisibility(View.VISIBLE);
+                Picasso.get().load(file).into(pic);
+            }
+        });
     }
 
 
@@ -92,6 +135,9 @@ public class HomeActivity extends AppCompatActivity {
                                 break;
                      case 1 : startActivity(new Intent(HomeActivity.this,GradesActivity.class).putExtra("sem",semester));
                                 break;
+                     case 2:
+                         startActivity(new Intent(HomeActivity.this,MarksActivity.class).putExtra("sem",semester));
+                         break;
                  }
                 }
                 else{
@@ -133,5 +179,48 @@ public class HomeActivity extends AppCompatActivity {
         semesterMapping.put("13", "177");
         semesterMapping.put("14", "190");
         semesterMapping.put("15", "219");
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            finish();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        showSnackbar("Press back again to logout of AUMS");
+        //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+
+    }
+    private void showSnackbar(String message) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar
+                .make(parentLayout, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.homeAsUp) {
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
