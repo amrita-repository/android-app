@@ -11,12 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:indeterminate="true" />
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:visibility="gone"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".aums.AttendanceActivity">
-</ListView>
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/list"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:clipToPadding="false"
+        android:layout_height="wrap_content"
+        tools:context=".aums.AttendanceActivity">
+    </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

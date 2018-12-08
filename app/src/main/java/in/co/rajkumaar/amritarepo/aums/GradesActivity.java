@@ -1,11 +1,10 @@
 package in.co.rajkumaar.amritarepo.aums;
 
-import android.app.ProgressDialog;
+
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +23,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 
 public class GradesActivity extends AppCompatActivity {
 
-    ProgressDialog dialog;
     ListView list;
     android.support.v7.app.ActionBar actionBar;
     @Override
@@ -40,23 +37,17 @@ public class GradesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grades);
         actionBar=getSupportActionBar();
         list=findViewById(R.id.list);
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("Loading");
-        dialog.show();
 
         getGrades(UserData.client,getIntent().getStringExtra("sem"));
     }
 
-    void closeDialog(){
-        if(dialog.isShowing())
-            dialog.dismiss();
-    }
+
 
 
     void getGrades(final AsyncHttpClient client,final String sem){
         RequestParams params = new RequestParams();
         params.put("htmlPageTopContainer_selectStep", sem);
-        params.put("Page_refIndex_hidden", 0);
+        params.put("Page_refIndex_hidden", UserData.refIndex++);
         params.put("htmlPageTopContainer_hiddentblGrades", "");
         params.put("htmlPageTopContainer_status", "");
         params.put("htmlPageTopContainer_action", "UMS-EVAL_STUDPERFORMSURVEY_CHANGESEM_SCREEN");
@@ -77,7 +68,6 @@ public class GradesActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    closeDialog();
                                     Toast.makeText(GradesActivity.this,"Grades unavailable for this semester!",Toast.LENGTH_LONG).show();
                                     finish();
                                 }
@@ -101,7 +91,6 @@ public class GradesActivity extends AppCompatActivity {
                                     try {
                                         sgpa = dataHolders.get(1).text();
                                         if (sgpa == null || sgpa.trim().equals("null")) {
-                                            closeDialog();
                                             Toast.makeText(GradesActivity.this,"Grades unavailable for this semester!",Toast.LENGTH_LONG).show();
                                             finish();
                                         }
@@ -118,10 +107,10 @@ public class GradesActivity extends AppCompatActivity {
                             }
                             GradesAdapter gradesAdapter = new GradesAdapter(GradesActivity.this,courseGradeDataList);
                             list.setAdapter(gradesAdapter);
-                            closeDialog();
+                            list.setVisibility(View.VISIBLE);
+                            findViewById(R.id.progressBar).setVisibility(View.GONE);
                         }
                     } catch (Exception e) {
-                        closeDialog();
                         Toast.makeText(GradesActivity.this,getString(R.string.site_change),Toast.LENGTH_LONG).show();
                         finish();
                     }
@@ -130,7 +119,8 @@ public class GradesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                closeDialog();
+                Toast.makeText(GradesActivity.this,"An error occurred while connecting to server",Toast.LENGTH_LONG).show();
+                finish();
             }
         });
     }

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,25 +36,16 @@ public class AttendanceActivity extends AppCompatActivity {
 
     String domain;
     ListView list;
-    ProgressDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
         list=findViewById(R.id.list);
 
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("Loading");
-        dialog.show();
 
         domain = UserData.domain;
         String sem = getIntent().getStringExtra("sem");
         getAttendance(UserData.client,sem);
-    }
-
-    void closeDialog(){
-        if(dialog.isShowing())
-            dialog.dismiss();
     }
 
     void getAttendance(final AsyncHttpClient client, final String sem){
@@ -66,7 +58,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
                         RequestParams params = new RequestParams();
                         params.put("htmlPageTopContainer_selectSem", sem);
-                        params.put("Page_refIndex_hidden", 0);
+                        params.put("Page_refIndex_hidden", UserData.refIndex++);
                         params.put("htmlPageTopContainer_selectCourse", "0");
                         params.put("htmlPageTopContainer_selectType", "1");
                         params.put("htmlPageTopContainer_hiddentSummary", "");
@@ -86,7 +78,6 @@ public class AttendanceActivity extends AppCompatActivity {
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                closeDialog();
                                                 Toast.makeText(AttendanceActivity.this,"Attendance data unavailable for this semester!",Toast.LENGTH_LONG).show();
                                                 finish();
                                             }
@@ -110,11 +101,11 @@ public class AttendanceActivity extends AppCompatActivity {
                                         }
                                         AttendanceAdapter attendanceAdapter = new AttendanceAdapter(AttendanceActivity.this,attendanceData);
                                         list.setAdapter(attendanceAdapter);
-                                        closeDialog();
+                                        findViewById(R.id.progressBar).setVisibility(View.GONE);
+                                        list.setVisibility(View.VISIBLE);
 
                                     }
                                 } catch (Exception e) {
-                                    closeDialog();
                                     Toast.makeText(AttendanceActivity.this,getString(R.string.site_change),Toast.LENGTH_LONG).show();
                                     finish();
                                     e.printStackTrace();
@@ -123,14 +114,16 @@ public class AttendanceActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                closeDialog();
+                                Toast.makeText(AttendanceActivity.this,"An error occurred while connecting to server",Toast.LENGTH_LONG).show();
+                                finish();
                             }
                         });
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        closeDialog();
+                        Toast.makeText(AttendanceActivity.this,"An error occurred while connecting to server",Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 });
     }

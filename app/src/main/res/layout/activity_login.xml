@@ -18,15 +18,17 @@
             android:orientation="vertical"
             android:paddingLeft="24dp"
             android:paddingRight="24dp">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Login"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:textSize="25sp"
                 />
+
+
 
             <TextView
                 android:layout_marginTop="20dp"
@@ -57,6 +59,11 @@
                 android:inputType="textPassword"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"/>
+            <Spinner
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner"/>
             <RelativeLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -85,5 +92,14 @@
                 android:text="Login">
             </Button>
         </LinearLayout>
+        <com.google.android.gms.ads.AdView
+            android:layout_alignParentBottom="true"
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_id">
+        </com.google.android.gms.ads.AdView>
     </RelativeLayout>
 </LinearLayout>
