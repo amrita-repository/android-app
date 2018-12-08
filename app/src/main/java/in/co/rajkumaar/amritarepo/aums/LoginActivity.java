@@ -124,6 +124,7 @@ public class LoginActivity extends AppCompatActivity {
         UserData.client = mainClient.getClient();
         rmusername = pref.getString("username",null);
         rmpassword = pref.getString("password",null);
+        spinner.setSelection(pref.getInt("campus",0));
 
         username.setText(rmusername);
         password.setText(rmpassword);
@@ -145,10 +146,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (remember.isChecked()){
                     ed.putString("username",username.getText().toString());
                     ed.putString("password",password.getText().toString());
+                    ed.putInt("campus",spinner.getSelectedItemPosition());
                     ed.apply();
                 }else{
                     ed.putString("username",null);
                     ed.putString("password",null);
+                    ed.putInt("campus",0);
                     ed.apply();
                 }
                 if(Utils.isConnected(LoginActivity.this)) {
