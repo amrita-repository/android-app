@@ -163,10 +163,6 @@ public class MarksActivity extends AppCompatActivity {
             this.courseMarkDataList = courseMarkDataList;
         }
 
-        public void setCourseMarkDataList(List<CourseMarkData> courseMarkDataList) {
-            this.courseMarkDataList = courseMarkDataList;
-        }
-
         @Override
         public int getItemViewType(int position) {
             if (courseMarkDataList.get(position).mark == null) {
@@ -234,33 +230,18 @@ public class MarksActivity extends AppCompatActivity {
 
     public class CourseMarkData {
 
-        public String courseCode = null;
-        public String mark = null;
-        public String exam = null;
+        String courseCode = null;
+        String mark = null;
+        String exam = null;
 
-        public CourseMarkData() {
 
-        }
-
-        public CourseMarkData(String exam) {
+        CourseMarkData(String exam) {
             this.exam = exam;
         }
 
-        public CourseMarkData(String courseCode, String mark, String exam) {
+        CourseMarkData(String courseCode, String mark, String exam) {
             this.courseCode = courseCode;
             this.mark = mark;
-            this.exam = exam;
-        }
-
-        public void setCourseCode(String courseCode) {
-            this.courseCode = courseCode;
-        }
-
-        public void setMark(String mark) {
-            this.mark = mark;
-        }
-
-        public void setExam(String exam) {
             this.exam = exam;
         }
     }
