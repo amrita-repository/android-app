@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,34 +75,9 @@ public class LoginActivity extends AppCompatActivity {
 
         mFirebaseAnalytics=FirebaseAnalytics.getInstance(this);
 
-        List<String> campusDataSet = new LinkedList<>(Arrays.asList(
-                "Ettimadai",
-                "Amritapuri",
-                "Bangalore",
-                "Mysore",
-                "AIMS",
-                "Business schools",
-                "ASAS Kochi"
-        ));
 
-        spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,campusDataSet);
-        spinner.setAdapter(arrayAdapter);
-
-        UserData.domain = getServer(spinner.getSelectedItemPosition());
+        UserData.domain = "https://amritavidya.amrita.edu:8444";
         domain = UserData.domain;
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                UserData.domain = getServer(position);
-                domain = UserData.domain;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         AdView mAdView;
         MobileAds.initialize(this, getResources().getString(R.string.banner_id));
@@ -124,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
         UserData.client = mainClient.getClient();
         rmusername = pref.getString("username",null);
         rmpassword = pref.getString("password",null);
-        spinner.setSelection(pref.getInt("campus",0));
 
         username.setText(rmusername);
         password.setText(rmpassword);
@@ -146,7 +119,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (remember.isChecked()){
                     ed.putString("username",username.getText().toString());
                     ed.putString("password",password.getText().toString());
-                    ed.putInt("campus",spinner.getSelectedItemPosition());
                     ed.apply();
                 }else{
                     ed.putString("username",null);
@@ -331,27 +303,6 @@ public class LoginActivity extends AppCompatActivity {
                 closeLoginDialog();
             }
         });
-    }
-
-    public static String getServer(int identifier) {
-        switch (identifier) {
-            case 0:
-                return "https://amritavidya.amrita.edu:8444";
-            case 1:
-                return "https://aums-students-am.amrita.edu:8443";
-            case 2:
-                return "https://aums-blr.amrita.edu:8444";
-            case 3:
-                return "https://amritavidya-am-student.amrita.edu:8444";
-            case 4:
-                return "https://amritavidya-aims.amrita.edu:8444";
-            case 5:
-                return "https://amritavidya-am-student.amrita.edu:8444";
-            case 6:
-                return "https://amritavidya-am-student.amrita.edu:8444";
-            default:
-                return null;
-        }
     }
 
 }
