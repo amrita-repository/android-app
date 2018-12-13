@@ -28,8 +28,4 @@ class Client {
     void clearCookie(){
         cookieStore.clear();
     }
-
-    public PersistentCookieStore getCookieStore() {
-        return cookieStore;
-    }
 }

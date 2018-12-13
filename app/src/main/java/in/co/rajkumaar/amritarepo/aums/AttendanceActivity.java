@@ -42,6 +42,7 @@ public class AttendanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_attendance);
         list=findViewById(R.id.list);
 
+        UserData.refIndex =1;
 
         domain = UserData.domain;
         String sem = getIntent().getStringExtra("sem");
@@ -196,6 +197,12 @@ public class AttendanceActivity extends AppCompatActivity {
             TextView title = listItemView.findViewById(R.id.title);
             TextView attended = listItemView.findViewById(R.id.attended);
             TextView percentage = listItemView.findViewById(R.id.percentage);
+            ImageView color = listItemView.findViewById(R.id.circle);
+
+            if(Math.round(Double.parseDouble(current.getPercentage())) <= 75)
+                color.setBackgroundColor(getResources().getColor(R.color.danger));
+            else
+                color.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
             percentage.setText(Math.round(Double.parseDouble(current.getPercentage()))+"%");
             title.setText(current.getTitle());

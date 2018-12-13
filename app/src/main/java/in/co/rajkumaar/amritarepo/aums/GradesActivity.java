@@ -2,6 +2,7 @@ package in.co.rajkumaar.amritarepo.aums;
 
 
 import android.content.Context;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +39,9 @@ public class GradesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grades);
         actionBar=getSupportActionBar();
         list=findViewById(R.id.list);
+
+
+        UserData.refIndex =1;
 
         getGrades(UserData.client,getIntent().getStringExtra("sem"));
     }
@@ -185,6 +190,12 @@ public class GradesActivity extends AppCompatActivity {
             TextView title = listItemView.findViewById(R.id.title);
             TextView code_type = listItemView.findViewById(R.id.code_type);
             TextView grade = listItemView.findViewById(R.id.grade);
+            ImageView color = listItemView.findViewById(R.id.circle);
+
+            if(current.getGrade().contains("F"))
+                color.setBackgroundColor(getResources().getColor(R.color.danger));
+            else
+                color.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
             code_type.setText(current.getCode() + " - " + current.getType());
             title.setText(current.getTitle());
