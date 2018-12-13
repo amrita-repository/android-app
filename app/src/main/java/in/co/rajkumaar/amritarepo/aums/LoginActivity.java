@@ -13,7 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,6 +25,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -73,6 +78,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        findViewById(R.id.container).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
+
         mFirebaseAnalytics=FirebaseAnalytics.getInstance(this);
 
 
@@ -89,12 +103,13 @@ public class LoginActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
 
-        SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE) ;
+        SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
         username=findViewById(R.id.username);
         password=findViewById(R.id.password);
         login=findViewById(R.id.login);
         remember=findViewById(R.id.remember_me);
         mainClient=new Client(this);
+        mainClient.clearCookie();
         UserData.client = mainClient.getClient();
         rmusername = pref.getString("username",null);
         rmpassword = pref.getString("password",null);
@@ -111,9 +126,12 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        actionDoneCloseInput();
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                hideKeyboard();
                 SharedPreferences pref = getSharedPreferences("user",Context.MODE_PRIVATE) ;
                 SharedPreferences.Editor ed = pref.edit();
                 if (remember.isChecked()){
@@ -123,22 +141,66 @@ public class LoginActivity extends AppCompatActivity {
                 }else{
                     ed.putString("username",null);
                     ed.putString("password",null);
-                    ed.putInt("campus",0);
                     ed.apply();
                 }
-                if(Utils.isConnected(LoginActivity.this)) {
-                    dialog.setMessage("Creating a session");
-                    dialog.show();
-                    getSession(mainClient.getClient());
-                }
-                else{
-                    Toast.makeText(LoginActivity.this,"Please connect to internet",Toast.LENGTH_LONG).show();
+                if(validate()) {
+                    if (Utils.isConnected(LoginActivity.this)) {
+                        dialog.setMessage("Creating a session");
+                        dialog.show();
+                        getSession(mainClient.getClient());
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Please connect to internet", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
 
 
     }
+
+    boolean validate(){
+        if(username.getText().toString().isEmpty()) {
+            username.setError("This field cannot be empty");
+            return false;
+        }
+        else if(password.getText().toString().isEmpty()) {
+            password.setError("This field cannot be empty");
+            return false;
+        }
+        return true;
+    }
+
+    public void hideKeyboard(){
+        InputMethodManager inputManager = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(inputManager.isAcceptingText())
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+
+    void actionDoneCloseInput(){
+        username.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    hideKeyboard();
+                }
+                return false;
+            }
+        });
+        password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    hideKeyboard();
+                }
+                return false;
+            }
+        });
+
+    }
+
 
     void closeLoginDialog(){
         if(dialog.isShowing())
@@ -284,9 +346,7 @@ public class LoginActivity extends AppCompatActivity {
                     UserData.username = username.getText().toString();
                     UserData.loggedin=true;
                     Bundle params = new Bundle();
-                    params.putString("Name", UserData.name);
-                    params.putString("Username",username.getText().toString());
-                    Log.e("Name",name);
+                    params.putString("User", UserData.name+"["+UserData.username+"]");
                     mFirebaseAnalytics.logEvent("AUMSLogin", params);
                     closeLoginDialog();
                     finish();

@@ -312,6 +312,7 @@ public class LaunchingActivity extends AppCompatActivity
 
         }
         else if(id == R.id.nav_aums){
+            drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this,LoginActivity.class));
         }
 
@@ -403,17 +404,17 @@ public class LaunchingActivity extends AppCompatActivity
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                int statusCode=Jsoup.connect("http://rajkumaar.co.in/repoversion").execute().statusCode();
+                int statusCode=Jsoup.connect("http://rajkumaar.co.in/repoversion.html").execute().statusCode();
                 if(statusCode==200) {
-                    doc = Jsoup.connect("http://rajkumaar.co.in/repoversion").execute().parse();
+                    doc = Jsoup.connect("http://rajkumaar.co.in/repoversion.html").execute().parse();
                     realVersion = Integer.parseInt(doc.title());
                 }
             }catch (Exception e) {
                 e.printStackTrace();
                 try {
-                    int statusCode = Jsoup.connect("https://rajkumaar.co.in/repoversion").execute().statusCode();
+                    int statusCode = Jsoup.connect("https://rajkumaar.co.in/repoversion.html").execute().statusCode();
                     if (statusCode == 200) {
-                        doc = Jsoup.connect("https://rajkumaar.co.in/repoversion").execute().parse();
+                        doc = Jsoup.connect("https://rajkumaar.co.in/repoversion.html").execute().parse();
                         realVersion = Integer.parseInt(doc.title());
                     }
                 } catch (Exception e1) {

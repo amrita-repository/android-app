@@ -35,6 +35,8 @@ public class MarksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marks);
         recyclerView=(RecyclerView)findViewById(R.id.list);
+        UserData.refIndex =1;
+
         final LinearLayoutManager layoutParams = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutParams);
         getMarks(UserData.client,getIntent().getStringExtra("sem"));

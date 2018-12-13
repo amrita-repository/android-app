@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -55,6 +56,13 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         if(!UserData.loggedin)
         {
             finish();
@@ -93,6 +101,12 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     void getPhoto(final AsyncHttpClient client){
 
@@ -152,7 +166,6 @@ public class HomeActivity extends AppCompatActivity {
         name.setText(UserData.name);
         username.setText(UserData.username);
         cgpa.setText("Current CGPA : "+UserData.CGPA);
-        Picasso.get().load(UserData.image).into(pic);
     }
 
 
@@ -210,6 +223,13 @@ public class HomeActivity extends AppCompatActivity {
         snackbar.show();
     }
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.settings, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -217,10 +237,17 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.homeAsUp) {
+        if (id == R.id.action_settings) {
+            Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto","rajkumaar2304@gmail.com", null));
+            it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
+            it.putExtra(Intent.EXTRA_EMAIL, new String[] {"rajkumaar2304@gmail.com"});
+            if(it.resolveActivity(getPackageManager())!=null)
+                startActivity(it);
+        }else if(id == R.id.home)
             onBackPressed();
-        }
 
         return super.onOptionsItemSelected(item);
     }
+
 }

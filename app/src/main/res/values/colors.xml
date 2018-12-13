@@ -5,4 +5,6 @@
     <color name="colorAccent">#bf360c</color>
     <color name="colorBackground">#bbdefb</color>
     <color name="black_overlay">#66000000</color>
+
+    <color name="danger">#b71c1c</color>
 </resources>

@@ -53,7 +53,7 @@ public class CurriculumActivity extends AppCompatActivity {
         }
 
         progressDialog=new ProgressDialog(this);
-        progressDialog.setMessage("Just a second");
+        progressDialog.setMessage("Please wait");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
