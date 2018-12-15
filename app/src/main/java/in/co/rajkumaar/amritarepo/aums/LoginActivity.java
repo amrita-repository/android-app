@@ -233,7 +233,7 @@ public class LoginActivity extends AppCompatActivity {
                            });
                         } catch (Exception e) {
                             closeLoginDialog();
-                            showToast("Site'sF structure has changed. Please wait until I catch up.");
+                            showToast(getString(R.string.site_change));
                             e.printStackTrace();
                         }
                     }

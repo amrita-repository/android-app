@@ -20,7 +20,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9174356806392379~6301089510" />
+            android:value="ca-app-pub-3429574086261739~4120402200" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/notification" />
@@ -118,6 +118,7 @@
         <activity
             android:name=".aums.LoginActivity"
             android:label="AUMS Login"
+            android:windowSoftInputMode="adjustNothing"
             android:parentActivityName=".LaunchingActivity" />
         <activity
             android:name=".aums.HomeActivity"
@@ -132,9 +133,13 @@
             android:name=".aums.GradesActivity"
             android:label="Your Grades"
             android:parentActivityName=".aums.HomeActivity" />
-        <activity android:name=".aums.MarksActivity"
+        <activity
+            android:name=".aums.MarksActivity"
             android:label="Your Marks"
-            android:parentActivityName=".aums.HomeActivity"/>
+            android:parentActivityName=".aums.HomeActivity" />
+        <activity android:name=".TrainBusTimings"
+            android:parentActivityName=".LaunchingActivity"
+            android:label="Train and Bus Timings"/>
     </application>
 
 </manifest>

@@ -44,6 +44,13 @@
             android:checkable="false"/>
 
         <item
+            android:title="Train and Bus Timings"
+            android:id="@+id/timings"
+            android:icon="@drawable/train"
+            android:checkable="false"
+            />
+
+        <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/help"
             android:title="FAQ - Examinations"
