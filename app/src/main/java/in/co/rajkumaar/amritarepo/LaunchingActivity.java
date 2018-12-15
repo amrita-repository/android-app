@@ -321,9 +321,24 @@ public class LaunchingActivity extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this,TimetableActivity.class));
             }
-            else if(id==R.id.nav_facultytimetable){
+        else if(id==R.id.nav_facultytimetable){
             drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this,FacultyTimetable.class));
+        }
+
+        else if(id == R.id.timings){
+            final CharSequence[] items = {"Trains from Coimbatore", "Trains from Palghat", "Trains to Coimbatore", "Trains to Palghat", "Buses from Coimbatore", "Buses to Coimbatore"};
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
+            dialogBuilder.setTitle("View timings of ?");
+            dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    Intent trainBusOpen = new Intent(LaunchingActivity.this, TrainBusTimings.class);
+                    trainBusOpen.putExtra("type", items[item]);
+                    startActivity(trainBusOpen);
+                }
+            });
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.show();
         }
         else if(id==R.id.nav_campuswifi) {
             drawer.closeDrawer(GravityCompat.START);
