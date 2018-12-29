@@ -20,7 +20,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1502917413320801~7949235496" />
+            android:value="ca-app-pub-4050031085727028~6975537937" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/notification" />
@@ -118,7 +118,6 @@
         <activity
             android:name=".aums.LoginActivity"
             android:label="AUMS Login"
-            android:windowSoftInputMode="adjustNothing"
             android:parentActivityName=".LaunchingActivity" />
         <activity
             android:name=".aums.HomeActivity"

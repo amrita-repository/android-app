@@ -26,9 +26,9 @@
     <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
 
 
-    <string name="test_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="test">ca-app-pub-3940256099942544/6300978111</string>
 
-    <string name="banner_id">ca-app-pub-1502917413320801/5929576817</string>
+    <string name="banner_id">ca-app-pub-4050031085727028/2844721235</string>
 
     <string name="default_notification_channel_id" translatable="false">Alerts</string>
 
