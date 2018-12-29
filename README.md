@@ -31,6 +31,9 @@ View the current status of Intranet/Wi-Fi at Amrita Vishwa Vidyapeetham, Coimbat
 ### Downloads section:
 Find downloaded question papers and timetables in the downloads section within the app.
 
+### AUMS:
+Amrita University Management System (AUMS) now much easier to access in Amrita Repository. Check your grades, marks and attendance levels
+
 
 
 ## Open Source License
