@@ -1,5 +1,9 @@
+#!/bin/bash
+echo "Preparing majesty!";
 git add .
-echo "Enter commit message"
-read msg
-git commit -m "$msg"
-git push origin master
+git commit -s
+echo "Pushing changes to GitHub dear! Please wait!";
+git push
+echo "Done";
+
+
