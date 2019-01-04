@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Preparing majesty!";
+echo "Preparing to push, majesty!";
 git add .
 git commit -s
 echo "Pushing changes to GitHub dear! Please wait!";
