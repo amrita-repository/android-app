@@ -53,6 +53,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -178,7 +179,9 @@ public class LaunchingActivity extends AppCompatActivity
 
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        Button button=findViewById(R.id.sembutton);
+        powerUpOnClickListeners();
+
+       /* Button button=findViewById(R.id.sembutton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,6 +215,7 @@ public class LaunchingActivity extends AppCompatActivity
 
             }
         });
+*/
 
 
 
@@ -334,32 +338,6 @@ public class LaunchingActivity extends AppCompatActivity
 
         }
 
-        else if(id == R.id.nav_faq){
-            drawer.closeDrawer(GravityCompat.START);
-            if(isNetworkAvailable())
-            startActivity(new Intent(this, WebViewActivity.class).putExtra("webview","https://dev.rajkumaar.co.in/utils/faq.php")
-            .putExtra("title","Frequently Asked Questions")
-                            .putExtra("zoom",false)
-            );
-            else
-                showSnackbar("Device not connected to internet");
-
-        }
-        else if(id == R.id.nav_aums){
-            drawer.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this,LoginActivity.class));
-        }
-
-        else if(id==R.id.nav_timetable)
-            {
-                drawer.closeDrawer(GravityCompat.START);
-                startActivity(new Intent(this,AcademicTimetableActivity.class));
-            }
-        else if(id==R.id.nav_facultytimetable){
-            drawer.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this,FacultyTimetableActivity.class));
-        }
-
         else if(id == R.id.timings){
             final CharSequence[] items = {"Trains from Coimbatore", "Trains from Palghat", "Trains to Coimbatore", "Trains to Palghat", "Buses from Coimbatore", "Buses to Coimbatore"};
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
@@ -374,15 +352,6 @@ public class LaunchingActivity extends AppCompatActivity
             AlertDialog dialog = dialogBuilder.create();
             dialog.show();
         }
-        else if(id==R.id.nav_campuswifi) {
-            drawer.closeDrawer(GravityCompat.START);
-            if (isNetworkAvailable())
-                startActivity(new Intent(this, WifiStatusActivity.class));
-            else
-                showSnackbar("Device not connected to internet");
-        }
-
-
          else if (id == R.id.nav_share) {
             drawer.closeDrawer(GravityCompat.START);
             Intent sendIntent = new Intent();
@@ -402,12 +371,6 @@ public class LaunchingActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this,AboutActivity.class));
-        }else if(id == R.id.nav_exams){
-            drawer.closeDrawer(GravityCompat.START);
-             if(isNetworkAvailable())
-             startActivity(new Intent(this,ExamCategoryActivity.class));
-             else
-                 showSnackbar("Device not connected to internet");
         }
         else if(id==R.id.nav_review){
             drawer.closeDrawer(GravityCompat.START);
@@ -425,27 +388,99 @@ public class LaunchingActivity extends AppCompatActivity
             else
                 showSnackbar("Device not connected to internet");
             
-        }else if (id == R.id.nav_curriculum){
-            if(isNetworkAvailable()) {
-                final CharSequence[] depts = {"Computer Science Engineering", "Electronics & Communication Engineering", "Aerospace Engineering", "Civil Engineering", "Chemical Engineering", "Electrical & Electronics Engineering", "Electronics & Instrumentation Engineering", "Mechanical Engineering"};
-                AlertDialog.Builder departmentDialogBuilder = new AlertDialog.Builder(this);
-                departmentDialogBuilder.setTitle("Select your Department");
-                departmentDialogBuilder.setItems(depts, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        drawer.closeDrawer(GravityCompat.START);
-                        Intent curriculum_open = new Intent(LaunchingActivity.this, CurriculumActivity.class);
-                        curriculum_open.putExtra("department", depts[item]);
-                        startActivity(curriculum_open);
-                    }
-                });
-                AlertDialog departmentDialog = departmentDialogBuilder.create();
-                departmentDialog.show();
-            }else
-                showSnackbar("Device not connected to internet");
         }
 
 
         return true;
+    }
+
+
+    private void powerUpOnClickListeners(){
+
+        findViewById(R.id.qpapers).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        findViewById(R.id.student_timetable).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LaunchingActivity.this,AcademicTimetableActivity.class));
+            }
+        });
+
+        findViewById(R.id.faculty_timetable).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LaunchingActivity.this,FacultyTimetableActivity.class));
+            }
+        });
+        findViewById(R.id.exam_schedule).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isNetworkAvailable())
+                    startActivity(new Intent(LaunchingActivity.this,ExamCategoryActivity.class));
+                else
+                    showSnackbar("Device not connected to internet");
+            }
+        });
+        findViewById(R.id.aums).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LaunchingActivity.this,LoginActivity.class));
+            }
+        });
+        findViewById(R.id.faq).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isNetworkAvailable())
+                    startActivity(new Intent(LaunchingActivity.this, WebViewActivity.class).putExtra("webview","https://dev.rajkumaar.co.in/utils/faq.php")
+                            .putExtra("title","Frequently Asked Questions")
+                            .putExtra("zoom",false)
+                    );
+                else
+                    showSnackbar("Device not connected to internet");
+            }
+        });
+        findViewById(R.id.curriculum).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isNetworkAvailable()) {
+                    final CharSequence[] depts = {"Computer Science Engineering", "Electronics & Communication Engineering", "Aerospace Engineering", "Civil Engineering", "Chemical Engineering", "Electrical & Electronics Engineering", "Electronics & Instrumentation Engineering", "Mechanical Engineering"};
+                    AlertDialog.Builder departmentDialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
+                    departmentDialogBuilder.setTitle("Select your Department");
+                    departmentDialogBuilder.setItems(depts, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            Intent curriculum_open = new Intent(LaunchingActivity.this, CurriculumActivity.class);
+                            curriculum_open.putExtra("department", depts[item]);
+                            startActivity(curriculum_open);
+                        }
+                    });
+                    AlertDialog departmentDialog = departmentDialogBuilder.create();
+                    departmentDialog.show();
+                }else
+                    showSnackbar("Device not connected to internet");
+            }
+        });
+        findViewById(R.id.downloads).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LaunchingActivity.this, DownloadsActivity.class));
+            }
+        });
+        findViewById(R.id.wifi).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isNetworkAvailable())
+                    startActivity(new Intent(LaunchingActivity.this, WifiStatusActivity.class));
+                else
+                    showSnackbar("Device not connected to internet");
+            }
+        });
+
+
+
     }
 
 

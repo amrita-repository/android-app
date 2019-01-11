@@ -16,52 +16,11 @@
             android:title="Downloads"
             android:checkable="false"/>
         <item
-            android:id="@+id/nav_aums"
-            android:icon="@drawable/university"
-            android:title="AUMS"
-            android:checkable="false"/>
-        <item
-            android:id="@+id/nav_timetable"
-            android:icon="@drawable/ic_baseline_calendar_today_24px"
-            android:title="Academic Timetable"
-            android:checkable="false"/>
-        <item
-            android:id="@+id/nav_facultytimetable"
-            android:icon="@drawable/professor"
-            android:title="Faculty Timetable"
-            android:checkable="false"/>
-
-        <item
-            android:id="@+id/nav_exams"
-            android:icon="@drawable/handwithpen"
-            android:title="Examination Schedule"
-            android:checkable="false"/>
-
-        <item
-            android:id="@+id/nav_curriculum"
-            android:icon="@drawable/curriculum"
-            android:title="Curriculum Info"
-            android:checkable="false"/>
-
-        <item
             android:title="Train and Bus Timings"
             android:id="@+id/timings"
             android:icon="@drawable/train"
             android:checkable="false"
             />
-
-        <item
-            android:id="@+id/nav_faq"
-            android:icon="@drawable/help"
-            android:title="FAQ - Examinations"
-            android:checkable="false"/>
-        <item
-            android:id="@+id/nav_campuswifi"
-            android:icon="@mipmap/ic_wifi"
-            android:title="Campus Wifi Status"
-            android:checkable="false"/>
-
-
     </group>
 
     <item android:title="Tools">

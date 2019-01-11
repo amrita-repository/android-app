@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.LaunchingActivity"
+        android:background="@color/colorBackground"
+        tools:showIn="@layout/app_bar_main">
+    <TextView
+        android:id="@+id/dev"
+        android:layout_above="@id/adView"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:fontFamily="@font/cunia"
+        android:layout_height="wrap_content"
+        android:text="Developed by RAJKUMAR"/>
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_id">
+    </com.google.android.gms.ads.AdView>
+    <ScrollView
+        android:layout_above="@id/dev"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:fontFamily="@font/cunia"
+        android:textColor="@color/colorPrimaryDark"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:text="WELCOME !\nChoose a feature to explore"/>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        <Spinner android:id="@+id/semspinner"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </android.support.design.widget.TextInputLayout>
+    <LinearLayout
+        android:baselineAligned="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout tools:ignore="HardcodedText"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:background="@color/colorBackground"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            xmlns:tools="http://schemas.android.com/tools">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/qpapers"
+                    android:padding="10dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/papers"
+                        android:layout_height="70dp" />
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Question Papers"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:padding="10dp"
+                    android:id="@+id/student_timetable"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/attendance"
+                        android:layout_height="70dp" />
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Academic Timetable"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:padding="10dp"
+                    android:id="@+id/faculty_timetable"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/faculty"
+                        android:layout_height="70dp" />
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:text="Faculty Timetable"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/exam_schedule"
+                    android:padding="10dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/schedule"
+                        android:layout_height="70dp" />
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Exam Schedule"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:padding="10dp"
+                    android:id="@+id/aums"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/graduation"
+                        android:layout_height="70dp" />
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AUMS"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    android:id="@+id/faq"
+                    android:layout_width="0dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/help"
+                        android:layout_height="70dp" />
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FAQ - Exams"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:id="@+id/curriculum"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/curriculum"
+                        android:layout_height="70dp" />
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Curriculum"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:id="@+id/downloads"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/downloadsfolder"
+                        android:layout_height="70dp" />
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Downloads"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:id="@+id/wifi"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:src="@drawable/wifi"
+                        android:layout_height="70dp" />
+                    <TextView
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Campus Wifi Status"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
+    </ScrollView>
+    </RelativeLayout>
