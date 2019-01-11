@@ -17,7 +17,7 @@
     <string name="facultyurl">https://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
     <string name="port">8080</string>
     <string name="category_images">Images</string>
-    <string name="proxyurl">https://dev.rajkumaar.co.in/app/proxy.php</string>
+    <string name="proxyurl">https://dev.rajkumaar.co.in/repo/proxy.php</string>
     <string name="incompletefield">Please input all fields</string>
     <string name="xmlUi">/xmlui/handle/</string>
     <string name="protocol">http://</string>

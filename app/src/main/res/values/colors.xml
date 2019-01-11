@@ -8,4 +8,12 @@
 
     <color name="danger">#b71c1c</color>
     <color name="yellow">#827717</color>
+    <color name="light_grey">#bcaaa4</color>
+    <color name="green">#28B62C</color>
+    <color name="red">#FF4136</color>
+    <color name="orange">#FF851B</color>
+    <color name="blue">#75CAEB</color>
+    <color name="dark_blue">#158CBA</color>
+    <color name="black">#a1887f</color>
+    <color name="purple">#7b1fa2</color>
 </resources>
