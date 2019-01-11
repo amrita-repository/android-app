@@ -17,7 +17,7 @@
     <string name="facultyurl">https://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
     <string name="port">8080</string>
     <string name="category_images">Images</string>
-    <string name="proxyurl">https://anokha.amrita.edu/app/proxy.php</string>
+    <string name="proxyurl">https://dev.rajkumaar.co.in/app/proxy.php</string>
     <string name="incompletefield">Please input all fields</string>
     <string name="xmlUi">/xmlui/handle/</string>
     <string name="protocol">http://</string>
@@ -26,9 +26,9 @@
     <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
 
 
-    <string name="test">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_id">ca-app-pub-3940256099942544/6300978111</string>
 
-    <string name="banner_id">ca-app-pub-4050031085727028/2844721235</string>
+    <string name="original">ca-app-pub-4050031085727028/2844721235</string>
 
     <string name="default_notification_channel_id" translatable="false">Alerts</string>
 

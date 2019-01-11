@@ -28,14 +28,14 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
 
-        <service android:name=".MyFirebaseMessagingService">
+        <service android:name=".helpers.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <activity
-            android:name=".LaunchingActivity"
+            android:name=".activities.LaunchingActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -46,27 +46,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DownloadsActivity"
+            android:name=".downloads.DownloadsActivity"
             android:label="Downloads"
-            android:parentActivityName=".LaunchingActivity" />
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".AboutActivity"
+            android:name=".about.AboutActivity"
             android:label="About"
-            android:parentActivityName=".LaunchingActivity" />
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".SemesterActivity"
+            android:name=".papers.SemesterActivity"
             android:label="Semesters"
             android:launchMode="singleTop"
-            android:parentActivityName=".LaunchingActivity" />
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".TimetableActivity"
+            android:name=".timetable.AcademicTimetableActivity"
             android:label="Timetable"
             android:launchMode="singleTop"
-            android:parentActivityName=".LaunchingActivity"
+            android:parentActivityName=".activities.LaunchingActivity"
             android:screenOrientation="portrait" />
 
         <provider
-            android:name=".GenericFileProvider"
+            android:name=".helpers.GenericFileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -76,49 +76,49 @@
         </provider>
 
         <activity
-            android:name=".AssessmentsActivity"
+            android:name=".papers.AssessmentsActivity"
             android:label="Assessments"
             android:launchMode="singleTop"
-            android:parentActivityName=".SemesterActivity" />
+            android:parentActivityName=".papers.SemesterActivity" />
         <activity
-            android:name=".SubjectsActivity"
+            android:name=".papers.SubjectsActivity"
             android:label="Subjects"
             android:launchMode="singleTop"
-            android:parentActivityName=".AssessmentsActivity" />
+            android:parentActivityName=".papers.AssessmentsActivity" />
         <activity
-            android:name=".FacultyTimetable"
+            android:name=".timetable.FacultyTimetableActivity"
             android:label="Faculty Timetable"
             android:launchMode="singleTop"
-            android:parentActivityName=".LaunchingActivity"
+            android:parentActivityName=".activities.LaunchingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".WebViewActivity"
-            android:parentActivityName=".TimetableActivity" />
+            android:name=".activities.WebViewActivity"
+            android:parentActivityName=".timetable.AcademicTimetableActivity" />
         <activity
-            android:name=".WifiStatus"
+            android:name=".wifistatus.WifiStatusActivity"
             android:label="Campus Wifi Status"
-            android:parentActivityName=".LaunchingActivity" />
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".ExamSchedule"
+            android:name=".examschedule.ExamCategoryActivity"
             android:label="Examination Schedule"
             android:launchMode="singleTop"
-            android:parentActivityName=".LaunchingActivity" />
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".ExamsUnderEachDept"
+            android:name=".examschedule.ExamsListActivity"
             android:label="Examinations"
-            android:parentActivityName=".ExamSchedule" />
+            android:parentActivityName=".examschedule.ExamCategoryActivity" />
         <activity
-            android:name=".CurriculumActivity"
+            android:name=".curriculum.CurriculumActivity"
             android:label="Curriculum Info"
-            android:parentActivityName=".LaunchingActivity" />
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".DeleteFiles"
+            android:name=".downloads.DeleteFilesActivity"
             android:label="Delete multiple files"
-            android:parentActivityName=".DownloadsActivity" />
+            android:parentActivityName=".downloads.DownloadsActivity" />
         <activity
             android:name=".aums.LoginActivity"
             android:label="AUMS Login"
-            android:parentActivityName=".LaunchingActivity" />
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
             android:name=".aums.HomeActivity"
             android:label="AUMS Home"
@@ -136,8 +136,8 @@
             android:name=".aums.MarksActivity"
             android:label="Your Marks"
             android:parentActivityName=".aums.HomeActivity" />
-        <activity android:name=".TrainBusTimings"
-            android:parentActivityName=".LaunchingActivity"
+        <activity android:name=".timings.TimingsActivity"
+            android:parentActivityName=".activities.LaunchingActivity"
             android:label="Train and Bus Timings"/>
     </application>
 

@@ -7,7 +7,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
-        tools:context=".TimetableActivity">
+        tools:context=".timetable.AcademicTimetableActivity">
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"

@@ -6,7 +6,7 @@
     android:background="@color/colorBackground"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DeleteFiles">
+    tools:context=".downloads.DeleteFilesActivity">
 
     <ListView
         android:id="@+id/list"
