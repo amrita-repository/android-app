@@ -6,5 +6,5 @@
     android:layout_width="match_parent"
     android:id="@+id/timings_list"
     android:layout_height="match_parent"
-    tools:context=".TrainBusTimings">
+    tools:context=".timings.TimingsActivity">
 </ListView>

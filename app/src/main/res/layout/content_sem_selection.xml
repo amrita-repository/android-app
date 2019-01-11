@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".LaunchingActivity"
+        tools:context=".activities.LaunchingActivity"
         android:background="@color/colorBackground"
         tools:showIn="@layout/app_bar_sem_selection">
     <LinearLayout
@@ -22,8 +22,7 @@
         <ImageView android:src="@drawable/logosq"
             android:layout_width="100dp"
             android:layout_height="100dp"
-
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="20dp"
             android:layout_gravity="center_horizontal" />
         <TextView
             android:layout_width="wrap_content"
