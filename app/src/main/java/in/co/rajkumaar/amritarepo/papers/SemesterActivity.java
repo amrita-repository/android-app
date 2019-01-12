@@ -99,13 +99,14 @@ public class SemesterActivity extends AppCompatActivity {
         imageView.setVisibility(View.GONE);
         switch (course)
         {
-            case 1 : semUrl+="150"; break;
-            case 2 : semUrl+="893"; break;
-            case 3 : semUrl+="894"; break;
-            case 4 : semUrl+="903"; break;
-            case 5 : semUrl+="331"; break;
-            case 6 : semUrl+="393"; break;
-            case 7 : semUrl+="279"; break;
+            case 0 : semUrl+="150"; break;
+            case 1 : semUrl+="893"; break;
+            case 2 : semUrl+="894"; break;
+            case 3 : semUrl+="903"; break;
+            case 4 : semUrl+="331"; break;
+            case 5 : semUrl+="393"; break;
+            case 6 : semUrl+="279"; break;
+            case 7 : semUrl+="2415"; break;
 
         }
 

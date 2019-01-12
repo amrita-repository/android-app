@@ -10,7 +10,7 @@
         tools:context=".activities.LaunchingActivity"
         android:background="@color/colorBackground"
         tools:showIn="@layout/app_bar_main">
-    <TextView
+  <!--  <TextView
         android:id="@+id/dev"
         android:layout_above="@id/adView"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:fontFamily="@font/cunia"
         android:layout_height="wrap_content"
-        android:text="Developed by RAJKUMAR"/>
+        android:text="Developed by RAJKUMAR"/>-->
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
@@ -30,7 +30,7 @@
         ads:adUnitId="@string/banner_id">
     </com.google.android.gms.ads.AdView>
     <ScrollView
-        android:layout_above="@id/dev"
+        android:layout_above="@id/adView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 <LinearLayout
@@ -45,9 +45,10 @@
         android:layout_marginBottom="30dp"
         android:gravity="center"
         android:fontFamily="@font/cunia"
+        android:textSize="25sp"
         android:textColor="@color/colorPrimaryDark"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:text="WELCOME !\nChoose a feature to explore"/>
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:text="Amrita\nRepository"/>
     <android.support.design.widget.TextInputLayout
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -194,7 +195,7 @@
                 <LinearLayout
                     android:padding="10dp"
                     android:orientation="vertical"
-                    android:id="@+id/faq"
+                    android:id="@+id/timings"
                     android:layout_width="0dp"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
@@ -205,13 +206,13 @@
                     android:layout_height="wrap_content">
                     <ImageView
                         android:layout_width="70dp"
-                        android:src="@drawable/help"
+                        android:src="@drawable/train"
                         android:layout_height="70dp" />
                     <TextView
                         android:textColor="@android:color/black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="FAQ - Exams"/>
+                        android:text="Timings"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
