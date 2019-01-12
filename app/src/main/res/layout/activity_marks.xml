@@ -18,6 +18,6 @@
         android:layout_width="match_parent"
         android:clipToPadding="false"
         android:layout_height="wrap_content"
-        tools:context=".aums.AttendanceActivity">
+        tools:context=".aums.activities.AttendanceActivity">
     </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

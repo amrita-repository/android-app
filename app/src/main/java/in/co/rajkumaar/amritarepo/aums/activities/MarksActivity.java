@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package in.co.rajkumaar.amritarepo.aums;
+package in.co.rajkumaar.amritarepo.aums.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,6 +49,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 
 
 public class MarksActivity extends AppCompatActivity {

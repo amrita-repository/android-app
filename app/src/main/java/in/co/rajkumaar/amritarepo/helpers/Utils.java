@@ -22,34 +22,22 @@
  * SOFTWARE.
  */
 
-package in.co.rajkumaar.amritarepo.aums;
+package in.co.rajkumaar.amritarepo.helpers;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.PersistentCookieStore;
-
-class Client {
-    private AsyncHttpClient client;
-    private PersistentCookieStore cookieStore;
-
-
-    Client(Context context){
-        client = new AsyncHttpClient();
-        cookieStore=new PersistentCookieStore(context);
-        client.setEnableRedirects(true);
-        client.setTimeout(10);
-        cookieStore.clear();
-        client.setCookieStore(cookieStore);
-        client.setLoggingEnabled(true);
-        client.setUserAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36");
-    }
-
-    AsyncHttpClient getClient() {
-        return client;
-    }
-
-    void clearCookie(){
-        cookieStore.clear();
+public class Utils {
+    public static boolean isConnected(Context context) {
+        try {
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

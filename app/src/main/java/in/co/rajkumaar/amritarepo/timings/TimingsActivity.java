@@ -35,6 +35,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
@@ -54,6 +58,13 @@ public class TimingsActivity extends AppCompatActivity {
         String type = extras.getString("type");
 
         getSupportActionBar().setSubtitle(type);
+
+        AdView mAdView;
+        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
 
         loadData(type);
 

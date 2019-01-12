@@ -116,26 +116,26 @@
             android:label="Delete multiple files"
             android:parentActivityName=".downloads.DownloadsActivity" />
         <activity
-            android:name=".aums.LoginActivity"
+            android:name=".aums.activities.LoginActivity"
             android:label="AUMS Login"
             android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".aums.HomeActivity"
+            android:name=".aums.activities.HomeActivity"
             android:label="AUMS Home"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".aums.AttendanceActivity"
+            android:name=".aums.activities.AttendanceActivity"
             android:label="Attendance Status"
-            android:parentActivityName=".aums.HomeActivity" />
+            android:parentActivityName=".aums.activities.HomeActivity" />
         <activity
-            android:name=".aums.GradesActivity"
+            android:name=".aums.activities.GradesActivity"
             android:label="Your Grades"
-            android:parentActivityName=".aums.HomeActivity" />
+            android:parentActivityName=".aums.activities.HomeActivity" />
         <activity
-            android:name=".aums.MarksActivity"
+            android:name=".aums.activities.MarksActivity"
             android:label="Your Marks"
-            android:parentActivityName=".aums.HomeActivity" />
+            android:parentActivityName=".aums.activities.HomeActivity" />
         <activity android:name=".timings.TimingsActivity"
             android:parentActivityName=".activities.LaunchingActivity"
             android:label="Train and Bus Timings"/>

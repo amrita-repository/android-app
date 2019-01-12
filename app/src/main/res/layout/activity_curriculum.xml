@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     xmlns:android="http://schemas.android.com/apk/res/android" >
-
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/adView"
+    android:background="@color/colorBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 <LinearLayout
     android:paddingStart="3dp"
     android:paddingEnd="5dp"
@@ -172,3 +176,13 @@ android:layout_marginTop="5dp"
         android:layout_height="wrap_content"/>
 </LinearLayout>
 </ScrollView>
+    <com.google.android.gms.ads.AdView
+        android:layout_alignParentBottom="true"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_id">
+    </com.google.android.gms.ads.AdView>
+</RelativeLayout>

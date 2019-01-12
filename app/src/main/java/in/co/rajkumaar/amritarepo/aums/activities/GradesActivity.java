@@ -22,11 +22,10 @@
  * SOFTWARE.
  */
 
-package in.co.rajkumaar.amritarepo.aums;
+package in.co.rajkumaar.amritarepo.aums.activities;
 
 
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,6 +51,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 
 public class GradesActivity extends AppCompatActivity {
 

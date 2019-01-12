@@ -22,22 +22,22 @@
  * SOFTWARE.
  */
 
-package in.co.rajkumaar.amritarepo.aums;
+package in.co.rajkumaar.amritarepo.aums.models;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+public class HomeItem {
+    private String name;
+    private int image;
 
-public class Utils {
-    static boolean isConnected(Context context) {
-        try {
-            ConnectivityManager connectivityManager
-                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            return false;
-        }
+    public HomeItem(String name,int image){
+        this.name=name;
+        this.image=image;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public String getName() {
+        return name;
     }
 }

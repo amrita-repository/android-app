@@ -37,6 +37,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -69,6 +72,13 @@ public class CurriculumActivity extends AppCompatActivity {
         listViews.add((ListView)findViewById(R.id.sem6));
         listViews.add((ListView)findViewById(R.id.sem7));
         listViews.add((ListView)findViewById(R.id.sem8));
+
+        AdView mAdView;
+        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
 
         String dept=getIntent().getStringExtra("department");
         try{

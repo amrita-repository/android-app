@@ -22,22 +22,18 @@
  * SOFTWARE.
  */
 
-package in.co.rajkumaar.amritarepo.aums;
+package in.co.rajkumaar.amritarepo.aums.helpers;
 
-public class HomeItem {
-    private String name;
-    private int image;
 
-    public HomeItem(String name,int image){
-        this.name=name;
-        this.image=image;
-    }
+import com.loopj.android.http.AsyncHttpClient;
 
-    public int getImage() {
-        return image;
-    }
 
-    public String getName() {
-        return name;
-    }
+public class UserData {
+    public static boolean loggedin = false;
+    public static String name,CGPA,username;
+    public static String uuid;
+    public static int refIndex=1;
+
+    public static AsyncHttpClient client;
+    public static String domain;
 }

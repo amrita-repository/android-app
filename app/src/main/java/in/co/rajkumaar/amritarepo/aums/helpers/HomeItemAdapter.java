@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package in.co.rajkumaar.amritarepo.aums;
+package in.co.rajkumaar.amritarepo.aums.helpers;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -36,10 +36,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.aums.models.HomeItem;
 
 public class HomeItemAdapter extends ArrayAdapter<HomeItem> {
 
-    HomeItemAdapter(Context context, ArrayList<HomeItem> HomeItems) {
+    public HomeItemAdapter(Context context, ArrayList<HomeItem> HomeItems) {
         super(context, 0,HomeItems);
     }
 
