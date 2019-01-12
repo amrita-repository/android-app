@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -124,15 +125,26 @@ public class AssessmentsActivity extends AppCompatActivity {
 
             }finally {
 
-                if(document!=null){
-                Elements elements = document.select("div[id=aspect_artifactbrowser_CommunityViewer_div_community-view]").select("ul[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]");
-                if (elements.size() > 1) elements = elements.get(1).select("a[href]");
-                else elements = elements.get(0).select("a[href]");
-                for (int i = 0; i < elements.size(); ++i) {
-                    Log.e("ASSESSMENTS "+i,elements.get(i).text());
-                    assessments.add(elements.get(i).text());
-                    links.add(elements.get(i).attr("href"));
-                }}
+                try {
+                    if (document != null) {
+                        Elements elements = document.select("div[id=aspect_artifactbrowser_CommunityViewer_div_community-view]").select("ul[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]");
+                        if (elements.size() > 1) elements = elements.get(1).select("a[href]");
+                        else elements = elements.get(0).select("a[href]");
+                        for (int i = 0; i < elements.size(); ++i) {
+                            Log.e("ASSESSMENTS " + i, elements.get(i).text());
+                            assessments.add(elements.get(i).text());
+                            links.add(elements.get(i).attr("href"));
+                        }
+                    }
+                }catch (Exception e){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(AssessmentsActivity.this,"Unexpected error occurred. Please try again later",Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    });
+                }
             }
             return null;
         }

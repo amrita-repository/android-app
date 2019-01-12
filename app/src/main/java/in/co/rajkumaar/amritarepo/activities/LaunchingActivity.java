@@ -25,7 +25,9 @@
 package in.co.rajkumaar.amritarepo.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,9 +53,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -127,33 +131,6 @@ public class LaunchingActivity extends AppCompatActivity
             new checkVersion().execute();
 
 
-        // Spinner element
-        final Spinner spinner = (Spinner) findViewById(R.id.semspinner);
-
-        // Spinner Drop down elements
-        final List<String> categories = new ArrayList<String>();
-        categories.add("[Choose your course]");
-        categories.add("B.Tech");
-        categories.add("BA Communication");
-        categories.add("MA Communication");
-        categories.add("Integrated MSc & MA");
-        categories.add("MCA");
-        categories.add("MSW");
-        categories.add("M.Tech");
-
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, categories);
-
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-        spinner.setAdapter(dataAdapter);
-
-
-        spinner.setSelection(pref.getInt("pos",0));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -216,11 +193,6 @@ public class LaunchingActivity extends AppCompatActivity
             }
         });
 */
-
-
-
-
-
     }
 
     @Override
@@ -338,19 +310,14 @@ public class LaunchingActivity extends AppCompatActivity
 
         }
 
-        else if(id == R.id.timings){
-            final CharSequence[] items = {"Trains from Coimbatore", "Trains from Palghat", "Trains to Coimbatore", "Trains to Palghat", "Buses from Coimbatore", "Buses to Coimbatore"};
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
-            dialogBuilder.setTitle("View timings of ?");
-            dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int item) {
-                    Intent trainBusOpen = new Intent(LaunchingActivity.this, TimingsActivity.class);
-                    trainBusOpen.putExtra("type", items[item]);
-                    startActivity(trainBusOpen);
-                }
-            });
-            AlertDialog dialog = dialogBuilder.create();
-            dialog.show();
+        else if(id == R.id.nav_faq){
+            if(isNetworkAvailable())
+                startActivity(new Intent(LaunchingActivity.this, WebViewActivity.class).putExtra("webview","https://dev.rajkumaar.co.in/utils/faq.php")
+                        .putExtra("title","Frequently Asked Questions")
+                        .putExtra("zoom",false)
+                );
+            else
+                showSnackbar("Device not connected to internet");
         }
          else if (id == R.id.nav_share) {
             drawer.closeDrawer(GravityCompat.START);
@@ -387,19 +354,78 @@ public class LaunchingActivity extends AppCompatActivity
             }
             else
                 showSnackbar("Device not connected to internet");
-            
         }
-
-
         return true;
     }
 
 
+    /**
+     * Power up the on click listeners of items in home grid
+     */
     private void powerUpOnClickListeners(){
-
         findViewById(R.id.qpapers).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final SharedPreferences pref = LaunchingActivity.this.getSharedPreferences("user",Context.MODE_PRIVATE);
+                if(pref.getBoolean("remember_program",false) && pref.getInt("pos",-1) >= 0){
+                    intentSemActivity(pref.getInt("pos",0), pref.getString("program",null));
+                }else {
+                    final AlertDialog.Builder programs_builder = new AlertDialog.Builder(LaunchingActivity.this);
+                    programs_builder.setCancelable(true);
+                    programs_builder.setTitle("Choose your program");
+                    final String [] categories = {"B.Tech","BA Communication","MA Communication","Integrated MSc & MA","MCA","MSW","M.Tech","BA English"};
+                    final ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(LaunchingActivity.this, android.R.layout.simple_list_item_1, categories);
+                    programs_builder.setItems(categories, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            final int position = which;
+                            if (isNetworkAvailable()) {
+                                if (pref.getBoolean("prompt", true)) {
+                                    final SharedPreferences.Editor ed = pref.edit();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(LaunchingActivity.this);
+                                    builder.setMessage("Do you want me to remember your academic program ? ");
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            ed.putBoolean("remember_program", true);
+                                            ed.putInt("pos", which);
+                                            ed.putString("program",dataAdapter.getItem(position));
+                                            intentSemActivity(which, dataAdapter.getItem(position));
+                                            ed.apply();
+                                        }
+                                    });
+                                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int position) {
+                                            ed.putBoolean("remember_program", false);
+                                            ed.putInt("pos", -1);
+                                            ed.putString("program",null);
+                                            ed.apply();
+                                            intentSemActivity(position, dataAdapter.getItem(position));
+                                        }
+                                    });
+                                    builder.setNeutralButton("Don\'t show again", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int position) {
+                                            ed.putBoolean("prompt", false);
+                                            ed.apply();
+                                            intentSemActivity(position, dataAdapter.getItem(position));
+                                        }
+                                    });
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
+                                } else {
+                                    intentSemActivity(position, dataAdapter.getItem(position));
+                                }
+
+                            } else {
+                               Toast.makeText(LaunchingActivity.this, "Device not connected to Internet.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    AlertDialog alertDialog = programs_builder.create();
+                    alertDialog.show();
+                }
 
             }
         });
@@ -431,16 +457,22 @@ public class LaunchingActivity extends AppCompatActivity
                 startActivity(new Intent(LaunchingActivity.this,LoginActivity.class));
             }
         });
-        findViewById(R.id.faq).setOnClickListener(new View.OnClickListener() {
+
+        findViewById(R.id.timings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isNetworkAvailable())
-                    startActivity(new Intent(LaunchingActivity.this, WebViewActivity.class).putExtra("webview","https://dev.rajkumaar.co.in/utils/faq.php")
-                            .putExtra("title","Frequently Asked Questions")
-                            .putExtra("zoom",false)
-                    );
-                else
-                    showSnackbar("Device not connected to internet");
+                final CharSequence[] items = {"Trains from Coimbatore", "Trains from Palghat", "Trains to Coimbatore", "Trains to Palghat", "Buses from Coimbatore", "Buses to Coimbatore"};
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
+                dialogBuilder.setTitle("View timings of ?");
+                dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        Intent trainBusOpen = new Intent(LaunchingActivity.this, TimingsActivity.class);
+                        trainBusOpen.putExtra("type", items[item]);
+                        startActivity(trainBusOpen);
+                    }
+                });
+                AlertDialog dialog = dialogBuilder.create();
+                dialog.show();
             }
         });
         findViewById(R.id.curriculum).setOnClickListener(new View.OnClickListener() {
@@ -478,12 +510,30 @@ public class LaunchingActivity extends AppCompatActivity
                     showSnackbar("Device not connected to internet");
             }
         });
+    }
 
+    /**
+     * Sends an intent to semester activity with the selected program
+     * @param position
+     * @param title
+     */
+    private void intentSemActivity(int position,String title){
+        Bundle params = new Bundle();
+        params.putString("Department", title);
+        Log.e("Dept",title);
+        mFirebaseAnalytics.logEvent("EventDept", params);
 
-
+        Intent intent=new Intent(LaunchingActivity.this,SemesterActivity.class);
+        intent.putExtra("course",position);
+        intent.putExtra("pageTitle",title);
+        startActivity(intent);
     }
 
 
+    /**
+     * Compares app version with the one in rajkumaar.co.in and prompts to update
+     */
+    @SuppressLint("StaticFieldLeak")
     private class checkVersion extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... voids) {
