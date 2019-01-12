@@ -55,14 +55,6 @@ public class AboutActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
         mAdView.loadAd(adRequest);
-        TextView versionName=findViewById(R.id.versioncode);
-        try {
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String version = pInfo.versionName;
-            versionName.setText("VERSION "+version);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
         Button disclaimer=findViewById(R.id.disclaimer);
         disclaimer.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackground"
+    tools:ignore="HardcodedText"
     android:fillViewport="false">
 <ScrollView
     android:layout_width="match_parent"
@@ -17,206 +19,51 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/aboutlogo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/logosq" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/raj"
+            app:civ_border_color="@color/colorPrimaryDark"
+            app:civ_border_width="4dp"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="10"
+            app:civ_shadow_color="@color/colorPrimaryDark"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:fontFamily="@font/cunia"
-            android:text="Amrita\nRepository"
-            android:textAlignment="center"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/versioncode"
-            android:layout_width="wrap_content"
-            android:textColor="@android:color/white"
-            android:background="@color/colorAccent"
-            android:padding="5dp"
-            android:layout_marginTop="3dp"
-            tools:text="Version 2.2"
-            android:fontFamily="@font/cunia"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="12sp" />
-
-        <android.support.v7.widget.CardView
-            android:layout_marginTop="20dp"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:cardCornerRadius="10dp">
+            android:text="Rajkumar"
+            android:layout_gravity="center"
+            android:fontFamily="@font/cunia"
+            android:gravity="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rajkumaar.co.in"
+            android:autoLink="web"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"/>
+          <Button
+            android:id="@+id/disclaimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Disclaimer"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:textColor="@color/colorBackground"
+            android:background="@drawable/button"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Third Party Libraries\njsoup, asynchttpclient, picasso,\nmikhaellopez:circularimageview"/>
 
-            <RelativeLayout tools:ignore="HardcodedText"
-                android:background="@color/colorBackground"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:padding="16dp"
-                android:layout_height="wrap_content"
-                xmlns:tools="http://schemas.android.com/tools">
-                <LinearLayout
-                    android:id="@+id/type_container"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="start"
-                        android:orientation="horizontal"
-                        android:layout_height="wrap_content">
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:id="@+id/type_background"
-                            android:background="@color/dark_blue"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:id="@+id/pass_type"
-                                android:textStyle="bold"
-                                android:textSize="12sp"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@android:color/white"
-                                android:padding="3dp"
-                                android:text="Developer"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="end"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:textStyle="bold"
-                            android:textSize="12sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@color/green"
-                            android:textColor="@android:color/white"
-                            android:padding="3dp"
-                            android:text="Android"/>
-                        <TextView
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginStart="5dp"
-                            android:textStyle="bold"
-                            android:textSize="12sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@color/orange"
-                            android:textColor="@android:color/white"
-                            android:padding="3dp"
-                            android:text="Backend"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/date_container"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/type_container"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:padding="3dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Name"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Rajkumar S"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:padding="3dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Website"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:autoLink="web"
-                            android:text="https://rajkumaar.co.in"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:padding="3dp"
-                        android:id="@+id/reason_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Contact"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
-                            android:textStyle="bold" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-                            <TextView
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
-                                android:autoLink="email"
-                                android:textColor="@android:color/black"
-                                android:text="rajkumaar2304@gmail.com"
-                                android:textAppearance="@android:style/TextAppearance.DeviceDefault"
-                                />
-                        </LinearLayout>
-                    </LinearLayout>
-                    <Button
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/disclaimer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="View Disclaimer"
-                        android:textColor="@color/colorBackground"
-                        android:background="@color/colorPrimaryDark"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        android:text="Third Party Libraries : jsoup, asynchttpclient"/>
-                </LinearLayout>
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
 
     </LinearLayout>
 </ScrollView>

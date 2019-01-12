@@ -36,7 +36,7 @@
 
         <activity
             android:name=".activities.LaunchingActivity"
-            android:label="Home"
+            android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -136,9 +136,13 @@
             android:name=".aums.activities.MarksActivity"
             android:label="Your Marks"
             android:parentActivityName=".aums.activities.HomeActivity" />
-        <activity android:name=".timings.TimingsActivity"
-            android:parentActivityName=".activities.LaunchingActivity"
-            android:label="Train and Bus Timings"/>
+        <activity
+            android:name=".timings.TimingsActivity"
+            android:label="Timings"
+            android:parentActivityName=".activities.LaunchingActivity" />
+        <activity android:name=".activities.SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".activities.LaunchingActivity"/>
     </application>
 
 </manifest>

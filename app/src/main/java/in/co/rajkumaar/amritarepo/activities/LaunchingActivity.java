@@ -148,42 +148,6 @@ public class LaunchingActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         powerUpOnClickListeners();
-
-       /* Button button=findViewById(R.id.sembutton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Bundle params = new Bundle();
-                params.putString("Department", spinner.getSelectedItem().toString());
-                Log.e("Dept",spinner.getSelectedItem().toString());
-                mFirebaseAnalytics.logEvent("EventDept", params);
-                int pos=spinner.getSelectedItemPosition();
-
-                SharedPreferences pref = LaunchingActivity.this.getSharedPreferences("user",Context.MODE_PRIVATE) ;
-                SharedPreferences.Editor ed = pref.edit();
-                ed.putInt("pos",pos);
-                ed.apply();
-
-                if(isNetworkAvailable()){
-                        if(pos>0)
-                        {
-                            Intent intent=new Intent(LaunchingActivity.this,SemesterActivity.class);
-                            intent.putExtra("course",pos);
-                            intent.putExtra("pageTitle",categories.get(pos));
-                            startActivity(intent);
-                        }
-                        else {
-                            Snackbar.make(view, "You haven't selected any course.", Snackbar.LENGTH_SHORT).setAction("Action", null).show();
-                        }
-                }
-                else{
-                    Snackbar.make(view,"Device not connected to Internet.",Snackbar.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-*/
     }
 
     @Override
@@ -329,6 +293,9 @@ public class LaunchingActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this,AboutActivity.class));
+        }else if(id == R.id.settings){
+            drawer.closeDrawer(GravityCompat.START);
+            startActivity(new Intent(this,SettingsActivity.class));
         }
         else if(id==R.id.nav_review){
             drawer.closeDrawer(GravityCompat.START);
@@ -374,7 +341,7 @@ public class LaunchingActivity extends AppCompatActivity
                                 if (pref.getBoolean("prompt", true)) {
                                     final SharedPreferences.Editor ed = pref.edit();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(LaunchingActivity.this);
-                                    builder.setMessage("Do you want me to remember your academic program ? ");
+                                    builder.setMessage("Do you want me to remember your academic program ? You can change it later in settings anytime.");
                                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
