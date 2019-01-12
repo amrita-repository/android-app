@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:textColor="@color/colorPrimaryDark"
             android:fontFamily="@font/cunia"
-            android:text="Amrita\nRepository"
+            android:text="Amrita Repository"
             android:textAlignment="center"
             android:textSize="24sp" />
 
