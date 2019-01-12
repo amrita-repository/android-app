@@ -30,7 +30,7 @@
             />
     </group>
 
-    <item android:title="Tools">
+    <item android:title="Extras">
         <menu>
             <item
                 android:id="@+id/nav_about"

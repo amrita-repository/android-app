@@ -366,11 +366,9 @@ public class AcademicTimetableActivity extends AppCompatActivity {
             branchId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
                     userBranch = branchId.getSelectedItemPosition();
                     if(userBranch>0)
                         buildSemSpinner();
-
                 }
 
                 @Override

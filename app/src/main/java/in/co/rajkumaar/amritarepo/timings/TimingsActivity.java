@@ -57,7 +57,7 @@ public class TimingsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String type = extras.getString("type");
 
-        getSupportActionBar().setSubtitle(type);
+        getSupportActionBar().setTitle(type);
 
         AdView mAdView;
         MobileAds.initialize(this, getResources().getString(R.string.banner_id));

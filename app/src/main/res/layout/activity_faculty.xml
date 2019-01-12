@@ -6,30 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:id="@+id/faculty_page">
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/faculty_container"
-        android:layout_marginBottom="80dp"
-        android:text="Check faculty timetable here" />
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/faculty_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical"
-        tools:context=".MainActivity">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:text="Name" />
-
+        android:orientation="vertical">
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView1"
             android:layout_width="250dp"
@@ -59,8 +42,9 @@
             android:layout_height="wrap_content"
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
+            android:focusable="true"
             android:layout_marginTop="15dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button"
             android:padding="12dp"
             android:text="View"
             android:textColor="@color/colorBackground" />
@@ -79,8 +63,9 @@
                 android:layout_marginRight="2dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
+                android:focusable="true"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/button"
                 android:padding="2dp"
                 android:text="Reset"
                 android:textColor="@color/colorBackground" />
@@ -91,10 +76,11 @@
                 android:layout_height="wrap_content"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
+                android:focusable="true"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="2dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/button"
                 android:text="Download"
                 android:textColor="@color/colorBackground" />
         </LinearLayout>

@@ -28,8 +28,10 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -76,10 +78,15 @@ public class FacultyTimetableActivity extends AppCompatActivity {
     ProgressDialog dialog;
     String url;
     ArrayAdapter<String> adapter;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty);
+
+        pref=getSharedPreferences("user",MODE_PRIVATE);
+        editor=pref.edit();
 
         AdView mAdView;
         MobileAds.initialize(this, getResources().getString(R.string.banner_id));
@@ -139,6 +146,9 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         ArrayAdapter<String> semAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, sems);
         semAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sem.setAdapter(semAdapter);
+
+        year.setSelection(pref.getInt("faculty_year",0));
+        sem.setSelection(pref.getInt("faculty_sem",0));
         final AutoCompleteTextView actv =  (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
         actv.addTextChangedListener(new addListenerOnTextChange(this,actv));
 
@@ -174,7 +184,10 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                         dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
                     new PostRequest().execute(name, yearAdapter.getItem(acadyear), acadsem,"1");
-                        }
+                    editor.putInt("faculty_sem",sem.getSelectedItemPosition());
+                    editor.putInt("faculty_year",year.getSelectedItemPosition());
+                    editor.apply();
+                    }
                 }
 
             }
