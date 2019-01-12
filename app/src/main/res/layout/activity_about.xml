@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textColor="@color/colorPrimaryDark"
             android:fontFamily="@font/cunia"
             android:text="Amrita\nRepository"
             android:textAlignment="center"
@@ -36,6 +37,7 @@
         <TextView
             android:id="@+id/versioncode"
             android:layout_width="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
             android:fontFamily="@font/cunia"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -203,7 +205,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_marginTop="10dp"
                         android:layout_gravity="center"
                         android:text="Third Party Libraries : jsoup, asynchttpclient"/>
                 </LinearLayout>
