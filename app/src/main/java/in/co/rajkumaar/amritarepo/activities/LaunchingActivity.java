@@ -388,9 +388,9 @@ public class LaunchingActivity extends AppCompatActivity
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             ed.putBoolean("remember_program", true);
-                                            ed.putInt("pos", which);
+                                            ed.putInt("pos", position);
                                             ed.putString("program",dataAdapter.getItem(position));
-                                            intentSemActivity(which, dataAdapter.getItem(position));
+                                            intentSemActivity(position, dataAdapter.getItem(position));
                                             ed.apply();
                                         }
                                     });

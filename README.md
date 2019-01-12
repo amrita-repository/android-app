@@ -1,4 +1,4 @@
-[![Play Store Info](https://img.shields.io/badge/Play_Store-v1.6.3-36B0C1.svg?style=flat-square&v=1.6.3)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![GitHub app version](https://img.shields.io/badge/GitHub-v1.6.3-yellow.svg?style=flat-square&v=1.6.3)](https://github.com/rajkumaar23/AmritaRepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-3.5k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo)
+[![Play Store Info](https://img.shields.io/badge/Play_Store-v2.2-36B0C1.svg?style=flat-square&v=2.2)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![GitHub app version](https://img.shields.io/badge/GitHub-v2.2-yellow.svg?style=flat-square&v=2.2)](https://github.com/rajkumaar23/AmritaRepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-4.1k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo)
 
 # Amrita Repository
 ![Amrita Repository](https://github.com/rajkumaar23/AmritaRepo/blob/master/banner.jpg?raw=true)
@@ -32,7 +32,7 @@ View the current status of Intranet/Wi-Fi at Amrita Vishwa Vidyapeetham, Coimbat
 Find downloaded question papers and timetables in the downloads section within the app.
 
 ### AUMS:
-Amrita University Management System (AUMS) now much easier to access in Amrita Repository. Check your grades, marks and attendance levels
+`Amrita University Management System (AUMS)` now much easier to access in Amrita Repository. Check your grades, marks and attendance levels
 
 
 
