@@ -76,7 +76,7 @@ public class AssessmentsActivity extends AppCompatActivity {
         externLink=protocol+cloudSpace+amrita+port;
         //semUrl=externLink+getString(R.string.xmlUi+R.string.numbers);
         Bundle bundle=getIntent().getExtras();
-        href=""+bundle.get("href");
+        href=bundle.get("href").toString();
         this.setTitle(""+bundle.get("pageTitle"));
         setContentView(R.layout.list_view);
 

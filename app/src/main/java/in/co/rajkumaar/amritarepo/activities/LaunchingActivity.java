@@ -364,7 +364,7 @@ public class LaunchingActivity extends AppCompatActivity
                     final AlertDialog.Builder programs_builder = new AlertDialog.Builder(LaunchingActivity.this);
                     programs_builder.setCancelable(true);
                     programs_builder.setTitle("Choose your program");
-                    final String [] categories = {"B.Tech","BA Communication","MA Communication","Integrated MSc & MA","MCA","MSW","M.Tech","BA English"};
+                    final String [] categories = {"B.Tech","BA Communication","MA Communication","Integrated MSc & MA","MCA","MSW","M.Tech"};
                     final ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(LaunchingActivity.this, android.R.layout.simple_list_item_1, categories);
                     programs_builder.setItems(categories, new DialogInterface.OnClickListener() {
                         @Override
@@ -387,7 +387,7 @@ public class LaunchingActivity extends AppCompatActivity
                                     });
                                     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                                         @Override
-                                        public void onClick(DialogInterface dialog, int position) {
+                                        public void onClick(DialogInterface dialog, int which) {
                                             ed.putBoolean("remember_program", false);
                                             ed.putInt("pos", -1);
                                             ed.putString("program",null);
@@ -397,7 +397,7 @@ public class LaunchingActivity extends AppCompatActivity
                                     });
                                     builder.setNeutralButton("Don\'t show again", new DialogInterface.OnClickListener() {
                                         @Override
-                                        public void onClick(DialogInterface dialog, int position) {
+                                        public void onClick(DialogInterface dialog, int which) {
                                             ed.putBoolean("prompt", false);
                                             ed.apply();
                                             intentSemActivity(position, dataAdapter.getItem(position));

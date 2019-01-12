@@ -24,6 +24,7 @@
 
 package in.co.rajkumaar.amritarepo.papers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -129,6 +130,7 @@ public class SemesterActivity extends AppCompatActivity {
         snackbar.show();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class Load extends AsyncTask<Void,Void,Void> {
         String proxy=getString(R.string.proxyurl);
         Document document=null;

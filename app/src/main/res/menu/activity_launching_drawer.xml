@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:fontFamily="@font/dustismo"
+    tools:ignore="HardcodedText"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
@@ -19,6 +20,12 @@
             android:title="FAQ - Exams"
             android:id="@+id/nav_faq"
             android:icon="@drawable/help"
+            android:checkable="false"
+            />
+        <item
+            android:title="Settings"
+            android:id="@+id/settings"
+            android:icon="@drawable/settings"
             android:checkable="false"
             />
     </group>
