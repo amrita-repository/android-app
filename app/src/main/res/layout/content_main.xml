@@ -10,15 +10,6 @@
         tools:context=".activities.LaunchingActivity"
         android:background="@color/colorBackground"
         tools:showIn="@layout/app_bar_main">
-  <!--  <TextView
-        android:id="@+id/dev"
-        android:layout_above="@id/adView"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="@font/cunia"
-        android:layout_height="wrap_content"
-        android:text="Developed by RAJKUMAR"/>-->
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
@@ -283,7 +274,7 @@
                         android:layout_width="wrap_content"
                         android:gravity="center"
                         android:layout_height="wrap_content"
-                        android:text="Campus WiFi Status"/>
+                        android:text="WiFi Status"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

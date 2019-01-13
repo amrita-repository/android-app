@@ -64,6 +64,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.util.Objects;
+
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.AboutActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
@@ -91,7 +93,6 @@ public class LaunchingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         super.onCreate(savedInstanceState);
-
         SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE) ;
         if (ContextCompat.checkSelfPermission(LaunchingActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)

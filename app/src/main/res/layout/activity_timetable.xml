@@ -6,6 +6,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        tools:ignore="HardcodedText"
         android:orientation="vertical"
         tools:context=".timetable.AcademicTimetableActivity">
     <TextView
@@ -65,14 +66,15 @@
         android:id="@+id/timeTableViewButton"
         android:layout_gravity="center"
         android:layout_width="200dp"
-
         android:layout_below="@id/acad_batch"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button"
         android:textColor="@color/colorBackground"
         android:layout_height="wrap_content"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
+        android:onClick="viewTimetable"
+        android:focusable="true"
         android:layout_marginTop="25dp"
         android:text="View"/>
 
@@ -89,16 +91,15 @@
         android:layout_below="@id/timeTableViewButton"
         android:layout_centerHorizontal="true"
         android:id="@+id/timeTableDownloadButton"
+        android:onClick="downloadTimetable"
         android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
+        android:focusable="true"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/button"
         android:text="Download"
         android:textColor="@color/colorBackground" />
-
-
-
     </RelativeLayout>

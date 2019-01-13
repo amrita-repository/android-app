@@ -60,7 +60,7 @@
             android:parentActivityName=".activities.LaunchingActivity" />
         <activity
             android:name=".timetable.AcademicTimetableActivity"
-            android:label="Timetable"
+            android:label="Academic Timetable"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.LaunchingActivity"
             android:screenOrientation="portrait" />
@@ -96,7 +96,7 @@
             android:parentActivityName=".timetable.AcademicTimetableActivity" />
         <activity
             android:name=".wifistatus.WifiStatusActivity"
-            android:label="Campus Wifi Status"
+            android:label="WiFi Status"
             android:parentActivityName=".activities.LaunchingActivity" />
         <activity
             android:name=".examschedule.ExamCategoryActivity"
