@@ -28,6 +28,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebResourceError;
@@ -38,6 +39,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import in.co.rajkumaar.amritarepo.R;
+
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 
 public class WebViewActivity extends AppCompatActivity {
 
@@ -86,20 +89,6 @@ public class WebViewActivity extends AppCompatActivity {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     dismissProgressDialog();
-                }
-                @Override
-                public void onReceivedHttpError (WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(WebViewActivity.this);
-                    builder.setMessage("Either the resource was not found or an error occurred while connecting to server");
-                    builder.setNegativeButton("Okay", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
                 }
             });
 
