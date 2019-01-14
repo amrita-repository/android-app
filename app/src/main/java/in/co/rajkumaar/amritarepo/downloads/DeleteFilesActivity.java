@@ -38,7 +38,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
-import in.co.rajkumaar.amritarepo.models.DownloadsItem;
+import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 import in.co.rajkumaar.amritarepo.downloads.adapters.DownloadsItemAdapter;
 import in.co.rajkumaar.amritarepo.R;
 
@@ -72,30 +72,34 @@ public class DeleteFilesActivity extends AppCompatActivity {
                       count++;
                     }
                 }
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DeleteFilesActivity.this);
-                alertDialog.setMessage("Are you sure you want to delete these "+count+" files? ");
-                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int j) {
-                        if(!fileList.isEmpty()){
-                            for(int i=0;i<fileList.size();++i){
-                                if(fileList.get(i).getCheckBox()){
-                                    fileList.get(i).getTitle().delete();
+                if(count>0) {
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DeleteFilesActivity.this);
+                    alertDialog.setMessage("Are you sure you want to delete these " + count + " files? ");
+                    alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int j) {
+                            if (!fileList.isEmpty()) {
+                                for (int i = 0; i < fileList.size(); ++i) {
+                                    if (fileList.get(i).getCheckBox()) {
+                                        fileList.get(i).getTitle().delete();
+                                    }
                                 }
+                                Toast.makeText(DeleteFilesActivity.this, count + " files deleted", Toast.LENGTH_SHORT).show();
+                                retrieveFiles();
+                                listFiles();
                             }
-                            Toast.makeText(DeleteFilesActivity.this,count+" files deleted",Toast.LENGTH_SHORT).show();
-                            retrieveFiles();
-                            listFiles();
                         }
-                    }
-                });
-                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                alertDialog.show();
+                    });
+                    alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+                    alertDialog.show();
+                }else{
+                    Toast.makeText(DeleteFilesActivity.this, "You have not selected any file.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

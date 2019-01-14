@@ -38,7 +38,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import in.co.rajkumaar.amritarepo.models.DownloadsItem;
+import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 import in.co.rajkumaar.amritarepo.R;
 
 public class DownloadsItemAdapter extends ArrayAdapter<DownloadsItem> {

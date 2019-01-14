@@ -22,9 +22,7 @@
  * SOFTWARE.
  */
 
-package in.co.rajkumaar.amritarepo.models;
-
-import android.widget.CheckBox;
+package in.co.rajkumaar.amritarepo.downloads.models;
 
 import java.io.File;
 
