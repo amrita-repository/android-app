@@ -24,6 +24,7 @@
 
 package in.co.rajkumaar.amritarepo.helpers;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -86,6 +87,7 @@ public class OpenTask {
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
 
         File outputFile=null;

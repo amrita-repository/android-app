@@ -25,6 +25,7 @@
 package in.co.rajkumaar.amritarepo.papers;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 
 import android.content.Context;
@@ -59,6 +60,7 @@ import java.util.List;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.OpenTask;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class SubjectsActivity extends AppCompatActivity {
@@ -85,14 +87,17 @@ public class SubjectsActivity extends AppCompatActivity {
         textView.setVisibility(View.GONE);
         ImageView imageView=findViewById(R.id.empty_imageview);
         imageView.setVisibility(View.GONE);
-        TextView wifiwarning=findViewById(R.id.wifiwarning);
-        wifiwarning.setVisibility(View.GONE);
+        TextView wifiWarning=findViewById(R.id.wifiwarning);
+        wifiWarning.setVisibility(View.GONE);
         Bundle bundle = getIntent().getExtras();
+        assert bundle != null;
         href = "" + bundle.get("href");
         this.setTitle(""+bundle.get("pageTitle"));
         new clearCache().clear();
         new Load().execute();
     }
+
+    @SuppressLint("StaticFieldLeak")
     private class Load extends AsyncTask<Void, Void, Void> {
         Document nextDoc,document=null;
         @Override
@@ -135,11 +140,9 @@ public class SubjectsActivity extends AppCompatActivity {
                             ex.printStackTrace();
                         }
                     }
-                }catch (NullPointerException e){
+                }catch (NullPointerException | IndexOutOfBoundsException e){
                     e.printStackTrace();
-            }catch(IndexOutOfBoundsException e){
-                    e.printStackTrace();
-                }
+            }
             }
             return null;
         }
@@ -212,7 +215,7 @@ public class SubjectsActivity extends AppCompatActivity {
                                            1);
                                }
                                else{
-                                   if(isNetworkAvailable())
+                                   if(Utils.isConnected(SubjectsActivity.this))
                                    {
                                        new DownloadTask(SubjectsActivity.this,externLink+links.get(p),1);
                                    }
@@ -236,16 +239,10 @@ public class SubjectsActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("PrivateResource")
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-    }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

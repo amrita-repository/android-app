@@ -78,6 +78,7 @@ public class CurriculumActivity extends AppCompatActivity {
 
         String dept=getIntent().getStringExtra("department");
         try{
+            assert actionBar != null;
             actionBar.setSubtitle(dept);
         }catch (NullPointerException e){
             e.printStackTrace();

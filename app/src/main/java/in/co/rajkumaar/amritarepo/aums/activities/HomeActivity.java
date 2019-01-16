@@ -24,6 +24,7 @@
 
 package in.co.rajkumaar.amritarepo.aums.activities;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -54,6 +55,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
@@ -78,7 +80,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         try {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }catch (Exception e){
             e.printStackTrace();
@@ -183,6 +185,7 @@ public class HomeActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+    @SuppressLint("SetTextI18n")
     void setData(){
         name.setText(UserData.name);
         username.setText(UserData.username);
@@ -224,7 +227,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        showSnackbar("Press back again to logout of AUMS");
+        Utils.showSnackBar(this,"Press back again to logout of AUMS");
         //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
@@ -237,12 +240,7 @@ public class HomeActivity extends AppCompatActivity {
         }, 2000);
 
     }
-    private void showSnackbar(String message) {
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar
-                .make(parentLayout, message, Snackbar.LENGTH_SHORT);
-        snackbar.show();
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

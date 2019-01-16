@@ -42,9 +42,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -67,6 +65,7 @@ public class SemesterActivity extends AppCompatActivity {
     List<String> sems=new ArrayList<>();
     List<String> links=new ArrayList<>();
     ArrayAdapter<String> semsAdapter;
+    @SuppressLint("PrivateResource")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +80,7 @@ public class SemesterActivity extends AppCompatActivity {
         semUrl=externLink+xmlUi+numbers;
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         Bundle b=getIntent().getExtras();
+        assert b != null;
         int course=Integer.parseInt(""+b.get("course"));
         this.setTitle(""+b.get("pageTitle"));
         setContentView(R.layout.list_view);
@@ -108,23 +108,10 @@ public class SemesterActivity extends AppCompatActivity {
 
         }
 
-        if(isNetworkAvailable())
+        if(Utils.isConnected(this))
         new Load().execute();
         else
-            showSnackbar("Device not connected to Internet");
-    }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-    private void showSnackbar(String message) {
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar
-                .make(parentLayout, message, Snackbar.LENGTH_SHORT);
-        snackbar.show();
+            Utils.showSnackBar(this,"Device not connected to Internet");
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -138,8 +125,6 @@ public class SemesterActivity extends AppCompatActivity {
             links.clear();
 
             try {
-
-                // Connect to the web site
                 statusCode = Jsoup.connect(semUrl).execute().statusCode();
                 document = Jsoup.connect(semUrl).get();
             }
@@ -156,6 +141,7 @@ public class SemesterActivity extends AppCompatActivity {
             return null;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(Void aVoid) {
             try{
@@ -178,8 +164,8 @@ public class SemesterActivity extends AppCompatActivity {
                 emptyView.setVisibility(View.VISIBLE);
                 ImageView imageView=findViewById(R.id.empty_imageview);
                 imageView.setVisibility(View.VISIBLE);
-                TextView wifiwarning=findViewById(R.id.wifiwarning);
-                wifiwarning.setVisibility(View.VISIBLE);
+                TextView wifiWarning=findViewById(R.id.wifiwarning);
+                wifiWarning.setVisibility(View.VISIBLE);
             }
             else {
                 if (elements != null) {
@@ -195,13 +181,13 @@ public class SemesterActivity extends AppCompatActivity {
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            if (isNetworkAvailable()) {
+                            if (Utils.isConnected(SemesterActivity.this)) {
                                 Intent intent = new Intent(SemesterActivity.this, AssessmentsActivity.class);
                                 intent.putExtra("href", externLink + links.get(i));
                                 intent.putExtra("pageTitle", sems.get(i));
                                 startActivity(intent);
                             } else
-                                showSnackbar("Device not connected to Internet");
+                                Utils.showSnackBar(SemesterActivity.this,"Device not connected to Internet");
                         }
                     });
 
@@ -212,7 +198,7 @@ public class SemesterActivity extends AppCompatActivity {
                     ImageView imageView = findViewById(R.id.empty_imageview);
                     imageView.setVisibility(View.VISIBLE);
                     TextView textView = findViewById(R.id.empty_view);
-                    textView.setText("Some error occurred. Please report to the developer.");
+                    textView.setText("An unexpected error occurred. Please report to the developer.");
                     textView.setVisibility(View.VISIBLE);
 
                 }
@@ -221,6 +207,7 @@ public class SemesterActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("PrivateResource")
     @Override
     public void onBackPressed() {
         super.onBackPressed();

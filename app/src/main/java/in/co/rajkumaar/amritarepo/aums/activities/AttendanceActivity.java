@@ -24,6 +24,7 @@
 
 package in.co.rajkumaar.amritarepo.aums.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -170,7 +171,7 @@ public class AttendanceActivity extends AppCompatActivity {
             this.title = title;
         }
 
-        public void setTotal(String total) {
+        void setTotal(String total) {
             this.total = total;
         }
 
@@ -190,7 +191,7 @@ public class AttendanceActivity extends AppCompatActivity {
             return title;
         }
 
-        public String getTotal() {
+        String getTotal() {
             return total;
         }
     }
@@ -202,6 +203,7 @@ public class AttendanceActivity extends AppCompatActivity {
         }
 
 
+        @SuppressLint("SetTextI18n")
         @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -220,6 +222,7 @@ public class AttendanceActivity extends AppCompatActivity {
             TextView percentage = listItemView.findViewById(R.id.percentage);
             ImageView color = listItemView.findViewById(R.id.circle);
 
+            assert current != null;
             if(Math.round(Double.parseDouble(current.getPercentage())) <= 75)
                 color.setBackgroundColor(getResources().getColor(R.color.danger));
             else

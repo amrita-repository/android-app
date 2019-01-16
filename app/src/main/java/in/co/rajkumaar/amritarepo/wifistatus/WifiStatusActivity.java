@@ -24,6 +24,7 @@
 
 package in.co.rajkumaar.amritarepo.wifistatus;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -39,14 +40,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.helpers.QueryUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class WifiStatusActivity extends AppCompatActivity {
@@ -65,30 +71,23 @@ public class WifiStatusActivity extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isNetworkAvailable())
-                    new Load().execute();
+                if(Utils.isConnected(WifiStatusActivity.this))
+                    getWifiData();
                 else
-                    showSnackbar("Device not connected to internet");
+                    Utils.showSnackBar(WifiStatusActivity.this,"Device not connected to internet");
             }
         });
 
-        if(isNetworkAvailable())
-        new Load().execute();
+        if(Utils.isConnected(WifiStatusActivity.this)){
+            dialog.setMessage("Loading..");
+            dialog.setCancelable(false);
+            dialog.show();
+            getWifiData();
+        }
         else
-            showSnackbar("Device not connected to internet");
+            Utils.showSnackBar(WifiStatusActivity.this,"Device not connected to internet");
 
 
-    }
-    private void showSnackbar(String message) {
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar.make(parentLayout, message, Snackbar.LENGTH_SHORT);
-        snackbar.show();
-    }
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override
@@ -99,71 +98,70 @@ public class WifiStatusActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private class Load extends AsyncTask<String, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            dialog.setMessage("Loading..");
-            dialog.setCancelable(false);
-            dialog.show();
-            super.onPreExecute();
-        }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            if (dialog != null && dialog.isShowing()) {
-                dialog.dismiss();
-            }
+    private void getWifiData(){
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.setEnableRedirects(true);
+        client.get("http://dev.rajkumaar.co.in/utils/wifi.php", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.e("WIFI RESPONSE",new String(responseBody));
+                TextView textView1 = findViewById(R.id.text1);
+                TextView textView2 = findViewById(R.id.text2);
+                TextView textView3 = findViewById(R.id.text3);
+                TextView textView4 = findViewById(R.id.text4);
+                TextView textView5 = findViewById(R.id.text5);
+                TextView textView6 = findViewById(R.id.text6);
+                ImageView image1   = findViewById(R.id.image1);
+                ImageView image2   = findViewById(R.id.image2);
+                ImageView image3   = findViewById(R.id.image3);
+                ArrayList<TextView> titles = new ArrayList<>();
+                ArrayList<TextView> messages = new ArrayList<>();
+                ArrayList<ImageView> images = new ArrayList<>();
+
+                titles.add(textView1);
+                titles.add(textView3);
+                titles.add(textView5);
+
+                messages.add(textView2);
+                messages.add(textView4);
+                messages.add(textView6);
+
+                images.add(image1);
+                images.add(image2);
+                images.add(image3);
+
                 try {
-                    TextView textView1 = findViewById(R.id.text1);
-                    TextView textView2 = findViewById(R.id.text2);
-                    TextView textView3 = findViewById(R.id.text3);
-                    TextView textView4 = findViewById(R.id.text4);
-                    TextView textView5 = findViewById(R.id.text5);
-                    TextView textView6 = findViewById(R.id.text6);
-                    ImageView image1 = findViewById(R.id.image1);
-                    ImageView image2 = findViewById(R.id.image2);
-                    ImageView image3 = findViewById(R.id.image3);
-
-                    textView1.setText(result.get(0));
-                    if (result.get(1).trim().equals("true")) {
-                        image1.setImageResource(R.mipmap.ic_tick);
-                        textView2.setText(getText(R.string.wifiworking));
-                    } else {
-                        image1.setImageResource(R.mipmap.ic_error);
-                        textView2.setText(getText(R.string.wifinotworking));
+                    JSONArray response = new JSONArray(new String(responseBody));
+                    for(int i=0;i<response.length();++i){
+                        titles.get(i).setText(response.getJSONObject(i).getString("connection"));
+                        boolean status = response.getJSONObject(i).getBoolean("status");
+                        messages.get(i).setText(status ? "Working" : "Not working");
+                        images.get(i).setImageResource(status ? R.mipmap.ic_tick : R.mipmap.ic_error);
                     }
-                    textView3.setText(result.get(2));
-
-                    if (result.get(3).trim().equals("true")) {
-                        textView4.setText(getText(R.string.wifiworking));
-                        image2.setImageResource(R.mipmap.ic_tick);
-                    } else {
-                        image2.setImageResource(R.mipmap.ic_error);
-                        textView4.setText(getText(R.string.wifinotworking));
-                    }
-                    textView5.setText(result.get(4));
-
-                    if (result.get(5).trim().equals("true")) {
-                        textView6.setText(getText(R.string.wifiworking));
-                        image3.setImageResource(R.mipmap.ic_tick);
-                    } else {
-                        image3.setImageResource(R.mipmap.ic_error);
-                        textView6.setText(getText(R.string.wifinotworking));
-                    }
-                    for (int i = 0; i < result.size(); ++i)
-                        Log.e("JSON Parsed data", result.get(i));
-                }catch (Exception e){
+                } catch (JSONException e) {
+                    Utils.showToast(WifiStatusActivity.this,"An unexpected error occurred. Please try again later.");
+                    finish();
                     e.printStackTrace();
-                    Toast.makeText(WifiStatusActivity.this,"Unexpected error. Please try again later",Toast.LENGTH_SHORT).show();
-                    WifiStatusActivity.this.finish();
                 }
-            super.onPostExecute(aVoid);
-        }
+            }
 
-        @Override
-        protected Void doInBackground(String... strings) {
-            result=QueryUtils.fetchBooks(mUrl);
-            return null;
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Utils.showToast(WifiStatusActivity.this,"An unexpected error occurred. Please try again later.");
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                finish();
+            }
+
+            @Override
+            public void onFinish() {
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+                super.onFinish();
+            }
+        });
     }
 }

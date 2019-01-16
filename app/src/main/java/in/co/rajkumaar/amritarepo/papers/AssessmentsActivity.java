@@ -24,6 +24,7 @@
 
 package in.co.rajkumaar.amritarepo.papers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -89,11 +90,13 @@ public class AssessmentsActivity extends AppCompatActivity {
         wifiwarning.setVisibility(View.GONE);
         ImageView imageView=findViewById(R.id.empty_imageview);
         imageView.setVisibility(View.GONE);
-        if(isNetworkAvailable())
+        if(Utils.isConnected(AssessmentsActivity.this))
             new Load().execute();
         else
-            showSnackbar("Device not connected to Internet");
+            Utils.showSnackBar(AssessmentsActivity.this,"Device not connected to Internet");
     }
+
+    @SuppressLint("StaticFieldLeak")
     private class Load extends AsyncTask<Void,Void,Void> {
         String proxy=getString(R.string.proxyurl);
 
@@ -171,35 +174,23 @@ public class AssessmentsActivity extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    if(isNetworkAvailable()){
+                    if(Utils.isConnected(AssessmentsActivity.this)){
                     Intent intent=new Intent(AssessmentsActivity.this,SubjectsActivity.class);
                     intent.putExtra("href",externLink+links.get(i));
                     intent.putExtra("pageTitle",assessments.get(i));
                     startActivity(intent);}
                     else
-                        showSnackbar("Device not connected to Internet");
+                        Utils.showSnackBar(AssessmentsActivity.this,"Device not connected to Internet");
                 }
             });
             listView.setVisibility(View.VISIBLE);}
         }
     }
 
+    @SuppressLint("PrivateResource")
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-    }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-    private void showSnackbar(String message) {
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar
-                .make(parentLayout, message, Snackbar.LENGTH_SHORT);
-        snackbar.show();
     }
 }

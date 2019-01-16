@@ -25,6 +25,7 @@
 package in.co.rajkumaar.amritarepo.examschedule;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -58,6 +59,7 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.OpenTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
+import in.co.rajkumaar.amritarepo.papers.SubjectsActivity;
 
 public class ExamsListActivity extends AppCompatActivity {
 
@@ -86,6 +88,7 @@ public class ExamsListActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("StaticFieldLeak")
     class getExams extends AsyncTask<Void,Void,Void>{
         Document document=null;
         Elements ul_lists;
@@ -153,7 +156,7 @@ public class ExamsListActivity extends AppCompatActivity {
                                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                                 1);
                                     } else {
-                                        if (isNetworkAvailable()) {
+                                        if (Utils.isConnected(ExamsListActivity.this)) {
                                             new OpenTask(ExamsListActivity.this, "https://intranet.cb.amrita.edu" + links.get(position), 2);
                                         } else {
                                             Snackbar.make(viewLocal, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
@@ -170,7 +173,7 @@ public class ExamsListActivity extends AppCompatActivity {
                                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                                 1);
                                     } else {
-                                        if (isNetworkAvailable()) {
+                                        if (Utils.isConnected(ExamsListActivity.this)) {
                                             new DownloadTask(ExamsListActivity.this, "https://intranet.cb.amrita.edu" + links.get(position), 2);
                                         } else {
                                             Snackbar.make(viewLocal, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
@@ -195,12 +198,5 @@ public class ExamsListActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
             super.onPostExecute(aVoid);
         }
-    }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

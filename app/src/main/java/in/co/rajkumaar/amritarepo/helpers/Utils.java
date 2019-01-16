@@ -24,13 +24,20 @@
 
 package in.co.rajkumaar.amritarepo.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+
+import java.util.Objects;
 
 import in.co.rajkumaar.amritarepo.R;
 
@@ -58,5 +65,24 @@ public class Utils {
         AdRequest adRequest = new AdRequest.Builder().addTestDevice("15A9A0A7C99E5C87DB564AF90C66B84D")
                 .build();
         mAdView.loadAd(adRequest);
+    }
+
+    public static void showSnackBar(Context context,String message){
+        View parentLayout = ((Activity)context).findViewById(android.R.id.content);
+        Snackbar snackbar = Snackbar
+                .make(parentLayout, message, Snackbar.LENGTH_SHORT);
+        snackbar.show();
+    }
+
+    public static void hideKeyboard(Context context){
+        InputMethodManager inputManager = (InputMethodManager)
+                context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(inputManager.isAcceptingText())
+            inputManager.hideSoftInputFromWindow(Objects.requireNonNull(((Activity) context).getCurrentFocus()).getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    public static void showToast(Context context,String msg){
+        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
     }
 }

@@ -24,6 +24,7 @@
 
 package in.co.rajkumaar.amritarepo.examschedule;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -79,6 +80,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
 
 
 
+    @SuppressLint("StaticFieldLeak")
     class retrieveSchedule extends AsyncTask<Void,Void,Void>{
         Document document=null;
         Elements titles,ul_lists;
@@ -118,7 +120,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if(isNetworkAvailable())
+                        if(Utils.isConnected(ExamCategoryActivity.this))
                             startActivity(new Intent(ExamCategoryActivity.this,ExamsListActivity.class).putExtra("block",position));
                         else
                             Snackbar.make(view,"Device not connected to Internet.",Snackbar.LENGTH_SHORT).show();
@@ -135,12 +137,5 @@ public class ExamCategoryActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
         }
     }
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
 
 }

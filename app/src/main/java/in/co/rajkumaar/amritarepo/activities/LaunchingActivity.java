@@ -124,7 +124,7 @@ public class LaunchingActivity extends AppCompatActivity
 
         Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
-        if(isNetworkAvailable())
+        if(Utils.isConnected(LaunchingActivity.this))
             checkUpdate();
 
 
@@ -154,19 +154,6 @@ public class LaunchingActivity extends AppCompatActivity
     protected void onDestroy() {
         new clearCache().clear();
         super.onDestroy();
-    }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-    private void showSnackbar(String message) {
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar snackbar = Snackbar
-                .make(parentLayout, message, Snackbar.LENGTH_SHORT);
-        snackbar.show();
     }
 
     /**
@@ -234,7 +221,7 @@ public class LaunchingActivity extends AppCompatActivity
         }
 
         this.doubleBackToExitPressedOnce = true;
-        showSnackbar("Please click BACK again to exit");
+        Utils.showSnackBar(this,"Please click BACK again to exit");
         //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
@@ -289,13 +276,13 @@ public class LaunchingActivity extends AppCompatActivity
         }
 
         else if(id == R.id.nav_faq){
-            if(isNetworkAvailable())
+            if(Utils.isConnected(LaunchingActivity.this))
                 startActivity(new Intent(LaunchingActivity.this, WebViewActivity.class).putExtra("webview","https://dev.rajkumaar.co.in/utils/faq.php")
                         .putExtra("title","Frequently Asked Questions")
                         .putExtra("zoom",false)
                 );
             else
-                showSnackbar("Device not connected to internet");
+                Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
         }
          else if (id == R.id.nav_share) {
             drawer.closeDrawer(GravityCompat.START);
@@ -322,7 +309,7 @@ public class LaunchingActivity extends AppCompatActivity
         }
         else if(id==R.id.nav_review){
             drawer.closeDrawer(GravityCompat.START);
-            if(isNetworkAvailable()){
+            if(Utils.isConnected(this)){
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName()));
                 if(intent.resolveActivity(getPackageManager())!=null)
@@ -334,7 +321,7 @@ public class LaunchingActivity extends AppCompatActivity
                 }
             }
             else
-                showSnackbar("Device not connected to internet");
+                Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
         }
         return true;
     }
@@ -360,7 +347,7 @@ public class LaunchingActivity extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             final int position = which;
-                            if (isNetworkAvailable()) {
+                            if (Utils.isConnected(LaunchingActivity.this)) {
                                 if (pref.getBoolean("prompt", true)) {
                                     final SharedPreferences.Editor ed = pref.edit();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(LaunchingActivity.this);
@@ -426,10 +413,10 @@ public class LaunchingActivity extends AppCompatActivity
         findViewById(R.id.exam_schedule).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isNetworkAvailable())
+                if(Utils.isConnected(LaunchingActivity.this))
                     startActivity(new Intent(LaunchingActivity.this,ExamCategoryActivity.class));
                 else
-                    showSnackbar("Device not connected to internet");
+                    Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
             }
         });
         findViewById(R.id.aums).setOnClickListener(new View.OnClickListener() {
@@ -459,7 +446,7 @@ public class LaunchingActivity extends AppCompatActivity
         findViewById(R.id.curriculum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isNetworkAvailable()) {
+                if(Utils.isConnected(LaunchingActivity.this)) {
                     final CharSequence[] depts = {"Computer Science Engineering", "Electronics & Communication Engineering", "Aerospace Engineering", "Civil Engineering", "Chemical Engineering", "Electrical & Electronics Engineering", "Electronics & Instrumentation Engineering", "Mechanical Engineering"};
                     AlertDialog.Builder departmentDialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
                     departmentDialogBuilder.setTitle("Select your Department");
@@ -473,7 +460,7 @@ public class LaunchingActivity extends AppCompatActivity
                     AlertDialog departmentDialog = departmentDialogBuilder.create();
                     departmentDialog.show();
                 }else
-                    showSnackbar("Device not connected to internet");
+                    Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
             }
         });
         findViewById(R.id.downloads).setOnClickListener(new View.OnClickListener() {
@@ -485,10 +472,10 @@ public class LaunchingActivity extends AppCompatActivity
         findViewById(R.id.wifi).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNetworkAvailable())
+                if (Utils.isConnected(LaunchingActivity.this))
                     startActivity(new Intent(LaunchingActivity.this, WifiStatusActivity.class));
                 else
-                    showSnackbar("Device not connected to internet");
+                    Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
             }
         });
     }

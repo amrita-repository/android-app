@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.container).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard();
+                Utils.hideKeyboard(LoginActivity.this);
                 return false;
             }
         });
@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideKeyboard();
+                Utils.hideKeyboard(LoginActivity.this);
                 SharedPreferences pref = getSharedPreferences("user",Context.MODE_PRIVATE) ;
                 SharedPreferences.Editor ed = pref.edit();
                 if (remember.isChecked()){
@@ -174,13 +174,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    public void hideKeyboard(){
-        InputMethodManager inputManager = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(inputManager.isAcceptingText())
-            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
-    }
+
 
 
     void actionDoneCloseInput(){
@@ -188,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    hideKeyboard();
+                    Utils.hideKeyboard(LoginActivity.this);
                 }
                 return false;
             }
@@ -197,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    hideKeyboard();
+                    Utils.hideKeyboard(LoginActivity.this);
                 }
                 return false;
             }
@@ -211,9 +205,7 @@ public class LoginActivity extends AppCompatActivity {
             dialog.dismiss();
     }
 
-    void showToast(String msg){
-        Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
-    }
+
 
     void getSession(final AsyncHttpClient client){
         RequestParams params = new RequestParams();
@@ -237,14 +229,14 @@ public class LoginActivity extends AppCompatActivity {
                            });
                         } catch (Exception e) {
                             closeLoginDialog();
-                            showToast(getString(R.string.site_change));
+                            Utils.showToast(LoginActivity.this,getString(R.string.site_change));
                             e.printStackTrace();
                         }
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        showToast("An error occurred while connecting to server");
+                        Utils.showToast(LoginActivity.this,"An error occurred while connecting to server");
                         closeLoginDialog();
                     }
         });
@@ -273,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 closeLoginDialog();
-                showToast("An error occurred while connecting to server");
+                Utils.showToast(LoginActivity.this,"An error occurred while connecting to server");
             }
         });
 
@@ -324,7 +316,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 }else {
                     closeLoginDialog();
-                    showToast("Invalid credentials");
+                    Utils.showToast(LoginActivity.this,"Invalid credentials");
                 }
             }
 
@@ -356,14 +348,14 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                     startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                 } catch (Exception e) {
-                    showToast("An error occurred while connecting to server");
+                    Utils.showToast(LoginActivity.this,"An error occurred while connecting to server");
                     closeLoginDialog();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                showToast("An error occurred while connecting to server");
+                Utils.showToast(LoginActivity.this,"An error occurred while connecting to server");
                 closeLoginDialog();
             }
         });
