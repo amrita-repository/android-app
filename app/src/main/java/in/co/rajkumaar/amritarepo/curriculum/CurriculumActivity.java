@@ -49,6 +49,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class CurriculumActivity extends AppCompatActivity {
 
@@ -73,12 +74,7 @@ public class CurriculumActivity extends AppCompatActivity {
         listViews.add((ListView)findViewById(R.id.sem7));
         listViews.add((ListView)findViewById(R.id.sem8));
 
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
         String dept=getIntent().getStringExtra("department");
         try{

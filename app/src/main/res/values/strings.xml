@@ -27,9 +27,9 @@
     <string name="dev_domain">http://dev.rajkumaar.co.in</string>
 
 
-    <string name="banner_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="test_id">ca-app-pub-3940256099942544/6300978111</string>
 
-    <string name="original_id">ca-app-pub-4050031085727028/2844721235</string>
+    <string name="banner_id">ca-app-pub-4050031085727028/2844721235</string>
 
     <string name="default_notification_channel_id" translatable="false">Alerts</string>
 

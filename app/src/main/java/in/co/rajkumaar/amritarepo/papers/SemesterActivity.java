@@ -56,6 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class SemesterActivity extends AppCompatActivity {
@@ -84,11 +85,7 @@ public class SemesterActivity extends AppCompatActivity {
         this.setTitle(""+b.get("pageTitle"));
         setContentView(R.layout.list_view);
 
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
 
         TextView textView=findViewById(R.id.empty_view);

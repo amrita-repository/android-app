@@ -70,6 +70,7 @@ import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class FacultyTimetableActivity extends AppCompatActivity {
@@ -87,13 +88,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
 
         pref=getSharedPreferences("user",MODE_PRIVATE);
         editor=pref.edit();
-
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
 
         new clearCache().clear();

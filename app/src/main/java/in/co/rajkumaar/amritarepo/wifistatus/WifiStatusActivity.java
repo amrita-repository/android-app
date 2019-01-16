@@ -47,6 +47,7 @@ import java.util.List;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.QueryUtils;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class WifiStatusActivity extends AppCompatActivity {
     String mUrl="https://anokha.amrita.edu/app/wifi.php";
@@ -59,11 +60,7 @@ public class WifiStatusActivity extends AppCompatActivity {
         dialog= new ProgressDialog(WifiStatusActivity.this);
 
 
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
         Button refresh=findViewById(R.id.wifi_status_refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override

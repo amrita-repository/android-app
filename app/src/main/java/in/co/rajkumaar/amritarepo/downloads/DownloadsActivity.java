@@ -50,6 +50,7 @@ import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.downloads.adapters.CategoryAdapter;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class DownloadsActivity extends AppCompatActivity {
@@ -75,12 +76,7 @@ public class DownloadsActivity extends AppCompatActivity {
                     1);
         this.recreate();}
 
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
         new clearCache().clear();
         // Create an adapter that knows which fragment should be shown on each page

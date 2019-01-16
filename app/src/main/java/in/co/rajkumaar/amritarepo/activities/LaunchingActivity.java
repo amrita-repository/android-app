@@ -80,6 +80,7 @@ import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
 import in.co.rajkumaar.amritarepo.curriculum.CurriculumActivity;
 import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
 import in.co.rajkumaar.amritarepo.examschedule.ExamCategoryActivity;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
 import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
@@ -95,8 +96,7 @@ public class LaunchingActivity extends AppCompatActivity
 
 
     private FirebaseAnalytics mFirebaseAnalytics;
-    Document doc;
-    int version=0,realVersion=0;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -121,12 +121,9 @@ public class LaunchingActivity extends AppCompatActivity
         }
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         setContentView(R.layout.activity_launching);
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
+
         if(isNetworkAvailable())
             checkUpdate();
 
@@ -146,13 +143,7 @@ public class LaunchingActivity extends AppCompatActivity
 
 
         TextView versionName=navigationView.getHeaderView(0).findViewById(R.id.versioncode);
-        try {
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String version = pInfo.versionName;
-            versionName.setText("VERSION "+version);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        versionName.setText("Version ".concat(BuildConfig.VERSION_NAME));
 
         navigationView.getMenu().getItem(0).setChecked(true);
 

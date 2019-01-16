@@ -83,14 +83,7 @@ public class HomeActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
-
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
         if(!UserData.loggedin)
         {
             finish();

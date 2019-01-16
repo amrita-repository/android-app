@@ -40,6 +40,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
@@ -49,12 +50,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
         Button disclaimer=findViewById(R.id.disclaimer);
         disclaimer.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -42,6 +42,7 @@ import com.google.android.gms.ads.MobileAds;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class TimingsActivity extends AppCompatActivity {
 
@@ -59,13 +60,7 @@ public class TimingsActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(type);
 
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
-
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
         loadData(type);
 
         ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items) {

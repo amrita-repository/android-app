@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.OpenTask;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ExamsListActivity extends AppCompatActivity {
 
@@ -75,12 +76,7 @@ public class ExamsListActivity extends AppCompatActivity {
         progressBar=findViewById(R.id.progressBar);
         url_exams=getResources().getString(R.string.url_exams);
         listView=findViewById(R.id.list);
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
         block=getIntent().getExtras().getInt("block");
 
         texts=new ArrayList<>();

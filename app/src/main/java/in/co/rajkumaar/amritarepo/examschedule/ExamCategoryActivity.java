@@ -51,6 +51,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ExamCategoryActivity extends AppCompatActivity {
 
@@ -69,12 +70,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
         texts=new ArrayList<>();
         links=new ArrayList<>();
         listView=findViewById(R.id.list);
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
 
 

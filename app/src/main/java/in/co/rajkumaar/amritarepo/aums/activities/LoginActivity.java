@@ -102,12 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         UserData.domain = "https://amritavidya.amrita.edu:8444";
         domain = UserData.domain;
 
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);

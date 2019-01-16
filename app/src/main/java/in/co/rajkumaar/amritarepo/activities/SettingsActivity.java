@@ -17,6 +17,7 @@ import com.google.android.gms.ads.MobileAds;
 import org.w3c.dom.Text;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -34,12 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         editor=pref.edit();
         setCurrentProgram();
 
-        AdView mAdView;
-        MobileAds.initialize(this, getResources().getString(R.string.banner_id));
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
-        mAdView.loadAd(adRequest);
+        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
     }
 
     /**
