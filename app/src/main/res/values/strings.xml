@@ -24,15 +24,15 @@
     <string name="wifi_warning">Please ensure you are connected to Amrita Wifi \n to have a smooth experience.</string>
 
     <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
+    <string name="dev_domain">http://dev.rajkumaar.co.in</string>
 
 
-    <string name="test_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_id">ca-app-pub-3940256099942544/6300978111</string>
 
-    <string name="banner_id">ca-app-pub-4050031085727028/2844721235</string>
+    <string name="original_id">ca-app-pub-4050031085727028/2844721235</string>
 
     <string name="default_notification_channel_id" translatable="false">Alerts</string>
 
-    <string name="versionName">Version 1.6.2</string>
 
     <string name="disclaimer">
         Amrita Repository is an unofficial app. The institution (Amrita Vishwa Vidyapeetham) has no link whatsoever with this application (or) it\'s working/maintenance.

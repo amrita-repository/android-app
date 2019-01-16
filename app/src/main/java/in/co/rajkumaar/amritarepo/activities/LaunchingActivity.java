@@ -37,6 +37,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -56,16 +57,23 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.Objects;
 
+import cz.msebera.android.httpclient.Header;
+import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.AboutActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
@@ -120,7 +128,7 @@ public class LaunchingActivity extends AppCompatActivity
                 .build();
         mAdView.loadAd(adRequest);
         if(isNetworkAvailable())
-            new checkVersion().execute();
+            checkUpdate();
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -169,32 +177,55 @@ public class LaunchingActivity extends AppCompatActivity
                 .make(parentLayout, message, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
-    public void checkUpdate(){
 
-        if(active) {
-            if (realVersion > version) {
-                Log.e("Real : " + realVersion, " HAving :" + version);
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
-                alertDialog.setMessage("An update is available for Amrita Repository.");
-                alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
-                        if (intent.resolveActivity(getPackageManager()) != null)
-                            startActivity(intent);
+    /**
+     * Compares existing version with latest and prompts for update
+     */
+    public void checkUpdate(){
+        AsyncHttpClient client=new AsyncHttpClient();
+        client.setEnableRedirects(true);
+        client.get(getString(R.string.dev_domain)+"/utils/repoversion.php?q=json", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    Log.e("VERSION",new String(responseBody));
+                    String latest = new JSONObject(new String(responseBody)).getString("version");
+                    if (active) {
+                        if (!latest.equals(BuildConfig.VERSION_NAME)) {
+                            Log.e("Latest : " + latest, " HAving :" + BuildConfig.VERSION_NAME);
+                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
+                            alertDialog.setMessage("An update is available for Amrita Repository.");
+                            alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+                                    if (intent.resolveActivity(getPackageManager()) != null)
+                                        startActivity(intent);
+                                }
+                            });
+                            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.cancel();
+                                }
+                            });
+                            if (active)
+                                alertDialog.show();
+                        }
                     }
-                });
-                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-                if (active)
-                    alertDialog.show();
+                }catch (Exception e){
+                    Crashlytics.log(e.getMessage());
+                }
             }
-        }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Crashlytics.log(new String(responseBody));
+            }
+        });
+
+
 
     }
     boolean doubleBackToExitPressedOnce = false;
@@ -488,47 +519,6 @@ public class LaunchingActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-
-    /**
-     * Compares app version with the one in rajkumaar.co.in and prompts to update
-     */
-    @SuppressLint("StaticFieldLeak")
-    private class checkVersion extends AsyncTask<Void,Void,Void> {
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                int statusCode=Jsoup.connect("http://rajkumaar.co.in/repoversion.html").execute().statusCode();
-                if(statusCode==200) {
-                    doc = Jsoup.connect("http://rajkumaar.co.in/repoversion.html").execute().parse();
-                    realVersion = Integer.parseInt(doc.title());
-                }
-            }catch (Exception e) {
-                e.printStackTrace();
-                try {
-                    int statusCode = Jsoup.connect("https://rajkumaar.co.in/repoversion.html").execute().statusCode();
-                    if (statusCode == 200) {
-                        doc = Jsoup.connect("https://rajkumaar.co.in/repoversion.html").execute().parse();
-                        realVersion = Integer.parseInt(doc.title());
-                    }
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
-            return null;
-    }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            try {
-                PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                version = pInfo.versionCode;
-                checkUpdate();
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
-            super.onPostExecute(aVoid);
-        }
-    }
 
     @Override
     public void onStart() {
