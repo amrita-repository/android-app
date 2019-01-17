@@ -62,7 +62,8 @@ public class Utils {
      */
     public static void displayAd(Context context, AdView mAdView){
         MobileAds.initialize(context, context.getResources().getString(R.string.banner_id));
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("15A9A0A7C99E5C87DB564AF90C66B84D")
+        AdRequest adRequest = new AdRequest.Builder()
+                //.addTestDevice("15A9A0A7C99E5C87DB564AF90C66B84D")
                 .build();
         mAdView.loadAd(adRequest);
     }

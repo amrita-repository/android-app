@@ -56,8 +56,6 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class WifiStatusActivity extends AppCompatActivity {
-    String mUrl="https://anokha.amrita.edu/app/wifi.php";
-    List<String> result;
     ProgressDialog dialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

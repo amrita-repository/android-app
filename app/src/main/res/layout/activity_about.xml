@@ -23,6 +23,7 @@
         <com.mikhaellopez.circularimageview.CircularImageView
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:id="@+id/image"
             android:src="@drawable/raj"
             app:civ_border_color="@color/colorPrimaryDark"
             app:civ_border_width="4dp"
