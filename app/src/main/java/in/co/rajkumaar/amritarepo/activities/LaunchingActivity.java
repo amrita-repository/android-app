@@ -199,7 +199,11 @@ public class LaunchingActivity extends AppCompatActivity
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Crashlytics.log(new String(responseBody));
+                try{
+                    Crashlytics.log(new String(responseBody));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 
