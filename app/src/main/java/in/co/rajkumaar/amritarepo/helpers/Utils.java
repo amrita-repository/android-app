@@ -33,10 +33,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-
 import java.util.Objects;
 
 import in.co.rajkumaar.amritarepo.R;
@@ -55,18 +51,7 @@ public class Utils {
         }
     }
 
-    /**
-     * Displays Ads
-     * @param context
-     * @param mAdView
-     */
-    public static void displayAd(Context context, AdView mAdView){
-        MobileAds.initialize(context, context.getResources().getString(R.string.banner_id));
-        AdRequest adRequest = new AdRequest.Builder()
-                //.addTestDevice("15A9A0A7C99E5C87DB564AF90C66B84D")
-                .build();
-        mAdView.loadAd(adRequest);
-    }
+
 
     public static void showSnackBar(Context context,String message){
         View parentLayout = ((Activity)context).findViewById(android.R.id.content);

@@ -42,7 +42,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdView;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -85,7 +84,6 @@ public class SemesterActivity extends AppCompatActivity {
         this.setTitle(""+b.get("pageTitle"));
         setContentView(R.layout.list_view);
 
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
 
         TextView textView=findViewById(R.id.empty_view);

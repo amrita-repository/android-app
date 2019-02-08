@@ -10,9 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import org.w3c.dom.Text;
 
@@ -35,7 +32,6 @@ public class SettingsActivity extends AppCompatActivity {
         editor=pref.edit();
         setCurrentProgram();
 
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
     }
 
     /**

@@ -41,9 +41,6 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -76,7 +73,6 @@ public class DownloadsActivity extends AppCompatActivity {
                     1);
         this.recreate();}
 
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
         new clearCache().clear();
         // Create an adapter that knows which fragment should be shown on each page

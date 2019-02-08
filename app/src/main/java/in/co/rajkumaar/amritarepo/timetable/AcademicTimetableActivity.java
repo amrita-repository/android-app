@@ -43,9 +43,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +82,6 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         new clearCache().clear();
 
 
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
 
         year=findViewById(R.id.acad_year);

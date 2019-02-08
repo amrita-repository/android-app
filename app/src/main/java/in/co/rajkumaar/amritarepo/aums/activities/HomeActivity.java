@@ -43,9 +43,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -85,7 +82,6 @@ public class HomeActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
         if(!UserData.loggedin)
         {
             finish();

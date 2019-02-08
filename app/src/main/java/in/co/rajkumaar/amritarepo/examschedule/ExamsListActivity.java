@@ -45,10 +45,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -78,7 +74,6 @@ public class ExamsListActivity extends AppCompatActivity {
         progressBar=findViewById(R.id.progressBar);
         url_exams=getResources().getString(R.string.url_exams);
         listView=findViewById(R.id.list);
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
         block=getIntent().getExtras().getInt("block");
 
         texts=new ArrayList<>();

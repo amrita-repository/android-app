@@ -43,9 +43,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -81,8 +78,6 @@ public class AssessmentsActivity extends AppCompatActivity {
         href=bundle.get("href").toString();
         this.setTitle(""+bundle.get("pageTitle"));
         setContentView(R.layout.list_view);
-
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
         TextView textView=findViewById(R.id.empty_view);
         textView.setVisibility(View.GONE);

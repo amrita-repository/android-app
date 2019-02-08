@@ -37,14 +37,5 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/dark_blue"/>
-    <com.google.android.gms.ads.AdView
-        android:layout_alignParentBottom="true"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_id">
-    </com.google.android.gms.ads.AdView>
 
 </RelativeLayout>

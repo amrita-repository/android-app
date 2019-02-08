@@ -41,9 +41,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -71,7 +68,6 @@ public class ExamCategoryActivity extends AppCompatActivity {
         texts=new ArrayList<>();
         links=new ArrayList<>();
         listView=findViewById(R.id.list);
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
 
 

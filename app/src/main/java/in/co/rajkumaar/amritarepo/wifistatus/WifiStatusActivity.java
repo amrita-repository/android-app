@@ -39,8 +39,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.ads.AdView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -64,7 +62,6 @@ public class WifiStatusActivity extends AppCompatActivity {
         dialog= new ProgressDialog(WifiStatusActivity.this);
 
 
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
         Button refresh=findViewById(R.id.wifi_status_refresh);
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +97,7 @@ public class WifiStatusActivity extends AppCompatActivity {
     private void getWifiData(){
         AsyncHttpClient client = new AsyncHttpClient();
         client.setEnableRedirects(true);
-        client.get("http://dev.rajkumaar.co.in/utils/wifi.php", new AsyncHttpResponseHandler() {
+        client.get(getString(R.string.dev_domain)+"/wifi.php", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.e("WIFI RESPONSE",new String(responseBody));

@@ -78,15 +78,6 @@
         android:layout_marginTop="25dp"
         android:text="View"/>
 
-    <com.google.android.gms.ads.AdView
-        android:layout_alignParentBottom="true"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_id">
-    </com.google.android.gms.ads.AdView>
     <Button
         android:layout_below="@id/timeTableViewButton"
         android:layout_centerHorizontal="true"

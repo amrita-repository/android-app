@@ -9,7 +9,6 @@
     android:fillViewport="false">
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_above="@id/adView"
     android:layout_height="match_parent">
     <LinearLayout
         android:layout_gravity="center"
@@ -69,14 +68,4 @@
 
     </LinearLayout>
 </ScrollView>
-    <com.google.android.gms.ads.AdView
-        android:layout_alignParentBottom="true"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_id">
-    </com.google.android.gms.ads.AdView>
-
 </RelativeLayout>

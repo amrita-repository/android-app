@@ -53,10 +53,6 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -88,7 +84,6 @@ public class FacultyTimetableActivity extends AppCompatActivity {
 
         pref=getSharedPreferences("user",MODE_PRIVATE);
         editor=pref.edit();
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
 
         new clearCache().clear();

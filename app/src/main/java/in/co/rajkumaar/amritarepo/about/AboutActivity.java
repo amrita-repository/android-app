@@ -41,9 +41,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Objects;
@@ -62,7 +59,6 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         mFirebaseAnalytics=FirebaseAnalytics.getInstance(this);
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
         Button disclaimer=findViewById(R.id.disclaimer);
         disclaimer.setOnClickListener(new View.OnClickListener() {
             @Override

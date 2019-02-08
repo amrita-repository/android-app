@@ -37,9 +37,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -74,7 +71,6 @@ public class CurriculumActivity extends AppCompatActivity {
         listViews.add((ListView)findViewById(R.id.sem7));
         listViews.add((ListView)findViewById(R.id.sem8));
 
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
         String dept=getIntent().getStringExtra("department");
         try{
@@ -95,7 +91,7 @@ public class CurriculumActivity extends AppCompatActivity {
 
     void getData(final String dept){
         AsyncHttpClient client=new AsyncHttpClient();
-        client.get("https://dev.rajkumaar.co.in/utils/btech.php?q="+dept, new AsyncHttpResponseHandler() {
+        client.get(getString(R.string.dev_domain)+"/btech.php?q="+dept, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 statuscode=statusCode;

@@ -58,10 +58,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -122,7 +118,6 @@ public class LaunchingActivity extends AppCompatActivity
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         setContentView(R.layout.activity_launching);
 
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
         if(Utils.isConnected(LaunchingActivity.this))
             checkUpdate();
@@ -162,7 +157,7 @@ public class LaunchingActivity extends AppCompatActivity
     public void checkUpdate(){
         AsyncHttpClient client=new AsyncHttpClient();
         client.setEnableRedirects(true);
-        client.get(getString(R.string.dev_domain)+"/utils/repoversion.php?q=json", new AsyncHttpResponseHandler() {
+        client.get("https://dev-rajkumaar.herokuapp.com/repoversion.php?q=json", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
@@ -281,7 +276,7 @@ public class LaunchingActivity extends AppCompatActivity
 
         else if(id == R.id.nav_faq){
             if(Utils.isConnected(LaunchingActivity.this))
-                startActivity(new Intent(LaunchingActivity.this, WebViewActivity.class).putExtra("webview","https://dev.rajkumaar.co.in/utils/faq.php")
+                startActivity(new Intent(LaunchingActivity.this, WebViewActivity.class).putExtra("webview",getString(R.string.dev_domain)+"/faq.php")
                         .putExtra("title","Frequently Asked Questions")
                         .putExtra("zoom",false)
                 );

@@ -8,8 +8,8 @@ android {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 21
-        versionName "2.4"
+        versionCode 22
+        versionName "2.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -34,9 +34,8 @@ dependencies {
     })
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
-    implementation 'com.google.firebase:firebase-core:16.0.4'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
-    implementation 'com.google.android.gms:play-services-ads:17.1.0'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.mikhaellopez:circularimageview:3.2.0'
 

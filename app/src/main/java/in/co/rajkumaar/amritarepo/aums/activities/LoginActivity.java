@@ -43,9 +43,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -102,7 +99,6 @@ public class LoginActivity extends AppCompatActivity {
         UserData.domain = "https://amritavidya.amrita.edu:8444";
         domain = UserData.domain;
 
-        Utils.displayAd(this,(AdView)findViewById(R.id.adView));
 
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);

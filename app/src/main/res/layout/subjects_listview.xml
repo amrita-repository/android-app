@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools">
     <ListView
         android:id="@+id/list"
-        android:layout_above="@id/adView"
         android:longClickable="true"
         android:orientation="vertical"
         android:layout_width="match_parent"
