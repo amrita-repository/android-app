@@ -23,6 +23,7 @@
  */
 
 package in.co.rajkumaar.amritarepo.helpers;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -38,18 +39,16 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import in.co.rajkumaar.amritarepo.activities.LaunchingActivity;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.LaunchingActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyFirebaseMsgService";
-
-    private Context mContext=this;
-
     public static final String NOTIFICATION_CHANNEL_ID = "10001";
+    private static final String TAG = "MyFirebaseMsgService";
+    String message, title;
+    private Context mContext = this;
 
-    String message,title;
     /**
      * Called when message is received.
      *
@@ -74,7 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
             message = remoteMessage.getNotification().getBody();
             title = remoteMessage.getNotification().getTitle();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         createNotification();
@@ -99,12 +98,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    public void createNotification()
-    {
+    public void createNotification() {
         NotificationManager mNotificationManager;
         NotificationCompat.Builder mBuilder;
         /**Creates an explicit intent for an Activity in your app**/
-        Intent resultIntent = new Intent(this , LaunchingActivity.class);
+        Intent resultIntent = new Intent(this, LaunchingActivity.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this,
@@ -121,8 +119,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         mNotificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, getResources().getString(R.string.default_notification_channel_id), importance);
             notificationChannel.enableLights(true);

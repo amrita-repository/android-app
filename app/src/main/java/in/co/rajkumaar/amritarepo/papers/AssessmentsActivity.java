@@ -25,14 +25,10 @@
 package in.co.rajkumaar.amritarepo.papers;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,7 +38,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -61,41 +56,50 @@ public class AssessmentsActivity extends AppCompatActivity {
 
     String href;
     String externLink;
-    List<String> assessments=new ArrayList<>();
+    List<String> assessments = new ArrayList<>();
     int statusCode;
-    List<String> links=new ArrayList<>();
+    List<String> links = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new clearCache().clear();
-        String protocol=getString(R.string.protocol);
-        String cloudSpace=getString(R.string.clouDspace);
-        String amrita=getString(R.string.amrita);
-        String port=getString(R.string.port);
-        externLink=protocol+cloudSpace+amrita+port;
+        String protocol = getString(R.string.protocol);
+        String cloudSpace = getString(R.string.clouDspace);
+        String amrita = getString(R.string.amrita);
+        String port = getString(R.string.port);
+        externLink = protocol + cloudSpace + amrita + port;
         //semUrl=externLink+getString(R.string.xmlUi+R.string.numbers);
-        Bundle bundle=getIntent().getExtras();
-        href=bundle.get("href").toString();
-        this.setTitle(""+bundle.get("pageTitle"));
+        Bundle bundle = getIntent().getExtras();
+        href = bundle.get("href").toString();
+        this.setTitle("" + bundle.get("pageTitle"));
         setContentView(R.layout.list_view);
 
-        TextView textView=findViewById(R.id.empty_view);
+        TextView textView = findViewById(R.id.empty_view);
         textView.setVisibility(View.GONE);
-        TextView wifiwarning=findViewById(R.id.wifiwarning);
+        TextView wifiwarning = findViewById(R.id.wifiwarning);
         wifiwarning.setVisibility(View.GONE);
-        ImageView imageView=findViewById(R.id.empty_imageview);
+        ImageView imageView = findViewById(R.id.empty_imageview);
         imageView.setVisibility(View.GONE);
-        if(Utils.isConnected(AssessmentsActivity.this))
+        if (Utils.isConnected(AssessmentsActivity.this))
             new Load().execute();
         else
-            Utils.showSnackBar(AssessmentsActivity.this,"Device not connected to Internet");
+            Utils.showSnackBar(AssessmentsActivity.this, "Device not connected to Internet");
+    }
+
+    @SuppressLint("PrivateResource")
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class Load extends AsyncTask<Void,Void,Void> {
-        String proxy=getString(R.string.proxyurl);
+    private class Load extends AsyncTask<Void, Void, Void> {
+        String proxy = getString(R.string.proxyurl);
 
-        Document document=null;
+        Document document = null;
+
         @Override
         protected Void doInBackground(Void... voids) {
             assessments.clear();
@@ -103,20 +107,19 @@ public class AssessmentsActivity extends AppCompatActivity {
             // Connect to the web site
 
             try {
-                statusCode=Jsoup.connect(href).execute().statusCode();
-                    document = Jsoup.connect(href).get();
+                statusCode = Jsoup.connect(href).execute().statusCode();
+                document = Jsoup.connect(href).get();
             } catch (IOException e) {
-                try{
+                try {
                     document = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", href).execute().parse());
                     statusCode = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", href).execute().statusCode());
 
-                }catch (IOException e1)
-                {
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
                 e.printStackTrace();
 
-            }finally {
+            } finally {
 
                 try {
                     if (document != null) {
@@ -129,11 +132,11 @@ public class AssessmentsActivity extends AppCompatActivity {
                             links.add(elements.get(i).attr("href"));
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(AssessmentsActivity.this,"Unexpected error occurred. Please try again later",Toast.LENGTH_LONG).show();
+                            Toast.makeText(AssessmentsActivity.this, "Unexpected error occurred. Please try again later", Toast.LENGTH_LONG).show();
                             finish();
                         }
                     });
@@ -144,48 +147,40 @@ public class AssessmentsActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            ProgressBar progressBar=findViewById(R.id.loading_indicator);
+            ProgressBar progressBar = findViewById(R.id.loading_indicator);
             progressBar.setVisibility(View.GONE);
-            if(statusCode!=200)
-            {
-                TextView emptyView=findViewById(R.id.empty_view);
+            if (statusCode != 200) {
+                TextView emptyView = findViewById(R.id.empty_view);
                 emptyView.setVisibility(View.VISIBLE);
-                ImageView imageView=findViewById(R.id.empty_imageview);
+                ImageView imageView = findViewById(R.id.empty_imageview);
                 imageView.setVisibility(View.VISIBLE);
-                TextView wifiwarning=findViewById(R.id.wifiwarning);
+                TextView wifiwarning = findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.VISIBLE);
-            }
-            else
-            {ImageView imageView=findViewById(R.id.empty_imageview);
+            } else {
+                ImageView imageView = findViewById(R.id.empty_imageview);
                 imageView.setVisibility(View.GONE);
-                TextView textView=findViewById(R.id.empty_view);
+                TextView textView = findViewById(R.id.empty_view);
                 textView.setVisibility(View.GONE);
 
-                TextView wifiwarning=findViewById(R.id.wifiwarning);
+                TextView wifiwarning = findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.GONE);
-            ListView listView=findViewById(R.id.list);
-            ArrayAdapter<String> semsAdapter=new ArrayAdapter<String>(AssessmentsActivity.this,android.R.layout.simple_list_item_1,assessments);
-            listView.setAdapter(semsAdapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    if(Utils.isConnected(AssessmentsActivity.this)){
-                    Intent intent=new Intent(AssessmentsActivity.this,SubjectsActivity.class);
-                    intent.putExtra("href",externLink+links.get(i));
-                    intent.putExtra("pageTitle",assessments.get(i));
-                    startActivity(intent);}
-                    else
-                        Utils.showSnackBar(AssessmentsActivity.this,"Device not connected to Internet");
-                }
-            });
-            listView.setVisibility(View.VISIBLE);}
+                ListView listView = findViewById(R.id.list);
+                ArrayAdapter<String> semsAdapter = new ArrayAdapter<String>(AssessmentsActivity.this, android.R.layout.simple_list_item_1, assessments);
+                listView.setAdapter(semsAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (Utils.isConnected(AssessmentsActivity.this)) {
+                            Intent intent = new Intent(AssessmentsActivity.this, SubjectsActivity.class);
+                            intent.putExtra("href", externLink + links.get(i));
+                            intent.putExtra("pageTitle", assessments.get(i));
+                            startActivity(intent);
+                        } else
+                            Utils.showSnackBar(AssessmentsActivity.this, "Device not connected to Internet");
+                    }
+                });
+                listView.setVisibility(View.VISIBLE);
+            }
         }
-    }
-
-    @SuppressLint("PrivateResource")
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 }

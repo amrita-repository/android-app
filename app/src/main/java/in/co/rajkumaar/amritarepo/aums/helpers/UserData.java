@@ -27,12 +27,14 @@ package in.co.rajkumaar.amritarepo.aums.helpers;
 
 import com.loopj.android.http.AsyncHttpClient;
 
+import java.io.File;
+
 
 public class UserData {
     public static boolean loggedin = false;
-    public static String name,CGPA,username;
+    public static String name, CGPA, username;
     public static String uuid;
-    public static int refIndex=1;
+    public static int refIndex = 1;
 
     public static AsyncHttpClient client;
     public static String domain;

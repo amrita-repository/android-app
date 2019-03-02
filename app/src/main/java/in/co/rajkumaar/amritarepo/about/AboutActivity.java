@@ -28,25 +28,21 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.StatsLog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Objects;
 
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
@@ -54,19 +50,38 @@ public class AboutActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    public static void showDisclaimer(Context context) {
+        try {
+            Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.disclaimer);
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                TextView textView = dialog.findViewById(R.id.text);
+                textView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
+            }
+            dialog.show();
+            dialog.getWindow().setAttributes(lp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        mFirebaseAnalytics=FirebaseAnalytics.getInstance(this);
-        Button disclaimer=findViewById(R.id.disclaimer);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Button disclaimer = findViewById(R.id.disclaimer);
         disclaimer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDisclaimer(AboutActivity.this);
             }
         });
-        ((ImageView)findViewById(R.id.image)).setOnClickListener(new View.OnClickListener() {
+        ((ImageView) findViewById(R.id.image)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle params = new Bundle();
@@ -84,26 +99,11 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
-    public static void showDisclaimer(Context context){
-        try {
-            Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.disclaimer);
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                TextView textView = dialog.findViewById(R.id.text);
-                textView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
-            }
-            dialog.show();
-            dialog.getWindow().setAttributes(lp);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public void ossLicenses(View view) {
+        Intent intent = new Intent(this, OssLicensesMenuActivity.class);
+        startActivity(intent);
     }
 }

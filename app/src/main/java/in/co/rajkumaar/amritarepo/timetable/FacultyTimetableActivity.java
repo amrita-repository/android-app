@@ -31,7 +31,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -66,34 +65,34 @@ import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class FacultyTimetableActivity extends AppCompatActivity {
-    static ArrayList<String> res=new ArrayList<>();
-    static String search=null;
+    static ArrayList<String> res = new ArrayList<>();
+    static String search = null;
     ProgressDialog dialog;
     String url;
     ArrayAdapter<String> adapter;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty);
 
-        pref=getSharedPreferences("user",MODE_PRIVATE);
-        editor=pref.edit();
+        pref = getSharedPreferences("user", MODE_PRIVATE);
+        editor = pref.edit();
 
 
         new clearCache().clear();
-        dialog= new ProgressDialog(FacultyTimetableActivity.this);
+        dialog = new ProgressDialog(FacultyTimetableActivity.this);
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        final Spinner year=findViewById(R.id.faculty_year);
-        final Spinner sem=findViewById(R.id.faculty_sem);
-        RelativeLayout facultypage=findViewById(R.id.faculty_page);
+        final Spinner year = findViewById(R.id.faculty_year);
+        final Spinner sem = findViewById(R.id.faculty_sem);
+        RelativeLayout facultypage = findViewById(R.id.faculty_page);
         facultypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +113,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 return false;
             }
         });
-        ArrayList<String> years=new ArrayList<>();
+        ArrayList<String> years = new ArrayList<>();
         years.add("[Choose year]");
 
         years.add("2015_16");
@@ -129,7 +128,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         year.setAdapter(yearAdapter);
 
 
-        ArrayList<String> sems=new ArrayList<>();
+        ArrayList<String> sems = new ArrayList<>();
         sems.add("[Choose sem]");
         sems.add("Odd");
         sems.add("Even");
@@ -137,46 +136,45 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         semAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sem.setAdapter(semAdapter);
 
-        year.setSelection(pref.getInt("faculty_year",0));
-        sem.setSelection(pref.getInt("faculty_sem",0));
-        final AutoCompleteTextView actv =  (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
-        actv.addTextChangedListener(new addListenerOnTextChange(this,actv));
+        year.setSelection(pref.getInt("faculty_year", 0));
+        sem.setSelection(pref.getInt("faculty_sem", 0));
+        final AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
+        actv.addTextChangedListener(new addListenerOnTextChange(this, actv));
 
 
-
-        Button facultysubmit= findViewById(R.id.faculty_button);
-        Button reset=findViewById(R.id.reset_button);
+        Button facultysubmit = findViewById(R.id.faculty_button);
+        Button reset = findViewById(R.id.reset_button);
         facultysubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 hideKeyboard();
-                if(!isNetworkAvailable())
+                if (!isNetworkAvailable())
                     showSnackbar("Device not connected to internet");
                 else {
-                    String name,acadsem;
+                    String name, acadsem;
                     int acadyear;
                     acadyear = year.getSelectedItemPosition();
                     name = actv.getText().toString();
-                    if(actv.getText().toString().isEmpty() || acadyear==0 || sem.getSelectedItemPosition()==0)
+                    if (actv.getText().toString().isEmpty() || acadyear == 0 || sem.getSelectedItemPosition() == 0)
                         showSnackbar(getString(R.string.incompletefield));
-                    else{
-                    switch (sem.getSelectedItemPosition()) {
-                        case 1:
-                            acadsem = "O";
-                            break;
-                        case 2:
-                            acadsem = "E";
-                            break;
-                        default:
-                            acadsem = "O";
-                    }
+                    else {
+                        switch (sem.getSelectedItemPosition()) {
+                            case 1:
+                                acadsem = "O";
+                                break;
+                            case 2:
+                                acadsem = "E";
+                                break;
+                            default:
+                                acadsem = "O";
+                        }
                         dialog.setMessage("Loading..");
                         dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
-                    new PostRequest().execute(name, yearAdapter.getItem(acadyear), acadsem,"1");
-                    editor.putInt("faculty_sem",sem.getSelectedItemPosition());
-                    editor.putInt("faculty_year",year.getSelectedItemPosition());
-                    editor.apply();
+                        new PostRequest().execute(name, yearAdapter.getItem(acadyear), acadsem, "1");
+                        editor.putInt("faculty_sem", sem.getSelectedItemPosition());
+                        editor.putInt("faculty_year", year.getSelectedItemPosition());
+                        editor.apply();
                     }
                 }
 
@@ -188,7 +186,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 actv.setText("");
             }
         });
-        Button download=findViewById(R.id.faculty_download);
+        Button download = findViewById(R.id.faculty_download);
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,7 +205,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                     default:
                         acadsem = "O";
                 }
-                if (!(actv.getText().toString().isEmpty() || acadyear == 0 || sem.getSelectedItemPosition() == 0) ){
+                if (!(actv.getText().toString().isEmpty() || acadyear == 0 || sem.getSelectedItemPosition() == 0)) {
                     if (ContextCompat.checkSelfPermission(FacultyTimetableActivity.this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             != PackageManager.PERMISSION_GRANTED) {
@@ -217,8 +215,8 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                                 1);
                     } else {
                         if (isNetworkAvailable()) {
-                            Log.e("Download url",getString(R.string.facultyurl)+url);
-                            new PostRequest().execute(name, yearAdapter.getItem(acadyear), acadsem,"2");
+                            Log.e("Download url", getString(R.string.facultyurl) + url);
+                            new PostRequest().execute(name, yearAdapter.getItem(acadyear), acadsem, "2");
 
                         } else {
                             Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
@@ -233,21 +231,22 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         });
 
 
-
     }
+
     private void showSnackbar(String message) {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar
                 .make(parentLayout, message, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
-    public void hideKeyboard(){
+
+    public void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        if(inputManager.isAcceptingText())
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
+        if (inputManager.isAcceptingText())
+            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public boolean isNetworkAvailable() {
@@ -265,10 +264,10 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private class PostRequest extends AsyncTask<String,Void,Void>{
+    private class PostRequest extends AsyncTask<String, Void, Void> {
 
-        Document doc1=null;
-        int choice=0;
+        Document doc1 = null;
+        int choice = 0;
 
         @Override
         protected void onPostExecute(Void aVoid) {
@@ -289,7 +288,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 } else if (choice == 2) {
                     new DownloadTask(FacultyTimetableActivity.this, getString(R.string.facultyurl) + url, 0);
                 }
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
                 showSnackbar("Some error occurred.");
             }
@@ -297,7 +296,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... strings) {
-            choice=Integer.parseInt(strings[3]);
+            choice = Integer.parseInt(strings[3]);
             try {
                 Connection.Response login = Jsoup.connect("https://intranet.cb.amrita.edu/TimeTable/Faculty/index.php")
                         .method(Connection.Method.POST)
@@ -309,13 +308,11 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                         .data("faculty", strings[0].trim())
                         .execute();
 
-            doc1 = login.parse();
-        }catch(IOException e)
-
-        {
-            e.printStackTrace();
-        }
-                Log.e("POST RESULT", strings[0]+" "+strings[1]+" "+strings[2]);
+                doc1 = login.parse();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.e("POST RESULT", strings[0] + " " + strings[1] + " " + strings[2]);
             return null;
         }
     }
@@ -323,9 +320,9 @@ public class FacultyTimetableActivity extends AppCompatActivity {
     private class Load extends AsyncTask<String, Void, Void> {
         @Override
         protected Void doInBackground(String... searching) {
-            BufferedReader br ;
+            BufferedReader br;
             try {
-                URL url = new URL("https://intranet.cb.amrita.edu/TimeTable/Faculty/get_staff_list.php?q="+searching[0]);
+                URL url = new URL("https://intranet.cb.amrita.edu/TimeTable/Faculty/get_staff_list.php?q=" + searching[0]);
                 br = new BufferedReader(new InputStreamReader(url.openStream()));
 
                 runOnUiThread(new Runnable() {
@@ -336,7 +333,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 });
                 String line;
                 while ((line = br.readLine()) != null) {
-                    final String lin=line;
+                    final String lin = line;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -344,7 +341,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                         }
                     });
                 }
-                Log.e("Size of result ",String.valueOf(res.size()));
+                Log.e("Size of result ", String.valueOf(res.size()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -354,37 +351,36 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
 
-            try{
-                AutoCompleteTextView actv =  (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
-                if(!res.isEmpty())
-                {
-                    Log.e("First ",String.valueOf(res.size()));
-                    adapter= new ArrayAdapter<String>
-                            (FacultyTimetableActivity.this,android.R.layout.simple_spinner_dropdown_item,res);
+            try {
+                AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
+                if (!res.isEmpty()) {
+                    Log.e("First ", String.valueOf(res.size()));
+                    adapter = new ArrayAdapter<String>
+                            (FacultyTimetableActivity.this, android.R.layout.simple_spinner_dropdown_item, res);
                     actv.setThreshold(1);
                     actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                     actv.setTextColor(Color.BLACK);
                     actv.showDropDown();
-                    Log.e("Second ",String.valueOf(res.size()));
-                }
-                else{
-                    Log.e("Third ",String.valueOf(res.size()));
+                    Log.e("Second ", String.valueOf(res.size()));
+                } else {
+                    Log.e("Third ", String.valueOf(res.size()));
                     actv.dismissDropDown();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 showSnackbar("Some error occurred.");
             }
         }
     }
+
     public class addListenerOnTextChange implements TextWatcher {
-        private Context mContext;
         AutoCompleteTextView mEdittextview;
+        private Context mContext;
 
         private addListenerOnTextChange(Context context, AutoCompleteTextView edittextview) {
             super();
             this.mContext = context;
-            this.mEdittextview= edittextview;
+            this.mEdittextview = edittextview;
         }
 
         @Override
@@ -403,7 +399,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 mEdittextview.dismissDropDown();
                 search = mEdittextview.getText().toString();
                 new Load().execute(search);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

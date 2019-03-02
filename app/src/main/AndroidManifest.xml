@@ -17,7 +17,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <receiver android:name=".widgets.ImageWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/academic_timetable_info" />
+        </receiver>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-4050031085727028~6975537937" />
@@ -138,9 +148,10 @@
             android:name=".timings.TimingsActivity"
             android:label="Timings"
             android:parentActivityName=".activities.LaunchingActivity" />
-        <activity android:name=".activities.SettingsActivity"
+        <activity
+            android:name=".activities.SettingsActivity"
             android:label="Settings"
-            android:parentActivityName=".activities.LaunchingActivity"/>
+            android:parentActivityName=".activities.LaunchingActivity" />
     </application>
 
 </manifest>

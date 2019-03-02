@@ -26,8 +26,12 @@ package in.co.rajkumaar.amritarepo.downloads.fragments;
 
 
 import android.app.AlertDialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -51,44 +55,38 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 
 public class ImagesFragment extends Fragment {
+    final String dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
+    SwipeRefreshLayout swipeRefreshLayout;
+    ListView listView;
+    File dir = new File(dirPath);
+    File[] files;
+    ArrayAdapter<String> fileAdapter;
+    private List<String> fileList = new ArrayList<String>();
     public ImagesFragment() {
         // Required empty public constructor
     }
-
-
-    SwipeRefreshLayout swipeRefreshLayout;
-    ListView listView;
-
-    final String dirPath= Environment.getExternalStorageDirectory() + "/AmritaRepo";
-    File dir = new File(dirPath);
-    File[] files;
-    private List<String> fileList = new ArrayList<String>();
-    ArrayAdapter<String> fileAdapter;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.word_list, container, false);
 
-        swipeRefreshLayout=rootView.findViewById(R.id.swipe_downloads);
+        swipeRefreshLayout = rootView.findViewById(R.id.swipe_downloads);
         swipeRefreshLayout.setColorScheme(R.color.colorAccent);
-        listView=rootView.findViewById(R.id.dlist);
-        listView.setOnScrollListener(new AbsListView.OnScrollListener()
-        {
+        listView = rootView.findViewById(R.id.dlist);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState)
-            {
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
 
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-            {
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 int topRowVerticalPosition = (listView == null || listView.getChildCount() == 0) ? 0 : listView.getChildAt(0).getTop();
                 swipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
             }
@@ -97,36 +95,36 @@ public class ImagesFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-               reproduce(rootView);
+                reproduce(rootView);
             }
         });
         return rootView;
     }
 
-    public void reproduce(View rootView){
+    public void reproduce(View rootView) {
         retrieveFiles();
         listFiles(rootView);
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    public void retrieveFiles(){
+    public void retrieveFiles() {
         files = dir.listFiles();
         fileList.clear();
-        if(files!=null) {
+        if (files != null) {
             for (File file : files) {
                 String name = file.getName();
-                if (name.contains(".jpg"))
+                if (name.toLowerCase().contains(".jpg"))
                     fileList.add(file.getName());
             }
         }
     }
 
 
-    public void listFiles(final View rootView){
-        if(!fileList.isEmpty()){
-            TextView empty=rootView.findViewById(R.id.dempty_view);
+    public void listFiles(final View rootView) {
+        if (!fileList.isEmpty()) {
+            TextView empty = rootView.findViewById(R.id.dempty_view);
             empty.setVisibility(View.GONE);
-            ImageView emptyimage=rootView.findViewById(R.id.dempty_imageview);
+            ImageView emptyimage = rootView.findViewById(R.id.dempty_imageview);
             emptyimage.setVisibility(View.GONE);
             fileAdapter = new ArrayAdapter<String>(getActivity(), R.layout.custom_list_item, fileList);
             final ListView downloads = listView;
@@ -153,74 +151,104 @@ public class ImagesFragment extends Fragment {
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                     final File pdfFile = new File(dirPath + "/" + fileList.get(i));
-                    final String renamingFileName=fileList.get(i);
+                    final String renamingFileName = fileList.get(i);
                     if (pdfFile.exists()) {
-                        final ArrayList<String> qPaperOptions=new ArrayList<>();
+                        final ArrayList<String> qPaperOptions = new ArrayList<>();
                         qPaperOptions.add("Open");
                         qPaperOptions.add("Delete");
                         qPaperOptions.add("Rename");
+                        qPaperOptions.add("Set Widget");
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity()); //Read Update
-                        ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, qPaperOptions);
+                        ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, qPaperOptions);
                         alertDialog.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int pos) {
-                                if (pos == 0) {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    Uri data = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", pdfFile);
-                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    intent.setDataAndType(data, "image/jpeg");
-                                    if (intent.resolveActivity(getContext().getPackageManager()) != null)
-                                        startActivity(Intent.createChooser(intent, "Open the file"));
-                                }
-                                else if (pos == 1) {
-                                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                                    alertDialog.setMessage("Are you sure you want to delete the file? ");
-                                    alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            pdfFile.delete();
-                                            Toast.makeText(getActivity(),renamingFileName+" Deleted",Toast.LENGTH_SHORT).show();
-                                            reproduce(rootView);
-                                        }
-                                    });
-                                    alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.cancel();
-                                        }
-                                    });
-                                    alertDialog.show();
-                                }
-                                else if(pos==2)
-                                {
-                                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
-                                    alertDialog.setTitle("Rename file");
-                                    LinearLayout layout = new LinearLayout(getActivity());
-                                    layout.setOrientation(LinearLayout.VERTICAL);
-                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    params.setMargins(40, 0, 50, 0);
+                                switch (pos) {
+                                    case 0:
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        Uri data = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", pdfFile);
+                                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                        intent.setDataAndType(data, "image/jpeg");
+                                        if (intent.resolveActivity(getContext().getPackageManager()) != null)
+                                            startActivity(Intent.createChooser(intent, "Open the file"));
+                                        break;
+                                    case 1: {
+                                        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                                        alertDialog.setMessage("Are you sure you want to delete the file? ");
+                                        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                pdfFile.delete();
+                                                Toast.makeText(getActivity(), renamingFileName + " Deleted", Toast.LENGTH_SHORT).show();
+                                                reproduce(rootView);
+                                            }
+                                        });
+                                        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.cancel();
+                                            }
+                                        });
+                                        alertDialog.show();
+                                        break;
+                                    }
+                                    case 2: {
+                                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                                        alertDialog.setTitle("Rename file");
+                                        LinearLayout layout = new LinearLayout(getActivity());
+                                        layout.setOrientation(LinearLayout.VERTICAL);
+                                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                        params.setMargins(40, 0, 50, 0);
 
-                                    final EditText textBox = new EditText(getActivity());
-                                    textBox.setText(renamingFileName.split("\\.")[0]);
-                                    layout.addView(textBox, params);
+                                        final EditText textBox = new EditText(getActivity());
+                                        textBox.setText(renamingFileName.split("\\.")[0]);
+                                        layout.addView(textBox, params);
 
-                                    alertDialog.setView(layout);
+                                        alertDialog.setView(layout);
 
-                                    alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            pdfFile.renameTo(new File(dirPath + "/" + textBox.getText()+".jpg"));
-                                            reproduce(rootView);
+                                        alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                pdfFile.renameTo(new File(dirPath + "/" + textBox.getText() + ".jpg"));
+                                                reproduce(rootView);
+                                            }
+                                        });
+                                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.cancel();
+                                            }
+                                        });
+                                        alertDialog.show();
+                                        break;
+                                    }
+                                    case 3 :{
+                                        try {
+                                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+                                            SharedPreferences preferences = getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+                                            String path = preferences.getString("path",null);
+                                            alertDialog.setMessage(
+                                                    (path==null)
+                                                            ? renamingFileName + " has been set as your widget image. Go to your homescreen and long press to add widgets and choose Amrita Repository widget!"
+                                                            : renamingFileName + " has been set as your widget image.");
+                                            preferences.edit().putString("path",renamingFileName).apply();
+                                            alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    dialogInterface.dismiss();
+                                                }
+                                            });
+                                            alertDialog.show();
+                                            Intent intentWidget = new Intent(getContext(), ImageWidget.class);
+                                            intentWidget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                                            int[] ids = AppWidgetManager.getInstance(getActivity()).getAppWidgetIds(new ComponentName(getActivity(), ImageWidget.class));
+                                            intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                                            getActivity().sendBroadcast(intentWidget);
+                                        }catch (Exception e){
+                                            e.printStackTrace();
                                         }
-                                    });
-                                    alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.cancel();
-                                        }
-                                    });
-                                    alertDialog.show();
+                                    }
                                 }
                             }
 
@@ -230,15 +258,15 @@ public class ImagesFragment extends Fragment {
                     } else {
                         Toast.makeText(getContext(), "Error Opening File", Toast.LENGTH_SHORT).show();
                     }
-                    return true;}
+                    return true;
+                }
             });
-        }
-        else {
-            if(fileAdapter!=null)
+        } else {
+            if (fileAdapter != null)
                 fileAdapter.clear();
-            TextView empty=rootView.findViewById(R.id.dempty_view);
+            TextView empty = rootView.findViewById(R.id.dempty_view);
             empty.setVisibility(View.VISIBLE);
-            ImageView emptyimage=rootView.findViewById(R.id.dempty_imageview);
+            ImageView emptyimage = rootView.findViewById(R.id.dempty_imageview);
             emptyimage.setVisibility(View.VISIBLE);
         }
     }

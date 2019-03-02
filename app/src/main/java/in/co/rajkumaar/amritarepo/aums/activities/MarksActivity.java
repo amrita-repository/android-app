@@ -24,8 +24,8 @@
 
 package in.co.rajkumaar.amritarepo.aums.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -55,24 +55,25 @@ import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 public class MarksActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marks);
-        recyclerView=(RecyclerView)findViewById(R.id.list);
-        UserData.refIndex =1;
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+        UserData.refIndex = 1;
 
         final LinearLayoutManager layoutParams = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutParams);
-        getMarks(UserData.client,getIntent().getStringExtra("sem"));
+        getMarks(UserData.client, getIntent().getStringExtra("sem"));
 
     }
 
-    void getMarks(final AsyncHttpClient client,final String sem){
+    void getMarks(final AsyncHttpClient client, final String sem) {
         RequestParams params = new RequestParams();
         params.put("action", "UMS-EVAL_STUDMARKVIEW_INIT_SCREEN");
         params.put("isMenu", "true");
-        client.get(UserData.domain+"/aums/Jsp/Marks/ViewPublishedMark.jsp", params, new AsyncHttpResponseHandler() {
+        client.get(UserData.domain + "/aums/Jsp/Marks/ViewPublishedMark.jsp", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 RequestParams params = new RequestParams();
@@ -82,7 +83,7 @@ public class MarksActivity extends AppCompatActivity {
                 params.put("htmlPageTopContainer_action", "UMS-EVAL_STUDMARKVIEW_SELSEM_SCREEN");
                 params.put("htmlPageTopContainer_notify", "I");
 
-                client.post(UserData.domain+"/aums/Jsp/Marks/ViewPublishedMark.jsp?action=UMS-EVAL_STUDMARKVIEW_INIT_SCREEN&isMenu=true", params, new AsyncHttpResponseHandler() {
+                client.post(UserData.domain + "/aums/Jsp/Marks/ViewPublishedMark.jsp?action=UMS-EVAL_STUDMARKVIEW_INIT_SCREEN&isMenu=true", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         ArrayList<String> subjects = new ArrayList<>();
@@ -93,7 +94,7 @@ public class MarksActivity extends AppCompatActivity {
                             Element table = doc.select("table[width=75%]").first();
 
                             if (table == null) {
-                                Toast.makeText(MarksActivity.this,"Marks unavailable for this semester!",Toast.LENGTH_LONG).show();
+                                Toast.makeText(MarksActivity.this, "Marks unavailable for this semester!", Toast.LENGTH_LONG).show();
                                 finish();
                             }
 
@@ -108,7 +109,7 @@ public class MarksActivity extends AppCompatActivity {
                             }
 
                             if (subjects.size() == 0) {
-                                Toast.makeText(MarksActivity.this,"Marks unavailable for this semester!",Toast.LENGTH_LONG).show();
+                                Toast.makeText(MarksActivity.this, "Marks unavailable for this semester!", Toast.LENGTH_LONG).show();
                                 finish();
                             }
 
@@ -140,22 +141,22 @@ public class MarksActivity extends AppCompatActivity {
                             }
 
                             if (markDataList.size() > 0) {
-                                Log.e("SIze",markDataList.size()+"");
+                                Log.e("SIze", markDataList.size() + "");
                                 setupList(markDataList);
                             } else {
-                                Toast.makeText(MarksActivity.this,"Marks unavailable for this semester!",Toast.LENGTH_LONG).show();
+                                Toast.makeText(MarksActivity.this, "Marks unavailable for this semester!", Toast.LENGTH_LONG).show();
                                 finish();
                             }
 
                         } catch (Exception e) {
-                            Toast.makeText(MarksActivity.this,"Site's structure has changed. Please wait until I catch up",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MarksActivity.this, "Site's structure has changed. Please wait until I catch up", Toast.LENGTH_LONG).show();
                             finish();
                         }
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Toast.makeText(MarksActivity.this,"An error occurred while connecting to server",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MarksActivity.this, "An error occurred while connecting to server", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -163,7 +164,7 @@ public class MarksActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(MarksActivity.this,"An error occurred while connecting to server",Toast.LENGTH_LONG).show();
+                Toast.makeText(MarksActivity.this, "An error occurred while connecting to server", Toast.LENGTH_LONG).show();
                 finish();
             }
         });

@@ -26,17 +26,17 @@ package in.co.rajkumaar.amritarepo.aums.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -58,21 +58,21 @@ import java.io.StringReader;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.aums.models.Client;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
+import in.co.rajkumaar.amritarepo.aums.models.Client;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText username,password;
+    EditText username, password;
     Button login;
     Client mainClient;
 
-    String sessionAction,sessionID;
-    String rmusername,rmpassword;
+    String sessionAction, sessionID;
+    String rmusername, rmpassword;
     String domain;
 
-    String name,studentHashId;
+    String name, studentHashId;
 
     ProgressDialog dialog;
     CheckBox remember;
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mFirebaseAnalytics=FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
         UserData.domain = "https://amritavidya.amrita.edu:8444";
@@ -101,28 +101,33 @@ public class LoginActivity extends AppCompatActivity {
 
 
         dialog = new ProgressDialog(this);
-        dialog.setCancelable(false);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
 
         SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
-        username=findViewById(R.id.username);
-        password=findViewById(R.id.password);
-        login=findViewById(R.id.login);
-        remember=findViewById(R.id.remember_me);
-        mainClient=new Client(this);
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
+        login = findViewById(R.id.login);
+        remember = findViewById(R.id.remember_me);
+        mainClient = new Client(this);
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
-        rmusername = pref.getString("username",null);
-        rmpassword = pref.getString("password",null);
+        rmusername = pref.getString("username", null);
+        rmpassword = pref.getString("password", null);
 
         username.setText(rmusername);
         password.setText(rmpassword);
-        if(!TextUtils.isEmpty(username.getText().toString())){
+        if (!TextUtils.isEmpty(username.getText().toString())) {
             remember.setChecked(true);
         }
         try {
             username.setSelection(rmusername.length());
             password.setSelection(rmpassword.length());
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
@@ -132,18 +137,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Utils.hideKeyboard(LoginActivity.this);
-                SharedPreferences pref = getSharedPreferences("user",Context.MODE_PRIVATE) ;
+                SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
                 SharedPreferences.Editor ed = pref.edit();
-                if (remember.isChecked()){
-                    ed.putString("username",username.getText().toString());
-                    ed.putString("password",password.getText().toString());
+                if (remember.isChecked()) {
+                    ed.putString("username", username.getText().toString());
+                    ed.putString("password", password.getText().toString());
                     ed.apply();
-                }else{
-                    ed.putString("username",null);
-                    ed.putString("password",null);
+                } else {
+                    ed.putString("username", null);
+                    ed.putString("password", null);
                     ed.apply();
                 }
-                if(validate()) {
+                if (validate()) {
                     if (Utils.isConnected(LoginActivity.this)) {
                         dialog.setMessage("Creating a session");
                         dialog.show();
@@ -158,12 +163,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    boolean validate(){
-        if(username.getText().toString().isEmpty()) {
+    boolean validate() {
+        if (username.getText().toString().isEmpty()) {
             username.setError("This field cannot be empty");
             return false;
-        }
-        else if(password.getText().toString().isEmpty()) {
+        } else if (password.getText().toString().isEmpty()) {
             password.setError("This field cannot be empty");
             return false;
         }
@@ -171,9 +175,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
-
-    void actionDoneCloseInput(){
+    void actionDoneCloseInput() {
         username.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -196,49 +198,48 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    void closeLoginDialog(){
-        if(dialog.isShowing())
+    void closeLoginDialog() {
+        if (dialog.isShowing())
             dialog.dismiss();
     }
 
 
-
-    void getSession(final AsyncHttpClient client){
+    void getSession(final AsyncHttpClient client) {
         RequestParams params = new RequestParams();
-        params.put("service", domain+"/aums/Jsp/Common/index.jsp");
+        params.put("service", domain + "/aums/Jsp/Common/index.jsp");
 
-        client.get(domain+"/cas/login", params, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Document doc = Jsoup.parse(new String(responseBody));
-                        Element form = doc.select("#fm1").first();
-                        Element hiddenInput = doc.select("input[name=lt]").first();
-                        try {
-                           sessionAction=form.attr("action");
-                           sessionID=hiddenInput.attr("value");
-                           runOnUiThread(new Runnable() {
-                               @Override
-                               public void run() {
-                                   dialog.setMessage("Logging in");
-                                   login(client);
-                               }
-                           });
-                        } catch (Exception e) {
-                            closeLoginDialog();
-                            Utils.showToast(LoginActivity.this,getString(R.string.site_change));
-                            e.printStackTrace();
+        client.get(domain + "/cas/login", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Document doc = Jsoup.parse(new String(responseBody));
+                Element form = doc.select("#fm1").first();
+                Element hiddenInput = doc.select("input[name=lt]").first();
+                try {
+                    sessionAction = form.attr("action");
+                    sessionID = hiddenInput.attr("value");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.setMessage("Logging in");
+                            login(client);
                         }
-                    }
+                    });
+                } catch (Exception e) {
+                    closeLoginDialog();
+                    Utils.showToast(LoginActivity.this, getString(R.string.site_change));
+                    e.printStackTrace();
+                }
+            }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Utils.showToast(LoginActivity.this,"An error occurred while connecting to server");
-                        closeLoginDialog();
-                    }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
+                closeLoginDialog();
+            }
         });
     }
 
-    void login(final AsyncHttpClient client){
+    void login(final AsyncHttpClient client) {
         RequestParams params = new RequestParams();
         params.put("username", username.getText().toString());
         params.put("password", password.getText().toString());
@@ -246,7 +247,7 @@ public class LoginActivity extends AppCompatActivity {
         params.put("lt", sessionID);
         params.put("submit", "LOGIN");
 
-        Log.e("LOGIN",domain+sessionAction);
+        Log.e("LOGIN", domain + sessionAction);
         client.post(domain + sessionAction, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -261,14 +262,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 closeLoginDialog();
-                Utils.showToast(LoginActivity.this,"An error occurred while connecting to server");
+                Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
             }
         });
 
     }
 
 
-    void getUserData(final AsyncHttpClient client){
+    void getUserData(final AsyncHttpClient client) {
         client.get(domain + "/aums/Jsp/Core_Common/index.jsp?task=off", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -310,9 +311,9 @@ public class LoginActivity extends AppCompatActivity {
                         closeLoginDialog();
                     }
 
-                }else {
+                } else {
                     closeLoginDialog();
-                    Utils.showToast(LoginActivity.this,"Invalid credentials");
+                    Utils.showToast(LoginActivity.this, "Invalid credentials");
                 }
             }
 
@@ -324,34 +325,34 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    void getCGPA(final AsyncHttpClient client){
+    void getCGPA(final AsyncHttpClient client) {
         RequestParams params = new RequestParams();
         params.put("action", "UMS-EVAL_STUDPERFORMSURVEY_INIT_SCREEN");
         params.put("isMenu", "true");
-        client.get(domain+"/aums/Jsp/StudentGrade/StudentPerformanceWithSurvey.jsp", params, new AsyncHttpResponseHandler() {
+        client.get(domain + "/aums/Jsp/StudentGrade/StudentPerformanceWithSurvey.jsp", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Document doc = Jsoup.parse(new String(responseBody));
                 try {
                     Element CGPA = doc.select("td[width=19%].rowBG1").last();
-                    UserData.CGPA=CGPA.text().trim();
+                    UserData.CGPA = CGPA.text().trim();
                     UserData.username = username.getText().toString();
-                    UserData.loggedin=true;
+                    UserData.loggedin = true;
                     Bundle params = new Bundle();
-                    params.putString("User", UserData.name+"["+UserData.username+"]");
+                    params.putString("User", UserData.name + "[" + UserData.username + "]");
                     mFirebaseAnalytics.logEvent("AUMSLogin", params);
                     closeLoginDialog();
                     finish();
-                    startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                 } catch (Exception e) {
-                    Utils.showToast(LoginActivity.this,"An error occurred while connecting to server");
+                    Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
                     closeLoginDialog();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Utils.showToast(LoginActivity.this,"An error occurred while connecting to server");
+                Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
                 closeLoginDialog();
             }
         });

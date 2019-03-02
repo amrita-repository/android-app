@@ -25,14 +25,10 @@
 package in.co.rajkumaar.amritarepo.papers;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,7 +37,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -61,62 +56,85 @@ public class SemesterActivity extends AppCompatActivity {
     String semUrl;
     String externLink;
     int statusCode;
-    List<String> sems=new ArrayList<>();
-    List<String> links=new ArrayList<>();
+    List<String> sems = new ArrayList<>();
+    List<String> links = new ArrayList<>();
     ArrayAdapter<String> semsAdapter;
+
     @SuppressLint("PrivateResource")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new clearCache().clear();
-        String protocol=getString(R.string.protocol);
-        String cloudSpace=getString(R.string.clouDspace);
-        String amrita=getString(R.string.amrita);
-        String port=getString(R.string.port);
-        externLink=protocol+cloudSpace+amrita+port;
-        String xmlUi=getString(R.string.xmlUi);
-        String numbers=getString(R.string.numbers);
-        semUrl=externLink+xmlUi+numbers;
+        String protocol = getString(R.string.protocol);
+        String cloudSpace = getString(R.string.clouDspace);
+        String amrita = getString(R.string.amrita);
+        String port = getString(R.string.port);
+        externLink = protocol + cloudSpace + amrita + port;
+        String xmlUi = getString(R.string.xmlUi);
+        String numbers = getString(R.string.numbers);
+        semUrl = externLink + xmlUi + numbers;
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-        Bundle b=getIntent().getExtras();
+        Bundle b = getIntent().getExtras();
         assert b != null;
-        int course=Integer.parseInt(""+b.get("course"));
-        this.setTitle(""+b.get("pageTitle"));
+        int course = Integer.parseInt("" + b.get("course"));
+        this.setTitle("" + b.get("pageTitle"));
         setContentView(R.layout.list_view);
 
 
-
-        TextView textView=findViewById(R.id.empty_view);
+        TextView textView = findViewById(R.id.empty_view);
         textView.setVisibility(View.GONE);
 
-        TextView wifiwarning=findViewById(R.id.wifiwarning);
+        TextView wifiwarning = findViewById(R.id.wifiwarning);
         wifiwarning.setVisibility(View.GONE);
-        ImageView imageView=findViewById(R.id.empty_imageview);
+        ImageView imageView = findViewById(R.id.empty_imageview);
         imageView.setVisibility(View.GONE);
-        switch (course)
-        {
-            case 0 : semUrl+="150"; break;
-            case 1 : semUrl+="893"; break;
-            case 2 : semUrl+="894"; break;
-            case 3 : semUrl+="903"; break;
-            case 4 : semUrl+="331"; break;
-            case 5 : semUrl+="393"; break;
-            case 6 : semUrl+="279"; break;
-            case 7 : semUrl+="2415"; break;
+        switch (course) {
+            case 0:
+                semUrl += "150";
+                break;
+            case 1:
+                semUrl += "893";
+                break;
+            case 2:
+                semUrl += "894";
+                break;
+            case 3:
+                semUrl += "903";
+                break;
+            case 4:
+                semUrl += "331";
+                break;
+            case 5:
+                semUrl += "393";
+                break;
+            case 6:
+                semUrl += "279";
+                break;
+            case 7:
+                semUrl += "2415";
+                break;
 
         }
 
-        if(Utils.isConnected(this))
-        new Load().execute();
+        if (Utils.isConnected(this))
+            new Load().execute();
         else
-            Utils.showSnackBar(this,"Device not connected to Internet");
+            Utils.showSnackBar(this, "Device not connected to Internet");
+    }
+
+    @SuppressLint("PrivateResource")
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class Load extends AsyncTask<Void,Void,Void> {
-        String proxy=getString(R.string.proxyurl);
-        Document document=null;
+    private class Load extends AsyncTask<Void, Void, Void> {
+        String proxy = getString(R.string.proxyurl);
+        Document document = null;
         Elements elements;
+
         @Override
         protected Void doInBackground(Void... voids) {
             sems.clear();
@@ -125,47 +143,44 @@ public class SemesterActivity extends AppCompatActivity {
             try {
                 statusCode = Jsoup.connect(semUrl).execute().statusCode();
                 document = Jsoup.connect(semUrl).get();
-            }
-            catch (IOException e1)
-            {
-                try{
-                    document=Jsoup.connect(proxy).method(Connection.Method.POST).data("data", semUrl).execute().parse();
-                    statusCode=Jsoup.connect(proxy).method(Connection.Method.POST).data("data", semUrl).execute().statusCode();
-                }catch (IOException e2)
-                {
+            } catch (IOException e1) {
+                try {
+                    document = Jsoup.connect(proxy).method(Connection.Method.POST).data("data", semUrl).execute().parse();
+                    statusCode = Jsoup.connect(proxy).method(Connection.Method.POST).data("data", semUrl).execute().statusCode();
+                } catch (IOException e2) {
                     e2.printStackTrace();
                 }
-                e1.printStackTrace();}
+                e1.printStackTrace();
+            }
             return null;
         }
 
         @SuppressLint("SetTextI18n")
         @Override
         protected void onPostExecute(Void aVoid) {
-            try{
-                if(document!=null){
+            try {
+                if (document != null) {
                     elements = document.select("div[id=aspect_artifactbrowser_CommunityViewer_div_community-view]").select("ul[xmlns:i18n=http://apache.org/cocoon/i18n/2.1]").get(0).select("a[href]");
                     for (int i = 0; i < elements.size(); ++i) {
                         sems.add(elements.get(i).text());
                         links.add(elements.get(i).attr("href"));
-                    }}
-            }catch (IndexOutOfBoundsException e){
+                    }
+                }
+            } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
-                Toast.makeText(SemesterActivity.this,"Some error occurred. Please try using Amrita Wi-Fi. If problem still persists, report to the developer.",Toast.LENGTH_LONG).show();
+                Toast.makeText(SemesterActivity.this, "Some error occurred. Please try using Amrita Wi-Fi. If problem still persists, report to the developer.", Toast.LENGTH_LONG).show();
                 SemesterActivity.this.finish();
             }
-            ProgressBar progressBar=findViewById(R.id.loading_indicator);
+            ProgressBar progressBar = findViewById(R.id.loading_indicator);
             progressBar.setVisibility(View.GONE);
-            if(statusCode!=200)
-            {
-                TextView emptyView=findViewById(R.id.empty_view);
+            if (statusCode != 200) {
+                TextView emptyView = findViewById(R.id.empty_view);
                 emptyView.setVisibility(View.VISIBLE);
-                ImageView imageView=findViewById(R.id.empty_imageview);
+                ImageView imageView = findViewById(R.id.empty_imageview);
                 imageView.setVisibility(View.VISIBLE);
-                TextView wifiWarning=findViewById(R.id.wifiwarning);
+                TextView wifiWarning = findViewById(R.id.wifiwarning);
                 wifiWarning.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 if (elements != null) {
                     ImageView imageView = findViewById(R.id.empty_imageview);
                     imageView.setVisibility(View.GONE);
@@ -185,14 +200,13 @@ public class SemesterActivity extends AppCompatActivity {
                                 intent.putExtra("pageTitle", sems.get(i));
                                 startActivity(intent);
                             } else
-                                Utils.showSnackBar(SemesterActivity.this,"Device not connected to Internet");
+                                Utils.showSnackBar(SemesterActivity.this, "Device not connected to Internet");
                         }
                     });
 
 
                     listView.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     ImageView imageView = findViewById(R.id.empty_imageview);
                     imageView.setVisibility(View.VISIBLE);
                     TextView textView = findViewById(R.id.empty_view);
@@ -203,12 +217,5 @@ public class SemesterActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    @SuppressLint("PrivateResource")
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 }

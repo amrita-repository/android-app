@@ -31,28 +31,22 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,10 +57,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import java.util.Objects;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
@@ -85,19 +75,18 @@ import in.co.rajkumaar.amritarepo.timings.TimingsActivity;
 import in.co.rajkumaar.amritarepo.wifistatus.WifiStatusActivity;
 
 public class LaunchingActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     static boolean active = false;
-
-
-
+    boolean doubleBackToExitPressedOnce = false;
     private FirebaseAnalytics mFirebaseAnalytics;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         super.onCreate(savedInstanceState);
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE) ;
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         if (ContextCompat.checkSelfPermission(LaunchingActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -105,13 +94,12 @@ public class LaunchingActivity extends AppCompatActivity
             ActivityCompat.requestPermissions(LaunchingActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
-        }
-        else {
+        } else {
             new clearCache().clear();
-            if(pref.getBoolean("first",true)){
+            if (pref.getBoolean("first", true)) {
                 AboutActivity.showDisclaimer(this);
                 SharedPreferences.Editor editor = getSharedPreferences("user", MODE_PRIVATE).edit();
-                editor.putBoolean("first",false);
+                editor.putBoolean("first", false);
                 editor.apply();
             }
         }
@@ -119,7 +107,7 @@ public class LaunchingActivity extends AppCompatActivity
         setContentView(R.layout.activity_launching);
 
 
-        if(Utils.isConnected(LaunchingActivity.this))
+        if (Utils.isConnected(LaunchingActivity.this))
             checkUpdate();
 
 
@@ -137,7 +125,7 @@ public class LaunchingActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        TextView versionName=navigationView.getHeaderView(0).findViewById(R.id.versioncode);
+        TextView versionName = navigationView.getHeaderView(0).findViewById(R.id.versioncode);
         versionName.setText("Version ".concat(BuildConfig.VERSION_NAME));
 
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -154,14 +142,14 @@ public class LaunchingActivity extends AppCompatActivity
     /**
      * Compares existing version with latest and prompts for update
      */
-    public void checkUpdate(){
-        AsyncHttpClient client=new AsyncHttpClient();
+    public void checkUpdate() {
+        AsyncHttpClient client = new AsyncHttpClient();
         client.setEnableRedirects(true);
         client.get("https://dev-rajkumaar.herokuapp.com/repoversion.php?q=json", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
-                    Log.e("VERSION",new String(responseBody));
+                    Log.e("VERSION", new String(responseBody));
                     String latest = new JSONObject(new String(responseBody)).getString("version");
                     if (active) {
                         if (!latest.equals(BuildConfig.VERSION_NAME)) {
@@ -187,25 +175,24 @@ public class LaunchingActivity extends AppCompatActivity
                                 alertDialog.show();
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     Crashlytics.log(e.getMessage());
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                try{
+                try {
                     Crashlytics.log(new String(responseBody));
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
 
 
-
     }
-    boolean doubleBackToExitPressedOnce = false;
+
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -215,12 +202,13 @@ public class LaunchingActivity extends AppCompatActivity
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                 navigationView.setCheckedItem(R.id.nav_home);
             } else {
-            super.onBackPressed();}
+                super.onBackPressed();
+            }
             return;
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Utils.showSnackBar(this,"Please click BACK again to exit");
+        Utils.showSnackBar(this, "Please click BACK again to exit");
         //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
@@ -228,7 +216,7 @@ public class LaunchingActivity extends AppCompatActivity
             @Override
             public void run() {
 
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 2000);
 
@@ -251,11 +239,11 @@ public class LaunchingActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto","rajkumaar2304@gmail.com", null));
+                    "mailto", "rajkumaar2304@gmail.com", null));
             it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
-            it.putExtra(Intent.EXTRA_EMAIL, new String[] {"rajkumaar2304@gmail.com"});
-            if(it.resolveActivity(getPackageManager())!=null)
-            startActivity(it);
+            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
+            if (it.resolveActivity(getPackageManager()) != null)
+                startActivity(it);
         }
 
         return super.onOptionsItemSelected(item);
@@ -272,55 +260,46 @@ public class LaunchingActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this, DownloadsActivity.class));
 
-        }
-
-        else if(id == R.id.nav_faq){
-            if(Utils.isConnected(LaunchingActivity.this))
-                startActivity(new Intent(LaunchingActivity.this, WebViewActivity.class).putExtra("webview",getString(R.string.dev_domain)+"/faq.php")
-                        .putExtra("title","Frequently Asked Questions")
-                        .putExtra("zoom",false)
+        } else if (id == R.id.nav_faq) {
+            if (Utils.isConnected(LaunchingActivity.this))
+                startActivity(new Intent(LaunchingActivity.this, WebViewActivity.class).putExtra("webview", getString(R.string.dev_domain) + "/faq.php")
+                        .putExtra("title", "Frequently Asked Questions")
+                        .putExtra("zoom", false)
                 );
             else
-                Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
-        }
-         else if (id == R.id.nav_share) {
+                Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+        } else if (id == R.id.nav_share) {
             drawer.closeDrawer(GravityCompat.START);
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT,
                     "Find all question papers under one roof. Download Amrita Repository, the must-have app for exam preparation " +
-                            " : https://play.google.com/store/apps/details?id="+getPackageName());
+                            " : https://play.google.com/store/apps/details?id=" + getPackageName());
             sendIntent.setType("text/plain");
-            if(sendIntent.resolveActivity(getPackageManager())!=null)
-            {
+            if (sendIntent.resolveActivity(getPackageManager()) != null) {
                 startActivity(sendIntent);
-            }
-            else{
-                Toast.makeText(this,"Error.",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Error.", Toast.LENGTH_SHORT).show();
             }
 
         } else if (id == R.id.nav_about) {
             drawer.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this,AboutActivity.class));
-        }else if(id == R.id.settings){
+            startActivity(new Intent(this, AboutActivity.class));
+        } else if (id == R.id.settings) {
             drawer.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this,SettingsActivity.class));
-        }
-        else if(id==R.id.nav_review){
+            startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.nav_review) {
             drawer.closeDrawer(GravityCompat.START);
-            if(Utils.isConnected(this)){
+            if (Utils.isConnected(this)) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName()));
-                if(intent.resolveActivity(getPackageManager())!=null)
-                {
+                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
+                if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
+                } else {
+                    Toast.makeText(this, "Error Opening Play Store.", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    Toast.makeText(this,"Error Opening Play Store.",Toast.LENGTH_SHORT).show();
-                }
-            }
-            else
-                Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
+            } else
+                Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
         }
         return true;
     }
@@ -329,18 +308,18 @@ public class LaunchingActivity extends AppCompatActivity
     /**
      * Power up the on click listeners of items in home grid
      */
-    private void powerUpOnClickListeners(){
+    private void powerUpOnClickListeners() {
         findViewById(R.id.qpapers).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final SharedPreferences pref = LaunchingActivity.this.getSharedPreferences("user",Context.MODE_PRIVATE);
-                if(pref.getBoolean("remember_program",false) && pref.getInt("pos",-1) >= 0){
-                    intentSemActivity(pref.getInt("pos",0), pref.getString("program",null));
-                }else {
+                final SharedPreferences pref = LaunchingActivity.this.getSharedPreferences("user", Context.MODE_PRIVATE);
+                if (pref.getBoolean("remember_program", false) && pref.getInt("pos", -1) >= 0) {
+                    intentSemActivity(pref.getInt("pos", 0), pref.getString("program", null));
+                } else {
                     final AlertDialog.Builder programs_builder = new AlertDialog.Builder(LaunchingActivity.this);
                     programs_builder.setCancelable(true);
                     programs_builder.setTitle("Choose your program");
-                    final String [] categories = {"B.Tech","BA Communication","MA Communication","Integrated MSc & MA","MCA","MSW","M.Tech"};
+                    final String[] categories = {"B.Tech", "BA Communication", "MA Communication", "Integrated MSc & MA", "MCA", "MSW", "M.Tech"};
                     final ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(LaunchingActivity.this, android.R.layout.simple_list_item_1, categories);
                     programs_builder.setItems(categories, new DialogInterface.OnClickListener() {
                         @Override
@@ -356,7 +335,7 @@ public class LaunchingActivity extends AppCompatActivity
                                         public void onClick(DialogInterface dialog, int which) {
                                             ed.putBoolean("remember_program", true);
                                             ed.putInt("pos", position);
-                                            ed.putString("program",dataAdapter.getItem(position));
+                                            ed.putString("program", dataAdapter.getItem(position));
                                             intentSemActivity(position, dataAdapter.getItem(position));
                                             ed.apply();
                                         }
@@ -366,7 +345,7 @@ public class LaunchingActivity extends AppCompatActivity
                                         public void onClick(DialogInterface dialog, int which) {
                                             ed.putBoolean("remember_program", false);
                                             ed.putInt("pos", -1);
-                                            ed.putString("program",null);
+                                            ed.putString("program", null);
                                             ed.apply();
                                             intentSemActivity(position, dataAdapter.getItem(position));
                                         }
@@ -386,7 +365,7 @@ public class LaunchingActivity extends AppCompatActivity
                                 }
 
                             } else {
-                               Toast.makeText(LaunchingActivity.this, "Device not connected to Internet.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LaunchingActivity.this, "Device not connected to Internet.", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -399,29 +378,29 @@ public class LaunchingActivity extends AppCompatActivity
         findViewById(R.id.student_timetable).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LaunchingActivity.this,AcademicTimetableActivity.class));
+                startActivity(new Intent(LaunchingActivity.this, AcademicTimetableActivity.class));
             }
         });
 
         findViewById(R.id.faculty_timetable).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LaunchingActivity.this,FacultyTimetableActivity.class));
+                startActivity(new Intent(LaunchingActivity.this, FacultyTimetableActivity.class));
             }
         });
         findViewById(R.id.exam_schedule).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Utils.isConnected(LaunchingActivity.this))
-                    startActivity(new Intent(LaunchingActivity.this,ExamCategoryActivity.class));
+                if (Utils.isConnected(LaunchingActivity.this))
+                    startActivity(new Intent(LaunchingActivity.this, ExamCategoryActivity.class));
                 else
-                    Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
+                    Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
             }
         });
         findViewById(R.id.aums).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LaunchingActivity.this,LoginActivity.class));
+                startActivity(new Intent(LaunchingActivity.this, LoginActivity.class));
             }
         });
 
@@ -445,7 +424,7 @@ public class LaunchingActivity extends AppCompatActivity
         findViewById(R.id.curriculum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Utils.isConnected(LaunchingActivity.this)) {
+                if (Utils.isConnected(LaunchingActivity.this)) {
                     final CharSequence[] depts = {"Computer Science Engineering", "Electronics & Communication Engineering", "Aerospace Engineering", "Civil Engineering", "Chemical Engineering", "Electrical & Electronics Engineering", "Electronics & Instrumentation Engineering", "Mechanical Engineering"};
                     AlertDialog.Builder departmentDialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
                     departmentDialogBuilder.setTitle("Select your Department");
@@ -458,8 +437,8 @@ public class LaunchingActivity extends AppCompatActivity
                     });
                     AlertDialog departmentDialog = departmentDialogBuilder.create();
                     departmentDialog.show();
-                }else
-                    Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
+                } else
+                    Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
             }
         });
         findViewById(R.id.downloads).setOnClickListener(new View.OnClickListener() {
@@ -474,25 +453,26 @@ public class LaunchingActivity extends AppCompatActivity
                 if (Utils.isConnected(LaunchingActivity.this))
                     startActivity(new Intent(LaunchingActivity.this, WifiStatusActivity.class));
                 else
-                    Utils.showSnackBar(LaunchingActivity.this,"Device not connected to internet");
+                    Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
             }
         });
     }
 
     /**
      * Sends an intent to semester activity with the selected program
+     *
      * @param position
      * @param title
      */
-    private void intentSemActivity(int position,String title){
+    private void intentSemActivity(int position, String title) {
         Bundle params = new Bundle();
         params.putString("Department", title);
-        Log.e("Dept",title);
+        Log.e("Dept", title);
         mFirebaseAnalytics.logEvent("EventDept", params);
 
-        Intent intent=new Intent(LaunchingActivity.this,SemesterActivity.class);
-        intent.putExtra("course",position);
-        intent.putExtra("pageTitle",title);
+        Intent intent = new Intent(LaunchingActivity.this, SemesterActivity.class);
+        intent.putExtra("course", position);
+        intent.putExtra("pageTitle", title);
         startActivity(intent);
     }
 
@@ -506,7 +486,7 @@ public class LaunchingActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        active=false;
+        active = false;
     }
 
     @Override

@@ -45,4 +45,5 @@
 
 
     <string name="site_change">Site\'s structure has changed. Please wait until I catch up.</string>
+    <string name="add_widget">Add widget</string>
 </resources>

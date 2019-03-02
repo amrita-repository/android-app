@@ -41,7 +41,7 @@ import in.co.rajkumaar.amritarepo.aums.models.HomeItem;
 public class HomeItemAdapter extends ArrayAdapter<HomeItem> {
 
     public HomeItemAdapter(Context context, ArrayList<HomeItem> HomeItems) {
-        super(context, 0,HomeItems);
+        super(context, 0, HomeItems);
     }
 
 
@@ -49,13 +49,13 @@ public class HomeItemAdapter extends ArrayAdapter<HomeItem> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItemView = convertView;
-        if(listItemView == null) {
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.home_item, parent, false);
         }
 
 
-        final HomeItem current=getItem(position);
+        final HomeItem current = getItem(position);
 
 
         TextView title = listItemView.findViewById(R.id.title);
@@ -63,8 +63,6 @@ public class HomeItemAdapter extends ArrayAdapter<HomeItem> {
 
         title.setText(current.getName());
         imageView.setImageResource(current.getImage());
-
-
 
 
         return listItemView;

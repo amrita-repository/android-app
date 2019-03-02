@@ -26,9 +26,9 @@ package in.co.rajkumaar.amritarepo.downloads;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,19 +38,19 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 
-import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
-import in.co.rajkumaar.amritarepo.downloads.adapters.DownloadsItemAdapter;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.downloads.adapters.DownloadsItemAdapter;
+import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 
 public class DeleteFilesActivity extends AppCompatActivity {
 
-    final String dirPath= Environment.getExternalStorageDirectory() + "/AmritaRepo";
+    final String dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
     File dir;
     File[] files;
     ListView listView;
-    private ArrayList<DownloadsItem> fileList;
     ArrayAdapter<DownloadsItem> fileAdapter;
     int count;
+    private ArrayList<DownloadsItem> fileList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +58,21 @@ public class DeleteFilesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_delete_files);
         dir = new File(dirPath);
         fileList = new ArrayList<DownloadsItem>();
-        listView=findViewById(R.id.list);
+        listView = findViewById(R.id.list);
         retrieveFiles();
         listFiles();
 
-        Button delete=findViewById(R.id.delete);
+        Button delete = findViewById(R.id.delete);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count=0;
-                for(int i=0;i<fileList.size();++i){
-                    if(fileList.get(i).getCheckBox()){
-                      count++;
+                count = 0;
+                for (int i = 0; i < fileList.size(); ++i) {
+                    if (fileList.get(i).getCheckBox()) {
+                        count++;
                     }
                 }
-                if(count>0) {
+                if (count > 0) {
                     final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DeleteFilesActivity.this);
                     alertDialog.setMessage("Are you sure you want to delete these " + count + " files? ");
                     alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -97,7 +97,7 @@ public class DeleteFilesActivity extends AppCompatActivity {
                         }
                     });
                     alertDialog.show();
-                }else{
+                } else {
                     Toast.makeText(DeleteFilesActivity.this, "You have not selected any file.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -105,21 +105,23 @@ public class DeleteFilesActivity extends AppCompatActivity {
 
 
     }
-    void retrieveFiles(){
+
+    void retrieveFiles() {
         files = dir.listFiles();
         fileList.clear();
-        if(files!=null) {
+        if (files != null) {
             for (File file : files) {
-                    fileList.add(new DownloadsItem(file,(file.length()/1024)+ " kb",false));
+                fileList.add(new DownloadsItem(file, (file.length() / 1024) + " kb", false));
             }
         }
     }
-    void listFiles(){
-        if(!fileList.isEmpty()) {
+
+    void listFiles() {
+        if (!fileList.isEmpty()) {
             fileAdapter = new DownloadsItemAdapter(this, fileList);
             final ListView downloads = listView;
             downloads.setAdapter(fileAdapter);
-        }else{
+        } else {
             finish();
         }
     }

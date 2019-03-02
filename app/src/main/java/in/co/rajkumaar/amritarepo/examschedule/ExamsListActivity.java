@@ -27,17 +27,14 @@ package in.co.rajkumaar.amritarepo.examschedule;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,38 +52,38 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.OpenTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
-import in.co.rajkumaar.amritarepo.papers.SubjectsActivity;
 
 public class ExamsListActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
     String url_exams;
 
-    ArrayList<String> texts,links;
+    ArrayList<String> texts, links;
     int block;
-    private ListView listView;
     ArrayAdapter<String> adapter;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exams_under_each_dept);
-        progressBar=findViewById(R.id.progressBar);
-        url_exams=getResources().getString(R.string.url_exams);
-        listView=findViewById(R.id.list);
-        block=getIntent().getExtras().getInt("block");
+        progressBar = findViewById(R.id.progressBar);
+        url_exams = getResources().getString(R.string.url_exams);
+        listView = findViewById(R.id.list);
+        block = getIntent().getExtras().getInt("block");
 
-        texts=new ArrayList<>();
-        links=new ArrayList<>();
+        texts = new ArrayList<>();
+        links = new ArrayList<>();
 
         new getExams().execute();
     }
 
 
     @SuppressLint("StaticFieldLeak")
-    class getExams extends AsyncTask<Void,Void,Void>{
-        Document document=null;
+    class getExams extends AsyncTask<Void, Void, Void> {
+        Document document = null;
         Elements ul_lists;
+
         @Override
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
@@ -100,7 +97,7 @@ public class ExamsListActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             try {
                 document = Jsoup.connect(url_exams).get();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -184,9 +181,9 @@ public class ExamsListActivity extends AppCompatActivity {
 
                     }
                 });
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(ExamsListActivity.this,"Unexpected error. Please try again later",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ExamsListActivity.this, "Unexpected error. Please try again later", Toast.LENGTH_SHORT).show();
                 finish();
             }
 

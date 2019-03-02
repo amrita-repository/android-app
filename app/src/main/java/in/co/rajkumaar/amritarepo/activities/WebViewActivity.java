@@ -24,39 +24,33 @@
 
 package in.co.rajkumaar.amritarepo.activities;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
+import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import in.co.rajkumaar.amritarepo.R;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
-
 public class WebViewActivity extends AppCompatActivity {
 
 
-    ProgressDialog dialog ;
+    ProgressDialog dialog;
+
     @Override
     protected void onDestroy() {
         dismissProgressDialog();
         super.onDestroy();
     }
-    public void dismissProgressDialog(){
+
+    public void dismissProgressDialog() {
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
-    public void showProgressDialog(){
+
+    public void showProgressDialog() {
 
         dialog.setMessage("Loading..");
         dialog.setCancelable(false);
@@ -75,10 +69,10 @@ public class WebViewActivity extends AppCompatActivity {
             this.setTitle(b.getString("title"));
             WebView mywebview = (WebView) findViewById(R.id.webView);
             mywebview.getSettings().setJavaScriptEnabled(true);
-            dialog= new ProgressDialog(WebViewActivity.this);
+            dialog = new ProgressDialog(WebViewActivity.this);
             mywebview.setDrawingCacheBackgroundColor(getResources().getColor(R.color.colorBackground));
             mywebview.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-            if(b.getBoolean("zoom")) {
+            if (b.getBoolean("zoom")) {
                 mywebview.getSettings().setSupportZoom(true);
                 mywebview.getSettings().setBuiltInZoomControls(true);
             }
@@ -97,7 +91,7 @@ public class WebViewActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             finish();
-            Toast.makeText(WebViewActivity.this,"Unexpected error. Please try again later",Toast.LENGTH_SHORT).show();
+            Toast.makeText(WebViewActivity.this, "Unexpected error. Please try again later", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -34,9 +34,9 @@ public class Client {
     private PersistentCookieStore cookieStore;
 
 
-    public Client(Context context){
+    public Client(Context context) {
         client = new AsyncHttpClient();
-        cookieStore=new PersistentCookieStore(context);
+        cookieStore = new PersistentCookieStore(context);
         client.setEnableRedirects(true);
         client.setTimeout(10);
         cookieStore.clear();
@@ -49,7 +49,7 @@ public class Client {
         return client;
     }
 
-    public void clearCookie(){
+    public void clearCookie() {
         cookieStore.clear();
     }
 }

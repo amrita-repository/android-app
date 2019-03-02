@@ -24,22 +24,19 @@
 
 package in.co.rajkumaar.amritarepo.timings;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class TimingsActivity extends AppCompatActivity {
 
@@ -59,65 +56,42 @@ public class TimingsActivity extends AppCompatActivity {
         loadData(type);
 
         ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items) {
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.timing_item, null);
+            @NonNull
+            @Override
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = getLayoutInflater().inflate(R.layout.timing_item, null);
+                }
+                DataItem item = getItem(position);
+                ((TextView) convertView.findViewById(R.id.name)).setText(item.name);
+                String font_color = "<font color='#b71c1c'>";
+
+                if (item.from.equals("cbe"))
+                    ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Coimbatore at " + font_color + item.departure + "</font>"));
+                if (item.from.equals("etmd"))
+                    ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Ettimadai at " + font_color + item.departure + "</font>"));
+                if (item.from.equals("pkd"))
+                    ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Palghat at " + font_color + item.departure + "</font>"));
+
+                if (item.to.equals("cbe"))
+                    ((TextView) convertView.findViewById(R.id.arrival)).setText(Html.fromHtml("Reaches Coimbatore at " + font_color + item.arrival + "</font>"));
+                if (item.to.equals("etmd"))
+                    ((TextView) convertView.findViewById(R.id.arrival)).setText(Html.fromHtml("Reaches Ettimadai at " + font_color + item.arrival + "</font>"));
+                if (item.to.equals("pkd"))
+                    ((TextView) convertView.findViewById(R.id.arrival)).setText(Html.fromHtml("Reaches Palghat at " + font_color + item.arrival + "</font>"));
+
+                if (item.days.equals("All Days"))
+                    ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days"));
+                else
+                    ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days " + item.days));
+
+                return convertView;
             }
-            DataItem item = getItem(position);
-            ((TextView) convertView.findViewById(R.id.name)).setText(item.name);
-            String font_color = "<font color='#b71c1c'>";
-
-            if (item.from.equals("cbe"))
-                ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Coimbatore at " +font_color + item.departure + "</font>"));
-            if (item.from.equals("etmd"))
-                ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Ettimadai at " +font_color+ item.departure + "</font>"));
-            if (item.from.equals("pkd"))
-                ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Palghat at " +font_color+ item.departure + "</font>"));
-
-            if (item.to.equals("cbe"))
-                ((TextView) convertView.findViewById(R.id.arrival)).setText(Html.fromHtml("Reaches Coimbatore at "+font_color + item.arrival + "</font>"));
-            if (item.to.equals("etmd"))
-                ((TextView) convertView.findViewById(R.id.arrival)).setText(Html.fromHtml("Reaches Ettimadai at "+font_color + item.arrival + "</font>"));
-            if (item.to.equals("pkd"))
-                ((TextView) convertView.findViewById(R.id.arrival)).setText(Html.fromHtml("Reaches Palghat at "+font_color + item.arrival + "</font>"));
-
-            if (item.days.equals("All Days"))
-                ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days"));
-            else
-                ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days " + item.days));
-
-            return convertView;
-        }
-    };
+        };
         listView.setAdapter(dataItemArrayAdapter);
         listView.setTextFilterEnabled(true);
         listView.setItemsCanFocus(false);
-}
-
-
-
-    class DataItem {
-        String name;
-        String days;
-        String departure;
-        String arrival;
-        String from;
-        String to;
-        String type;
-
-        DataItem(String name, String days, String departure, String arrival, String from, String to, String type) {
-            this.name = name;
-            this.days = days;
-            this.departure = departure;
-            this.arrival = arrival;
-            this.from = from;
-            this.to = to;
-            this.type = type;
-        }
     }
-
 
     private void loadData(String type) {
         items = new ArrayList<>();
@@ -517,6 +491,26 @@ public class TimingsActivity extends AppCompatActivity {
                     "cbe",
                     "bus"
             ));
+        }
+    }
+
+    class DataItem {
+        String name;
+        String days;
+        String departure;
+        String arrival;
+        String from;
+        String to;
+        String type;
+
+        DataItem(String name, String days, String departure, String arrival, String from, String to, String type) {
+            this.name = name;
+            this.days = days;
+            this.departure = departure;
+            this.arrival = arrival;
+            this.from = from;
+            this.to = to;
+            this.type = type;
         }
     }
 

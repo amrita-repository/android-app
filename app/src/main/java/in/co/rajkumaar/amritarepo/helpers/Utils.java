@@ -35,8 +35,6 @@ import android.widget.Toast;
 
 import java.util.Objects;
 
-import in.co.rajkumaar.amritarepo.R;
-
 public class Utils {
 
     public static boolean isConnected(Context context) {
@@ -52,23 +50,22 @@ public class Utils {
     }
 
 
-
-    public static void showSnackBar(Context context,String message){
-        View parentLayout = ((Activity)context).findViewById(android.R.id.content);
+    public static void showSnackBar(Context context, String message) {
+        View parentLayout = ((Activity) context).findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar
                 .make(parentLayout, message, Snackbar.LENGTH_SHORT);
         snackbar.show();
     }
 
-    public static void hideKeyboard(Context context){
+    public static void hideKeyboard(Context context) {
         InputMethodManager inputManager = (InputMethodManager)
                 context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(inputManager.isAcceptingText())
+        if (inputManager.isAcceptingText())
             inputManager.hideSoftInputFromWindow(Objects.requireNonNull(((Activity) context).getCurrentFocus()).getWindowToken(),
                     InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public static void showToast(Context context,String msg){
-        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
+    public static void showToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 }

@@ -28,9 +28,9 @@ public class HomeItem {
     private String name;
     private int image;
 
-    public HomeItem(String name,int image){
-        this.name=name;
-        this.image=image;
+    public HomeItem(String name, int image) {
+        this.name = name;
+        this.image = image;
     }
 
     public int getImage() {

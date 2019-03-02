@@ -28,11 +28,10 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,22 +55,24 @@ import java.util.Objects;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.aums.models.HomeItem;
 import in.co.rajkumaar.amritarepo.aums.helpers.HomeItemAdapter;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
+import in.co.rajkumaar.amritarepo.aums.models.HomeItem;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 import static android.view.View.GONE;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TextView name,username,cgpa;
+    TextView name, username, cgpa;
     ImageView pic;
     ListView list;
     String semester;
     AsyncHttpClient client;
-    private Map<String, String> semesterMapping;
     ProgressBar image_progress;
+    boolean doubleBackToExitPressedOnce = false;
+    private Map<String, String> semesterMapping;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,33 +80,32 @@ public class HomeActivity extends AppCompatActivity {
         try {
             Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        if(!UserData.loggedin)
-        {
+        if (!UserData.loggedin) {
             finish();
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
         semesterMapping = new HashMap<>();
-        name=findViewById(R.id.name);
-        username=findViewById(R.id.username);
-        cgpa=findViewById(R.id.cgpa);
-        pic=findViewById(R.id.userImage);
-        list=findViewById(R.id.list);
-        image_progress=findViewById(R.id.image_progress);
+        name = findViewById(R.id.name);
+        username = findViewById(R.id.username);
+        cgpa = findViewById(R.id.cgpa);
+        pic = findViewById(R.id.userImage);
+        list = findViewById(R.id.list);
+        image_progress = findViewById(R.id.image_progress);
 
         client = UserData.client;
         setData();
         ArrayList<HomeItem> items = new ArrayList<>();
 
-        items.add(new HomeItem("Attendance Status",R.drawable.attendance));
-        items.add(new HomeItem("Grades",R.drawable.grades));
-        items.add(new HomeItem("Marks",R.drawable.marks));
+        items.add(new HomeItem("Attendance Status", R.drawable.attendance));
+        items.add(new HomeItem("Grades", R.drawable.grades));
+        items.add(new HomeItem("Marks", R.drawable.marks));
 
         loadSemesterMapping();
 
-        HomeItemAdapter homeItemAdapter = new HomeItemAdapter(this,items);
+        HomeItemAdapter homeItemAdapter = new HomeItemAdapter(this, items);
 
         list.setAdapter(homeItemAdapter);
 
@@ -120,20 +120,19 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
 
-    void getPhoto(final AsyncHttpClient client){
+    void getPhoto(final AsyncHttpClient client) {
 
         RequestParams params = new RequestParams();
-        params.add("action","UMS-SRMHR_SHOW_PERSON_PHOTO");
-        params.add("personId",UserData.uuid);
+        params.add("action", "UMS-SRMHR_SHOW_PERSON_PHOTO");
+        params.add("personId", UserData.uuid);
 
-        client.addHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+        client.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
         client.get(UserData.domain + "/aums/FileUploadServlet", params, new FileAsyncHttpResponseHandler(HomeActivity.this) {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
@@ -151,8 +150,6 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-
-
     private void semesterPicker(final int position) {
         final String[] items = {"1", "2", "Vacation 1", "3", "4", "Vacation 2", "5", "6", "Vacation 3", "7", "8", "Vacation 4", "9", "10", "Vacation 5", "11", "12", "Vacation 6", "13", "14", "15"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -162,32 +159,33 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
                 semester = semesterMapping.get(items[pos]);
-                if(Utils.isConnected(HomeActivity.this)){
-                 switch (position){
-                     case 0 : startActivity(new Intent(HomeActivity.this,AttendanceActivity.class).putExtra("sem",semester));
-                                break;
-                     case 1 : startActivity(new Intent(HomeActivity.this,GradesActivity.class).putExtra("sem",semester));
-                                break;
-                     case 2:
-                         startActivity(new Intent(HomeActivity.this,MarksActivity.class).putExtra("sem",semester));
-                         break;
-                 }
-                }
-                else{
-                    Toast.makeText(HomeActivity.this,"Please connect to internet",Toast.LENGTH_LONG).show();
+                if (Utils.isConnected(HomeActivity.this)) {
+                    switch (position) {
+                        case 0:
+                            startActivity(new Intent(HomeActivity.this, AttendanceActivity.class).putExtra("sem", semester));
+                            break;
+                        case 1:
+                            startActivity(new Intent(HomeActivity.this, GradesActivity.class).putExtra("sem", semester));
+                            break;
+                        case 2:
+                            startActivity(new Intent(HomeActivity.this, MarksActivity.class).putExtra("sem", semester));
+                            break;
+                    }
+                } else {
+                    Toast.makeText(HomeActivity.this, "Please connect to internet", Toast.LENGTH_LONG).show();
                 }
             }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
     @SuppressLint("SetTextI18n")
-    void setData(){
+    void setData() {
         name.setText(UserData.name);
         username.setText(UserData.username);
-        cgpa.setText("Current CGPA : "+UserData.CGPA);
+        cgpa.setText("Current CGPA : " + UserData.CGPA);
     }
-
 
     private void loadSemesterMapping() {
         semesterMapping.clear();
@@ -214,7 +212,6 @@ public class HomeActivity extends AppCompatActivity {
         semesterMapping.put("15", "219");
     }
 
-    boolean doubleBackToExitPressedOnce = false;
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -223,7 +220,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Utils.showSnackBar(this,"Press back again to logout of AUMS");
+        Utils.showSnackBar(this, "Press back again to logout of AUMS");
         //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
@@ -231,7 +228,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 2000);
 
@@ -254,12 +251,12 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto","rajkumaar2304@gmail.com", null));
+                    "mailto", "rajkumaar2304@gmail.com", null));
             it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
-            it.putExtra(Intent.EXTRA_EMAIL, new String[] {"rajkumaar2304@gmail.com"});
-            if(it.resolveActivity(getPackageManager())!=null)
+            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
+            if (it.resolveActivity(getPackageManager()) != null)
                 startActivity(it);
-        }else if(id == R.id.home)
+        } else if (id == R.id.home)
             onBackPressed();
 
         return super.onOptionsItemSelected(item);

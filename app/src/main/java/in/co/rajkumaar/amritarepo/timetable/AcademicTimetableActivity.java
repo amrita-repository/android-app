@@ -31,18 +31,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,20 +47,20 @@ import java.util.List;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.WebViewActivity;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class AcademicTimetableActivity extends AppCompatActivity {
 
     public String TIMETABLE_URL;
-    public Spinner year,course,branch,sem,batch;
-    List<String> years=new ArrayList<>();
-    List<String> courses=new ArrayList<>();
-    List<String> branches=new ArrayList<>();
-    List<String> sems=new ArrayList<>();
-    List<String> batches=new ArrayList<>();
+    public Spinner year, course, branch, sem, batch;
+    List<String> years = new ArrayList<>();
+    List<String> courses = new ArrayList<>();
+    List<String> branches = new ArrayList<>();
+    List<String> sems = new ArrayList<>();
+    List<String> batches = new ArrayList<>();
     SharedPreferences pref;
     SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,24 +68,22 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(AcademicTimetableActivity.this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        1);
+            ActivityCompat.requestPermissions(AcademicTimetableActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1);
 
         }
         setContentView(R.layout.activity_timetable);
-        pref=getSharedPreferences("student_timetable",MODE_PRIVATE);
-        editor=pref.edit();
+        pref = getSharedPreferences("student_timetable", MODE_PRIVATE);
+        editor = pref.edit();
         new clearCache().clear();
 
 
-
-
-        year=findViewById(R.id.acad_year);
-        course=findViewById(R.id.acad_course);
-        branch=findViewById(R.id.acad_branch);
-        sem=findViewById(R.id.acad_sem);
-        batch=findViewById(R.id.acad_batch);
+        year = findViewById(R.id.acad_year);
+        course = findViewById(R.id.acad_course);
+        branch = findViewById(R.id.acad_branch);
+        sem = findViewById(R.id.acad_sem);
+        batch = findViewById(R.id.acad_batch);
 
         loadLists();
         loadFromPref();
@@ -105,20 +100,20 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         });
     }
 
-    private void loadFromPref(){
-        buildBranchesSpinner(pref.getInt("course",0));
-        year.setSelection(pref.getInt("year",0));
-        course.setSelection(pref.getInt("course",0));
-        sem.setSelection(pref.getInt("sem",0));
-        batch.setSelection(pref.getInt("batch",0));
+    private void loadFromPref() {
+        buildBranchesSpinner(pref.getInt("course", 0));
+        year.setSelection(pref.getInt("year", 0));
+        course.setSelection(pref.getInt("course", 0));
+        sem.setSelection(pref.getInt("sem", 0));
+        batch.setSelection(pref.getInt("batch", 0));
     }
 
-    private void savePref(){
-        editor.putInt("year",year.getSelectedItemPosition());
-        editor.putInt("course",course.getSelectedItemPosition());
-        editor.putInt("branch",branch.getSelectedItemPosition());
-        editor.putInt("sem",sem.getSelectedItemPosition());
-        editor.putInt("batch",batch.getSelectedItemPosition());
+    private void savePref() {
+        editor.putInt("year", year.getSelectedItemPosition());
+        editor.putInt("course", course.getSelectedItemPosition());
+        editor.putInt("branch", branch.getSelectedItemPosition());
+        editor.putInt("sem", sem.getSelectedItemPosition());
+        editor.putInt("batch", batch.getSelectedItemPosition());
         editor.apply();
     }
 
@@ -129,147 +124,155 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    private void buildTimetableUrl(){
-        switch (year.getSelectedItemPosition())
-        {
-            case 1:TIMETABLE_URL+="2015_16"+"/"; break;
-            case 2:TIMETABLE_URL+="2016_17"+"/"; break;
-            case 3:TIMETABLE_URL+="2017_18"+"/"; break;
-            case 4:TIMETABLE_URL+="2018_19"+"/"; break;
-            case 5:TIMETABLE_URL+="2019_20"+"/"; break;
-            case 6:TIMETABLE_URL+="2020_21"+"/"; break;
-            case 7:TIMETABLE_URL+="2021_22"+"/"; break;
+    private void buildTimetableUrl() {
+        switch (year.getSelectedItemPosition()) {
+            case 1:
+                TIMETABLE_URL += "2015_16" + "/";
+                break;
+            case 2:
+                TIMETABLE_URL += "2016_17" + "/";
+                break;
+            case 3:
+                TIMETABLE_URL += "2017_18" + "/";
+                break;
+            case 4:
+                TIMETABLE_URL += "2018_19" + "/";
+                break;
+            case 5:
+                TIMETABLE_URL += "2019_20" + "/";
+                break;
+            case 6:
+                TIMETABLE_URL += "2020_21" + "/";
+                break;
+            case 7:
+                TIMETABLE_URL += "2021_22" + "/";
+                break;
         }
-        TIMETABLE_URL+=course.getSelectedItem()+"/";
-        TIMETABLE_URL+=branch.getSelectedItem()+"/";
-        TIMETABLE_URL+=(String)course.getSelectedItem()+branch.getSelectedItem()+batch.getSelectedItem()+sem.getSelectedItem()+".jpg";
+        TIMETABLE_URL += course.getSelectedItem() + "/";
+        TIMETABLE_URL += branch.getSelectedItem() + "/";
+        TIMETABLE_URL += (String) course.getSelectedItem() + branch.getSelectedItem() + batch.getSelectedItem() + sem.getSelectedItem() + ".jpg";
 
     }
 
-    public void viewTimetable(View view){
+    public void viewTimetable(View view) {
 
-        if(batch.getSelectedItemPosition()>0 && branch.getSelectedItemPosition()>0 && course.getSelectedItemPosition()>0 && sem.getSelectedItemPosition()>0 && year.getSelectedItemPosition()>0){
+        if (batch.getSelectedItemPosition() > 0 && branch.getSelectedItemPosition() > 0 && course.getSelectedItemPosition() > 0 && sem.getSelectedItemPosition() > 0 && year.getSelectedItemPosition() > 0) {
             savePref();
-            TIMETABLE_URL="https://intranet.cb.amrita.edu/TimeTable/PDF/";
+            TIMETABLE_URL = "https://intranet.cb.amrita.edu/TimeTable/PDF/";
             buildTimetableUrl();
-            Intent intent=new Intent(AcademicTimetableActivity.this,WebViewActivity.class);
-            intent.putExtra("webview",TIMETABLE_URL);
-            intent.putExtra("zoom",true);
-            intent.putExtra("title",branch.getSelectedItem()+" "+batch.getSelectedItem()+" - Semester "+sem.getSelectedItem());
-            if(isNetworkAvailable())
-            {
+            Intent intent = new Intent(AcademicTimetableActivity.this, WebViewActivity.class);
+            intent.putExtra("webview", TIMETABLE_URL);
+            intent.putExtra("zoom", true);
+            intent.putExtra("title", branch.getSelectedItem() + " " + batch.getSelectedItem() + " - Semester " + sem.getSelectedItem());
+            if (isNetworkAvailable()) {
                 startActivity(intent);
+            } else {
+                Snackbar.make(view, "Device not connected to Internet", Snackbar.LENGTH_SHORT).show();
             }
-            else{
-                Snackbar.make(view,"Device not connected to Internet",Snackbar.LENGTH_SHORT).show();
-            }}
-        else
-        {
-            Snackbar.make(view,"Please select all the choices",Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(view, "Please select all the choices", Snackbar.LENGTH_SHORT).show();
         }
     }
 
-    public void downloadTimetable(View view){
-        if(batch.getSelectedItemPosition()>0 && branch.getSelectedItemPosition()>0 && course.getSelectedItemPosition()>0 && sem.getSelectedItemPosition()>0 && year.getSelectedItemPosition()>0)
-            {
-                savePref();
-                if (ContextCompat.checkSelfPermission(AcademicTimetableActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+    public void downloadTimetable(View view) {
+        if (batch.getSelectedItemPosition() > 0 && branch.getSelectedItemPosition() > 0 && course.getSelectedItemPosition() > 0 && sem.getSelectedItemPosition() > 0 && year.getSelectedItemPosition() > 0) {
+            savePref();
+            if (ContextCompat.checkSelfPermission(AcademicTimetableActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
 
-                    ActivityCompat.requestPermissions(AcademicTimetableActivity.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            1);
+                ActivityCompat.requestPermissions(AcademicTimetableActivity.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        1);
+            } else {
+                if (isNetworkAvailable()) {
+                    String protocol = "https://";
+                    String intranet = getString(R.string.intranet);
+                    String timetable = getString(R.string.timetable);
+                    TIMETABLE_URL = protocol + intranet + timetable;
+                    buildTimetableUrl();
+                    new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL, 0);
                 } else {
-                    if (isNetworkAvailable()) {
-                        String protocol = "https://";
-                        String intranet = getString(R.string.intranet);
-                        String timetable = getString(R.string.timetable);
-                        TIMETABLE_URL = protocol + intranet + timetable;
-                        buildTimetableUrl();
-                        new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL, 0);
-                    } else {
-                        Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
-                    }
+                    Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
                 }
-            }else{
-                Snackbar.make(view,"Please select all the choices",Snackbar.LENGTH_SHORT).show();
             }
+        } else {
+            Snackbar.make(view, "Please select all the choices", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
-    private void buildBranchesSpinner(int courseID)
-    {
-                branches=new ArrayList<>();
-                branches.add("[Choose Branch]");
-                switch (courseID) {
-                    case 1:
-                        branches.add("AEE");
-                        branches.add("CHE");
-                        branches.add("CIE");
-                        branches.add("CVI");
-                        branches.add("CSE");
-                        branches.add("ECE");
-                        branches.add("EEE");
-                        branches.add("EIE");
-                        branches.add("MEE");
-                        break;
-                    case 2:
-                        branches.add("MAC");
-                        branches.add("ENG");
-                        break;
-                    case 3:
-                        branches.add("CHE");
-                        branches.add("MAT");
-                        branches.add("PHY");
-                        break;
-                    case 4:
-                        branches.add("ATE");
-                        branches.add("ATL");
-                        branches.add("BME");
-                        branches.add("CEN");
-                        branches.add("CHE");
-                        branches.add("CIE");
-                        branches.add("CSE");
-                        branches.add("CSP");
-                        branches.add("CVI");
-                        branches.add("CYS");
-                        branches.add("EBS");
-                        branches.add("EDN");
-                        branches.add("MFG");
-                        branches.add("MSE");
-                        branches.add("PWE");
-                        branches.add("RET");
-                        branches.add("RSW");
-                        branches.add("SCE");
-                        branches.add("VLD");
-                        break;
-                    case 5:
-                        branches.add("CMN");
-                        branches.add("MAC");
-                        branches.add("ENG");
-                        break;
-                    case 6:
-                        branches.add("MBA");
-                        break;
-                    case 7:
-                        branches.add("MCA");
-                        break;
-                    case 8:
-                        branches.add("MSW");
-                        break;
-                    case 9:
-                        branches.add("JLM");
-                        break;
-                }
-            ArrayAdapter<String> courseAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, branches);
-            courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            branch.setAdapter(courseAdapter);
-            branch.setSelection(pref.getInt("branch",0));
+    private void buildBranchesSpinner(int courseID) {
+        branches = new ArrayList<>();
+        branches.add("[Choose Branch]");
+        switch (courseID) {
+            case 1:
+                branches.add("AEE");
+                branches.add("CHE");
+                branches.add("CIE");
+                branches.add("CVI");
+                branches.add("CSE");
+                branches.add("ECE");
+                branches.add("EEE");
+                branches.add("EIE");
+                branches.add("MEE");
+                break;
+            case 2:
+                branches.add("MAC");
+                branches.add("ENG");
+                break;
+            case 3:
+                branches.add("CHE");
+                branches.add("MAT");
+                branches.add("PHY");
+                break;
+            case 4:
+                branches.add("ATE");
+                branches.add("ATL");
+                branches.add("BME");
+                branches.add("CEN");
+                branches.add("CHE");
+                branches.add("CIE");
+                branches.add("CSE");
+                branches.add("CSP");
+                branches.add("CVI");
+                branches.add("CYS");
+                branches.add("EBS");
+                branches.add("EDN");
+                branches.add("MFG");
+                branches.add("MSE");
+                branches.add("PWE");
+                branches.add("RET");
+                branches.add("RSW");
+                branches.add("SCE");
+                branches.add("VLD");
+                break;
+            case 5:
+                branches.add("CMN");
+                branches.add("MAC");
+                branches.add("ENG");
+                break;
+            case 6:
+                branches.add("MBA");
+                break;
+            case 7:
+                branches.add("MCA");
+                break;
+            case 8:
+                branches.add("MSW");
+                break;
+            case 9:
+                branches.add("JLM");
+                break;
+        }
+        ArrayAdapter<String> courseAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, branches);
+        courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        branch.setAdapter(courseAdapter);
+        branch.setSelection(pref.getInt("branch", 0));
     }
 
-    private void loadLists(){
+    private void loadLists() {
 
-        courses=new ArrayList<>();
+        courses = new ArrayList<>();
         courses.add("[Choose course]");
         courses.add("BTech");
         courses.add("BA");
@@ -284,10 +287,10 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         course.setAdapter(courseAdapter);
 
-        sems=new ArrayList<>();
+        sems = new ArrayList<>();
         sems.add("[Choose semester]");
         int i = 1;
-        while(i<=10){
+        while (i <= 10) {
             sems.add(String.valueOf(i++));
         }
         ArrayAdapter<String> semAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, sems);

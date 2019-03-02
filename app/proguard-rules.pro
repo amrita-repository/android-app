@@ -23,3 +23,5 @@
 -dontwarn okio.**
 -dontwarn javax.annotation.**
 -dontwarn org.conscrypt.**
+-keep class com.shockwave.**
+

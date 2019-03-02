@@ -30,16 +30,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.downloads.fragments.DocumentsFragment;
 import in.co.rajkumaar.amritarepo.downloads.fragments.ImagesFragment;
-import in.co.rajkumaar.amritarepo.R;
 
 public class CategoryAdapter extends FragmentPagerAdapter {
     private Context mContext;
+
     public CategoryAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
+
     /**
      * Return the {@link Fragment} that should be displayed for the given page number.
      */
@@ -50,7 +52,8 @@ public class CategoryAdapter extends FragmentPagerAdapter {
         } else {
             return new ImagesFragment();
 
-    }}
+        }
+    }
 
     /**
      * Return the total number of pages.
@@ -65,7 +68,7 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         if (position == 0) {
             return mContext.getString(R.string.category_docs);
-        } else  {
+        } else {
             return mContext.getString(R.string.category_images);
         }
     }

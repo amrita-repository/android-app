@@ -26,9 +26,9 @@ package in.co.rajkumaar.amritarepo.aums.activities;
 
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,23 +57,22 @@ public class GradesActivity extends AppCompatActivity {
 
     ListView list;
     android.support.v7.app.ActionBar actionBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grades);
-        actionBar=getSupportActionBar();
-        list=findViewById(R.id.list);
+        actionBar = getSupportActionBar();
+        list = findViewById(R.id.list);
 
 
-        UserData.refIndex =1;
+        UserData.refIndex = 1;
 
-        getGrades(UserData.client,getIntent().getStringExtra("sem"));
+        getGrades(UserData.client, getIntent().getStringExtra("sem"));
     }
 
 
-
-
-    void getGrades(final AsyncHttpClient client,final String sem){
+    void getGrades(final AsyncHttpClient client, final String sem) {
         RequestParams params = new RequestParams();
         params.put("htmlPageTopContainer_selectStep", sem);
         params.put("Page_refIndex_hidden", UserData.refIndex++);
@@ -82,7 +81,7 @@ public class GradesActivity extends AppCompatActivity {
         params.put("htmlPageTopContainer_action", "UMS-EVAL_STUDPERFORMSURVEY_CHANGESEM_SCREEN");
         params.put("htmlPageTopContainer_notify", "");
 
-        client.post(UserData.domain+"/aums/Jsp/StudentGrade/StudentPerformanceWithSurvey.jsp?action=UMS-EVAL_STUDPERFORMSURVEY_INIT_SCREEN&isMenu=true&pagePostSerialID=0", params, new AsyncHttpResponseHandler() {
+        client.post(UserData.domain + "/aums/Jsp/StudentGrade/StudentPerformanceWithSurvey.jsp?action=UMS-EVAL_STUDPERFORMSURVEY_INIT_SCREEN&isMenu=true&pagePostSerialID=0", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 {
@@ -97,7 +96,7 @@ public class GradesActivity extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(GradesActivity.this,"Grades unavailable for this semester!",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(GradesActivity.this, "Grades unavailable for this semester!", Toast.LENGTH_LONG).show();
                                     finish();
                                 }
                             });
@@ -120,7 +119,7 @@ public class GradesActivity extends AppCompatActivity {
                                     try {
                                         sgpa = dataHolders.get(1).text();
                                         if (sgpa == null || sgpa.trim().equals("null")) {
-                                            Toast.makeText(GradesActivity.this,"Grades unavailable for this semester!",Toast.LENGTH_LONG).show();
+                                            Toast.makeText(GradesActivity.this, "Grades unavailable for this semester!", Toast.LENGTH_LONG).show();
                                             finish();
                                         }
                                     } catch (Exception e) {
@@ -129,18 +128,18 @@ public class GradesActivity extends AppCompatActivity {
                                 }
                             }
 
-                            try{
-                                actionBar.setTitle("This semester's GPA : "+sgpa);
-                            }catch (NullPointerException e){
+                            try {
+                                actionBar.setTitle("This semester's GPA : " + sgpa);
+                            } catch (NullPointerException e) {
                                 e.printStackTrace();
                             }
-                            GradesAdapter gradesAdapter = new GradesAdapter(GradesActivity.this,courseGradeDataList);
+                            GradesAdapter gradesAdapter = new GradesAdapter(GradesActivity.this, courseGradeDataList);
                             list.setAdapter(gradesAdapter);
                             list.setVisibility(View.VISIBLE);
                             findViewById(R.id.progressBar).setVisibility(View.GONE);
                         }
                     } catch (Exception e) {
-                        Toast.makeText(GradesActivity.this,getString(R.string.site_change),Toast.LENGTH_LONG).show();
+                        Toast.makeText(GradesActivity.this, getString(R.string.site_change), Toast.LENGTH_LONG).show();
                         finish();
                     }
                 }
@@ -148,7 +147,7 @@ public class GradesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(GradesActivity.this,"An error occurred while connecting to server",Toast.LENGTH_LONG).show();
+                Toast.makeText(GradesActivity.this, "An error occurred while connecting to server", Toast.LENGTH_LONG).show();
                 finish();
             }
         });
@@ -156,45 +155,45 @@ public class GradesActivity extends AppCompatActivity {
 
 
     class CourseData {
-        private String code,title,type,grade;
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
-
-        public void setGrade(String grade) {
-            this.grade = grade;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
+        private String code, title, type, grade;
 
         public String getTitle() {
             return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
         }
 
         public String getCode() {
             return code;
         }
 
+        public void setCode(String code) {
+            this.code = code;
+        }
+
         public String getGrade() {
             return grade;
         }
 
+        public void setGrade(String grade) {
+            this.grade = grade;
+        }
+
         public String getType() {
             return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
         }
     }
 
 
     class GradesAdapter extends ArrayAdapter<CourseData> {
         GradesAdapter(Context context, ArrayList<CourseData> HomeItems) {
-            super(context, 0,HomeItems);
+            super(context, 0, HomeItems);
         }
 
 
@@ -202,13 +201,13 @@ public class GradesActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View listItemView = convertView;
-            if(listItemView == null) {
+            if (listItemView == null) {
                 listItemView = LayoutInflater.from(getContext()).inflate(
                         R.layout.grades_item, parent, false);
             }
 
 
-            final CourseData current=getItem(position);
+            final CourseData current = getItem(position);
 
 
             TextView title = listItemView.findViewById(R.id.title);
@@ -216,7 +215,7 @@ public class GradesActivity extends AppCompatActivity {
             TextView grade = listItemView.findViewById(R.id.grade);
             ImageView color = listItemView.findViewById(R.id.circle);
 
-            if(current.getGrade().contains("F"))
+            if (current.getGrade().contains("F"))
                 color.setBackgroundColor(getResources().getColor(R.color.danger));
             else
                 color.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
@@ -224,7 +223,6 @@ public class GradesActivity extends AppCompatActivity {
             code_type.setText(current.getCode() + " - " + current.getType());
             title.setText(current.getTitle());
             grade.setText(current.getGrade());
-
 
 
             return listItemView;

@@ -26,28 +26,28 @@ package in.co.rajkumaar.amritarepo.downloads;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-
 import java.io.File;
 import java.util.ArrayList;
 
-import in.co.rajkumaar.amritarepo.downloads.adapters.CategoryAdapter;
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
+import in.co.rajkumaar.amritarepo.downloads.adapters.CategoryAdapter;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class DownloadsActivity extends AppCompatActivity {
@@ -71,16 +71,29 @@ public class DownloadsActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(DownloadsActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
-        this.recreate();}
+            this.recreate();
+        }
 
 
         new clearCache().clear();
         // Create an adapter that knows which fragment should be shown on each page
-        CategoryAdapter adapter = new CategoryAdapter(this,getSupportFragmentManager());
+        CategoryAdapter adapter = new CategoryAdapter(this, getSupportFragmentManager());
 
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
 
+        if(getIntent().getBooleanExtra("widget",false)) {
+            viewPager.setCurrentItem(1);
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setMessage("Long click on any image here and set as widget image");
+            alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialog.show();
+        }
 
 
         // Find the tab layout that shows the tabs
@@ -109,25 +122,24 @@ public class DownloadsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
             case R.id.delete_multiple:
-                String dirPath= Environment.getExternalStorageDirectory() + "/AmritaRepo";
+                String dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
                 File dir = new File(dirPath);
                 File[] files;
                 files = dir.listFiles();
-                if(files!=null && files.length>0) {
-                    startActivity(new Intent(this,DeleteFilesActivity.class));
+                if (files != null && files.length > 0) {
+                    startActivity(new Intent(this, DeleteFilesActivity.class));
                 }
                 break;
-            case R.id.delete_all:
-            {
-                dirPath=Environment.getExternalStorageDirectory() + "/AmritaRepo";
-                dir=new File(dirPath);
+            case R.id.delete_all: {
+                dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
+                dir = new File(dirPath);
                 final File[] filesList = dir.listFiles();
-                if(filesList!=null && filesList.length>0) {
+                if (filesList != null && filesList.length > 0) {
                     final ArrayList<String> qPaperOptions = new ArrayList<>();
                     qPaperOptions.add("Documents");
                     qPaperOptions.add("Images");
@@ -136,24 +148,24 @@ public class DownloadsActivity extends AppCompatActivity {
                     ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, qPaperOptions);
                     contents.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
                         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
+
                         @Override
                         public void onClick(DialogInterface dialogInterface, int pos) {
                             switch (pos) {
-                                case 0:
-                                {
+                                case 0: {
                                     alertDialog.setMessage("Are you sure you want to delete all documents? ");
                                     alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            boolean flag=false;
+                                            boolean flag = false;
                                             for (File file : filesList) {
-                                                String name=file.getName();
+                                                String name = file.getName();
                                                 if (name.contains(".pdf") || name.contains(".xls") || name.contains(".xlsx")) {
-                                                    flag=true;
+                                                    flag = true;
                                                     file.delete();
                                                 }
                                             }
-                                            if(flag) {
+                                            if (flag) {
                                                 Toast.makeText(DownloadsActivity.this, "All documents deleted", Toast.LENGTH_SHORT).show();
                                                 finish();
                                                 startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
@@ -162,21 +174,20 @@ public class DownloadsActivity extends AppCompatActivity {
                                     });
                                     break;
                                 }
-                                case 1:
-                                {
+                                case 1: {
                                     alertDialog.setMessage("Are you sure you want to delete all images? ");
                                     alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            boolean flag=false;
+                                            boolean flag = false;
                                             for (File file : filesList) {
                                                 String name = file.getName();
                                                 if (name.contains(".jpg")) {
                                                     file.delete();
-                                                    flag=true;
+                                                    flag = true;
                                                 }
                                             }
-                                            if(flag) {
+                                            if (flag) {
                                                 Toast.makeText(DownloadsActivity.this, "All images deleted", Toast.LENGTH_SHORT).show();
                                                 finish();
                                                 startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
@@ -185,18 +196,17 @@ public class DownloadsActivity extends AppCompatActivity {
                                     });
                                     break;
                                 }
-                                case 2:
-                                {
+                                case 2: {
                                     alertDialog.setMessage("Are you sure you want to delete all files? ");
                                     alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            boolean flag=false;
+                                            boolean flag = false;
                                             for (File file : filesList) {
-                                                flag=true;
+                                                flag = true;
                                                 file.delete();
                                             }
-                                            if(flag) {
+                                            if (flag) {
                                                 Toast.makeText(DownloadsActivity.this, "All files deleted", Toast.LENGTH_SHORT).show();
                                                 finish();
                                                 startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));

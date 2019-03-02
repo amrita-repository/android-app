@@ -32,10 +32,10 @@ public class DownloadsItem {
     private String size;
     private boolean checkBox;
 
-    public DownloadsItem(File title, String size, boolean checkBox){
-        this.title=title;
-        this.checkBox=checkBox;
-        this.size=size;
+    public DownloadsItem(File title, String size, boolean checkBox) {
+        this.title = title;
+        this.checkBox = checkBox;
+        this.size = size;
     }
 
     public File getTitle() {
@@ -46,11 +46,11 @@ public class DownloadsItem {
         return checkBox;
     }
 
-    public String getSize() {
-        return size;
+    public void setCheckBox(boolean t) {
+        checkBox = t;
     }
 
-    public void setCheckBox(boolean t){
-        checkBox=t;
+    public String getSize() {
+        return size;
     }
 }

@@ -38,39 +38,39 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 
 public class DownloadsItemAdapter extends ArrayAdapter<DownloadsItem> {
 
-    public DownloadsItemAdapter(Context context, ArrayList<DownloadsItem> downloadsItems){
-        super(context,0,downloadsItems);
+    public DownloadsItemAdapter(Context context, ArrayList<DownloadsItem> downloadsItems) {
+        super(context, 0, downloadsItems);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItemView = convertView;
-        if(listItemView == null) {
+        if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.delete_list_item, parent, false);
         }
 
-        final DownloadsItem current=getItem(position);
+        final DownloadsItem current = getItem(position);
 
-        String name=current.getTitle().getName();
-        final boolean checkbox=current.getCheckBox();
-        String filesize=current.getSize();
+        String name = current.getTitle().getName();
+        final boolean checkbox = current.getCheckBox();
+        String filesize = current.getSize();
 
-        final CheckBox checkBox=listItemView.findViewById(R.id.checkbox);
-        TextView title=listItemView.findViewById(R.id.filename);
-        TextView size=listItemView.findViewById(R.id.filesize);
+        final CheckBox checkBox = listItemView.findViewById(R.id.checkbox);
+        TextView title = listItemView.findViewById(R.id.filename);
+        TextView size = listItemView.findViewById(R.id.filesize);
 
         title.setText(name);
         size.setText(filesize);
         checkBox.setChecked(checkbox);
 
-        LinearLayout container=listItemView.findViewById(R.id.container);
+        LinearLayout container = listItemView.findViewById(R.id.container);
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
