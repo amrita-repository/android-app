@@ -215,12 +215,14 @@ public class GradesActivity extends AppCompatActivity {
             TextView grade = listItemView.findViewById(R.id.grade);
             ImageView color = listItemView.findViewById(R.id.circle);
 
-            if (current.getGrade().contains("F"))
+            if (current.getGrade().contains("F") || current.getGrade().contains("I"))
                 color.setBackgroundColor(getResources().getColor(R.color.danger));
+            else if(current.getGrade().equals("C") || current.getGrade().equals("P"))
+                color.setBackgroundColor(getResources().getColor(R.color.orange));
             else
-                color.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                color.setBackgroundColor(getResources().getColor(R.color.green));
 
-            code_type.setText(current.getCode() + " - " + current.getType());
+            code_type.setText(String.format("%s - %s", current.getCode(), current.getType()));
             title.setText(current.getTitle());
             grade.setText(current.getGrade());
 

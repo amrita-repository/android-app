@@ -27,6 +27,7 @@ package in.co.rajkumaar.amritarepo.aums.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -52,6 +53,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,8 +80,70 @@ public class AttendanceActivity extends AppCompatActivity {
         domain = UserData.domain;
         sem = getIntent().getStringExtra("sem");
         getAttendance(UserData.client, sem);
+        /*list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                getSubjectAttendance(UserData.client);
+            }
+        });*/
     }
 
+    void getSubjectAttendance(final AsyncHttpClient client){
+        RequestParams params = new RequestParams();
+        params.put("htmlPageTopContainer_txtrollnumber","");
+        params.put("Page_refIndex_hidden",UserData.refIndex++);
+        params.put("htmlPageTopContainer_selectSem",sem);
+        params.put("htmlPageTopContainer_selectCourse","35569");
+        params.put("htmlPageTopContainer_selectType","1");
+        params.put("htmlPageTopContainer_hiddentSummary","");
+        params.put("htmlPageTopContainer_status","");
+        params.put("htmlPageTopContainer_action","UMS-ATD_SHOW_ATDREPORTSTUD_SCREEN");
+        params.put("htmlPageTopContainer_notify","");
+        params.put("htmlPageTopContainer_hidrollNo","Student");
+        client.addHeader("Referer","https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
+        client.post(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                client.removeHeader("Referer");
+                client.addHeader("Referer","https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
+                client.get(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=1", new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                        client.removeHeader("Referer");
+                        client.addHeader("Referer","https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
+                        client.get(domain + "/aums/AUMSReportServlet", new FileAsyncHttpResponseHandler(AttendanceActivity.this) {
+                            @Override
+                            public void onFailure(int i, Header[] headers, Throwable throwable, File file) {
+
+                            }
+
+                            @Override
+                            public void onSuccess(int i, Header[] headers, File file) {
+                                try {
+                                    FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory()+"/AmritaRepo/temp");
+                                    fos.write(file.toString().getBytes());
+                                    fos.close();
+                                    Log.e("SUCCESS","File written");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+
+            }
+        });
+    }
 
     void getAttendance(final AsyncHttpClient client, final String sem) {
         RequestParams params = new RequestParams();
@@ -238,15 +303,17 @@ public class AttendanceActivity extends AppCompatActivity {
             TextView comments = listItemView.findViewById(R.id.comments);
 
             assert current != null;
-            if (Math.round(Double.parseDouble(current.getPercentage())) <= 75)
+            int percent = (int)Math.round(Double.parseDouble(current.getPercentage()));
+            if (percent <= 75)
                 color.setBackgroundColor(getResources().getColor(R.color.danger));
+            else if(percent > 75 && percent < 85 )
+                color.setBackgroundColor(getResources().getColor(R.color.orange));
             else
-                color.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                color.setBackgroundColor(getResources().getColor(R.color.green));
 
             percentage.setText(Math.round(Double.parseDouble(current.getPercentage())) + "%");
             title.setText(current.getTitle());
             attended.setText(Html.fromHtml("You attended <b>" + Math.round(Double.parseDouble(current.getAttended())) + "</b> of <b>" + current.getTotal() + "</b> classes"));
-            int percent = (int)Math.round(Double.parseDouble(current.getPercentage()));
             comments.setVisibility(View.VISIBLE);
             if(percent < 95 && percent>75){
                 comments.setText(

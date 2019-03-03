@@ -3,10 +3,10 @@
     <color name="colorPrimary">#075180</color>
     <color name="colorPrimaryDark">#053e63</color>
     <color name="colorAccent">#bf360c</color>
-    <color name="colorBackground">#bbdefb</color>
+    <color name="colorBackground">#E0EDF8</color>
     <color name="black_overlay">#66000000</color>
 
-    <color name="danger">#b71c1c</color>
+    <color name="danger">#C41111</color>
     <color name="yellow">#827717</color>
     <color name="light_grey">#bcaaa4</color>
     <color name="green">#28B62C</color>
