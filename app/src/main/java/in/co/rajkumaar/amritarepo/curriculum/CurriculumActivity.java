@@ -121,11 +121,7 @@ public class CurriculumActivity extends AppCompatActivity {
                     for (int i = 0; i < result.length(); ++i) {
                         ArrayList<String> contents = new ArrayList<>();
                         JSONArray items = result.getJSONArray(i);
-                        int j;
-                        if (dept.equals("eee"))
-                            j = 0;
-                        else
-                            j = 1;
+                        int j=0;
                         for (; j < items.length(); ++j) {
                             if (items.getString(j).isEmpty())
                                 break;

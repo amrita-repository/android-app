@@ -202,6 +202,12 @@ public class AttendanceActivity extends AppCompatActivity {
         void setTotal(String total) {
             this.total = total;
         }
+
+        int getBunkingCount(){
+            return Double.parseDouble(getPercentage()) > 75.0 ?
+                    (int) Math.floor(Math.abs((Double.parseDouble(this.attended) / 76) * 100 - Double.parseDouble(total)))
+                    : (int) Math.ceil(Math.abs(((0.75*(Double.parseDouble(getTotal()))) - Double.parseDouble(getAttended())) / 0.25));
+        }
     }
 
 
@@ -229,6 +235,7 @@ public class AttendanceActivity extends AppCompatActivity {
             TextView attended = listItemView.findViewById(R.id.attended);
             TextView percentage = listItemView.findViewById(R.id.percentage);
             ImageView color = listItemView.findViewById(R.id.circle);
+            TextView comments = listItemView.findViewById(R.id.comments);
 
             assert current != null;
             if (Math.round(Double.parseDouble(current.getPercentage())) <= 75)
@@ -239,6 +246,20 @@ public class AttendanceActivity extends AppCompatActivity {
             percentage.setText(Math.round(Double.parseDouble(current.getPercentage())) + "%");
             title.setText(current.getTitle());
             attended.setText(Html.fromHtml("You attended <b>" + Math.round(Double.parseDouble(current.getAttended())) + "</b> of <b>" + current.getTotal() + "</b> classes"));
+            int percent = (int)Math.round(Double.parseDouble(current.getPercentage()));
+            comments.setVisibility(View.VISIBLE);
+            if(percent < 95 && percent>75){
+                comments.setText(
+                        (current.getBunkingCount() > 1)
+                        ? "You can bunk "+current.getBunkingCount()+" more classes and still be on safer side!"
+                        : "You can bunk "+current.getBunkingCount()+" more class and still be on safer side!");
+            }else if(percent == 75){
+                comments.setText("Your situation is like the cat on the wall. Start going to class and be on safer side!");
+            }else if(percent < 75){
+                comments.setText("Oh-No ! You need to attend at least "+current.getBunkingCount()+" classes to make it 75% !");
+            }else{
+                comments.setVisibility(View.GONE);
+            }
 
 
             return listItemView;
