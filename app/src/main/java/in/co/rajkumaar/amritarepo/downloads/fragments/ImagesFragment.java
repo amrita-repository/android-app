@@ -138,7 +138,7 @@ public class ImagesFragment extends Fragment {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         Uri data = FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", pdfFile);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.setDataAndType(data, "image/jpeg");
+                        intent.setDataAndType(data, "image/*");
                         if (intent.resolveActivity(getContext().getPackageManager()) != null)
                             startActivity(intent);
                     } else {
@@ -157,7 +157,7 @@ public class ImagesFragment extends Fragment {
                         qPaperOptions.add("Open");
                         qPaperOptions.add("Delete");
                         qPaperOptions.add("Rename");
-                        qPaperOptions.add("Set Widget");
+                        qPaperOptions.add("Set as widget");
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity()); //Read Update
                         ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, qPaperOptions);
                         alertDialog.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
