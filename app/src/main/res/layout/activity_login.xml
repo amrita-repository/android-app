@@ -42,7 +42,7 @@
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:inputType="text"
+                android:inputType="textCapCharacters"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 float:inputType="textPassword|textVisiblePassword" />
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Password"
-                />
+                float:ignore="HardcodedText" />
             <EditText
                 android:id="@+id/password"
                 android:layout_marginTop="5dp"
@@ -70,7 +70,8 @@
                     android:layout_height="20dp"
                     android:layout_marginTop="10dp"
                     android:text="Remember me"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    float:ignore="HardcodedText" />
             </RelativeLayout>
 
 
@@ -85,7 +86,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:background="@drawable/button"
-                android:text="Login">
+                android:text="Login"
+                float:ignore="HardcodedText,UnusedAttribute">
             </Button>
         </LinearLayout>
     </RelativeLayout>
