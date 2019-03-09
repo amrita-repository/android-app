@@ -204,17 +204,26 @@ public class AttendanceActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        new AlertDialog.Builder(AttendanceActivity.this)
-                                                .setTitle("Disclaimer")
-                                                .setMessage(Html.fromHtml("Amrita Repository is not responsible if your attendance is not updated.<br><strong><font color=#AA0000>Bunk at your own risk.</font></strong>"))
-                                                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        dialogInterface.dismiss();
-                                                    }
-                                                })
-                                                .create()
-                                                .show();
+                                        if(getSharedPreferences("aums",MODE_PRIVATE).getBoolean("disclaimer",true)) {
+                                            new AlertDialog.Builder(AttendanceActivity.this)
+                                                    .setTitle("Disclaimer")
+                                                    .setCancelable(false)
+                                                    .setMessage(Html.fromHtml("Amrita Repository is not responsible if your attendance is not updated.<br><br>Follow the instructions given here <strong><font color=#AA0000>at your own risk.</font></strong>"))
+                                                    .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            dialogInterface.dismiss();
+                                                        }
+                                                    })
+                                                    .setNegativeButton("Don\'t show again", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            getSharedPreferences("aums", MODE_PRIVATE).edit().putBoolean("disclaimer", false).apply();
+                                                        }
+                                                    })
+                                                    .create()
+                                                    .show();
+                                        }
                                     }
                                 });
 
