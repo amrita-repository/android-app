@@ -26,9 +26,11 @@ package in.co.rajkumaar.amritarepo.aums.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
@@ -199,6 +201,22 @@ public class AttendanceActivity extends AppCompatActivity {
                                 list.setAdapter(attendanceAdapter);
                                 findViewById(R.id.progressBar).setVisibility(View.GONE);
                                 list.setVisibility(View.VISIBLE);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        new AlertDialog.Builder(AttendanceActivity.this)
+                                                .setTitle("Disclaimer")
+                                                .setMessage(Html.fromHtml("Amrita Repository is not responsible if your attendance is not updated.<br><strong><font color=#AA0000>Bunk at your own risk.</font></strong>"))
+                                                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        dialogInterface.dismiss();
+                                                    }
+                                                })
+                                                .create()
+                                                .show();
+                                    }
+                                });
 
                             }
                         } catch (Exception e) {
@@ -315,12 +333,12 @@ public class AttendanceActivity extends AppCompatActivity {
             title.setText(current.getTitle());
             attended.setText(Html.fromHtml("You attended <b>" + Math.round(Double.parseDouble(current.getAttended())) + "</b> of <b>" + current.getTotal() + "</b> classes"));
             comments.setVisibility(View.VISIBLE);
-            if(percent < 95 && percent>75){
+            if(percent < 95 && percent>75 && current.getBunkingCount()>0){
                 comments.setText(
                         (current.getBunkingCount() > 1)
                         ? "You can bunk "+current.getBunkingCount()+" more classes and still be on safer side!"
                         : "You can bunk "+current.getBunkingCount()+" more class and still be on safer side!");
-            }else if(percent == 75){
+            }else if(percent == 75 || current.getBunkingCount()==0){
                 comments.setText("Your situation is like the cat on the wall. Start going to class and be on safer side!");
             }else if(percent < 75){
                 comments.setText("Oh-No ! You need to attend at least "+current.getBunkingCount()+" classes to make it 75% !");

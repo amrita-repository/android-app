@@ -24,25 +24,29 @@
 
 package in.co.rajkumaar.amritarepo.wifistatus;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
@@ -68,16 +72,15 @@ public class WifiStatusActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (Utils.isConnected(WifiStatusActivity.this)) {
                     showProgress();
-                    getWifiData();
-                } else {
+                    new scrapeWifiData().execute();
+                } else
                     Utils.showSnackBar(WifiStatusActivity.this, "Device not connected to internet");
-                }
             }
         });
 
         if (Utils.isConnected(WifiStatusActivity.this)) {
             showProgress();
-            getWifiData();
+            new scrapeWifiData().execute();
         } else
             Utils.showSnackBar(WifiStatusActivity.this, "Device not connected to internet");
     }
@@ -95,70 +98,81 @@ public class WifiStatusActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private class scrapeWifiData extends AsyncTask<Void, Void, Void> {
+        HashMap<String, Boolean> status = new HashMap<>();
+        TextView textView1 = findViewById(R.id.text1);
+        TextView textView2 = findViewById(R.id.text2);
+        TextView textView3 = findViewById(R.id.text3);
+        TextView textView4 = findViewById(R.id.text4);
+        TextView textView5 = findViewById(R.id.text5);
+        TextView textView6 = findViewById(R.id.text6);
+        ImageView image1 = findViewById(R.id.image1);
+        ImageView image2 = findViewById(R.id.image2);
+        ImageView image3 = findViewById(R.id.image3);
+        ArrayList<TextView> titles = new ArrayList<>();
+        ArrayList<TextView> messages = new ArrayList<>();
+        ArrayList<ImageView> images = new ArrayList<>();
 
-    private void getWifiData() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.setEnableRedirects(true);
-        client.get(getString(R.string.dev_domain) + "/wifi.php", new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.e("WIFI RESPONSE", new String(responseBody));
-                TextView textView1 = findViewById(R.id.text1);
-                TextView textView2 = findViewById(R.id.text2);
-                TextView textView3 = findViewById(R.id.text3);
-                TextView textView4 = findViewById(R.id.text4);
-                TextView textView5 = findViewById(R.id.text5);
-                TextView textView6 = findViewById(R.id.text6);
-                ImageView image1 = findViewById(R.id.image1);
-                ImageView image2 = findViewById(R.id.image2);
-                ImageView image3 = findViewById(R.id.image3);
-                ArrayList<TextView> titles = new ArrayList<>();
-                ArrayList<TextView> messages = new ArrayList<>();
-                ArrayList<ImageView> images = new ArrayList<>();
+        @Override
+        protected void onPreExecute() {
+            titles.add(textView1);
+            titles.add(textView3);
+            titles.add(textView5);
 
-                titles.add(textView1);
-                titles.add(textView3);
-                titles.add(textView5);
+            messages.add(textView2);
+            messages.add(textView4);
+            messages.add(textView6);
 
-                messages.add(textView2);
-                messages.add(textView4);
-                messages.add(textView6);
+            images.add(image1);
+            images.add(image2);
+            images.add(image3);
+            super.onPreExecute();
+        }
 
-                images.add(image1);
-                images.add(image2);
-                images.add(image3);
-
-                try {
-                    JSONArray response = new JSONArray(new String(responseBody));
-                    for (int i = 0; i < response.length(); ++i) {
-                        titles.get(i).setText(response.getJSONObject(i).getString("connection"));
-                        boolean status = response.getJSONObject(i).getBoolean("status");
-                        messages.get(i).setText(status ? "Working" : "Not working");
-                        images.get(i).setImageResource(status ? R.mipmap.ic_tick : R.mipmap.ic_error);
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Document document = Jsoup.connect("https://" + getString(R.string.intranet) + "/CampusWifiStatus/CampusWifiStatus.php").get();
+                Elements rows = document.select("tbody > tr");
+                for (Element row : rows) {
+                    Elements columns = row.getElementsByTag("td");
+                    if (Html.escapeHtml(columns.get(1).text()).equals("&#10004;")) {
+                        status.put(columns.get(0).text(), true);
+                    } else {
+                        status.put(columns.get(0).text(), false);
                     }
-                } catch (JSONException e) {
-                    Utils.showToast(WifiStatusActivity.this, "An unexpected error occurred. Please try again later.");
-                    finish();
-                    e.printStackTrace();
+                    Log.v("COLUMN", status.toString());
                 }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            } catch (Exception e) {
                 Utils.showToast(WifiStatusActivity.this, "An unexpected error occurred. Please try again later.");
+                finish();
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (!status.isEmpty()) {
+                Iterator iterator = status.entrySet().iterator();
+                int count = 0;
+                while (iterator.hasNext()) {
+                    Map.Entry pair = (Map.Entry) iterator.next();
+                    titles.get(count).setText((CharSequence) pair.getKey());
+                    boolean status = (boolean) pair.getValue();
+                    messages.get(count).setText(status ? "Working" : "Not working");
+                    images.get(count).setImageResource(status ? R.mipmap.ic_tick : R.mipmap.ic_error);
+                    count++;
+                }
                 if (dialog != null && dialog.isShowing()) {
                     dialog.dismiss();
                 }
+            } else {
+                Utils.showToast(WifiStatusActivity.this, "An unexpected error occurred. Please try again later.");
                 finish();
             }
-
-            @Override
-            public void onFinish() {
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-                super.onFinish();
-            }
-        });
+            super.onPostExecute(aVoid);
+        }
     }
 }

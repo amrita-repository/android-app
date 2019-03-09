@@ -33,6 +33,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -66,6 +67,7 @@ import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
 import in.co.rajkumaar.amritarepo.curriculum.CurriculumActivity;
 import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
 import in.co.rajkumaar.amritarepo.examschedule.ExamCategoryActivity;
+import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
@@ -107,7 +109,7 @@ public class LaunchingActivity extends AppCompatActivity
         setContentView(R.layout.activity_launching);
 
 
-        if (Utils.isConnected(LaunchingActivity.this))
+        if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG)
             checkUpdate();
 
 
@@ -155,6 +157,7 @@ public class LaunchingActivity extends AppCompatActivity
                         if (!latest.equals(BuildConfig.VERSION_NAME)) {
                             Log.e("Latest : " + latest, " HAving :" + BuildConfig.VERSION_NAME);
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
+                            alertDialog.setCancelable(false);
                             alertDialog.setMessage("An update is available for Amrita Repository.");
                             alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                                 @Override
@@ -168,7 +171,7 @@ public class LaunchingActivity extends AppCompatActivity
                             alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
+                                    finish();
                                 }
                             });
                             if (active)
@@ -262,10 +265,7 @@ public class LaunchingActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_faq) {
             if (Utils.isConnected(LaunchingActivity.this))
-                startActivity(new Intent(LaunchingActivity.this, WebViewActivity.class).putExtra("webview", getString(R.string.dev_domain) + "/faq.php")
-                        .putExtra("title", "Frequently Asked Questions")
-                        .putExtra("zoom", false)
-                );
+                startActivity(new Intent(LaunchingActivity.this, ExamsFAQActivity.class));
             else
                 Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
         } else if (id == R.id.nav_share) {
