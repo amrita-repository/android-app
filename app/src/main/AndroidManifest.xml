@@ -18,8 +18,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".faq.ExamsFAQActivity"
+        <activity android:name=".timings.ShuttleBusTimingsActivity"
             android:parentActivityName=".activities.LaunchingActivity"/>
+        <activity
+            android:name=".faq.ExamsFAQActivity"
+            android:parentActivityName=".activities.LaunchingActivity" />
 
         <receiver android:name=".widgets.ImageWidget">
             <intent-filter>

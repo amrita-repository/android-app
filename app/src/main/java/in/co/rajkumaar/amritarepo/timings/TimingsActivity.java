@@ -494,7 +494,7 @@ public class TimingsActivity extends AppCompatActivity {
         }
     }
 
-    class DataItem {
+    private class DataItem {
         String name;
         String days;
         String departure;

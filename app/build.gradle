@@ -10,8 +10,8 @@ android {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 25
-        versionName "2.6.2"
+        versionCode 26
+        versionName "2.7.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

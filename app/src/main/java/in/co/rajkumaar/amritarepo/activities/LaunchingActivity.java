@@ -73,6 +73,7 @@ import in.co.rajkumaar.amritarepo.helpers.clearCache;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
 import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
 import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
+import in.co.rajkumaar.amritarepo.timings.ShuttleBusTimingsActivity;
 import in.co.rajkumaar.amritarepo.timings.TimingsActivity;
 import in.co.rajkumaar.amritarepo.wifistatus.WifiStatusActivity;
 
@@ -407,14 +408,39 @@ public class LaunchingActivity extends AppCompatActivity
         findViewById(R.id.timings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] items = {"Trains from Coimbatore", "Trains from Palghat", "Trains to Coimbatore", "Trains to Palghat", "Buses from Coimbatore", "Buses to Coimbatore"};
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
+                final CharSequence[] items = {"Campus Shuttle Buses","Public Transport"};
+                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
                 dialogBuilder.setTitle("View timings of ?");
                 dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
-                        Intent trainBusOpen = new Intent(LaunchingActivity.this, TimingsActivity.class);
-                        trainBusOpen.putExtra("type", items[item]);
-                        startActivity(trainBusOpen);
+                        dialog.dismiss();
+                        if(item==0) {
+                            final CharSequence[] items = {"Buses from AB1", "Buses from AB3"};
+                            AlertDialog.Builder dialogBuilderInner = new AlertDialog.Builder(LaunchingActivity.this);
+                            dialogBuilderInner.setTitle("View timings of ?");
+                            dialogBuilderInner.setItems(items, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int item) {
+                                    Intent trainBusOpen = new Intent(LaunchingActivity.this, ShuttleBusTimingsActivity.class);
+                                    trainBusOpen.putExtra("type", items[item]);
+                                    startActivity(trainBusOpen);
+                                }
+                            });
+                            AlertDialog dialogInner = dialogBuilderInner.create();
+                            dialogInner.show();
+                        }else{
+                            final CharSequence[] items = {"Trains from Coimbatore", "Trains from Palghat", "Trains to Coimbatore", "Trains to Palghat", "Buses from Coimbatore", "Buses to Coimbatore"};
+                            AlertDialog.Builder dialogBuilderInner = new AlertDialog.Builder(LaunchingActivity.this);
+                            dialogBuilderInner.setTitle("View timings of ?");
+                            dialogBuilderInner.setItems(items, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int item) {
+                                    Intent trainBusOpen = new Intent(LaunchingActivity.this, TimingsActivity.class);
+                                    trainBusOpen.putExtra("type", items[item]);
+                                    startActivity(trainBusOpen);
+                                }
+                            });
+                            AlertDialog dialogInner = dialogBuilderInner.create();
+                            dialogInner.show();
+                        }
                     }
                 });
                 AlertDialog dialog = dialogBuilder.create();
