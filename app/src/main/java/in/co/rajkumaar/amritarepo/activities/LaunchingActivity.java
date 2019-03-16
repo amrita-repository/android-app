@@ -109,11 +109,6 @@ public class LaunchingActivity extends AppCompatActivity
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         setContentView(R.layout.activity_launching);
 
-
-        if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG)
-            checkUpdate();
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -134,6 +129,13 @@ public class LaunchingActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         powerUpOnClickListeners();
+    }
+
+    @Override
+    protected void onPostResume() {
+        if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG)
+            checkUpdate();
+        super.onPostResume();
     }
 
     @Override

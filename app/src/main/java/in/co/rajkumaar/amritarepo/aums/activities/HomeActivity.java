@@ -116,7 +116,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-        getPhoto(UserData.client);
+        getPhoto(client);
 
     }
 

@@ -60,6 +60,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
@@ -319,6 +320,18 @@ public class AttendanceActivity extends AppCompatActivity {
                         R.layout.attendance_item, parent, false);
             }
 
+            String[] idioms = {
+                    "you will land in a big soup !",
+                    "you will be in a crisis !",
+                    "you will be in a jam !",
+                    "you will be in a fix !",
+                    "you will be in a bad situation !",
+                    "you will be in a tight spot !",
+                    "you will be in trouble !",
+                    "you will be in a pickle !",
+                    "you will be in a lurch !",
+            };
+
 
             final CourseData current = getItem(position);
 
@@ -345,12 +358,17 @@ public class AttendanceActivity extends AppCompatActivity {
             if(percent < 95 && percent>75 && current.getBunkingCount()>0){
                 comments.setText(
                         (current.getBunkingCount() > 1)
-                        ? "You can bunk "+current.getBunkingCount()+" more classes and still be on safer side!"
-                        : "You can bunk "+current.getBunkingCount()+" more class and still be on safer side!");
+                        ? "You miss "+current.getBunkingCount()+" more classes and "+idioms[new Random().nextInt((idioms.length))]
+                        : "You miss "+current.getBunkingCount()+" more class and "+idioms[new Random().nextInt((idioms.length))]
+                );
             }else if(percent == 75 || current.getBunkingCount()==0){
                 comments.setText("Your situation is like the cat on the wall. Start going to class and be on safer side!");
             }else if(percent < 75){
-                comments.setText("Oh-No ! You need to attend at least "+current.getBunkingCount()+" classes to make it 75% !");
+                comments.setText(
+                        (current.getBunkingCount() > 1)
+                                ? "Oh-No ! You need to attend at least "+current.getBunkingCount()+" classes to make it 75% !"
+                                : "Oh-No ! You need to attend at least "+current.getBunkingCount()+" class to make it 75% !"
+                );
             }else{
                 comments.setVisibility(View.GONE);
             }
