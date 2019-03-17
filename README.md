@@ -1,4 +1,4 @@
-[![Play Store Info](https://img.shields.io/badge/Play_Store-v2.2-36B0C1.svg?style=flat-square&v=2.2)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![GitHub app version](https://img.shields.io/badge/GitHub-v2.2-yellow.svg?style=flat-square&v=2.2)](https://github.com/rajkumaar23/AmritaRepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-4.1k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo)
+[![Play Store Info](https://img.shields.io/badge/Play_Store-v2.2-36B0C1.svg?style=flat-square&v=2.8)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![GitHub app version](https://img.shields.io/badge/GitHub-v2.8-yellow.svg?style=flat-square&v=2.8)](https://github.com/rajkumaar23/AmritaRepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-4.8k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo)
 
 # Amrita Repository
 ![Amrita Repository](https://github.com/rajkumaar23/AmritaRepo/blob/master/banner.jpg?raw=true)
@@ -37,7 +37,7 @@ Find downloaded question papers and timetables in the downloads section within t
 ### Amrita News:
 Be up-to-date with what's happening at Amrita. Be notified of news articles pulled directly from the Amrita Website.
 
-`Inspired from `[Amrita Info Desk](https://raw.githubusercontent.com/niranjan94/amrita-info-desk)
+`Inspired from `[Amrita Info Desk](https://github.com/niranjan94/amrita-info-desk)
 
 ## Open Source License
 
