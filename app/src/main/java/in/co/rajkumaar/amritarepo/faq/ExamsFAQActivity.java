@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -47,6 +48,7 @@ public class ExamsFAQActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         try {
             this.setTitle("Frequently Asked Questions");
             dialog = new ProgressDialog(ExamsFAQActivity.this);

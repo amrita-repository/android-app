@@ -34,6 +34,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -59,6 +60,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_schedule);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         progressBar = findViewById(R.id.progressBar);
         url_exams = getResources().getString(R.string.url_exams);
         headings = new ArrayList<>();

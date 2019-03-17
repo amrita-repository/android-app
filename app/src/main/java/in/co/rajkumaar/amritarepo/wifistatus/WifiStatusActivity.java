@@ -35,6 +35,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
@@ -57,6 +58,7 @@ public class WifiStatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_status);
+        Utils.showBigAd(this, (LinearLayout) findViewById(R.id.banner_container));
         dialog = new ProgressDialog(WifiStatusActivity.this);
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override

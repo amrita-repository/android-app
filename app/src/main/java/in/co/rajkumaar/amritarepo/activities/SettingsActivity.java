@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -23,10 +25,10 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        Utils.showBigAd(this, (LinearLayout) findViewById(R.id.banner_container));
         current_program = findViewById(R.id.current_program);
         change_program = findViewById(R.id.change_program);
         pref = getSharedPreferences("user", MODE_PRIVATE);
-        editor = pref.edit();
         setCurrentProgram();
 
     }
@@ -49,6 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
                 programs_builder.setItems(categories, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        editor = pref.edit();
                         editor.putBoolean("remember_program", true);
                         editor.putInt("pos", which);
                         editor.putString("program", dataAdapter.getItem(which));

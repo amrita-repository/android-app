@@ -40,6 +40,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,7 @@ import java.util.Random;
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class AttendanceActivity extends AppCompatActivity {
 
@@ -78,6 +80,7 @@ public class AttendanceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
         list = findViewById(R.id.list);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         courses = new HashMap<>();
         UserData.refIndex = 1;
         domain = UserData.domain;

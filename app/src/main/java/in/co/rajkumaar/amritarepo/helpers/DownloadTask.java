@@ -63,18 +63,14 @@ public class DownloadTask {
 
         this.downloadUrl = downloadUrl;
 
-        int ch = 1;
         if (act == 0) {
             downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());
-            ch = 0;
         } else if (act == 1) {
 
-            ch = 1;
             downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());
             downloadFileName = downloadFileName.substring(0, downloadFileName.indexOf("?"));
             downloadFileName = downloadFileName.replaceAll("%20", "_");
         } else if (act == 2) {
-            ch = 2;
             downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());
             downloadFileName = downloadFileName.replaceAll("%20", "_");
             downloadFileName = downloadFileName.replaceAll("%26", "&");

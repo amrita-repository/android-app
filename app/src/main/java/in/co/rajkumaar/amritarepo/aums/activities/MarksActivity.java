@@ -32,6 +32,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 
 public class MarksActivity extends AppCompatActivity {
@@ -60,6 +62,7 @@ public class MarksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marks);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         recyclerView = (RecyclerView) findViewById(R.id.list);
         UserData.refIndex = 1;
 

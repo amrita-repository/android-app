@@ -31,12 +31,14 @@ import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class TimingsActivity extends AppCompatActivity {
 
@@ -47,6 +49,7 @@ public class TimingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_bus_timings);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
 
         listView = findViewById(R.id.timings_list);
         Bundle extras = getIntent().getExtras();

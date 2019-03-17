@@ -27,6 +27,7 @@ package in.co.rajkumaar.amritarepo.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +37,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -49,11 +51,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -83,12 +91,19 @@ public class LaunchingActivity extends AppCompatActivity
     static boolean active = false;
     boolean doubleBackToExitPressedOnce = false;
     private FirebaseAnalytics mFirebaseAnalytics;
+    ProgressDialog warmUpDialog;
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_launching);
+        warmUpDialog = new ProgressDialog(this);
+        warmUpDialog.setMessage("Warming up. Please wait..");
+        warmUpDialog.setCancelable(false);
+        if(!BuildConfig.DEBUG)
+        warmUpDialog.show();
         SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         if (ContextCompat.checkSelfPermission(LaunchingActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -107,7 +122,6 @@ public class LaunchingActivity extends AppCompatActivity
             }
         }
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-        setContentView(R.layout.activity_launching);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,6 +132,7 @@ public class LaunchingActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
         navigationView.setNavigationItemSelectedListener(this);
@@ -148,17 +163,20 @@ public class LaunchingActivity extends AppCompatActivity
      * Compares existing version with latest and prompts for update
      */
     public void checkUpdate() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.setEnableRedirects(true);
-        client.get("https://dev-rajkumaar.herokuapp.com/repoversion.php?q=json", new AsyncHttpResponseHandler() {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("version");
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
-                    Log.e("VERSION", new String(responseBody));
-                    String latest = new JSONObject(new String(responseBody)).getString("version");
+                    String latest = dataSnapshot.getValue(String.class);
                     if (active) {
+                        try{
+                            warmUpDialog.dismiss();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        Log.e("Latest : " + latest, " Having :" + BuildConfig.VERSION_NAME);
                         if (!latest.equals(BuildConfig.VERSION_NAME)) {
-                            Log.e("Latest : " + latest, " HAving :" + BuildConfig.VERSION_NAME);
                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
                             alertDialog.setCancelable(false);
                             alertDialog.setMessage("An update is available for Amrita Repository.");
@@ -181,22 +199,21 @@ public class LaunchingActivity extends AppCompatActivity
                                 alertDialog.show();
                         }
                     }
-                } catch (Exception e) {
-                    Crashlytics.log(e.getMessage());
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                try {
-                    Crashlytics.log(new String(responseBody));
-                } catch (Exception e) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                try{
+                    warmUpDialog.dismiss();
+                    Crashlytics.log(databaseError.toException().getMessage());
+                }catch (Exception e){
                     e.printStackTrace();
                 }
             }
         });
-
-
     }
 
     @Override

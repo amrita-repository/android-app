@@ -4,9 +4,17 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:id="@+id/banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        />
     <ListView
         android:id="@+id/list"
         android:longClickable="true"
+        android:layout_above="@id/banner_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

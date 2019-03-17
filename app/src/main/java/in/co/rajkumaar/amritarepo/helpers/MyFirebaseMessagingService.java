@@ -101,7 +101,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void createNotification() {
         NotificationManager mNotificationManager;
         NotificationCompat.Builder mBuilder;
-        /**Creates an explicit intent for an Activity in your app**/
         Intent resultIntent = new Intent(this, LaunchingActivity.class);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

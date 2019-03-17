@@ -33,6 +33,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -64,6 +65,7 @@ public class SemesterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.list_view);
         new clearCache().clear();
         String protocol = getString(R.string.protocol);
         String cloudSpace = getString(R.string.clouDspace);
@@ -78,7 +80,7 @@ public class SemesterActivity extends AppCompatActivity {
         assert b != null;
         int course = Integer.parseInt("" + b.get("course"));
         this.setTitle("" + b.get("pageTitle"));
-        setContentView(R.layout.list_view);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
 
 
         TextView textView = findViewById(R.id.empty_view);

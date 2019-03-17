@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
@@ -43,6 +44,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Objects;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
@@ -50,29 +52,11 @@ public class AboutActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    public static void showDisclaimer(Context context) {
-        try {
-            Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.disclaimer);
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                TextView textView = dialog.findViewById(R.id.text);
-                textView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
-            }
-            dialog.show();
-            dialog.getWindow().setAttributes(lp);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        Utils.showBigAd(this, (LinearLayout) findViewById(R.id.banner_container));
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Button disclaimer = findViewById(R.id.disclaimer);
         disclaimer.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +77,25 @@ public class AboutActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    public static void showDisclaimer(Context context) {
+        try {
+            Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.disclaimer);
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                TextView textView = dialog.findViewById(R.id.text);
+                textView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
+            }
+            dialog.show();
+            dialog.getWindow().setAttributes(lp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("PrivateResource")

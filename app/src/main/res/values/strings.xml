@@ -17,33 +17,22 @@
     <string name="facultyurl">https://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
     <string name="port">8080</string>
     <string name="category_images">Images</string>
-    <string name="proxyurl">https://dev-rajkumaar.herokuapp.com/proxy.php</string>
+    <string name="proxyurl">https://dev.rajkumaar.co.in/proxy.php</string>
     <string name="incompletefield">Please input all fields</string>
     <string name="xmlUi">/xmlui/handle/</string>
     <string name="protocol">http://</string>
     <string name="wifi_warning">Please ensure you are connected to Amrita Wifi \n to have a smooth experience.</string>
-
     <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
-    <string name="dev_domain">https://rajkumaar.herokuapp.com</string>
-
-
-    <string name="test_id">ca-app-pub-3940256099942544/6300978111</string>
-
-    <string name="banner_id">ca-app-pub-4050031085727028/2844721235</string>
+    <string name="dev_domain">https://dev.rajkumaar.co.in</string>
+    <string name="placement_id">1281797331958232_1281798865291412</string>
 
     <string name="default_notification_channel_id" translatable="false">Alerts</string>
-
-
     <string name="disclaimer">
         Amrita Repository is an unofficial app. The institution (Amrita Vishwa Vidyapeetham) has no link whatsoever with this application (or) it\'s working/maintenance.
         \n\nAll educational information and content contained in this app are provided solely for general information and reference purposes. This app is provided on an \"as is\" basis. Amrita Repository makes no statement, representation, warranty or guarantee as to the accuracy, reliability or timeliness of the information and content contained in this application, which has been scraped from *.amrita.edu
-\n\nIf you find any question paper unavailable (or) inaccuracy with the data provided in this application, you may contact the department in-charge and not Amrita Repository.
-
-\n\nRajkumar,\nDeveloper of Amrita Repository
-
+        \n\nIf you find any question paper unavailable (or) inaccuracy with the data provided in this application, you may contact the department in-charge and not Amrita Repository.
+        \n\nRajkumar,\nDeveloper of Amrita Repository
     </string>
-
-
     <string name="site_change">Site\'s structure has changed. Please wait until I catch up.</string>
     <string name="add_widget">Add widget</string>
 </resources>

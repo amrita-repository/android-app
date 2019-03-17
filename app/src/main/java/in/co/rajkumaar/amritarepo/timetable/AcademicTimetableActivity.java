@@ -39,14 +39,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.WebViewActivity;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class AcademicTimetableActivity extends AppCompatActivity {
@@ -74,6 +77,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
         }
         setContentView(R.layout.activity_timetable);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         pref = getSharedPreferences("student_timetable", MODE_PRIVATE);
         editor = pref.edit();
         new clearCache().clear();
@@ -125,29 +129,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
     private void buildTimetableUrl() {
-        switch (year.getSelectedItemPosition()) {
-            case 1:
-                TIMETABLE_URL += "2015_16" + "/";
-                break;
-            case 2:
-                TIMETABLE_URL += "2016_17" + "/";
-                break;
-            case 3:
-                TIMETABLE_URL += "2017_18" + "/";
-                break;
-            case 4:
-                TIMETABLE_URL += "2018_19" + "/";
-                break;
-            case 5:
-                TIMETABLE_URL += "2019_20" + "/";
-                break;
-            case 6:
-                TIMETABLE_URL += "2020_21" + "/";
-                break;
-            case 7:
-                TIMETABLE_URL += "2021_22" + "/";
-                break;
-        }
+        TIMETABLE_URL += year.getSelectedItem()+"/";
         TIMETABLE_URL += course.getSelectedItem() + "/";
         TIMETABLE_URL += branch.getSelectedItem() + "/";
         TIMETABLE_URL += (String) course.getSelectedItem() + branch.getSelectedItem() + batch.getSelectedItem() + sem.getSelectedItem() + ".jpg";
@@ -308,16 +290,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         batchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         batch.setAdapter(batchAdapter);
 
-
-        years.add("[Choose year]");
-        years.add("2015-16");
-        years.add("2016-17");
-        years.add("2017-18");
-        years.add("2018-19");
-        years.add("2019-20");
-        years.add("2020-21");
-        years.add("2021-22");
-        ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, years);
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, Utils.getAcademicYears());
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         year.setAdapter(yearAdapter);
 

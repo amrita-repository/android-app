@@ -39,6 +39,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -72,6 +73,7 @@ public class SubjectsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subjects_listview);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         proxy = getString(R.string.proxyurl);
         String protocol = getString(R.string.protocol);
         String cloudSpace = getString(R.string.clouDspace);

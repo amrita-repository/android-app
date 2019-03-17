@@ -29,11 +29,24 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.facebook.ads.AdSettings;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Objects;
+
+import in.co.rajkumaar.amritarepo.R;
 
 public class Utils {
 
@@ -67,5 +80,31 @@ public class Utils {
 
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+    }
+
+    private static void showAd(Context context, LinearLayout linearLayout, AdSize adSize){
+        AdView adView = new AdView(context, context.getString(R.string.placement_id), adSize);
+        linearLayout.addView(adView);
+        adView.loadAd();
+    }
+    public static void showSmallAd(Context context,LinearLayout linearLayout){
+        showAd(context,linearLayout,AdSize.BANNER_HEIGHT_50);
+    }
+
+    public static void showBigAd(Context context,LinearLayout linearLayout){
+        showAd(context,linearLayout,AdSize.BANNER_HEIGHT_90);
+    }
+
+    public static ArrayList<String> getAcademicYears(){
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        ArrayList<String> years = new ArrayList<>();
+        years.add("[Choose year]");
+        years.add((currentYear-4)+"_"+String.valueOf(currentYear-3).substring(2,4));
+        years.add((currentYear-3)+"_"+String.valueOf(currentYear-2).substring(2,4));
+        years.add((currentYear-2)+"_"+String.valueOf(currentYear-1).substring(2,4));
+        years.add((currentYear-1)+"_"+String.valueOf(currentYear).substring(2,4));
+        years.add((currentYear)  +"_"+String.valueOf(currentYear+1).substring(2,4));
+        years.add((currentYear+1)+"_"+String.valueOf(currentYear+2).substring(2,4));
+        return years;
     }
 }

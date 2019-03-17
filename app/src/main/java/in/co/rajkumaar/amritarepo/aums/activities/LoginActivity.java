@@ -40,6 +40,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
 
         findViewById(R.id.container).setOnTouchListener(new View.OnTouchListener() {
             @Override

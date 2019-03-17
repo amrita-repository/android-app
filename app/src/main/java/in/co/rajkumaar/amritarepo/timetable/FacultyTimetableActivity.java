@@ -49,6 +49,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -65,6 +66,7 @@ import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class FacultyTimetableActivity extends AppCompatActivity {
@@ -76,10 +78,12 @@ public class FacultyTimetableActivity extends AppCompatActivity {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faculty);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
 
         pref = getSharedPreferences("user", MODE_PRIVATE);
         editor = pref.edit();
@@ -113,17 +117,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 return false;
             }
         });
-        ArrayList<String> years = new ArrayList<>();
-        years.add("[Choose year]");
-
-        years.add("2015_16");
-        years.add("2016_17");
-        years.add("2017_18");
-        years.add("2018_19");
-        years.add("2019_20");
-        years.add("2020_21");
-        years.add("2021_22");
-        final ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, years);
+        final ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, Utils.getAcademicYears());
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         year.setAdapter(yearAdapter);
 

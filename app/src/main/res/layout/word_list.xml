@@ -14,12 +14,14 @@
     android:background="@color/colorBackground"
     android:layout_height="match_parent">
 
+
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:longClickable="true"
+        android:layout_above="@id/banner_container"
         android:id="@+id/dlist"
         android:orientation="vertical"
         android:drawSelectorOnTop="true"/>
@@ -43,5 +45,12 @@
         android:layout_below="@id/dempty_view"
         android:src="@drawable/ic_baseline_sentiment_very_dissatisfied_24px"
         android:textAppearance="?android:textAppearanceMedium"/>
+    <LinearLayout
+        android:id="@+id/banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        />
 </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

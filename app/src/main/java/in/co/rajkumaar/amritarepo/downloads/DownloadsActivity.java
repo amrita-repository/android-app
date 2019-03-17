@@ -41,6 +41,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -48,6 +49,7 @@ import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.downloads.adapters.CategoryAdapter;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class DownloadsActivity extends AppCompatActivity {
@@ -58,6 +60,7 @@ public class DownloadsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_downloads);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
