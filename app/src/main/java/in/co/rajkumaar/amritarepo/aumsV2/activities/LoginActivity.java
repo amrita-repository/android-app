@@ -12,8 +12,10 @@ import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
+        getSupportActionBar().setSubtitle("Lite Version");
         pref = getSharedPreferences("aums-lite", Context.MODE_PRIVATE);
         username=findViewById(R.id.username);
         dob=findViewById(R.id.dob);
@@ -59,6 +62,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         progressDialog.setMessage("Logging in..");
+
+        String rmUsername = pref.getString("username", null);
+        String rmDob = pref.getString("dob", null);
+        username.setText(rmUsername);
+        dob.setText(rmDob);
+        try {
+            username.setSelection(rmUsername.length());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void selectDOB(View view) {
@@ -68,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 DecimalFormat mFormat= new DecimalFormat("00");
                 mFormat.setRoundingMode(RoundingMode.DOWN);
-                dob.setText(year + "-" + mFormat.format(Double.valueOf(month+1)) + "-" + dayOfMonth);
+                dob.setText(year + "-" + mFormat.format(Double.valueOf(month+1)) + "-" + mFormat.format(Double.valueOf(dayOfMonth)));
                 dobDate.set(year, month, dayOfMonth);
             }
         }, dobDate.get(Calendar.YEAR),
@@ -79,6 +93,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
+        if(!Utils.isConnected(getBaseContext())){
+            Utils.showInternetError(getBaseContext());
+            return;
+        }
         if(username.getText().toString().isEmpty() || dob.getText().toString().isEmpty()){
             Utils.showSnackBar(this,"Please enter all fields");
             return;
@@ -122,14 +140,14 @@ public class LoginActivity extends AppCompatActivity {
 
     public void verifyOTP(){
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
-        alertDialog.setMessage("Enter the OTP you just received : ");
+        alertDialog.setMessage("Enter the OTP you just received on your number registered in AUMS : ");
         LinearLayout layout = new LinearLayout(LoginActivity.this);
         layout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(40, 0, 50, 0);
         final EditText otpEdittext = new EditText(LoginActivity.this);
-        otpEdittext.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED);
+        otpEdittext.setInputType(InputType.TYPE_CLASS_NUMBER);
         layout.addView(otpEdittext, params);
         alertDialog.setView(layout);
 
@@ -156,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("token",GlobalData.getToken());
                                 editor.apply();
                                 startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                                finish();
                             }else{
                                 Utils.showSnackBar(LoginActivity.this,"Invalid OTP");
                             }

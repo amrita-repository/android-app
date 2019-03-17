@@ -92,7 +92,7 @@ public class Utils {
     }
 
     public static void showUnexpectedError(Context context){
-        showSnackBar(context,"An unexpected error occurred. Please try again later.");
+        showToast(context,"An unexpected error occurred. Please try again later.");
     }
 
     public static void showInternetError(Context context){

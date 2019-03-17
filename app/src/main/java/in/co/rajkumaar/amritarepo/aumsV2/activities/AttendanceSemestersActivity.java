@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -40,8 +41,10 @@ public class AttendanceSemestersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_semesters);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         progressBar=findViewById(R.id.progressBar);
         preferences = getSharedPreferences("aums-lite",MODE_PRIVATE);
+        getSupportActionBar().setSubtitle("Logged in as "+preferences.getString("name",""));
         listView=findViewById(R.id.list);
         if(GlobalData.getAttendanceSemesters()==null){
             getSemesterMapping();
@@ -51,7 +54,10 @@ public class AttendanceSemestersActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                if(Utils.isConnected(AttendanceSemestersActivity.this))
+                startActivity(new Intent(AttendanceSemestersActivity.this,AttendanceActivity.class).putExtra("sem",String.valueOf(semesterObjects.get(i).getId())));
+                else
+                    Utils.showInternetError(getBaseContext());
             }
         });
     }

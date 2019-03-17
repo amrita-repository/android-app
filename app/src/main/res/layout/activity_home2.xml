@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorBackground"
     xmlns:android="http://schemas.android.com/apk/res/android" >
@@ -21,7 +22,6 @@
                 android:layout_height="128dp"
                 android:src="@drawable/user"
                 android:layout_centerHorizontal="true"/>
-
         </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
@@ -58,7 +58,6 @@
             android:textColor="@color/colorPrimaryDark"
             android:layout_marginTop="5dp"
             android:textSize="20sp"
-            android:fontFamily="@font/cunia"
             android:layout_below="@id/username"/>
         <ListView
             android:id="@+id/list"
@@ -66,7 +65,18 @@
             android:layout_below="@id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
+        <Button
+            android:text="Logout"
+            android:onClick="logout"
+            android:layout_margin="20dp"
+            android:id="@+id/logout"
+            android:background="@drawable/button"
+            android:textColor="@android:color/white"
+            android:layout_below="@id/list"
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/banner_container"

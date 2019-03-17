@@ -1,5 +1,6 @@
 package in.co.rajkumaar.amritarepo.aumsV2.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -41,8 +43,10 @@ public class GradesSemestersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_semesters);
+        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         progressBar=findViewById(R.id.progressBar);
         preferences = getSharedPreferences("aums-lite",MODE_PRIVATE);
+        getSupportActionBar().setSubtitle("Logged in as "+preferences.getString("name",""));
         listView=findViewById(R.id.list);
 
         if(GlobalData.getGradeSemesters()==null){
@@ -50,6 +54,15 @@ public class GradesSemestersActivity extends AppCompatActivity {
         }else{
             loadSemesterMapping();
         }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(Utils.isConnected(getBaseContext()))
+                startActivity(new Intent(GradesSemestersActivity.this,GradesActivity.class).putExtra("sem",String.valueOf(semesterObjects.get(i).getId())));
+                else
+                    Utils.showInternetError(getBaseContext());
+            }
+        });
     }
 
     private void loadSemesterMapping() {
@@ -88,13 +101,6 @@ public class GradesSemestersActivity extends AppCompatActivity {
                     listView.setAdapter(semsAdapter);
                     listView.setEmptyView(findViewById(R.id.emptyView));
                     progressBar.setVisibility(View.GONE);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                        }
-                    });
-
                 } catch (JSONException e) {
                     Utils.showUnexpectedError(GradesSemestersActivity.this);
                     finish();

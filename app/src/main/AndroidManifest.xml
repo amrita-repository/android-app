@@ -18,12 +18,21 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".aumsV2.activities.GradesSemestersActivity"
+        <activity android:name=".NewsActivity"
+            android:label="Latest News"
+            android:parentActivityName=".activities.LaunchingActivity"/>
+        <activity
+            android:name=".aumsV2.activities.AttendanceActivity"
+            android:label="AUMS - Attendance"
+            android:parentActivityName=".aumsV2.activities.AttendanceSemestersActivity" />
+        <activity
+            android:name=".aumsV2.activities.GradesSemestersActivity"
             android:label="Available Semesters"
-            android:parentActivityName=".aumsV2.activities.HomeActivity"/>
-        <activity android:name=".aumsV2.activities.AttendanceSemestersActivity"
-            android:parentActivityName=".aumsV2.activities.HomeActivity"
-            android:label="Available Semesters"/>
+            android:parentActivityName=".aumsV2.activities.HomeActivity" />
+        <activity
+            android:name=".aumsV2.activities.AttendanceSemestersActivity"
+            android:label="Available Semesters"
+            android:parentActivityName=".aumsV2.activities.HomeActivity" />
         <activity
             android:name=".aumsV2.activities.HomeActivity"
             android:label="AUMS - Home"
@@ -173,6 +182,10 @@
             android:name=".activities.SettingsActivity"
             android:label="Settings"
             android:parentActivityName=".activities.LaunchingActivity" />
+        <activity
+            android:name=".aumsV2.activities.GradesActivity"
+            android:label="AUMS - Grades"
+            android:parentActivityName=".aumsV2.activities.HomeActivity" />
     </application>
 
 </manifest>

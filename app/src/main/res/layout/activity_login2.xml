@@ -71,21 +71,6 @@
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 float:ignore="HardcodedText" />
-            <RelativeLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <CheckBox
-                    android:id="@+id/remember_me"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Remember me"
-                    android:textSize="12sp"
-                    float:ignore="HardcodedText" />
-            </RelativeLayout>
-
-
             <Button
                 android:onClick="login"
                 android:layout_width="match_parent"

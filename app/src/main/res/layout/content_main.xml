@@ -175,26 +175,26 @@
                         android:text="AUMS"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:padding="10dp"
-                    android:orientation="vertical"
-                    android:id="@+id/timings"
-                    android:layout_width="0dp"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
+                    android:id="@+id/news"
                     android:focusable="true"
-
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:padding="10dp"
                     android:gravity="center"
                     android:layout_weight="1"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:layout_width="70dp"
-                        android:src="@drawable/train"
+                        android:src="@drawable/news"
                         android:layout_height="70dp" />
                     <TextView
                         android:textColor="@android:color/black"
                         android:layout_width="wrap_content"
+                        android:gravity="center"
                         android:layout_height="wrap_content"
-                        android:text="Timings"/>
+                        android:text="News "/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -244,27 +244,28 @@
                         android:text="Downloads"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    android:id="@+id/timings"
+                    android:layout_width="0dp"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:clickable="true"
-                    android:id="@+id/wifi"
                     android:focusable="true"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:padding="10dp"
+
                     android:gravity="center"
                     android:layout_weight="1"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:layout_width="70dp"
-                        android:src="@drawable/wifi"
+                        android:src="@drawable/train"
                         android:layout_height="70dp" />
                     <TextView
                         android:textColor="@android:color/black"
                         android:layout_width="wrap_content"
-                        android:gravity="center"
                         android:layout_height="wrap_content"
-                        android:text="WiFi Status"/>
+                        android:text="Timings"/>
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 

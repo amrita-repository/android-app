@@ -24,6 +24,7 @@
 
 package in.co.rajkumaar.amritarepo.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -38,29 +39,10 @@ public class WebViewActivity extends AppCompatActivity {
 
     ProgressDialog dialog;
 
-    @Override
-    protected void onDestroy() {
-        dismissProgressDialog();
-        super.onDestroy();
-    }
-
-    public void dismissProgressDialog() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
-    }
-
-    public void showProgressDialog() {
-
-        dialog.setMessage("Loading..");
-        dialog.setCancelable(false);
-        dialog.show();
-    }
-
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        final boolean enableLinks = false;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
         try {
@@ -85,7 +67,16 @@ public class WebViewActivity extends AppCompatActivity {
                     dismissProgressDialog();
                 }
             });
+            mywebview.setWebViewClient(new WebViewClient() {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    return true;
+                }
 
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    dismissProgressDialog();
+                }
+            });
             mywebview.loadUrl(webviewlink);
 
         } catch (Exception e) {
@@ -93,6 +84,25 @@ public class WebViewActivity extends AppCompatActivity {
             finish();
             Toast.makeText(WebViewActivity.this, "Unexpected error. Please try again later", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        dismissProgressDialog();
+        super.onDestroy();
+    }
+
+    public void dismissProgressDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+    }
+
+    public void showProgressDialog() {
+
+        dialog.setMessage("Loading..");
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     @Override

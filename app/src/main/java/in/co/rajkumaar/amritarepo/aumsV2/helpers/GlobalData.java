@@ -65,6 +65,7 @@ public class GlobalData {
     public static void resetUser(Context context){
         SharedPreferences preferences = context.getSharedPreferences("aums-lite",Context.MODE_PRIVATE);
         preferences.edit().putBoolean("logged-in",false).apply();
+        attendanceSemesters=gradeSemesters=null;
     }
 
     public static ArrayList<Semester> getAttendanceSemesters() {

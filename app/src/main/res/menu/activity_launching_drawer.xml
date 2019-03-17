@@ -23,6 +23,12 @@
             android:checkable="false"
             />
         <item
+            android:title="WiFi Status"
+            android:id="@+id/wifi"
+            android:icon="@drawable/wifi"
+            android:checkable="false"
+            />
+        <item
             android:title="Settings"
             android:id="@+id/settings"
             android:icon="@drawable/settings"

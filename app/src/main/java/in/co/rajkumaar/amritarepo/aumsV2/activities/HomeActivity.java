@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.helpers.HomeItemAdapter;
 import in.co.rajkumaar.amritarepo.aums.models.HomeItem;
+import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class HomeActivity extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
         Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        getSupportActionBar().setSubtitle("Lite Version");
         preferences=getSharedPreferences("aums-lite",MODE_PRIVATE);
         name = findViewById(R.id.name);
         username=findViewById(R.id.username);
@@ -92,5 +94,11 @@ public class HomeActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
+    }
+
+    public void logout(View view) {
+        GlobalData.resetUser(this);
+        Utils.showToast(this,"Successfully logged out");
+        finish();
     }
 }

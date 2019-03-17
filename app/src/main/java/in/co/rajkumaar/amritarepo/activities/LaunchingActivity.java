@@ -34,7 +34,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -62,13 +61,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
+import in.co.rajkumaar.amritarepo.NewsActivity;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.AboutActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
@@ -283,6 +278,11 @@ public class LaunchingActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this, DownloadsActivity.class));
 
+        } else if (id == R.id.wifi) {
+            if (Utils.isConnected(LaunchingActivity.this))
+                startActivity(new Intent(LaunchingActivity.this, WifiStatusActivity.class));
+            else
+                Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
         } else if (id == R.id.nav_faq) {
             if (Utils.isConnected(LaunchingActivity.this))
                 startActivity(new Intent(LaunchingActivity.this, ExamsFAQActivity.class));
@@ -420,7 +420,7 @@ public class LaunchingActivity extends AppCompatActivity
         findViewById(R.id.aums).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] items = {"AUMS - v1","AUMS - Lite"};
+                final CharSequence[] items = {"AUMS - v1","AUMS - Lite (Easier to login)"};
                 final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
                 dialogBuilder.setTitle("Confused ? Try v1 and if it doesn't work for you, choose Lite.");
                 dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
@@ -518,11 +518,11 @@ public class LaunchingActivity extends AppCompatActivity
                 startActivity(new Intent(LaunchingActivity.this, DownloadsActivity.class));
             }
         });
-        findViewById(R.id.wifi).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.news).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Utils.isConnected(LaunchingActivity.this))
-                    startActivity(new Intent(LaunchingActivity.this, WifiStatusActivity.class));
+                    startActivity(new Intent(LaunchingActivity.this, NewsActivity.class));
                 else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
             }
