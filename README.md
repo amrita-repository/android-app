@@ -34,7 +34,10 @@ Find downloaded question papers and timetables in the downloads section within t
 ### AUMS:
 `Amrita University Management System (AUMS)` now much easier to access in Amrita Repository. Check your grades, marks and attendance levels
 
+### Amrita News:
+Be up-to-date with what's happening at Amrita. Be notified of news articles pulled directly from the Amrita Website.
 
+`Inspired from `[Amrita Info Desk](https://raw.githubusercontent.com/niranjan94/amrita-info-desk)
 
 ## Open Source License
 

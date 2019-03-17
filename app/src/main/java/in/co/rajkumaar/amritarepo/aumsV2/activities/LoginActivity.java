@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -33,6 +34,7 @@ import java.util.Calendar;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     SharedPreferences pref;
     AsyncHttpClient client = GlobalData.getClient();
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         progressDialog.setMessage("Logging in..");
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         String rmUsername = pref.getString("username", null);
         String rmDob = pref.getString("dob", null);
@@ -173,6 +177,9 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString("name",GlobalData.getName());
                                 editor.putString("token",GlobalData.getToken());
                                 editor.apply();
+                                Bundle params = new Bundle();
+                                params.putString("User", GlobalData.getName() + "[" + GlobalData.getUsername() + "]");
+                                mFirebaseAnalytics.logEvent("AUMSLogin", params);
                                 startActivity(new Intent(LoginActivity.this,HomeActivity.class));
                                 finish();
                             }else{
