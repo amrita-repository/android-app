@@ -420,7 +420,33 @@ public class LaunchingActivity extends AppCompatActivity
         findViewById(R.id.aums).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LaunchingActivity.this, LoginActivity.class));
+                final CharSequence[] items = {"AUMS - v1","AUMS - Lite"};
+                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
+                dialogBuilder.setTitle("Confused ? Try v1 and if it doesn't work for you, choose Lite.");
+                dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(Utils.isConnected(LaunchingActivity.this)) {
+                                    switch (which) {
+                                        case 0:
+                                            startActivity(new Intent(LaunchingActivity.this, LoginActivity.class));
+                                            break;
+                                        case 1:
+                                            SharedPreferences pref = getSharedPreferences("aums-lite", Context.MODE_PRIVATE);
+                                            if (pref.getBoolean("logged-in", false)) {
+                                                startActivity(new Intent(LaunchingActivity.this, in.co.rajkumaar.amritarepo.aumsV2.activities.HomeActivity.class));
+                                            } else {
+                                                startActivity(new Intent(LaunchingActivity.this, in.co.rajkumaar.amritarepo.aumsV2.activities.LoginActivity.class));
+                                            }
+                                            break;
+                                    }
+                                }else{
+                                    Utils.showInternetError(LaunchingActivity.this);
+                                }
+                            }
+                        }
+                );
+                dialogBuilder.create().show();
             }
         });
 

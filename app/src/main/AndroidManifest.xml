@@ -18,8 +18,23 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".timings.ShuttleBusTimingsActivity"
-            android:parentActivityName=".activities.LaunchingActivity"/>
+        <activity android:name=".aumsV2.activities.GradesSemestersActivity"
+            android:label="Available Semesters"
+            android:parentActivityName=".aumsV2.activities.HomeActivity"/>
+        <activity android:name=".aumsV2.activities.AttendanceSemestersActivity"
+            android:parentActivityName=".aumsV2.activities.HomeActivity"
+            android:label="Available Semesters"/>
+        <activity
+            android:name=".aumsV2.activities.HomeActivity"
+            android:label="AUMS - Home"
+            android:parentActivityName=".activities.LaunchingActivity" />
+        <activity
+            android:name=".aumsV2.activities.LoginActivity"
+            android:label="AUMS - Login"
+            android:parentActivityName=".activities.LaunchingActivity" />
+        <activity
+            android:name=".timings.ShuttleBusTimingsActivity"
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
             android:name=".faq.ExamsFAQActivity"
             android:parentActivityName=".activities.LaunchingActivity" />

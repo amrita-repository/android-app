@@ -91,6 +91,14 @@ public class Utils {
                     InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    public static void showUnexpectedError(Context context){
+        showSnackBar(context,"An unexpected error occurred. Please try again later.");
+    }
+
+    public static void showInternetError(Context context){
+        showSnackBar(context,"Connection unavailable. Please connect to internet");
+    }
+
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
