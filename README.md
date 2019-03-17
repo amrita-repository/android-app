@@ -4,6 +4,7 @@
 ![Amrita Repository](https://github.com/rajkumaar23/AmritaRepo/blob/master/banner.jpg?raw=true)
 
 [<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" width="200" alt="Get Amrita Repository on Google Play" />](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo "Get Amrita Repository on Google Play")
+`Inspired from `[Amrita Info Desk](https://github.com/niranjan94/amrita-info-desk)
 
 ## Features
 
@@ -36,8 +37,6 @@ Find downloaded question papers and timetables in the downloads section within t
 
 ### Amrita News:
 Be up-to-date with what's happening at Amrita. Be notified of news articles pulled directly from the Amrita Website.
-
-`Inspired from `[Amrita Info Desk](https://github.com/niranjan94/amrita-info-desk)
 
 ## Open Source License
 
