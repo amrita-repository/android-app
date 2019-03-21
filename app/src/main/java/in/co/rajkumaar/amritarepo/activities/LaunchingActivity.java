@@ -55,6 +55,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -94,6 +95,7 @@ public class LaunchingActivity extends AppCompatActivity
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launching);
+        FirebaseApp.initializeApp(this);
         warmUpDialog = new ProgressDialog(this);
         warmUpDialog.setMessage("Warming up. Please wait..");
         warmUpDialog.setCancelable(false);
@@ -145,6 +147,17 @@ public class LaunchingActivity extends AppCompatActivity
     protected void onPostResume() {
         if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG)
             checkUpdate();
+        final Handler handler  = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Log.e("CLOSING-UPDATE","Done");
+                if (warmUpDialog!=null && warmUpDialog.isShowing()) {
+                    warmUpDialog.dismiss();
+                }
+            }
+        };
+        handler.postDelayed(runnable,3000);
         super.onPostResume();
     }
 
