@@ -42,7 +42,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/title"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
             tools:text="Object Oriented Programming"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold"
@@ -51,6 +51,7 @@
         <TextView
             android:id="@+id/code_type"
             tools:text="15CSE201 - Regular"
+            android:textColor="@color/colorAccent"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -65,6 +66,7 @@ public class AboutActivity extends AppCompatActivity {
                 showDisclaimer(AboutActivity.this);
             }
         });
+        ((TextView)findViewById(R.id.name)).setText(Html.fromHtml("Crafted with &hearts; by <br><strong>RAJKUMAR</strong>"));
         ((ImageView) findViewById(R.id.image)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

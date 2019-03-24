@@ -28,6 +28,7 @@
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_centerInParent="true"
         android:textAlignment="center"
+        android:textColor="@android:color/white"
         android:visibility="gone"
         android:text="Connection not available! "
         tools:ignore="HardcodedText" />

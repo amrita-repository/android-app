@@ -30,40 +30,31 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Login"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@android:color/holo_orange_dark"
                 android:textStyle="bold"
                 android:textSize="25sp"
                 />
-
-
-
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Username"
-                />
             <EditText
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:hint="Enter your username"
+                android:textColorHint="@android:color/white"
                 android:layout_height="50dp"
                 android:inputType="textCapCharacters"
+                android:textColor="@android:color/white"
                 android:paddingLeft="2dp"
+                android:backgroundTint="@color/colorAccent"
                 android:paddingRight="2dp"
                 float:inputType="textPassword|textVisiblePassword" />
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date of birth"
-                float:ignore="HardcodedText" />
             <EditText
                 android:id="@+id/dob"
                 android:onClick="selectDOB"
+                android:backgroundTint="@color/colorAccent"
+                android:textColorHint="@android:color/white"
                 android:focusable="false"
                 android:layout_marginTop="5dp"
+                android:textColor="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Enter your DOB"
@@ -76,7 +67,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginBottom="20dp"
-                android:textColor="@android:color/white"
                 android:layout_marginTop="15dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"

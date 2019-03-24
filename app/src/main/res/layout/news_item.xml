@@ -23,7 +23,7 @@
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="160dp"
-                android:src="@drawable/abstractblue"
+                android:src="@drawable/back"
                 android:scaleType="centerCrop"
                 android:id="@+id/image" />
 

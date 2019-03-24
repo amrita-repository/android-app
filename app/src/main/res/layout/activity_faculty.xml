@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     android:id="@+id/faculty_page">
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/made_with_love"
+        android:layout_above="@id/banner_container"
+        android:layout_centerHorizontal="true"
+        android:text="@string/made_love"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content" />
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/faculty_container"
@@ -16,22 +25,30 @@
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView1"
             android:layout_width="250dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:backgroundTint="@android:color/white"
             android:layout_marginBottom="20dp"
             android:hint="@string/facultyname"
             android:singleLine="true"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            tools:ignore="UnusedAttribute" />
 
         <Spinner
             android:id="@+id/faculty_year"
+            android:backgroundTint="@color/colorAccent"
             android:layout_width="240dp"
+            android:textColor="@android:color/white"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
         <Spinner
             android:id="@+id/faculty_sem"
+            android:backgroundTint="@color/colorAccent"
             android:layout_width="240dp"
+            android:textColor="@android:color/white"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp" />

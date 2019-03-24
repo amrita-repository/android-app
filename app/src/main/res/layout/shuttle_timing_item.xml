@@ -12,7 +12,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Departs from Coimbatore at 16:00 hours"
         android:id="@+id/departure"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_below="@+id/name"
         android:layout_centerHorizontal="true" />
 

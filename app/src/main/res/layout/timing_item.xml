@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/orange"
         android:gravity="center_horizontal" />
 
     <TextView
@@ -25,14 +25,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Departs from Coimbatore at 16:00 hours"
         android:id="@+id/departure"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_below="@+id/name"
         android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Reaches Ettimadai at 17:30 hours"
         android:id="@+id/arrival"
@@ -45,6 +45,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Runs on All Days"
         android:id="@+id/days"
+        android:textColor="@android:color/holo_orange_light"
         android:layout_below="@+id/arrival"
         android:layout_centerHorizontal="true" />
 

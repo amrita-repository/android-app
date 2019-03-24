@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackground"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <RelativeLayout android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingTop="20dp"
@@ -21,13 +22,17 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:indeterminate="true" />
-        <ImageView
+        <com.github.siyamed.shapeimageview.RoundedImageView
             android:id="@+id/userImage"
             android:layout_width="97dp"
             android:layout_height="128dp"
-            tools:src="@drawable/logosq"
+            android:src="@drawable/logosq"
             android:visibility="gone"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            app:siRadius="6dp"
+            app:siBorderWidth="3dp"
+            app:siBorderColor="@android:color/white"
+            app:siSquare="false"/>
 
     </RelativeLayout>
         <TextView
@@ -36,9 +41,9 @@
             android:layout_centerHorizontal="true"
             android:id="@+id/name"
             android:fontFamily="@font/cunia"
-            tools:text="RAJKUMAR S"
+            android:text="RAJKUMAR S"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
             android:layout_marginTop="15dp"
             android:textSize="20sp"
             android:textAllCaps="true"
@@ -48,9 +53,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:id="@+id/username"
-            tools:text="CB.EN.U4CSE17651"
+            android:text="CB.EN.U4CSE17651"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
             android:layout_marginTop="5dp"
             android:textSize="20sp"
             android:fontFamily="@font/cunia"
@@ -61,12 +66,11 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:id="@+id/cgpa"
-            android:fontFamily="@font/cunia"
-            tools:text="Current CGPA : 8.6"
-            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="@font/lato"
+            android:text="Current CGPA : 8.6"
+            android:textColor="@android:color/holo_orange_dark"
             android:layout_marginTop="5dp"
             android:textSize="20sp"
-            android:textAllCaps="true"
             android:layout_below="@id/username"/>
 
 

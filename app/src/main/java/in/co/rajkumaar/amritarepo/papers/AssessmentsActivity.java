@@ -82,8 +82,6 @@ public class AssessmentsActivity extends AppCompatActivity {
         textView.setVisibility(View.GONE);
         TextView wifiwarning = findViewById(R.id.wifiwarning);
         wifiwarning.setVisibility(View.GONE);
-        ImageView imageView = findViewById(R.id.empty_imageview);
-        imageView.setVisibility(View.GONE);
         if (Utils.isConnected(AssessmentsActivity.this))
             new Load().execute();
         else
@@ -155,20 +153,16 @@ public class AssessmentsActivity extends AppCompatActivity {
             if (statusCode != 200) {
                 TextView emptyView = findViewById(R.id.empty_view);
                 emptyView.setVisibility(View.VISIBLE);
-                ImageView imageView = findViewById(R.id.empty_imageview);
-                imageView.setVisibility(View.VISIBLE);
                 TextView wifiwarning = findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.VISIBLE);
             } else {
-                ImageView imageView = findViewById(R.id.empty_imageview);
-                imageView.setVisibility(View.GONE);
                 TextView textView = findViewById(R.id.empty_view);
                 textView.setVisibility(View.GONE);
 
                 TextView wifiwarning = findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.GONE);
                 ListView listView = findViewById(R.id.list);
-                ArrayAdapter<String> semsAdapter = new ArrayAdapter<String>(AssessmentsActivity.this, android.R.layout.simple_list_item_1, assessments);
+                ArrayAdapter<String> semsAdapter = new ArrayAdapter<String>(AssessmentsActivity.this, R.layout.white_textview, assessments);
                 listView.setAdapter(semsAdapter);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

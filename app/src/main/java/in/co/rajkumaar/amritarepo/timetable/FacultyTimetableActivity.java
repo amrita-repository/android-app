@@ -41,6 +41,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -52,6 +53,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -94,6 +96,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
+        ((TextView)findViewById(R.id.made_with_love)).setText(Html.fromHtml("Crafted with &hearts;"));
         final Spinner year = findViewById(R.id.faculty_year);
         final Spinner sem = findViewById(R.id.faculty_sem);
         RelativeLayout facultypage = findViewById(R.id.faculty_page);
@@ -353,7 +356,6 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                             (FacultyTimetableActivity.this, android.R.layout.simple_spinner_dropdown_item, res);
                     actv.setThreshold(1);
                     actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                    actv.setTextColor(Color.BLACK);
                     actv.showDropDown();
                     Log.e("Second ", String.valueOf(res.size()));
                 } else {

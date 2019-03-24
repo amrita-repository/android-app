@@ -68,7 +68,7 @@ public class AttendanceSemestersActivity extends AppCompatActivity {
         for (Semester current: semesterObjects) {
             sems.add("Semester "+current.getSemester()+" ("+current.getPeriod()+")");
         }
-        semsAdapter = new ArrayAdapter<>(AttendanceSemestersActivity.this, android.R.layout.simple_list_item_1, sems);
+        semsAdapter = new ArrayAdapter<>(AttendanceSemestersActivity.this, R.layout.white_textview, sems);
         GlobalData.setAttendanceSemesters(semesterObjects);
         listView.setAdapter(semsAdapter);
         listView.setEmptyView(findViewById(R.id.emptyView));
@@ -92,7 +92,7 @@ public class AttendanceSemestersActivity extends AppCompatActivity {
                         sems.add("Semester "+current.getString("Semester")+" ("+current.getString("Period")+")");
                     }
                     preferences.edit().putString("token",jsonObject.getString("Token")).apply();
-                    semsAdapter = new ArrayAdapter<>(AttendanceSemestersActivity.this, android.R.layout.simple_list_item_1, sems);
+                    semsAdapter = new ArrayAdapter<>(AttendanceSemestersActivity.this, R.layout.white_textview, sems);
                     GlobalData.setAttendanceSemesters(semesterObjects);
                     listView.setAdapter(semsAdapter);
                     listView.setEmptyView(findViewById(R.id.emptyView));

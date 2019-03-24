@@ -25,6 +25,7 @@
 package in.co.rajkumaar.amritarepo.aums.activities;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -58,14 +59,14 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 public class GradesActivity extends AppCompatActivity {
 
     ListView list;
-    android.support.v7.app.ActionBar actionBar;
+    TextView actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grades);
         Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
-        actionBar = getSupportActionBar();
+        actionBar = findViewById(R.id.section_header);
         list = findViewById(R.id.list);
 
 
@@ -85,6 +86,7 @@ public class GradesActivity extends AppCompatActivity {
         params.put("htmlPageTopContainer_notify", "");
 
         client.post(UserData.domain + "/aums/Jsp/StudentGrade/StudentPerformanceWithSurvey.jsp?action=UMS-EVAL_STUDPERFORMSURVEY_INIT_SCREEN&isMenu=true&pagePostSerialID=0", params, new AsyncHttpResponseHandler() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 {
@@ -132,7 +134,7 @@ public class GradesActivity extends AppCompatActivity {
                             }
 
                             try {
-                                actionBar.setTitle("This semester's GPA : " + sgpa);
+                                actionBar.setText("This semester's GPA : " + sgpa);
                             } catch (NullPointerException e) {
                                 e.printStackTrace();
                             }

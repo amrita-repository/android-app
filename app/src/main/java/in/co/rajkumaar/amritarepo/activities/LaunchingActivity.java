@@ -33,10 +33,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -45,11 +45,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,14 +64,23 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
+import com.joanzapata.iconify.fonts.FontAwesomeModule;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
-import in.co.rajkumaar.amritarepo.NewsActivity;
+import in.co.rajkumaar.amritarepo.news.NewsActivity;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.AboutActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
@@ -96,11 +112,13 @@ public class LaunchingActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launching);
         FirebaseApp.initializeApp(this);
+
         warmUpDialog = new ProgressDialog(this);
         warmUpDialog.setMessage("Warming up. Please wait..");
         warmUpDialog.setCancelable(false);
-        if(!BuildConfig.DEBUG)
-        warmUpDialog.show();
+
+        Iconify.with(new FontAwesomeModule());
+
         SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         if (ContextCompat.checkSelfPermission(LaunchingActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -122,6 +140,16 @@ public class LaunchingActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setSubtitle(Html.fromHtml("Crafted with &hearts; by Rajkumar"));
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://rajkumaar.co.in";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -133,218 +161,109 @@ public class LaunchingActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
         navigationView.setNavigationItemSelectedListener(this);
-
-
         TextView versionName = navigationView.getHeaderView(0).findViewById(R.id.versioncode);
         versionName.setText("Version ".concat(BuildConfig.VERSION_NAME));
-
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        powerUpOnClickListeners();
+        initialize();
     }
 
-    @Override
-    protected void onPostResume() {
-        if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG)
-            checkUpdate();
-        final Handler handler  = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Log.e("CLOSING-UPDATE","Done");
-                if (warmUpDialog!=null && warmUpDialog.isShowing()) {
-                    warmUpDialog.dismiss();
-                }
-            }
-        };
-        handler.postDelayed(runnable,3000);
-        super.onPostResume();
+    private void initialize() {
+        ((GridView)findViewById(R.id.items_list)).setAdapter(new HomeItemAdapter(this));
     }
 
-    @Override
-    protected void onDestroy() {
-        new clearCache().clear();
-        super.onDestroy();
-    }
 
-    /**
-     * Compares existing version with latest and prompts for update
-     */
-    public void checkUpdate() {
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("version");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
-                    String latest = dataSnapshot.getValue(String.class);
-                    if (active) {
-                        try{
-                            warmUpDialog.dismiss();
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        Log.e("Latest : " + latest, " Having :" + BuildConfig.VERSION_NAME);
-                        if (!latest.equals(BuildConfig.VERSION_NAME)) {
-                            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
-                            alertDialog.setCancelable(false);
-                            alertDialog.setMessage("An update is available for Amrita Repository.");
-                            alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setData(Uri.parse("market://details?id=" + getPackageName()));
-                                    if (intent.resolveActivity(getPackageManager()) != null)
-                                        startActivity(intent);
-                                }
-                            });
-                            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
-                                }
-                            });
-                            if (active)
-                                alertDialog.show();
-                        }
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
+    class HomeItemAdapter extends BaseAdapter {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                try{
-                    warmUpDialog.dismiss();
-                    Crashlytics.log(databaseError.toException().getMessage());
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+        private List<Item> items = new ArrayList<>();
+        private LayoutInflater inflater;
+        private Context context;
 
-    @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
-                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                navigationView.setCheckedItem(R.id.nav_home);
-            } else {
-                super.onBackPressed();
-            }
-            return;
+        HomeItemAdapter(Context context) {
+
+            this.context = context;
+            inflater = LayoutInflater.from(context);
+            items.clear();
+            items.add(new Item("#280033", "Question Papers", FontAwesomeIcons.fa_paper_plane));
+            items.add(new Item("#009688", "AUMS", FontAwesomeIcons.fa_graduation_cap));
+            items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
+            items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
+            items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
+            items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
+            items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
+            items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
+            items.add(new Item("#1e1e1e","Timings",FontAwesomeIcons.fa_clock_o));
+            items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
+            items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
+            items.add(new Item("#f13c20", "About", FontAwesomeIcons.fa_info_circle));
         }
 
-        this.doubleBackToExitPressedOnce = true;
-        Utils.showSnackBar(this, "Please click BACK again to exit");
-        //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.settings, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto", "rajkumaar2304@gmail.com", null));
-            it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
-            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
-            if (it.resolveActivity(getPackageManager()) != null)
-                startActivity(it);
+        @Override
+        public int getCount() {
+            return items.size();
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        public Object getItem(int i) {
+            return items.get(i);
+        }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
 
-        if (id == R.id.nav_downloads) {
-            drawer.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this, DownloadsActivity.class));
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            View v = view;
+            ImageView picture;
+            TextView name;
+            FrameLayout holder;
 
-        } else if (id == R.id.wifi) {
-            if (Utils.isConnected(LaunchingActivity.this))
-                startActivity(new Intent(LaunchingActivity.this, WifiStatusActivity.class));
-            else
-                Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
-        } else if (id == R.id.nav_faq) {
-            if (Utils.isConnected(LaunchingActivity.this))
-                startActivity(new Intent(LaunchingActivity.this, ExamsFAQActivity.class));
-            else
-                Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
-        } else if (id == R.id.nav_share) {
-            drawer.closeDrawer(GravityCompat.START);
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Find all question papers under one roof. Download Amrita Repository, the must-have app for exam preparation " +
-                            " : https://play.google.com/store/apps/details?id=" + getPackageName());
-            sendIntent.setType("text/plain");
-            if (sendIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(sendIntent);
-            } else {
-                Toast.makeText(this, "Error.", Toast.LENGTH_SHORT).show();
+            if (v == null) {
+                v = inflater.inflate(R.layout.item_main_grid, viewGroup, false);
+                v.setTag(R.id.landing_item_holder, v.findViewById(R.id.landing_item_holder));
+                v.setTag(R.id.landing_picture, v.findViewById(R.id.landing_picture));
+                v.setTag(R.id.landing_text, v.findViewById(R.id.landing_text));
             }
+            holder = (FrameLayout) v.getTag(R.id.landing_item_holder);
+            picture = (ImageView) v.getTag(R.id.landing_picture);
+            name = (TextView) v.getTag(R.id.landing_text);
 
-        } else if (id == R.id.nav_about) {
-            drawer.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this, AboutActivity.class));
-        } else if (id == R.id.settings) {
-            drawer.closeDrawer(GravityCompat.START);
-            startActivity(new Intent(this, SettingsActivity.class));
-        } else if (id == R.id.nav_review) {
-            drawer.closeDrawer(GravityCompat.START);
-            if (Utils.isConnected(this)) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(this, "Error Opening Play Store.", Toast.LENGTH_SHORT).show();
+            final Item item = (Item) getItem(i);
+            picture.setImageDrawable(new IconDrawable(context,item.image).colorRes(android.R.color.white));
+            name.setText(item.name);
+            holder.setBackgroundColor(Color.parseColor(item.color));
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    powerUpOnClickListener(item);
                 }
-            } else
-                Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+            });
+            return v;
         }
-        return true;
+
+        private class Item {
+
+            final String color;
+            final String name;
+            private FontAwesomeIcons image;
+
+            Item(String color, String name, FontAwesomeIcons imageID) {
+                this.color = color;
+                this.name = name;
+                this.image = imageID;
+            }
+
+            public String getName() {
+                return name;
+            }
+        }
     }
 
-
-    /**
-     * Power up the on click listeners of items in home grid
-     */
-    private void powerUpOnClickListeners() {
-        findViewById(R.id.qpapers).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void powerUpOnClickListener(HomeItemAdapter.Item item) {
+        switch (item.getName()){
+            case "Question Papers" :
                 final SharedPreferences pref = LaunchingActivity.this.getSharedPreferences("user", Context.MODE_PRIVATE);
                 if (pref.getBoolean("remember_program", false) && pref.getInt("pos", -1) >= 0) {
                     intentSemActivity(pref.getInt("pos", 0), pref.getString("program", null));
@@ -405,36 +324,23 @@ public class LaunchingActivity extends AppCompatActivity
                     AlertDialog alertDialog = programs_builder.create();
                     alertDialog.show();
                 }
-
-            }
-        });
-        findViewById(R.id.student_timetable).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case "Academic Timetable":
                 startActivity(new Intent(LaunchingActivity.this, AcademicTimetableActivity.class));
-            }
-        });
+                break;
 
-        findViewById(R.id.faculty_timetable).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            case "Faculty Timetable":
                 startActivity(new Intent(LaunchingActivity.this, FacultyTimetableActivity.class));
-            }
-        });
-        findViewById(R.id.exam_schedule).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case "Exam Schedule":
                 if (Utils.isConnected(LaunchingActivity.this))
                     startActivity(new Intent(LaunchingActivity.this, ExamCategoryActivity.class));
                 else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
-            }
-        });
-        findViewById(R.id.aums).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final CharSequence[] items = {"AUMS - v1","AUMS - Lite (Easier to login)"};
-                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
+                break;
+            case "AUMS":
+                CharSequence[] items = {"AUMS - v1","AUMS - Lite (Easier to login)"};
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
                 dialogBuilder.setTitle("Confused ? Try v1 and if it doesn't work for you, choose Lite.");
                 dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
                             @Override
@@ -460,14 +366,10 @@ public class LaunchingActivity extends AppCompatActivity
                         }
                 );
                 dialogBuilder.create().show();
-            }
-        });
-
-        findViewById(R.id.timings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final CharSequence[] items = {"Campus Shuttle Buses","Public Transport"};
-                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
+                break;
+            case "Timings":
+                items = new CharSequence[]{"Campus Shuttle Buses", "Public Transport"};
+                dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
                 dialogBuilder.setTitle("View timings of ?");
                 dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
@@ -503,11 +405,8 @@ public class LaunchingActivity extends AppCompatActivity
                 });
                 AlertDialog dialog = dialogBuilder.create();
                 dialog.show();
-            }
-        });
-        findViewById(R.id.curriculum).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case "Curriculum":
                 if (Utils.isConnected(LaunchingActivity.this)) {
                     final CharSequence[] depts = {"Computer Science Engineering", "Electronics & Communication Engineering", "Aerospace Engineering", "Civil Engineering", "Chemical Engineering", "Electrical & Electronics Engineering", "Electronics & Instrumentation Engineering", "Mechanical Engineering"};
                     AlertDialog.Builder departmentDialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
@@ -523,24 +422,232 @@ public class LaunchingActivity extends AppCompatActivity
                     departmentDialog.show();
                 } else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
-            }
-        });
-        findViewById(R.id.downloads).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case "Downloads":
                 startActivity(new Intent(LaunchingActivity.this, DownloadsActivity.class));
-            }
-        });
-        findViewById(R.id.news).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                break;
+            case "News":
                 if (Utils.isConnected(LaunchingActivity.this))
                     startActivity(new Intent(LaunchingActivity.this, NewsActivity.class));
                 else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+                break;
+            case "WiFi Status":
+                if (Utils.isConnected(LaunchingActivity.this))
+                    startActivity(new Intent(LaunchingActivity.this, WifiStatusActivity.class));
+                else
+                    Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+                break;
+            case "FAQ - Exams":
+                if (Utils.isConnected(LaunchingActivity.this))
+                    startActivity(new Intent(LaunchingActivity.this, ExamsFAQActivity.class));
+                else
+                    Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+                break;
+            case "About":
+                startActivity(new Intent(getBaseContext(),AboutActivity.class));
+                break;
+        }
+    }
+
+
+    @Override
+    protected void onPostResume() {
+        if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG) {
+            try{warmUpDialog.show();}catch (Exception e){e.printStackTrace();}
+            checkUpdate();
+        }
+        final Handler handler  = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (warmUpDialog!=null && warmUpDialog.isShowing()) {
+                    Log.e("CLOSING-UPDATE","Done");
+                    warmUpDialog.dismiss();
+                }
+            }
+        };
+        handler.postDelayed(runnable,3000);
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        new clearCache().clear();
+        super.onDestroy();
+    }
+
+    /**
+     * Compares existing version with latest and prompts for update
+     */
+    public void checkUpdate() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("https://play.google.com/store/apps/details?id=" + getPackageName(), new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                try {
+                    Document document = Jsoup.parse(new String(bytes));
+                    Elements version = document.select("span.htlgb");
+                    String latest = version.get(6).text();
+
+                    Elements whatsNew = document.select("div.DWPxHb");
+                    String whatsNewText = whatsNew.get(1).toString().trim();
+                    if (latest != null && !latest.isEmpty()) {
+                        if (active) {
+                            try {
+                                warmUpDialog.dismiss();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Log.e("Latest : " + latest, " Having :" + BuildConfig.VERSION_NAME);
+                            if (!latest.equals(BuildConfig.VERSION_NAME)) {
+                                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
+                                alertDialog.setCancelable(false);
+                                alertDialog.setMessage(Html.fromHtml("An update is available for Amrita Repository.<br><br><strong><font color='#AA0000'>What's New ?</font></strong>" + whatsNewText));
+                                alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+                                        if (intent.resolveActivity(getPackageManager()) != null)
+                                            startActivity(intent);
+                                    }
+                                });
+                                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                });
+                                if (active)
+                                    alertDialog.show();
+                            }
+                        }
+                    }
+                }catch (Exception e){
+                    Crashlytics.log(e.getLocalizedMessage());
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                try{
+                    warmUpDialog.dismiss();
+                    Crashlytics.log(throwable.getLocalizedMessage());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setCheckedItem(R.id.nav_home);
+            } else {
+                super.onBackPressed();
+            }
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Utils.showSnackBar(this, "Please click BACK again to exit");
+        //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.settings, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_bug_report) {
+            Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", "rajkumaar2304@gmail.com", null));
+            it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
+            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
+            if (it.resolveActivity(getPackageManager()) != null)
+                startActivity(it);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        if (id == R.id.nav_downloads) {
+            drawer.closeDrawer(GravityCompat.START);
+            startActivity(new Intent(this, DownloadsActivity.class));
+
+        } else if (id == R.id.nav_share) {
+            drawer.closeDrawer(GravityCompat.START);
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Find all question papers under one roof. Download Amrita Repository, the must-have app for exam preparation " +
+                            " : https://play.google.com/store/apps/details?id=" + getPackageName());
+            sendIntent.setType("text/plain");
+            if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(sendIntent);
+            } else {
+                Toast.makeText(this, "Error.", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (id == R.id.nav_about) {
+            drawer.closeDrawer(GravityCompat.START);
+            startActivity(new Intent(this, AboutActivity.class));
+        } else if (id == R.id.settings) {
+            drawer.closeDrawer(GravityCompat.START);
+            startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.nav_review) {
+            drawer.closeDrawer(GravityCompat.START);
+            if (Utils.isConnected(this)) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "Error Opening Play Store.", Toast.LENGTH_SHORT).show();
+                }
+            } else
+                Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+        }
+        return true;
+    }
+
+
+
 
     /**
      * Sends an intent to semester activity with the selected program

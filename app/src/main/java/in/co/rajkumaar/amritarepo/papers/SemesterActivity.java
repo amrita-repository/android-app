@@ -88,8 +88,6 @@ public class SemesterActivity extends AppCompatActivity {
 
         TextView wifiwarning = findViewById(R.id.wifiwarning);
         wifiwarning.setVisibility(View.GONE);
-        ImageView imageView = findViewById(R.id.empty_imageview);
-        imageView.setVisibility(View.GONE);
         switch (course) {
             case 0:
                 semUrl += "150";
@@ -178,20 +176,16 @@ public class SemesterActivity extends AppCompatActivity {
             if (statusCode != 200) {
                 TextView emptyView = findViewById(R.id.empty_view);
                 emptyView.setVisibility(View.VISIBLE);
-                ImageView imageView = findViewById(R.id.empty_imageview);
-                imageView.setVisibility(View.VISIBLE);
                 TextView wifiWarning = findViewById(R.id.wifiwarning);
                 wifiWarning.setVisibility(View.VISIBLE);
             } else {
                 if (elements != null) {
-                    ImageView imageView = findViewById(R.id.empty_imageview);
-                    imageView.setVisibility(View.GONE);
                     TextView textView = findViewById(R.id.empty_view);
                     textView.setVisibility(View.GONE);
                     TextView wifiwarning = findViewById(R.id.wifiwarning);
                     wifiwarning.setVisibility(View.GONE);
                     ListView listView = findViewById(R.id.list);
-                    semsAdapter = new ArrayAdapter<String>(SemesterActivity.this, android.R.layout.simple_list_item_1, sems);
+                    semsAdapter = new ArrayAdapter<String>(SemesterActivity.this, R.layout.white_textview, sems);
                     listView.setAdapter(semsAdapter);
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -209,8 +203,6 @@ public class SemesterActivity extends AppCompatActivity {
 
                     listView.setVisibility(View.VISIBLE);
                 } else {
-                    ImageView imageView = findViewById(R.id.empty_imageview);
-                    imageView.setVisibility(View.VISIBLE);
                     TextView textView = findViewById(R.id.empty_view);
                     textView.setText("An unexpected error occurred. Please report to the developer.");
                     textView.setVisibility(View.VISIBLE);

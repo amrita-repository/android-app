@@ -17,18 +17,6 @@
             android:title="Downloads"
             android:checkable="false"/>
         <item
-            android:title="FAQ - Exams"
-            android:id="@+id/nav_faq"
-            android:icon="@drawable/help"
-            android:checkable="false"
-            />
-        <item
-            android:title="WiFi Status"
-            android:id="@+id/wifi"
-            android:icon="@drawable/wifi"
-            android:checkable="false"
-            />
-        <item
             android:title="Settings"
             android:id="@+id/settings"
             android:icon="@drawable/settings"

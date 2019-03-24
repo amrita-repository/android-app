@@ -66,7 +66,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                     convertView = getLayoutInflater().inflate(R.layout.shuttle_timing_item, null);
                 }
                 DataItem item = getItem(position);
-                String font_color = "<font color='#b71c1c'>";
+                String font_color = "<font color='#ff8800'>";
 
                 if (item.from.equals("ab1"))
                     ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from AB1 at " + font_color + item.departure + "</font>"));

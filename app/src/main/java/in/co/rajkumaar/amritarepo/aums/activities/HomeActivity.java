@@ -251,7 +251,7 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_bug_report) {
             Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                     "mailto", "rajkumaar2304@gmail.com", null));
             it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");

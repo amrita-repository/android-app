@@ -33,8 +33,8 @@ public class ExamsFAQActivity extends AppCompatActivity {
             "    <link href=\"https://fonts.googleapis.com/css?family=Lato\" rel=\"stylesheet\">\n" +
             "    <style type=\"text/css\">\n" +
             "    \tbody{\n" +
-            "    \t\tbackground: #E0EDF8;\n" +
-            "\t\tfont-family: 'Lato', sans-serif;\n" +
+            "    \t\tbackground: #1f262a;\n" +
+            "\t\tfont-family: 'Lato', sans-serif;color:#fff;\n" +
             "    \t}\n" +
             "    </style>\n" +
             "</head>\n" +

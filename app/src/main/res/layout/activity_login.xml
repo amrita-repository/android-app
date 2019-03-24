@@ -30,39 +30,33 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Login"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@android:color/holo_orange_dark"
                 android:textStyle="bold"
                 android:textSize="25sp"
                 />
-
-
-
-            <TextView
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Username"
-                />
             <EditText
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:id="@+id/username"
+                android:hint="Your username"
                 android:layout_width="match_parent"
+                android:textColorHint="@android:color/white"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/colorAccent"
                 android:layout_height="50dp"
                 android:inputType="textCapCharacters"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
-                float:inputType="textPassword|textVisiblePassword" />
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Password"
-                float:ignore="HardcodedText" />
+                float:inputType="textPassword|textVisiblePassword"
+                float:ignore="UnusedAttribute" />
             <EditText
                 android:id="@+id/password"
                 android:layout_marginTop="5dp"
+                android:textColorHint="@android:color/white"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/colorAccent"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:hint="Your password"
                 android:inputType="textPassword"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"/>
@@ -74,10 +68,13 @@
                     android:id="@+id/remember_me"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="@android:color/white"
+                    android:buttonTint="@color/colorAccent"
                     android:layout_marginTop="10dp"
                     android:text="Remember me"
                     android:textSize="12sp"
-                    float:ignore="HardcodedText" />
+                    float:ignore="HardcodedText,UnusedAttribute" />
             </RelativeLayout>
 
 
@@ -86,7 +83,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginBottom="20dp"
-                android:textColor="@android:color/white"
                 android:layout_marginTop="15dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"

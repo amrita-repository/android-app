@@ -27,6 +27,7 @@ package in.co.rajkumaar.amritarepo.wifistatus;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -164,7 +165,8 @@ public class WifiStatusActivity extends AppCompatActivity {
                     titles.get(count).setText((CharSequence) pair.getKey());
                     boolean status = (boolean) pair.getValue();
                     messages.get(count).setText(status ? "Working" : "Not working");
-                    images.get(count).setImageResource(status ? R.mipmap.ic_tick : R.mipmap.ic_error);
+                    messages.get(count).setTextColor(Color.parseColor(status ? "#51F11F" : "#FF201B"));
+                    images.get(count).setImageResource(status ? R.drawable.ic_tick : R.drawable.ic_error);
                     count++;
                 }
                 if (dialog != null && dialog.isShowing()) {

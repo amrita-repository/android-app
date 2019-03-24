@@ -15,6 +15,7 @@
         android:layout_centerInParent="true"/>
     <ListView
         android:id="@+id/list"
+        android:dividerHeight="0dp"
         android:layout_above="@id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

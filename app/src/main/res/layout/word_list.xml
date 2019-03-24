@@ -23,28 +23,33 @@
         android:longClickable="true"
         android:layout_above="@id/banner_container"
         android:id="@+id/dlist"
+        android:dividerHeight="0dp"
         android:orientation="vertical"
         android:drawSelectorOnTop="true"/>
-    <TextView
-        android:id="@+id/dempty_view"
+    <LinearLayout
         android:visibility="invisible"
+        android:textColor="@color/colorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
         android:textAlignment="center"
-        android:text="No downloads yet!"
-        android:textAppearance="?android:textAppearanceMedium"/>
+        android:id="@+id/dempty_view">
+        <ImageView
+            android:layout_marginBottom="10dp"
+            android:layout_width="200dp"
+            android:src="@drawable/img_no_feed"
+            android:layout_height="200dp" />
+        <TextView
+            android:textColor="#FF201B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="No downloads in this category yet!"
+            android:textAppearance="?android:textAppearanceMedium"/>
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/dempty_imageview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:visibility="invisible"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/dempty_view"
-        android:src="@drawable/ic_baseline_sentiment_very_dissatisfied_24px"
-        android:textAppearance="?android:textAppearanceMedium"/>
     <LinearLayout
         android:id="@+id/banner_container"
         android:layout_width="match_parent"

@@ -14,7 +14,7 @@
         android:padding="8dp"
         android:text="Attendance"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#FFF"
+        android:textColor="@android:color/holo_orange_dark"
         android:textStyle="bold"
         android:visibility="visible" />
 

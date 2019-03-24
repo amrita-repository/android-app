@@ -19,26 +19,28 @@
         android:orientation="vertical">
 
 
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <com.github.siyamed.shapeimageview.RoundedImageView
+            android:visibility="visible"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:id="@+id/image"
             android:src="@drawable/raj"
-            app:civ_border_color="@color/colorPrimaryDark"
-            app:civ_border_width="4dp"
-            app:civ_shadow="true"
-            app:civ_shadow_radius="10"
-            app:civ_shadow_color="@color/colorPrimaryDark"/>
+            app:siRadius="6dp"
+            app:siBorderWidth="3dp"
+            app:siBorderColor="@android:color/white"
+            app:siSquare="false"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Rajkumar"
+            android:id="@+id/name"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center"
-            android:fontFamily="@font/cunia"
-            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="@font/lato"
+            android:textColor="@android:color/white"
             android:gravity="center"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"/>
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

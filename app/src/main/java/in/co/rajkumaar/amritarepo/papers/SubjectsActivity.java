@@ -83,8 +83,6 @@ public class SubjectsActivity extends AppCompatActivity {
         externLink = protocol + cloudSpace + amrita + port;
         TextView textView = findViewById(R.id.empty_view);
         textView.setVisibility(View.GONE);
-        ImageView imageView = findViewById(R.id.empty_imageview);
-        imageView.setVisibility(View.GONE);
         TextView wifiWarning = findViewById(R.id.wifiwarning);
         wifiWarning.setVisibility(View.GONE);
         Bundle bundle = getIntent().getExtras();
@@ -173,19 +171,15 @@ public class SubjectsActivity extends AppCompatActivity {
             if (statusCode != 200) {
                 TextView emptyView = findViewById(R.id.empty_view);
                 emptyView.setVisibility(View.VISIBLE);
-                ImageView imageView = findViewById(R.id.empty_imageview);
-                imageView.setVisibility(View.VISIBLE);
                 TextView wifiwarning = findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.VISIBLE);
             } else {
                 TextView emptyView = findViewById(R.id.empty_view);
                 emptyView.setVisibility(View.GONE);
-                ImageView imageView = findViewById(R.id.empty_imageview);
-                imageView.setVisibility(View.GONE);
                 TextView wifiwarning = findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.GONE);
                 ListView listView = findViewById(R.id.list);
-                ArrayAdapter<String> semsAdapter = new ArrayAdapter<String>(SubjectsActivity.this, android.R.layout.simple_list_item_1, assessments);
+                ArrayAdapter<String> semsAdapter = new ArrayAdapter<String>(SubjectsActivity.this, R.layout.white_textview, assessments);
                 listView.setAdapter(semsAdapter);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
