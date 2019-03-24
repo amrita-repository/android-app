@@ -50,5 +50,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3'
+    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
 
 }

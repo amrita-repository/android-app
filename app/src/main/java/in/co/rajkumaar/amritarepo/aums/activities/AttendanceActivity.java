@@ -37,7 +37,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -86,6 +85,8 @@ public class AttendanceActivity extends AppCompatActivity {
         domain = UserData.domain;
         sem = getIntent().getStringExtra("sem");
         getAttendance(UserData.client, sem);
+        String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
+        ((TextView) findViewById(R.id.quote)).setText(quote);
         /*list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -94,29 +95,29 @@ public class AttendanceActivity extends AppCompatActivity {
         });*/
     }
 
-    void getSubjectAttendance(final AsyncHttpClient client){
+    void getSubjectAttendance(final AsyncHttpClient client) {
         RequestParams params = new RequestParams();
-        params.put("htmlPageTopContainer_txtrollnumber","");
-        params.put("Page_refIndex_hidden",UserData.refIndex++);
-        params.put("htmlPageTopContainer_selectSem",sem);
-        params.put("htmlPageTopContainer_selectCourse","35569");
-        params.put("htmlPageTopContainer_selectType","1");
-        params.put("htmlPageTopContainer_hiddentSummary","");
-        params.put("htmlPageTopContainer_status","");
-        params.put("htmlPageTopContainer_action","UMS-ATD_SHOW_ATDREPORTSTUD_SCREEN");
-        params.put("htmlPageTopContainer_notify","");
-        params.put("htmlPageTopContainer_hidrollNo","Student");
-        client.addHeader("Referer","https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
+        params.put("htmlPageTopContainer_txtrollnumber", "");
+        params.put("Page_refIndex_hidden", UserData.refIndex++);
+        params.put("htmlPageTopContainer_selectSem", sem);
+        params.put("htmlPageTopContainer_selectCourse", "35569");
+        params.put("htmlPageTopContainer_selectType", "1");
+        params.put("htmlPageTopContainer_hiddentSummary", "");
+        params.put("htmlPageTopContainer_status", "");
+        params.put("htmlPageTopContainer_action", "UMS-ATD_SHOW_ATDREPORTSTUD_SCREEN");
+        params.put("htmlPageTopContainer_notify", "");
+        params.put("htmlPageTopContainer_hidrollNo", "Student");
+        client.addHeader("Referer", "https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
         client.post(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 client.removeHeader("Referer");
-                client.addHeader("Referer","https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
+                client.addHeader("Referer", "https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
                 client.get(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=1", new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int i, Header[] headers, byte[] bytes) {
                         client.removeHeader("Referer");
-                        client.addHeader("Referer","https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
+                        client.addHeader("Referer", "https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
                         client.get(domain + "/aums/AUMSReportServlet", new FileAsyncHttpResponseHandler(AttendanceActivity.this) {
                             @Override
                             public void onFailure(int i, Header[] headers, Throwable throwable, File file) {
@@ -126,10 +127,10 @@ public class AttendanceActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(int i, Header[] headers, File file) {
                                 try {
-                                    FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory()+"/AmritaRepo/temp");
+                                    FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory() + "/AmritaRepo/temp");
                                     fos.write(file.toString().getBytes());
                                     fos.close();
-                                    Log.e("SUCCESS","File written");
+                                    Log.e("SUCCESS", "File written");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -208,7 +209,7 @@ public class AttendanceActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if(getSharedPreferences("aums",MODE_PRIVATE).getBoolean("disclaimer",true)) {
+                                        if (getSharedPreferences("aums", MODE_PRIVATE).getBoolean("disclaimer", true)) {
                                             new AlertDialog.Builder(AttendanceActivity.this)
                                                     .setTitle("Disclaimer")
                                                     .setCancelable(false)
@@ -299,10 +300,10 @@ public class AttendanceActivity extends AppCompatActivity {
             this.total = total;
         }
 
-        int getBunkingCount(){
+        int getBunkingCount() {
             return Double.parseDouble(getPercentage()) > 75.0 ?
                     (int) Math.floor(Math.abs((Double.parseDouble(this.attended) / 76) * 100 - Double.parseDouble(total)))
-                    : (int) Math.ceil(Math.abs(((0.75*(Double.parseDouble(getTotal()))) - Double.parseDouble(getAttended())) / 0.25));
+                    : (int) Math.ceil(Math.abs(((0.75 * (Double.parseDouble(getTotal()))) - Double.parseDouble(getAttended())) / 0.25));
         }
     }
 
@@ -346,10 +347,10 @@ public class AttendanceActivity extends AppCompatActivity {
             TextView comments = listItemView.findViewById(R.id.comments);
 
             assert current != null;
-            int percent = (int)Math.round(Double.parseDouble(current.getPercentage()));
+            int percent = (int) Math.round(Double.parseDouble(current.getPercentage()));
             if (percent <= 75)
                 color.setBackgroundColor(getResources().getColor(R.color.danger));
-            else if(percent > 75 && percent < 85 )
+            else if (percent > 75 && percent < 85)
                 color.setBackgroundColor(getResources().getColor(R.color.orange));
             else
                 color.setBackgroundColor(getResources().getColor(R.color.green));
@@ -358,21 +359,21 @@ public class AttendanceActivity extends AppCompatActivity {
             title.setText(current.getTitle());
             attended.setText(Html.fromHtml("You attended <b>" + Math.round(Double.parseDouble(current.getAttended())) + "</b> of <b>" + current.getTotal() + "</b> classes"));
             comments.setVisibility(View.VISIBLE);
-            if(percent < 95 && percent>75 && current.getBunkingCount()>0){
+            if (percent < 95 && percent > 75 && current.getBunkingCount() > 0) {
                 comments.setText(
                         (current.getBunkingCount() > 1)
-                        ? "You miss "+current.getBunkingCount()+" more classes and "+idioms[new Random().nextInt((idioms.length))]
-                        : "You miss "+current.getBunkingCount()+" more class and "+idioms[new Random().nextInt((idioms.length))]
+                                ? "You miss " + current.getBunkingCount() + " more classes and " + idioms[new Random().nextInt((idioms.length))]
+                                : "You miss " + current.getBunkingCount() + " more class and " + idioms[new Random().nextInt((idioms.length))]
                 );
-            }else if(percent == 75 || current.getBunkingCount()==0){
+            } else if (percent == 75 || current.getBunkingCount() == 0) {
                 comments.setText("Your situation is like the cat on the wall. Start going to class and be on safer side!");
-            }else if(percent < 75){
+            } else if (percent < 75) {
                 comments.setText(
                         (current.getBunkingCount() > 1)
-                                ? "Oh-No ! You need to attend at least "+current.getBunkingCount()+" classes to make it 75% !"
-                                : "Oh-No ! You need to attend at least "+current.getBunkingCount()+" class to make it 75% !"
+                                ? "Oh-No ! You need to attend at least " + current.getBunkingCount() + " classes to make it 75% !"
+                                : "Oh-No ! You need to attend at least " + current.getBunkingCount() + " class to make it 75% !"
                 );
-            }else{
+            } else {
                 comments.setVisibility(View.GONE);
             }
 

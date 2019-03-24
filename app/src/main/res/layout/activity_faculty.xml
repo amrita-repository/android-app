@@ -1,67 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/faculty_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    android:id="@+id/faculty_page">
+    android:background="@color/colorBackground">
+
     <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/made_with_love"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@id/banner_container"
         android:layout_centerHorizontal="true"
-        android:text="@string/made_love"
-        android:textColor="@android:color/white"
         android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content" />
+        android:text="@string/made_love"
+        android:textColor="@android:color/white" />
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/faculty_container"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
         android:orientation="vertical">
+
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView1"
-            android:layout_width="250dp"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@android:color/white"
             android:layout_marginBottom="20dp"
+            android:backgroundTint="@android:color/white"
             android:hint="@string/facultyname"
             android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
             android:textSize="15sp"
             tools:ignore="UnusedAttribute" />
 
         <Spinner
             android:id="@+id/faculty_year"
-            android:backgroundTint="@color/colorAccent"
-            android:layout_width="240dp"
-            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/white" />
 
         <Spinner
             android:id="@+id/faculty_sem"
-            android:backgroundTint="@color/colorAccent"
-            android:layout_width="240dp"
-            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp" />
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/faculty_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
             android:layout_marginTop="15dp"
             android:background="@drawable/button"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             android:padding="12dp"
             android:text="View"
             android:textColor="@color/colorBackground" />
@@ -78,11 +84,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
                 android:layout_weight="1"
                 android:background="@drawable/button"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:padding="2dp"
                 android:text="Reset"
                 android:textColor="@color/colorBackground" />
@@ -91,24 +97,29 @@
                 android:id="@+id/faculty_download"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="2dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/button"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="Download"
                 android:textColor="@color/colorBackground" />
         </LinearLayout>
 
-
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/professor" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        />
+        android:orientation="vertical" />
 </RelativeLayout>

@@ -30,7 +30,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -96,7 +95,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        ((TextView)findViewById(R.id.made_with_love)).setText(Html.fromHtml("Crafted with &hearts;"));
+        ((TextView) findViewById(R.id.made_with_love)).setText(Html.fromHtml("Crafted with &hearts;"));
         final Spinner year = findViewById(R.id.faculty_year);
         final Spinner sem = findViewById(R.id.faculty_sem);
         RelativeLayout facultypage = findViewById(R.id.faculty_page);

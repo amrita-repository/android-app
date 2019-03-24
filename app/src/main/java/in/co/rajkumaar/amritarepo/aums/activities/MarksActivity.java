@@ -47,6 +47,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
@@ -65,7 +66,8 @@ public class MarksActivity extends AppCompatActivity {
         Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         recyclerView = (RecyclerView) findViewById(R.id.list);
         UserData.refIndex = 1;
-
+        String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
+        ((TextView) findViewById(R.id.quote)).setText(quote);
         final LinearLayoutManager layoutParams = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutParams);
         getMarks(UserData.client, getIntent().getStringExtra("sem"));

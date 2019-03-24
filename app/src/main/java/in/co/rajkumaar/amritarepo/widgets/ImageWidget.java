@@ -33,12 +33,12 @@ public class ImageWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        preferences=context.getSharedPreferences("user",Context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.academic_timetable);
         //.setTextViewText(R.id.appwidget_text, widgetText);
-        String path = preferences.getString("path",null);
-        if(path!=null) {
+        String path = preferences.getString("path", null);
+        if (path != null) {
             try {
                 path = "/AmritaRepo/" + path;
                 File file = new File(Environment.getExternalStorageDirectory() + path);
@@ -47,16 +47,22 @@ public class ImageWidget extends AppWidgetProvider {
                 Bitmap scaled = Bitmap.createScaledBitmap(bmp, 512, nh, true);
                 views.setImageViewBitmap(R.id.image_widget, scaled);
                 views.setTextViewText(R.id.class_name, (path.split("\\.")[0]).split("/")[2]);
-            }catch (Exception e){
+            } catch (Exception e) {
                 Crashlytics.log(e.getMessage());
                 e.printStackTrace();
             }
-        }else{
-            views.setTextViewText(R.id.class_name,"Click me");
+        } else {
+            views.setTextViewText(R.id.class_name, "Click me");
         }
         views.setOnClickPendingIntent(R.id.image_widget, getPendingSelfIntent(context, MyOnClick));
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+    }
+
+    protected static PendingIntent getPendingSelfIntent(Context context, String action) {
+        Intent intent = new Intent(context, ImageWidget.class);
+        intent.setAction(action);
+        return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 
     @Override
@@ -77,33 +83,27 @@ public class ImageWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-    protected static PendingIntent getPendingSelfIntent(Context context, String action) {
-        Intent intent = new Intent(context, ImageWidget.class);
-        intent.setAction(action);
-        return PendingIntent.getBroadcast(context, 0, intent, 0);
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(Objects.equals(intent.getAction(), MyOnClick)) {
-            preferences=context.getSharedPreferences("user",Context.MODE_PRIVATE);
-            String path = preferences.getString("path",null);
-            if(path!=null) {
-               try{
-                   path = "/AmritaRepo/"+path;
-                   File file = new File(Environment.getExternalStorageDirectory() + path);
-                   Intent intentToOpen = new Intent(Intent.ACTION_VIEW);
-                   Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
-                   intentToOpen.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                   intentToOpen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                   intentToOpen.setDataAndType(data, "image/*");
-                   context.startActivity(intentToOpen);
-               }catch (Exception e){
-                   Crashlytics.log(e.getMessage());
-                   e.printStackTrace();
-               }
-            }else{
-                context.startActivity(new Intent(context, DownloadsActivity.class).putExtra("widget",true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        if (Objects.equals(intent.getAction(), MyOnClick)) {
+            preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+            String path = preferences.getString("path", null);
+            if (path != null) {
+                try {
+                    path = "/AmritaRepo/" + path;
+                    File file = new File(Environment.getExternalStorageDirectory() + path);
+                    Intent intentToOpen = new Intent(Intent.ACTION_VIEW);
+                    Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+                    intentToOpen.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intentToOpen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentToOpen.setDataAndType(data, "image/*");
+                    context.startActivity(intentToOpen);
+                } catch (Exception e) {
+                    Crashlytics.log(e.getMessage());
+                    e.printStackTrace();
+                }
+            } else {
+                context.startActivity(new Intent(context, DownloadsActivity.class).putExtra("widget", true).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         }
         super.onReceive(context, intent);

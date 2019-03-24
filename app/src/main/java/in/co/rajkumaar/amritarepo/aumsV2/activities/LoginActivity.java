@@ -8,14 +8,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.SyncStateContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -27,25 +24,23 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText username;
-    private EditText dob;
-    private Calendar dobDate=Calendar.getInstance();
-    private ProgressDialog progressDialog;
     SharedPreferences pref;
     AsyncHttpClient client = GlobalData.getClient();
+    private EditText username;
+    private EditText dob;
+    private Calendar dobDate = Calendar.getInstance();
+    private ProgressDialog progressDialog;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -54,9 +49,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login2);
         getSupportActionBar().setSubtitle("Lite Version");
         pref = getSharedPreferences("aums-lite", Context.MODE_PRIVATE);
-        username=findViewById(R.id.username);
-        dob=findViewById(R.id.dob);
-        progressDialog=new ProgressDialog(this);
+        username = findViewById(R.id.username);
+        dob = findViewById(R.id.dob);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
@@ -84,9 +79,9 @@ public class LoginActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                DecimalFormat mFormat= new DecimalFormat("00");
+                DecimalFormat mFormat = new DecimalFormat("00");
                 mFormat.setRoundingMode(RoundingMode.DOWN);
-                dob.setText(year + "-" + mFormat.format(Double.valueOf(month+1)) + "-" + mFormat.format(Double.valueOf(dayOfMonth)));
+                dob.setText(year + "-" + mFormat.format(Double.valueOf(month + 1)) + "-" + mFormat.format(Double.valueOf(dayOfMonth)));
                 dobDate.set(year, month, dayOfMonth);
             }
         }, dobDate.get(Calendar.YEAR),
@@ -97,34 +92,34 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
-        if(!Utils.isConnected(getBaseContext())){
+        if (!Utils.isConnected(getBaseContext())) {
             Utils.showInternetError(getBaseContext());
             return;
         }
-        if(username.getText().toString().isEmpty() || dob.getText().toString().isEmpty()){
-            Utils.showSnackBar(this,"Please enter all fields");
+        if (username.getText().toString().isEmpty() || dob.getText().toString().isEmpty()) {
+            Utils.showSnackBar(this, "Please enter all fields");
             return;
         }
         progressDialog.show();
-        client.addHeader("Authorization",GlobalData.auth);
-        client.addHeader("token",GlobalData.loginToken);
+        client.addHeader("Authorization", GlobalData.auth);
+        client.addHeader("token", GlobalData.loginToken);
         client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/authRes?rollno="
                 + username.getText().toString() + "&dob=" + dob.getText().toString() + "&user_type=Student", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(bytes));
-                    if(jsonObject.has("Status")){
-                            if(jsonObject.getString("Status").equals("OK")){
-                                Log.v("DATA",jsonObject.toString());
-                                GlobalData.setUsername(username.getText().toString());
-                                GlobalData.setDob(dob.getText().toString());
-                                GlobalData.setEmail(jsonObject.getString("Email"));
-                                GlobalData.setName(jsonObject.getString("NAME"));
-                                verifyOTP();
-                            }else{
-                                Utils.showSnackBar(LoginActivity.this,jsonObject.getString("Status"));
-                            }
+                    if (jsonObject.has("Status")) {
+                        if (jsonObject.getString("Status").equals("OK")) {
+                            Log.v("DATA", jsonObject.toString());
+                            GlobalData.setUsername(username.getText().toString());
+                            GlobalData.setDob(dob.getText().toString());
+                            GlobalData.setEmail(jsonObject.getString("Email"));
+                            GlobalData.setName(jsonObject.getString("NAME"));
+                            verifyOTP();
+                        } else {
+                            Utils.showSnackBar(LoginActivity.this, jsonObject.getString("Status"));
+                        }
                     }
                 } catch (JSONException e) {
                     Utils.showUnexpectedError(LoginActivity.this);
@@ -142,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void verifyOTP(){
+    public void verifyOTP() {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LoginActivity.this);
         alertDialog.setMessage("Enter the OTP you just received on your number registered in AUMS : ");
         LinearLayout layout = new LinearLayout(LoginActivity.this);
@@ -159,31 +154,31 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 progressDialog.setMessage("Verifying OTP..");
-                client.addHeader("Authorization",GlobalData.auth);
-                client.addHeader("token",GlobalData.loginToken);
+                client.addHeader("Authorization", GlobalData.auth);
+                client.addHeader("token", GlobalData.loginToken);
                 client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/authRes/register?rollno=" +
-                        username.getText().toString() + "&otp="+otpEdittext.getText().toString(), new AsyncHttpResponseHandler() {
+                        username.getText().toString() + "&otp=" + otpEdittext.getText().toString(), new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int i, Header[] headers, byte[] bytes) {
                         try {
                             JSONObject jsonObject = new JSONObject(new String(bytes));
-                            if(jsonObject.getString("Status").equals("Y")){
+                            if (jsonObject.getString("Status").equals("Y")) {
                                 GlobalData.setToken(jsonObject.getString("Token"));
                                 SharedPreferences.Editor editor = pref.edit();
-                                editor.putBoolean("logged-in",true);
-                                editor.putString("username",GlobalData.getUsername());
-                                editor.putString("email",GlobalData.getEmail());
-                                editor.putString("dob",GlobalData.getDob());
-                                editor.putString("name",GlobalData.getName());
-                                editor.putString("token",GlobalData.getToken());
+                                editor.putBoolean("logged-in", true);
+                                editor.putString("username", GlobalData.getUsername());
+                                editor.putString("email", GlobalData.getEmail());
+                                editor.putString("dob", GlobalData.getDob());
+                                editor.putString("name", GlobalData.getName());
+                                editor.putString("token", GlobalData.getToken());
                                 editor.apply();
                                 Bundle params = new Bundle();
                                 params.putString("User", GlobalData.getName() + "[" + GlobalData.getUsername() + "]");
                                 mFirebaseAnalytics.logEvent("AUMSLogin", params);
-                                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                 finish();
-                            }else{
-                                Utils.showSnackBar(LoginActivity.this,"Invalid OTP");
+                            } else {
+                                Utils.showSnackBar(LoginActivity.this, "Invalid OTP");
                             }
                         } catch (JSONException e) {
                             Utils.showUnexpectedError(LoginActivity.this);

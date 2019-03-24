@@ -25,10 +25,16 @@
             android:orientation="vertical"
             android:paddingLeft="24dp"
             android:paddingRight="24dp">
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_gravity="center"
+                android:src="@drawable/notebook"
+                android:layout_height="150dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:text="Login"
                 android:textColor="@android:color/holo_orange_dark"
                 android:textStyle="bold"

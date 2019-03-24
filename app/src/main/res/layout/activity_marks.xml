@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/image_holder"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/image_holder"
     android:layout_centerHorizontal="true"
     android:layout_width="match_parent"
     android:background="@color/colorBackground"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <ProgressBar
+    <LinearLayout
+        android:layout_width="match_parent"
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="10dp"
         android:layout_centerInParent="true"
-        android:indeterminate="true" />
+        android:layout_height="wrap_content">
+        <com.github.ybq.android.spinkit.SpinKitView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            style="@style/SpinKitView.Circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/colorAccent" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/quote"
+            android:textColor="@android:color/white"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+            android:text="Details matter, it\'s worth waiting to get it right\n- Steve Jobs"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/list"
         android:layout_above="@id/banner_container"
         android:visibility="gone"
+        android:divider="@android:color/white"
+        android:dividerHeight="0dp"
         android:layout_width="match_parent"
         android:clipToPadding="false"
         android:layout_height="wrap_content"

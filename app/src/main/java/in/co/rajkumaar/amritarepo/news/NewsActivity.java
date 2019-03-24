@@ -2,9 +2,9 @@ package in.co.rajkumaar.amritarepo.news;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +79,7 @@ public class NewsActivity extends AppCompatActivity {
     }
 
 
-    private class NewsItem{
+    private class NewsItem {
         private final String imageUrl;
         private final String title;
         private final String link;
@@ -103,6 +103,7 @@ public class NewsActivity extends AppCompatActivity {
             return link;
         }
     }
+
     class NewsAdapter extends ArrayAdapter<NewsItem> {
         NewsAdapter(Context context, ArrayList<NewsItem> HomeItems) {
             super(context, 0, HomeItems);
@@ -133,9 +134,9 @@ public class NewsActivity extends AppCompatActivity {
             listItemView.findViewById(R.id.card_view).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(Utils.isConnected(getContext()))
-                    startActivity(new Intent(getContext(), WebViewActivity.class).putExtra("webview",current.getLink())
-                    .putExtra("title",current.getTitle()));
+                    if (Utils.isConnected(getContext()))
+                        startActivity(new Intent(getContext(), WebViewActivity.class).putExtra("webview", current.getLink())
+                                .putExtra("title", current.getTitle()));
                     else
                         Utils.showInternetError(getContext());
                 }

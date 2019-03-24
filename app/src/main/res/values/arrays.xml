@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="quotes">
+        <item>Details matter, it\'s worth waiting to get it right\n- Steve Jobs</item>
+        <item>Have the courage to follow your heart and intuition. They somehow already know what you truly want to become.\n- Steve Jobs</item>
+        <item>Your time is limited, so don’t waste it living someone else’s life.\n- Steve Jobs</item>
+        <item>Your \'I can\' is more important than your IQ\n- Robin Sharma</item>
+        <item>Success is getting what you want. Happiness is wanting what you get.\n- Dale Carnegie</item>
+        <item>If you want to conquer fear, don\'t sit home and think about it. Go out and get busy.\n- Dale Carnegie</item>
+        <item>People rarely succeed unless they have fun in what they are doing.\n- Dale Carnegie</item>
+        <item>It does not matter how slowly you go so long as you do not stop.\n- Confucius</item>
+        <item>The biggest risk is to take no risk at all.\n- Casey Neistat</item>
+        <item>Don’t try to fit in—you will be unhappy when you try to be something you are not.\n- Casey Neistat</item>
+        <item>Open your eyes, look within. Are you satisfied with the life you\’re living?\n- Bob Marley</item>
+        <item>Good artists copy, great artists steal.\n- Steve Jobs</item>
+        <item>Life is really simple, but we insist on making it complicated.\n- Confucius</item>
+        <item>Your thoughts become things!\n- Rhonda Byrne</item>
+        <item>Everything is created twice, first in the mind and then in reality.\n- Robin Sharma</item>
+    </string-array>
+</resources>

@@ -80,7 +80,6 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
-import in.co.rajkumaar.amritarepo.news.NewsActivity;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.AboutActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
@@ -90,6 +89,7 @@ import in.co.rajkumaar.amritarepo.examschedule.ExamCategoryActivity;
 import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
+import in.co.rajkumaar.amritarepo.news.NewsActivity;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
 import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
 import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
@@ -102,8 +102,8 @@ public class LaunchingActivity extends AppCompatActivity
 
     static boolean active = false;
     boolean doubleBackToExitPressedOnce = false;
-    private FirebaseAnalytics mFirebaseAnalytics;
     ProgressDialog warmUpDialog;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -169,101 +169,12 @@ public class LaunchingActivity extends AppCompatActivity
     }
 
     private void initialize() {
-        ((GridView)findViewById(R.id.items_list)).setAdapter(new HomeItemAdapter(this));
-    }
-
-
-    class HomeItemAdapter extends BaseAdapter {
-
-        private List<Item> items = new ArrayList<>();
-        private LayoutInflater inflater;
-        private Context context;
-
-        HomeItemAdapter(Context context) {
-
-            this.context = context;
-            inflater = LayoutInflater.from(context);
-            items.clear();
-            items.add(new Item("#280033", "Question Papers", FontAwesomeIcons.fa_paper_plane));
-            items.add(new Item("#009688", "AUMS", FontAwesomeIcons.fa_graduation_cap));
-            items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
-            items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
-            items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
-            items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
-            items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
-            items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
-            items.add(new Item("#1e1e1e","Timings",FontAwesomeIcons.fa_clock_o));
-            items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
-            items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
-            items.add(new Item("#f13c20", "About", FontAwesomeIcons.fa_info_circle));
-        }
-
-        @Override
-        public int getCount() {
-            return items.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return items.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            View v = view;
-            ImageView picture;
-            TextView name;
-            FrameLayout holder;
-
-            if (v == null) {
-                v = inflater.inflate(R.layout.item_main_grid, viewGroup, false);
-                v.setTag(R.id.landing_item_holder, v.findViewById(R.id.landing_item_holder));
-                v.setTag(R.id.landing_picture, v.findViewById(R.id.landing_picture));
-                v.setTag(R.id.landing_text, v.findViewById(R.id.landing_text));
-            }
-            holder = (FrameLayout) v.getTag(R.id.landing_item_holder);
-            picture = (ImageView) v.getTag(R.id.landing_picture);
-            name = (TextView) v.getTag(R.id.landing_text);
-
-            final Item item = (Item) getItem(i);
-            picture.setImageDrawable(new IconDrawable(context,item.image).colorRes(android.R.color.white));
-            name.setText(item.name);
-            holder.setBackgroundColor(Color.parseColor(item.color));
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    powerUpOnClickListener(item);
-                }
-            });
-            return v;
-        }
-
-        private class Item {
-
-            final String color;
-            final String name;
-            private FontAwesomeIcons image;
-
-            Item(String color, String name, FontAwesomeIcons imageID) {
-                this.color = color;
-                this.name = name;
-                this.image = imageID;
-            }
-
-            public String getName() {
-                return name;
-            }
-        }
+        ((GridView) findViewById(R.id.items_list)).setAdapter(new HomeItemAdapter(this));
     }
 
     private void powerUpOnClickListener(HomeItemAdapter.Item item) {
-        switch (item.getName()){
-            case "Question Papers" :
+        switch (item.getName()) {
+            case "Question Papers":
                 final SharedPreferences pref = LaunchingActivity.this.getSharedPreferences("user", Context.MODE_PRIVATE);
                 if (pref.getBoolean("remember_program", false) && pref.getInt("pos", -1) >= 0) {
                     intentSemActivity(pref.getInt("pos", 0), pref.getString("program", null));
@@ -339,13 +250,13 @@ public class LaunchingActivity extends AppCompatActivity
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
                 break;
             case "AUMS":
-                CharSequence[] items = {"AUMS - v1","AUMS - Lite (Easier to login)"};
+                CharSequence[] items = {"AUMS - v1", "AUMS - Lite (Easier to login)"};
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
                 dialogBuilder.setTitle("Confused ? Try v1 and if it doesn't work for you, choose Lite.");
                 dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if(Utils.isConnected(LaunchingActivity.this)) {
+                                if (Utils.isConnected(LaunchingActivity.this)) {
                                     switch (which) {
                                         case 0:
                                             startActivity(new Intent(LaunchingActivity.this, LoginActivity.class));
@@ -359,7 +270,7 @@ public class LaunchingActivity extends AppCompatActivity
                                             }
                                             break;
                                     }
-                                }else{
+                                } else {
                                     Utils.showInternetError(LaunchingActivity.this);
                                 }
                             }
@@ -374,7 +285,7 @@ public class LaunchingActivity extends AppCompatActivity
                 dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         dialog.dismiss();
-                        if(item==0) {
+                        if (item == 0) {
                             final CharSequence[] items = {"Buses from AB1", "Buses from AB3"};
                             AlertDialog.Builder dialogBuilderInner = new AlertDialog.Builder(LaunchingActivity.this);
                             dialogBuilderInner.setTitle("View timings of ?");
@@ -387,7 +298,7 @@ public class LaunchingActivity extends AppCompatActivity
                             });
                             AlertDialog dialogInner = dialogBuilderInner.create();
                             dialogInner.show();
-                        }else{
+                        } else {
                             final CharSequence[] items = {"Trains from Coimbatore", "Trains from Palghat", "Trains to Coimbatore", "Trains to Palghat", "Buses from Coimbatore", "Buses to Coimbatore"};
                             AlertDialog.Builder dialogBuilderInner = new AlertDialog.Builder(LaunchingActivity.this);
                             dialogBuilderInner.setTitle("View timings of ?");
@@ -445,29 +356,32 @@ public class LaunchingActivity extends AppCompatActivity
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
                 break;
             case "About":
-                startActivity(new Intent(getBaseContext(),AboutActivity.class));
+                startActivity(new Intent(getBaseContext(), AboutActivity.class));
                 break;
         }
     }
 
-
     @Override
     protected void onPostResume() {
         if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG) {
-            try{warmUpDialog.show();}catch (Exception e){e.printStackTrace();}
+            try {
+                warmUpDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             checkUpdate();
         }
-        final Handler handler  = new Handler();
+        final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if (warmUpDialog!=null && warmUpDialog.isShowing()) {
-                    Log.e("CLOSING-UPDATE","Done");
+                if (warmUpDialog != null && warmUpDialog.isShowing()) {
+                    Log.e("CLOSING-UPDATE", "Done");
                     warmUpDialog.dismiss();
                 }
             }
         };
-        handler.postDelayed(runnable,3000);
+        handler.postDelayed(runnable, 3000);
         super.onPostResume();
     }
 
@@ -524,7 +438,7 @@ public class LaunchingActivity extends AppCompatActivity
                             }
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     Crashlytics.log(e.getLocalizedMessage());
                     e.printStackTrace();
                 }
@@ -533,10 +447,10 @@ public class LaunchingActivity extends AppCompatActivity
 
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                try{
+                try {
                     warmUpDialog.dismiss();
                     Crashlytics.log(throwable.getLocalizedMessage());
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -646,9 +560,6 @@ public class LaunchingActivity extends AppCompatActivity
         return true;
     }
 
-
-
-
     /**
      * Sends an intent to semester activity with the selected program
      *
@@ -667,7 +578,6 @@ public class LaunchingActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -684,6 +594,94 @@ public class LaunchingActivity extends AppCompatActivity
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    class HomeItemAdapter extends BaseAdapter {
+
+        private List<Item> items = new ArrayList<>();
+        private LayoutInflater inflater;
+        private Context context;
+
+        HomeItemAdapter(Context context) {
+
+            this.context = context;
+            inflater = LayoutInflater.from(context);
+            items.clear();
+            items.add(new Item("#280033", "Question Papers", FontAwesomeIcons.fa_paper_plane));
+            items.add(new Item("#009688", "AUMS", FontAwesomeIcons.fa_graduation_cap));
+            items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
+            items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
+            items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
+            items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
+            items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
+            items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
+            items.add(new Item("#1e1e1e", "Timings", FontAwesomeIcons.fa_clock_o));
+            items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
+            items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
+            items.add(new Item("#f13c20", "About", FontAwesomeIcons.fa_info_circle));
+        }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return items.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            View v = view;
+            ImageView picture;
+            TextView name;
+            FrameLayout holder;
+
+            if (v == null) {
+                v = inflater.inflate(R.layout.item_main_grid, viewGroup, false);
+                v.setTag(R.id.landing_item_holder, v.findViewById(R.id.landing_item_holder));
+                v.setTag(R.id.landing_picture, v.findViewById(R.id.landing_picture));
+                v.setTag(R.id.landing_text, v.findViewById(R.id.landing_text));
+            }
+            holder = (FrameLayout) v.getTag(R.id.landing_item_holder);
+            picture = (ImageView) v.getTag(R.id.landing_picture);
+            name = (TextView) v.getTag(R.id.landing_text);
+
+            final Item item = (Item) getItem(i);
+            picture.setImageDrawable(new IconDrawable(context, item.image).colorRes(android.R.color.white));
+            name.setText(item.name);
+            holder.setBackgroundColor(Color.parseColor(item.color));
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    powerUpOnClickListener(item);
+                }
+            });
+            return v;
+        }
+
+        private class Item {
+
+            final String color;
+            final String name;
+            private FontAwesomeIcons image;
+
+            Item(String color, String name, FontAwesomeIcons imageID) {
+                this.color = color;
+                this.name = name;
+                this.image = imageID;
+            }
+
+            public String getName() {
+                return name;
+            }
+        }
     }
 }
 

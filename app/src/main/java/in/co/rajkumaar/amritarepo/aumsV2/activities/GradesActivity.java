@@ -39,26 +39,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
-import java.util.AbstractList;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
@@ -66,7 +57,7 @@ public class GradesActivity extends AppCompatActivity {
 
     ListView list;
     String sem;
-    private AsyncHttpClient client= GlobalData.getClient();
+    private AsyncHttpClient client = GlobalData.getClient();
     private SharedPreferences preferences;
     private ArrayList<CourseData> gradesData;
 
@@ -74,28 +65,29 @@ public class GradesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grades);
-        preferences=getSharedPreferences("aums-lite",MODE_PRIVATE);
+        preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
         list = findViewById(R.id.list);
         Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         sem = getIntent().getStringExtra("sem");
-        getSupportActionBar().setSubtitle("Logged in as "+preferences.getString("name",""));
+        findViewById(R.id.section_header).setVisibility(View.GONE);
+        getSupportActionBar().setSubtitle("Logged in as " + preferences.getString("name", ""));
         getGrades(getIntent().getStringExtra("sem"));
     }
 
 
     void getGrades(final String sem) {
-        gradesData=new ArrayList<>();
-        client.addHeader("Authorization",GlobalData.auth);
-        client.addHeader("token",preferences.getString("token",""));
+        gradesData = new ArrayList<>();
+        client.addHeader("Authorization", GlobalData.auth);
+        client.addHeader("token", preferences.getString("token", ""));
         client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/andRes?rollno=" + preferences.getString("username", "") + "&sem=" + sem, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(bytes));
                     JSONArray subjects = jsonObject.getJSONArray("Subject");
-                    Log.e("SEM",sem);
-                    Log.e("SUBS",jsonObject.toString());
-                    for(int j=0;j<subjects.length();++j){
+                    Log.e("SEM", sem);
+                    Log.e("SUBS", jsonObject.toString());
+                    for (int j = 0; j < subjects.length(); ++j) {
                         JSONObject current = subjects.getJSONObject(j);
                         CourseData courseData = new CourseData();
                         courseData.setCode(current.getString("CourseCode"));
@@ -122,7 +114,7 @@ public class GradesActivity extends AppCompatActivity {
                 finish();
             }
         });
-       }
+    }
 
 
     class CourseData {
@@ -188,7 +180,7 @@ public class GradesActivity extends AppCompatActivity {
 
             if (current.getGrade().contains("F") || current.getGrade().contains("I"))
                 color.setBackgroundColor(getResources().getColor(R.color.danger));
-            else if(current.getGrade().equals("C") || current.getGrade().equals("P"))
+            else if (current.getGrade().equals("C") || current.getGrade().equals("P"))
                 color.setBackgroundColor(getResources().getColor(R.color.orange));
             else
                 color.setBackgroundColor(getResources().getColor(R.color.green));

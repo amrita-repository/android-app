@@ -50,6 +50,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
@@ -68,7 +69,8 @@ public class GradesActivity extends AppCompatActivity {
         Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         actionBar = findViewById(R.id.section_header);
         list = findViewById(R.id.list);
-
+        String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
+        ((TextView) findViewById(R.id.quote)).setText(quote);
 
         UserData.refIndex = 1;
 
@@ -222,7 +224,7 @@ public class GradesActivity extends AppCompatActivity {
 
             if (current.getGrade().contains("F") || current.getGrade().contains("I"))
                 color.setBackgroundColor(getResources().getColor(R.color.danger));
-            else if(current.getGrade().equals("C") || current.getGrade().equals("P"))
+            else if (current.getGrade().equals("C") || current.getGrade().equals("P"))
                 color.setBackgroundColor(getResources().getColor(R.color.orange));
             else
                 color.setBackgroundColor(getResources().getColor(R.color.green));

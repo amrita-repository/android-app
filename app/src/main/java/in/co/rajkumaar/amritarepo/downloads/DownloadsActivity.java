@@ -26,10 +26,8 @@ package in.co.rajkumaar.amritarepo.downloads;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -85,7 +83,7 @@ public class DownloadsActivity extends AppCompatActivity {
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
 
-        if(getIntent().getBooleanExtra("widget",false)) {
+        if (getIntent().getBooleanExtra("widget", false)) {
             viewPager.setCurrentItem(1);
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setMessage("Long click on any image here and set as widget image");

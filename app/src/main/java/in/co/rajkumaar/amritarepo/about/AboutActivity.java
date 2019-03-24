@@ -53,34 +53,6 @@ public class AboutActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
-        Utils.showBigAd(this, (LinearLayout) findViewById(R.id.banner_container));
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Button disclaimer = findViewById(R.id.disclaimer);
-        disclaimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDisclaimer(AboutActivity.this);
-            }
-        });
-        ((TextView)findViewById(R.id.name)).setText(Html.fromHtml("Crafted with &hearts; by <br><strong>RAJKUMAR</strong>"));
-        ((ImageView) findViewById(R.id.image)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Bundle params = new Bundle();
-                params.putString("IMAGE_CLICK", "About");
-                mFirebaseAnalytics.logEvent("IMAGE_CLICK", params);
-                String url = "http://rajkumaar.co.in";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-    }
-
     public static void showDisclaimer(Context context) {
         try {
             Dialog dialog = new Dialog(context);
@@ -98,6 +70,34 @@ public class AboutActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about);
+        Utils.showBigAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Button disclaimer = findViewById(R.id.disclaimer);
+        disclaimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDisclaimer(AboutActivity.this);
+            }
+        });
+        ((TextView) findViewById(R.id.name)).setText(Html.fromHtml("Crafted with &hearts; by <br><strong>RAJKUMAR</strong>"));
+        ((ImageView) findViewById(R.id.image)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle params = new Bundle();
+                params.putString("IMAGE_CLICK", "About");
+                mFirebaseAnalytics.logEvent("IMAGE_CLICK", params);
+                String url = "http://rajkumaar.co.in";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
     }
 
     @SuppressLint("PrivateResource")

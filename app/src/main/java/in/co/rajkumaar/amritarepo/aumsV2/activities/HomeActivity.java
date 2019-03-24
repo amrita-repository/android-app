@@ -2,9 +2,9 @@ package in.co.rajkumaar.amritarepo.aumsV2.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,9 +22,9 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private boolean doubleBackToExitPressedOnce=false;
-    private TextView name,username;
     SharedPreferences preferences;
+    private boolean doubleBackToExitPressedOnce = false;
+    private TextView name, username;
     private TextView email;
     private ListView listView;
 
@@ -34,15 +34,15 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home2);
         Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
         getSupportActionBar().setSubtitle("Lite Version");
-        preferences=getSharedPreferences("aums-lite",MODE_PRIVATE);
+        preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
         name = findViewById(R.id.name);
-        username=findViewById(R.id.username);
-        email=findViewById(R.id.email);
-        listView=findViewById(R.id.list);
+        username = findViewById(R.id.username);
+        email = findViewById(R.id.email);
+        listView = findViewById(R.id.list);
 
-        name.setText(preferences.getString("name","N/A"));
-        username.setText(preferences.getString("username","N/A"));
-        email.setText(preferences.getString("email","N/A"));
+        name.setText(preferences.getString("name", "N/A"));
+        username.setText(preferences.getString("username", "N/A"));
+        email.setText(preferences.getString("email", "N/A"));
 
         final ArrayList<HomeItem> items = new ArrayList<>();
         items.add(new HomeItem("Attendance Status", R.drawable.attendance));
@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(Utils.isConnected(HomeActivity.this)) {
+                if (Utils.isConnected(HomeActivity.this)) {
                     switch (items.get(position).getName()) {
                         case "Attendance Status":
                             startActivity(new Intent(HomeActivity.this, AttendanceSemestersActivity.class));
@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity {
                             startActivity(new Intent(HomeActivity.this, GradesSemestersActivity.class));
                             break;
                     }
-                }else{
+                } else {
                     Utils.showInternetError(HomeActivity.this);
                 }
             }
@@ -70,7 +70,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.home:
                 onBackPressed();
                 break;
@@ -98,7 +98,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void logout(View view) {
         GlobalData.resetUser(this);
-        Utils.showToast(this,"Successfully logged out");
+        Utils.showToast(this, "Successfully logged out");
         finish();
     }
 }

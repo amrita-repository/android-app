@@ -5,7 +5,7 @@ public class Semester {
     private String semester;
     private String period;
 
-    public Semester(int id,String semester,String period){
+    public Semester(int id, String semester, String period) {
 
         this.id = id;
         this.semester = semester;

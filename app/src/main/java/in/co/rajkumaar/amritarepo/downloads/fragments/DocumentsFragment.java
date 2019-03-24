@@ -40,10 +40,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -64,6 +62,7 @@ public class DocumentsFragment extends Fragment {
     ArrayAdapter<String> fileAdapter;
     View rootView;
     private List<String> fileList = new ArrayList<String>();
+
     public DocumentsFragment() {
         // Required empty public constructor
     }

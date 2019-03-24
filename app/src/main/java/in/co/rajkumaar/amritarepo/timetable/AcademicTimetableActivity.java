@@ -43,7 +43,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import in.co.rajkumaar.amritarepo.R;
@@ -129,7 +128,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
     private void buildTimetableUrl() {
-        TIMETABLE_URL += year.getSelectedItem()+"/";
+        TIMETABLE_URL += year.getSelectedItem() + "/";
         TIMETABLE_URL += course.getSelectedItem() + "/";
         TIMETABLE_URL += branch.getSelectedItem() + "/";
         TIMETABLE_URL += (String) course.getSelectedItem() + branch.getSelectedItem() + batch.getSelectedItem() + sem.getSelectedItem() + ".jpg";

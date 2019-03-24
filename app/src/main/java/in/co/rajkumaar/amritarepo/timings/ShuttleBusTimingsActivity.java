@@ -82,61 +82,61 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
 
     private void loadData(String type) {
         items = new ArrayList<>();
-        if(type!=null && type.equals("Buses from AB1")){
+        if (type != null && type.equals("Buses from AB1")) {
             items.add(new DataItem(
-                    "09:35 AM","ab1"
+                    "09:35 AM", "ab1"
             ));
             items.add(new DataItem(
-                    "10:00 AM","ab1"
+                    "10:00 AM", "ab1"
             ));
             items.add(new DataItem(
-                    "10:50 AM","ab1"
+                    "10:50 AM", "ab1"
             ));
             items.add(new DataItem(
-                    "11:50 AM","ab1"
+                    "11:50 AM", "ab1"
             ));
             items.add(new DataItem(
-                    "12:10 PM","ab1"
+                    "12:10 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "01:50 PM","ab1"
+                    "01:50 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "02:50 PM","ab1"
+                    "02:50 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "03:10 PM","ab1"
+                    "03:10 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "04:10 PM","ab1"
+                    "04:10 PM", "ab1"
             ));
-        }else if(type!= null && type.equals("Buses from AB3")){
+        } else if (type != null && type.equals("Buses from AB3")) {
             items.add(new DataItem(
-                    "09:35 AM","ab3"
-            ));
-            items.add(new DataItem(
-                    "10:00 AM","ab3"
+                    "09:35 AM", "ab3"
             ));
             items.add(new DataItem(
-                    "10:50 AM","ab3"
+                    "10:00 AM", "ab3"
             ));
             items.add(new DataItem(
-                    "11:50 AM","ab3"
+                    "10:50 AM", "ab3"
             ));
             items.add(new DataItem(
-                    "12:10 PM","ab3"
+                    "11:50 AM", "ab3"
             ));
             items.add(new DataItem(
-                    "01:50 PM","ab3"
+                    "12:10 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "02:50 PM","ab3"
+                    "01:50 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "03:10 PM","ab3"
+                    "02:50 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "04:10 PM","ab3"
+                    "03:10 PM", "ab3"
+            ));
+            items.add(new DataItem(
+                    "04:10 PM", "ab3"
             ));
         }
     }

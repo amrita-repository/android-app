@@ -9,27 +9,33 @@
     android:layout_gravity="center"
     android:background="@color/colorBackground"
         >
+    <ImageView
+        android:layout_marginTop="30dp"
+        android:layout_width="150dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/wifi_image"
+        android:src="@drawable/wifi"
+        android:layout_height="150dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/text_container_wifi"
+        android:id="@+id/title"
+        android:layout_below="@id/wifi_image"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/holo_orange_dark"
         android:fontFamily="@font/cunia"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-
-        android:layout_marginBottom="10dp"
-        android:text="Amrita Vishwa Vidyapeetham\nCoimbatore Campus"/>
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:text="Amrita Vishwa Vidyapeetham\nCoimbatore Campus"
+        tools:ignore="HardcodedText" />
     <RelativeLayout
         android:id="@+id/text_container_wifi"
         android:layout_width="match_parent"
-        android:layout_margin="30dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-
-
+        android:layout_below="@id/title"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content">
     <TextView
         android:id="@+id/text1"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"

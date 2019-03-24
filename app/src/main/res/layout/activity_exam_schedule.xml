@@ -16,6 +16,7 @@
     <ListView
         android:id="@+id/list"
         android:layout_above="@id/banner_container"
+        android:divider="@android:color/white"
         android:dividerHeight="0dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

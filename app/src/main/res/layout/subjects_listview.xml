@@ -45,12 +45,31 @@
         android:layout_marginTop="15dp"/>
 
     <!-- Loading indicator -->
-    <ProgressBar
+    <LinearLayout
+        android:layout_width="match_parent"
         android:id="@+id/loading_indicator"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
-
-
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="10dp"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content">
+        <com.github.ybq.android.spinkit.SpinKitView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            style="@style/SpinKitView.Circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:SpinKit_Color="@color/colorAccent" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/quote"
+            android:textColor="@android:color/white"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+            android:text="Details matter, it\'s worth waiting to get it right\n- Steve Jobs"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
+        </LinearLayout>
 </RelativeLayout>

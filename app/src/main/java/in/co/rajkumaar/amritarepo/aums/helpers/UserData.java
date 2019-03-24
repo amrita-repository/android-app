@@ -27,8 +27,6 @@ package in.co.rajkumaar.amritarepo.aums.helpers;
 
 import com.loopj.android.http.AsyncHttpClient;
 
-import java.io.File;
-
 
 public class UserData {
     public static boolean loggedin = false;

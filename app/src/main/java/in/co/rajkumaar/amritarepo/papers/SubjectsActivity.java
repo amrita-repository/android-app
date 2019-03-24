@@ -38,10 +38,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +51,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
@@ -81,6 +80,9 @@ public class SubjectsActivity extends AppCompatActivity {
         String port = getString(R.string.port);
 
         externLink = protocol + cloudSpace + amrita + port;
+        String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
+        ((TextView) findViewById(R.id.quote)).setText(quote);
+
         TextView textView = findViewById(R.id.empty_view);
         textView.setVisibility(View.GONE);
         TextView wifiWarning = findViewById(R.id.wifiwarning);
@@ -166,8 +168,7 @@ public class SubjectsActivity extends AppCompatActivity {
                 Toast.makeText(SubjectsActivity.this, "Some error occurred. Please report to the developer.", Toast.LENGTH_LONG).show();
                 SubjectsActivity.this.finish();
             }
-            ProgressBar progressBar = findViewById(R.id.loading_indicator);
-            progressBar.setVisibility(View.GONE);
+            findViewById(R.id.loading_indicator).setVisibility(View.GONE);
             if (statusCode != 200) {
                 TextView emptyView = findViewById(R.id.empty_view);
                 emptyView.setVisibility(View.VISIBLE);

@@ -32,7 +32,6 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Looper;
@@ -45,15 +44,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.facebook.ads.AdSettings;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
-import com.google.android.gms.ads.identifier.AdvertisingIdClient;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
@@ -91,61 +85,67 @@ public class Utils {
                     InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public static void showUnexpectedError(Context context){
-        showToast(context,"An unexpected error occurred. Please try again later.");
+    public static void showUnexpectedError(Context context) {
+        showToast(context, "An unexpected error occurred. Please try again later.");
     }
 
-    public static void showInternetError(Context context){
-        showSnackBar(context,"Connection unavailable. Please connect to internet");
+    public static void showInternetError(Context context) {
+        showSnackBar(context, "Connection unavailable. Please connect to internet");
     }
 
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
-    private static void showAd(final Context context, LinearLayout linearLayout, AdSize adSize){
+    private static void showAd(final Context context, LinearLayout linearLayout, AdSize adSize) {
         AudienceNetworkAds.initialize(context);
         AdView adView = new AdView(context, context.getString(R.string.placement_id), adSize);
         linearLayout.addView(adView);
         adView.loadAd();
     }
-    public static void showSmallAd(Context context,LinearLayout linearLayout){
-        showAd(context,linearLayout,AdSize.BANNER_HEIGHT_50);
+
+    public static void showSmallAd(Context context, LinearLayout linearLayout) {
+        showAd(context, linearLayout, AdSize.BANNER_HEIGHT_50);
     }
 
-    public static void showBigAd(Context context,LinearLayout linearLayout){
-        showAd(context,linearLayout,AdSize.BANNER_HEIGHT_90);
+    public static void showBigAd(Context context, LinearLayout linearLayout) {
+        showAd(context, linearLayout, AdSize.BANNER_HEIGHT_90);
     }
 
-    public static ArrayList<String> getAcademicYears(){
+    public static ArrayList<String> getAcademicYears() {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         ArrayList<String> years = new ArrayList<>();
         years.add("[Choose year]");
-        years.add((currentYear-4)+"_"+String.valueOf(currentYear-3).substring(2,4));
-        years.add((currentYear-3)+"_"+String.valueOf(currentYear-2).substring(2,4));
-        years.add((currentYear-2)+"_"+String.valueOf(currentYear-1).substring(2,4));
-        years.add((currentYear-1)+"_"+String.valueOf(currentYear).substring(2,4));
-        years.add((currentYear)  +"_"+String.valueOf(currentYear+1).substring(2,4));
-        years.add((currentYear+1)+"_"+String.valueOf(currentYear+2).substring(2,4));
+        years.add((currentYear - 4) + "_" + String.valueOf(currentYear - 3).substring(2, 4));
+        years.add((currentYear - 3) + "_" + String.valueOf(currentYear - 2).substring(2, 4));
+        years.add((currentYear - 2) + "_" + String.valueOf(currentYear - 1).substring(2, 4));
+        years.add((currentYear - 1) + "_" + String.valueOf(currentYear).substring(2, 4));
+        years.add((currentYear) + "_" + String.valueOf(currentYear + 1).substring(2, 4));
+        years.add((currentYear + 1) + "_" + String.valueOf(currentYear + 2).substring(2, 4));
         return years;
     }
 
-    public static void printAAID(final Context context){
+    public static void printAAID(final Context context) {
         new Thread(new Runnable() {
             public void run() {
-                if(Looper.myLooper() == Looper.getMainLooper()) throw new IllegalStateException("Cannot be called from the main thread");
+                if (Looper.myLooper() == Looper.getMainLooper())
+                    throw new IllegalStateException("Cannot be called from the main thread");
 
-                try { PackageManager pm = context.getPackageManager(); pm.getPackageInfo("com.android.vending", 0); }
-                catch (Exception e) {e.printStackTrace();}
+                try {
+                    PackageManager pm = context.getPackageManager();
+                    pm.getPackageInfo("com.android.vending", 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 AdvertisingConnection connection = new AdvertisingConnection();
                 Intent intent = new Intent("com.google.android.gms.ads.identifier.service.START");
                 intent.setPackage("com.google.android.gms");
-                if(context.bindService(intent, connection, Context.BIND_AUTO_CREATE)) {
+                if (context.bindService(intent, connection, Context.BIND_AUTO_CREATE)) {
                     try {
                         AdvertisingInterface adInterface = new AdvertisingInterface(connection.getBinder());
                         AdInfo adInfo = new AdInfo(adInterface.getId(), adInterface.isLimitAdTrackingEnabled(true));
-                        Log.v("ADS-ID",adInfo.getId());
+                        Log.v("ADS-ID", adInfo.getId());
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     } finally {
@@ -175,20 +175,23 @@ public class Utils {
     }
 
     private static final class AdvertisingConnection implements ServiceConnection {
-        boolean retrieved = false;
         private final LinkedBlockingQueue<IBinder> queue = new LinkedBlockingQueue<IBinder>(1);
+        boolean retrieved = false;
 
         public void onServiceConnected(ComponentName name, IBinder service) {
-            try { this.queue.put(service); }
-            catch (InterruptedException localInterruptedException){}
+            try {
+                this.queue.put(service);
+            } catch (InterruptedException localInterruptedException) {
+            }
         }
 
-        public void onServiceDisconnected(ComponentName name){}
+        public void onServiceDisconnected(ComponentName name) {
+        }
 
         public IBinder getBinder() throws InterruptedException {
             if (this.retrieved) throw new IllegalStateException();
             this.retrieved = true;
-            return (IBinder)this.queue.take();
+            return (IBinder) this.queue.take();
         }
     }
 

@@ -9,6 +9,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_above="@id/banner_container"
+    android:divider="@android:color/white"
+    android:dividerHeight="1dp"
     android:id="@+id/timings_list"
     android:layout_height="match_parent"
     tools:context=".timings.TimingsActivity"/>

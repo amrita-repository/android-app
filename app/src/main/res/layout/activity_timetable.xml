@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout
+<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:ignore="HardcodedText"
+        tools:ignore="HardcodedText,UnusedAttribute"
         android:orientation="vertical"
         tools:context=".timetable.AcademicTimetableActivity">
     <LinearLayout
@@ -31,80 +31,97 @@
         android:id="@+id/acad_year"
         android:layout_below="@id/title"
         android:textColor="@android:color/white"
-        android:backgroundTint="@android:color/white"
+        android:backgroundTint="@color/colorAccent"
         android:layout_centerHorizontal="true"
-        android:layout_width="200dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp" />
+         />
     <Spinner
         android:id="@+id/acad_course"
         android:layout_below="@id/acad_year"
-        android:backgroundTint="@android:color/white"
+        android:backgroundTint="@color/colorAccent"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_gravity="center"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"/>
     <Spinner
         android:id="@+id/acad_branch"
 
         android:layout_below="@id/acad_course"
-        android:backgroundTint="@android:color/white"
+        android:backgroundTint="@color/colorAccent"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp" />
     <Spinner
         android:id="@+id/acad_sem"
         android:layout_gravity="center"
-        android:backgroundTint="@android:color/white"
+        android:backgroundTint="@color/colorAccent"
         android:layout_below="@id/acad_branch"
         android:layout_centerHorizontal="true"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp" />
     <Spinner
         android:id="@+id/acad_batch"
-        android:backgroundTint="@android:color/white"
+        android:backgroundTint="@color/colorAccent"
         android:layout_below="@id/acad_sem"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"/>
-    <Button
-        android:id="@+id/timeTableViewButton"
-        android:layout_gravity="center"
-        android:layout_width="200dp"
-        android:layout_below="@id/acad_batch"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/button"
-        android:textColor="@color/colorBackground"
-        android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:onClick="viewTimetable"
-        android:focusable="true"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_marginTop="25dp"
-        android:text="View"
-        tools:ignore="UnusedAttribute" />
+        android:layout_below="@id/acad_batch"
+        android:layout_margin="15dp"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/timeTableViewButton"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/button"
+            android:layout_margin="10dp"
+            android:textColor="@color/colorBackground"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:onClick="viewTimetable"
+            android:focusable="true"
+            android:text="View"
+            tools:ignore="UnusedAttribute" />
 
-    <Button
-        android:layout_below="@id/timeTableViewButton"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/timeTableDownloadButton"
-        android:onClick="downloadTimetable"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/button"
-        android:text="Download"
-        android:textColor="@color/colorBackground"
-        tools:ignore="UnusedAttribute" />
+        <Button
+            android:id="@+id/timeTableDownloadButton"
+            android:onClick="downloadTimetable"
+            android:layout_margin="10dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/button"
+            android:text="Download"
+            android:textColor="@color/colorBackground"
+            tools:ignore="UnusedAttribute" />
+
+    </LinearLayout>
     </RelativeLayout>

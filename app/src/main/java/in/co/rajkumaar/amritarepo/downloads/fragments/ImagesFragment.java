@@ -45,19 +45,17 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
 
 public class ImagesFragment extends Fragment {
     final String dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
@@ -67,6 +65,7 @@ public class ImagesFragment extends Fragment {
     File[] files;
     ArrayAdapter<String> fileAdapter;
     private List<String> fileList = new ArrayList<String>();
+
     public ImagesFragment() {
         // Required empty public constructor
     }
@@ -221,16 +220,16 @@ public class ImagesFragment extends Fragment {
                                         alertDialog.show();
                                         break;
                                     }
-                                    case 3 :{
+                                    case 3: {
                                         try {
                                             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
                                             SharedPreferences preferences = getContext().getSharedPreferences("user", Context.MODE_PRIVATE);
-                                            String path = preferences.getString("path",null);
+                                            String path = preferences.getString("path", null);
                                             alertDialog.setMessage(
-                                                    (path==null)
+                                                    (path == null)
                                                             ? renamingFileName + " has been set as your widget image. Go to your homescreen and long press to add widgets and choose Amrita Repository widget!"
                                                             : renamingFileName + " has been set as your widget image.");
-                                            preferences.edit().putString("path",renamingFileName).apply();
+                                            preferences.edit().putString("path", renamingFileName).apply();
                                             alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -243,7 +242,7 @@ public class ImagesFragment extends Fragment {
                                             int[] ids = AppWidgetManager.getInstance(getActivity()).getAppWidgetIds(new ComponentName(getActivity(), ImageWidget.class));
                                             intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
                                             getActivity().sendBroadcast(intentWidget);
-                                        }catch (Exception e){
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                     }
