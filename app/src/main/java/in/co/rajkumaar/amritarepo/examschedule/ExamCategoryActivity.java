@@ -37,6 +37,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.jsoup.Jsoup;
@@ -44,13 +45,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ExamCategoryActivity extends AppCompatActivity {
 
-    ProgressBar progressBar;
     String url_exams;
     ArrayList<String> headings, texts, links;
     ListView listView;
@@ -61,14 +62,13 @@ public class ExamCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_schedule);
         Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
-        progressBar = findViewById(R.id.progressBar);
         url_exams = getResources().getString(R.string.url_exams);
         headings = new ArrayList<>();
         texts = new ArrayList<>();
         links = new ArrayList<>();
         listView = findViewById(R.id.list);
-
-
+        String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
+        ((TextView) findViewById(R.id.quote)).setText(quote);
         new retrieveSchedule().execute();
     }
 
@@ -80,7 +80,6 @@ public class ExamCategoryActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
             super.onPreExecute();
         }
 
@@ -127,7 +126,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
                 Toast.makeText(ExamCategoryActivity.this, "Unexpected error. Please try again later", Toast.LENGTH_SHORT).show();
                 finish();
             }
-            progressBar.setVisibility(View.GONE);
+            findViewById(R.id.loading_indicator).setVisibility(View.GONE);
             super.onPostExecute(aVoid);
         }
     }

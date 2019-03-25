@@ -41,6 +41,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.jsoup.Jsoup;
@@ -48,6 +49,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
@@ -56,7 +58,6 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ExamsListActivity extends AppCompatActivity {
 
-    ProgressBar progressBar;
     String url_exams;
 
     ArrayList<String> texts, links;
@@ -69,10 +70,11 @@ public class ExamsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exams_under_each_dept);
         Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
-        progressBar = findViewById(R.id.progressBar);
         url_exams = getResources().getString(R.string.url_exams);
         listView = findViewById(R.id.list);
         block = getIntent().getExtras().getInt("block");
+        String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
+        ((TextView) findViewById(R.id.quote)).setText(quote);
 
         texts = new ArrayList<>();
         links = new ArrayList<>();
@@ -88,7 +90,6 @@ public class ExamsListActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
             texts.clear();
             links.clear();
 
@@ -189,7 +190,7 @@ public class ExamsListActivity extends AppCompatActivity {
                 finish();
             }
 
-            progressBar.setVisibility(View.GONE);
+            findViewById(R.id.loading_indicator).setVisibility(View.GONE);
             super.onPostExecute(aVoid);
         }
     }
