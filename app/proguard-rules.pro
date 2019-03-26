@@ -25,4 +25,5 @@
 -dontwarn org.conscrypt.**
 -dontwarn org.xmlpull.v1.**
 -keep class com.shockwave.**
+-keep class org.xmlpull.v1.** { *;}
 

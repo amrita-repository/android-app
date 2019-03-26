@@ -102,6 +102,7 @@ public class LaunchingActivity extends AppCompatActivity
 
     static boolean active = false;
     boolean doubleBackToExitPressedOnce = false;
+    boolean first_time = true;
     ProgressDialog warmUpDialog;
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -365,7 +366,10 @@ public class LaunchingActivity extends AppCompatActivity
     protected void onPostResume() {
         if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG) {
             try {
-                warmUpDialog.show();
+                if (first_time) {
+                    warmUpDialog.show();
+                    first_time = false;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
