@@ -3,6 +3,7 @@ package in.co.rajkumaar.amritarepo.activities;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,18 +16,27 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        String uri = "android.resource://" + getPackageName() + "/" + R.raw.intro;
-        VideoView mVideoView = findViewById(R.id.videoView);
-        mVideoView.setVideoURI(Uri.parse(uri));
-        mVideoView.requestFocus();
-        mVideoView.start();
-        mVideoView.setVisibility(View.VISIBLE);
-        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1){
+            try {
+                String uri = "android.resource://" + getPackageName() + "/" + R.raw.intro;
+                VideoView mVideoView = findViewById(R.id.videoView);
+                mVideoView.setVideoURI(Uri.parse(uri));
+                mVideoView.requestFocus();
+                mVideoView.start();
+                mVideoView.setVisibility(View.VISIBLE);
+                mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        loadHome();
+                    }
+                });
+            }catch (Exception e){
+                e.printStackTrace();
                 loadHome();
             }
-        });
+        } else{
+            loadHome();
+        }
     }
 
     private void loadHome() {
