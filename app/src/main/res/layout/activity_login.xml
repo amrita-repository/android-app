@@ -18,32 +18,20 @@
             android:orientation="vertical"
             />
         <LinearLayout
-            android:paddingTop="24dp"
+            android:paddingTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:orientation="vertical"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp">
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_gravity="center"
-                android:src="@drawable/notebook"
-                android:layout_height="150dp" />
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:text="Login"
-                android:textColor="@android:color/holo_orange_dark"
-                android:textStyle="bold"
-                android:textSize="25sp"
-                />
-            <EditText
                 android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:text="Username"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content" />
+            <EditText
                 android:id="@+id/username"
-                android:hint="Your username"
                 android:layout_width="match_parent"
                 android:textColorHint="@android:color/white"
                 android:textColor="@android:color/white"
@@ -54,6 +42,12 @@
                 android:paddingRight="2dp"
                 float:inputType="textPassword|textVisiblePassword"
                 float:ignore="UnusedAttribute" />
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:text="Password"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content" />
             <EditText
                 android:id="@+id/password"
                 android:layout_marginTop="5dp"
@@ -62,7 +56,6 @@
                 android:backgroundTint="@color/colorAccent"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Your password"
                 android:inputType="textPassword"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"/>

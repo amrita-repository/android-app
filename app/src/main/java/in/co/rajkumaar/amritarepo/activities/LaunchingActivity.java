@@ -27,6 +27,7 @@ package in.co.rajkumaar.amritarepo.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,6 +36,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -52,12 +54,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,6 +87,7 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.AboutActivity;
+import in.co.rajkumaar.amritarepo.aums.activities.AttendanceActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
 import in.co.rajkumaar.amritarepo.curriculum.CurriculumActivity;
 import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
@@ -96,14 +102,16 @@ import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
 import in.co.rajkumaar.amritarepo.timings.ShuttleBusTimingsActivity;
 import in.co.rajkumaar.amritarepo.timings.TimingsActivity;
 import in.co.rajkumaar.amritarepo.wifistatus.WifiStatusActivity;
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.ParticleSystem;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 public class LaunchingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     static boolean active = false;
     boolean doubleBackToExitPressedOnce = false;
-    boolean first_time = true;
-    ProgressDialog warmUpDialog;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @SuppressLint("SetTextI18n")
@@ -113,11 +121,6 @@ public class LaunchingActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launching);
         FirebaseApp.initializeApp(this);
-
-        warmUpDialog = new ProgressDialog(this);
-        warmUpDialog.setMessage("Warming up. Please wait..");
-        warmUpDialog.setCancelable(false);
-
         Iconify.with(new FontAwesomeModule());
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
@@ -139,7 +142,7 @@ public class LaunchingActivity extends AppCompatActivity
         }
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setSubtitle(Html.fromHtml("Crafted with &hearts; by Rajkumar"));
         toolbar.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +155,7 @@ public class LaunchingActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -167,10 +170,44 @@ public class LaunchingActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         initialize();
+        if(!getSharedPreferences("confetti",MODE_PRIVATE).getBoolean("shown",false)) {
+            showCelebs();
+            getSharedPreferences("confetti",MODE_PRIVATE).edit().putBoolean("shown",true).apply();
+        }
+    }
+
+    private void showCelebs(){
+        ParticleSystem konfettiView = ((KonfettiView) findViewById(R.id.container)).build();
+        konfettiView.addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                .setDirection(359.0, 0.0)
+                .setSpeed(1f, 5f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(3000L)
+                .addShapes(Shape.RECT, Shape.CIRCLE)
+                .addSizes(new Size(8, 2f))
+                .setPosition(-50f, findViewById(R.id.container).getWidth() + 5000f, -50f, -50f)
+                .streamFor(400, 5000L);
+
+        final Dialog thanksGiving = new Dialog(LaunchingActivity.this);
+        thanksGiving.setContentView(R.layout.thanks_dialog);
+        thanksGiving.setCancelable(false);
+        TextView textView = thanksGiving.findViewById(R.id.update_text);
+        textView.setText(Html.fromHtml("Amrita Repository <br>celebrates 5000+ downloads in Play Store. <br>Thanks for being an active user. &hearts;<br><br>I’m convinced that the only thing that kept me going was that I loved what I did. You’ve got to find what you love.<br>- Steve Jobs"));
+        thanksGiving.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    thanksGiving.setCancelable(true);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        },3000);
     }
 
     private void initialize() {
-        ((GridView) findViewById(R.id.items_list)).setAdapter(new HomeItemAdapter(this));
+        ((ListView) findViewById(R.id.items_list)).setAdapter(new HomeItemAdapter(this));
     }
 
     private void powerUpOnClickListener(HomeItemAdapter.Item item) {
@@ -253,7 +290,7 @@ public class LaunchingActivity extends AppCompatActivity
             case "AUMS":
                 CharSequence[] items = {"AUMS - v1", "AUMS - Lite (Easier to login)"};
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
-                dialogBuilder.setTitle("Confused ? Try v1 and if it doesn't work for you, choose Lite.");
+                dialogBuilder.setTitle("Try v1 and if it doesn't work for you, choose Lite.");
                 dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -365,27 +402,8 @@ public class LaunchingActivity extends AppCompatActivity
     @Override
     protected void onPostResume() {
         if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG) {
-            try {
-                if (first_time) {
-                    warmUpDialog.show();
-                    first_time = false;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             checkUpdate();
         }
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (warmUpDialog != null && warmUpDialog.isShowing()) {
-                    Log.e("CLOSING-UPDATE", "Done");
-                    warmUpDialog.dismiss();
-                }
-            }
-        };
-        handler.postDelayed(runnable, 3000);
         super.onPostResume();
     }
 
@@ -412,11 +430,6 @@ public class LaunchingActivity extends AppCompatActivity
                     String whatsNewText = whatsNew.get(1).toString().trim();
                     if (latest != null && !latest.isEmpty()) {
                         if (active) {
-                            try {
-                                warmUpDialog.dismiss();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
                             Log.e("Latest : " + latest, " Having :" + BuildConfig.VERSION_NAME);
                             if (!latest.equals(BuildConfig.VERSION_NAME)) {
                                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
@@ -452,7 +465,6 @@ public class LaunchingActivity extends AppCompatActivity
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
                 try {
-                    warmUpDialog.dismiss();
                     Crashlytics.log(throwable.getLocalizedMessage());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -512,6 +524,8 @@ public class LaunchingActivity extends AppCompatActivity
             it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
             if (it.resolveActivity(getPackageManager()) != null)
                 startActivity(it);
+        }else if (id==R.id.celebs){
+            showCelebs();
         }
 
         return super.onOptionsItemSelected(item);
@@ -611,7 +625,7 @@ public class LaunchingActivity extends AppCompatActivity
             this.context = context;
             inflater = LayoutInflater.from(context);
             items.clear();
-            items.add(new Item("#280033", "Question Papers", FontAwesomeIcons.fa_paper_plane));
+            items.add(new Item("#FF201B", "Question Papers", FontAwesomeIcons.fa_paper_plane));
             items.add(new Item("#009688", "AUMS", FontAwesomeIcons.fa_graduation_cap));
             items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
@@ -619,7 +633,7 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
             items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
             items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
-            items.add(new Item("#1e1e1e", "Timings", FontAwesomeIcons.fa_clock_o));
+            items.add(new Item("#ffffff", "Timings", FontAwesomeIcons.fa_clock_o));
             items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
             items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
             items.add(new Item("#f13c20", "About", FontAwesomeIcons.fa_info_circle));
@@ -645,7 +659,6 @@ public class LaunchingActivity extends AppCompatActivity
             View v = view;
             ImageView picture;
             TextView name;
-            FrameLayout holder;
 
             if (v == null) {
                 v = inflater.inflate(R.layout.item_main_grid, viewGroup, false);
@@ -653,14 +666,13 @@ public class LaunchingActivity extends AppCompatActivity
                 v.setTag(R.id.landing_picture, v.findViewById(R.id.landing_picture));
                 v.setTag(R.id.landing_text, v.findViewById(R.id.landing_text));
             }
-            holder = (FrameLayout) v.getTag(R.id.landing_item_holder);
             picture = (ImageView) v.getTag(R.id.landing_picture);
             name = (TextView) v.getTag(R.id.landing_text);
 
             final Item item = (Item) getItem(i);
-            picture.setImageDrawable(new IconDrawable(context, item.image).colorRes(android.R.color.white));
+            picture.setImageDrawable(new IconDrawable(context, item.image).color(Color.parseColor(item.color)));
             name.setText(item.name);
-            holder.setBackgroundColor(Color.parseColor(item.color));
+            //holder.setBackgroundColor(Color.parseColor(item.color));
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

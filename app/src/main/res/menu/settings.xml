@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_bug_report"
@@ -7,4 +8,11 @@
         android:icon="@drawable/ic_bug"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/celebs"
+        android:orderInCategory="200"
+        android:icon="@drawable/ic_cake"
+        android:title="Celebrations"
+        app:showAsAction="ifRoom"
+        tools:ignore="HardcodedText" />
 </menu>

@@ -32,6 +32,7 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
+import okhttp3.internal.Util;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -92,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
+        Utils.hideKeyboard(this);
         if (!Utils.isConnected(getBaseContext())) {
             Utils.showInternetError(getBaseContext());
             return;

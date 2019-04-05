@@ -127,107 +127,122 @@ public class DownloadsActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.delete_multiple:
-                String dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
-                File dir = new File(dirPath);
-                File[] files;
-                files = dir.listFiles();
-                if (files != null && files.length > 0) {
-                    startActivity(new Intent(this, DeleteFilesActivity.class));
-                }
-                break;
-            case R.id.delete_all: {
-                dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
-                dir = new File(dirPath);
-                final File[] filesList = dir.listFiles();
-                if (filesList != null && filesList.length > 0) {
-                    final ArrayList<String> qPaperOptions = new ArrayList<>();
-                    qPaperOptions.add("Documents");
-                    qPaperOptions.add("Images");
-                    qPaperOptions.add("All Files");
-                    AlertDialog.Builder contents = new AlertDialog.Builder(this); //Read Update
-                    ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, qPaperOptions);
-                    contents.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
-                        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
+            case R.id.trash:
+                CharSequence[] items = {"Delete multiple files", "Delete all files"};
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DownloadsActivity.this);
+                dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                    switch (which) {
+                                        case 0:
+                                            String dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
+                                            File dir = new File(dirPath);
+                                            File[] files;
+                                            files = dir.listFiles();
+                                            if (files != null && files.length > 0) {
+                                                startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
+                                            }
+                                            break;
+                                        case 1:
+                                        {
+                                            dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
+                                            dir = new File(dirPath);
+                                            final File[] filesList = dir.listFiles();
+                                            if (filesList != null && filesList.length > 0) {
+                                                final ArrayList<String> qPaperOptions = new ArrayList<>();
+                                                qPaperOptions.add("Documents");
+                                                qPaperOptions.add("Images");
+                                                qPaperOptions.add("All Files");
+                                                AlertDialog.Builder contents = new AlertDialog.Builder(DownloadsActivity.this); //Read Update
+                                                ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(DownloadsActivity.this, android.R.layout.simple_list_item_1, qPaperOptions);
+                                                contents.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
+                                                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
 
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int pos) {
-                            switch (pos) {
-                                case 0: {
-                                    alertDialog.setMessage("Are you sure you want to delete all documents? ");
-                                    alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            boolean flag = false;
-                                            for (File file : filesList) {
-                                                String name = file.getName();
-                                                if (name.contains(".pdf") || name.contains(".xls") || name.contains(".xlsx")) {
-                                                    flag = true;
-                                                    file.delete();
-                                                }
-                                            }
-                                            if (flag) {
-                                                Toast.makeText(DownloadsActivity.this, "All documents deleted", Toast.LENGTH_SHORT).show();
-                                                finish();
-                                                startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int pos) {
+                                                        switch (pos) {
+                                                            case 0: {
+                                                                alertDialog.setMessage("Are you sure you want to delete all documents? ");
+                                                                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                                        boolean flag = false;
+                                                                        for (File file : filesList) {
+                                                                            String name = file.getName();
+                                                                            if (name.contains(".pdf") || name.contains(".xls") || name.contains(".xlsx")) {
+                                                                                flag = true;
+                                                                                file.delete();
+                                                                            }
+                                                                        }
+                                                                        if (flag) {
+                                                                            Toast.makeText(DownloadsActivity.this, "All documents deleted", Toast.LENGTH_SHORT).show();
+                                                                            finish();
+                                                                            startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
+                                                                        }
+                                                                    }
+                                                                });
+                                                                break;
+                                                            }
+                                                            case 1: {
+                                                                alertDialog.setMessage("Are you sure you want to delete all images? ");
+                                                                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                                        boolean flag = false;
+                                                                        for (File file : filesList) {
+                                                                            String name = file.getName();
+                                                                            if (name.contains(".jpg")) {
+                                                                                file.delete();
+                                                                                flag = true;
+                                                                            }
+                                                                        }
+                                                                        if (flag) {
+                                                                            Toast.makeText(DownloadsActivity.this, "All images deleted", Toast.LENGTH_SHORT).show();
+                                                                            finish();
+                                                                            startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
+                                                                        }
+                                                                    }
+                                                                });
+                                                                break;
+                                                            }
+                                                            case 2: {
+                                                                alertDialog.setMessage("Are you sure you want to delete all files? ");
+                                                                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                                        boolean flag = false;
+                                                                        for (File file : filesList) {
+                                                                            flag = true;
+                                                                            file.delete();
+                                                                        }
+                                                                        if (flag) {
+                                                                            Toast.makeText(DownloadsActivity.this, "All files deleted", Toast.LENGTH_SHORT).show();
+                                                                            finish();
+                                                                            startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                dialogInterface.cancel();
+                                                            }
+                                                        });
+                                                        alertDialog.show();
+                                                    }
+                                                });
+                                                contents.show();
                                             }
                                         }
-                                    });
-                                    break;
-                                }
-                                case 1: {
-                                    alertDialog.setMessage("Are you sure you want to delete all images? ");
-                                    alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            boolean flag = false;
-                                            for (File file : filesList) {
-                                                String name = file.getName();
-                                                if (name.contains(".jpg")) {
-                                                    file.delete();
-                                                    flag = true;
-                                                }
-                                            }
-                                            if (flag) {
-                                                Toast.makeText(DownloadsActivity.this, "All images deleted", Toast.LENGTH_SHORT).show();
-                                                finish();
-                                                startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
-                                            }
-                                        }
-                                    });
-                                    break;
-                                }
-                                case 2: {
-                                    alertDialog.setMessage("Are you sure you want to delete all files? ");
-                                    alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            boolean flag = false;
-                                            for (File file : filesList) {
-                                                flag = true;
-                                                file.delete();
-                                            }
-                                            if (flag) {
-                                                Toast.makeText(DownloadsActivity.this, "All files deleted", Toast.LENGTH_SHORT).show();
-                                                finish();
-                                                startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
-                                            }
-                                        }
-                                    });
-                                }
+                                            break;
+                                    }
                             }
-                            alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.cancel();
-                                }
-                            });
-                            alertDialog.show();
                         }
-                    });
-                    contents.show();
-                }
-            }
+                );
+                dialogBuilder.create().show();
+                break;
         }
         return true;
     }

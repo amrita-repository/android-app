@@ -18,27 +18,21 @@
             android:orientation="vertical"
             />
         <LinearLayout
-            android:paddingTop="24dp"
+            android:paddingTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:orientation="vertical"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp">
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Login"
-                android:textColor="@android:color/holo_orange_dark"
-                android:textStyle="bold"
-                android:textSize="25sp"
-                />
-            <EditText
                 android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:text="Username"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content" />
+            <EditText
                 android:id="@+id/username"
                 android:layout_width="match_parent"
-                android:hint="Enter your username"
                 android:textColorHint="@android:color/white"
                 android:layout_height="50dp"
                 android:inputType="textCapCharacters"
@@ -47,6 +41,12 @@
                 android:backgroundTint="@color/colorAccent"
                 android:paddingRight="2dp"
                 float:inputType="textPassword|textVisiblePassword" />
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:text="Date of birth"
+                android:textColor="@android:color/white"
+                android:layout_height="wrap_content" />
             <EditText
                 android:id="@+id/dob"
                 android:onClick="selectDOB"
@@ -57,7 +57,6 @@
                 android:textColor="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Enter your DOB"
                 android:inputType="date"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"

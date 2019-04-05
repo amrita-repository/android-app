@@ -9,18 +9,10 @@
     android:layout_gravity="center"
     android:background="@color/colorBackground"
         >
-    <ImageView
-        android:layout_marginTop="30dp"
-        android:layout_width="150dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/wifi_image"
-        android:src="@drawable/wifi"
-        android:layout_height="150dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/title"
-        android:layout_below="@id/wifi_image"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/holo_orange_dark"

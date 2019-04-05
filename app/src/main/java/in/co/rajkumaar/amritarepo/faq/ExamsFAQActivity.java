@@ -21,24 +21,7 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ExamsFAQActivity extends AppCompatActivity {
     ProgressDialog dialog;
-    String finalHtml = "" +
-            "<!DOCTYPE html>\n" +
-            "<html>\n" +
-            "<head>\n" +
-            "\t<title>\n" +
-            "\t\tExams FAQ from Intranet\n" +
-            "\t</title>\n" +
-            "\t <meta charset=\"utf-8\">\n" +
-            "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
-            "    <link href=\"https://fonts.googleapis.com/css?family=Lato\" rel=\"stylesheet\">\n" +
-            "    <style type=\"text/css\">\n" +
-            "    \tbody{\n" +
-            "    \t\tbackground: #1f262a;\n" +
-            "\t\tfont-family: 'Lato', sans-serif;color:#fff;\n" +
-            "    \t}\n" +
-            "    </style>\n" +
-            "</head>\n" +
-            "<body>";
+    String finalHtml;
     WebView mywebview;
     private Document html;
 
@@ -83,8 +66,26 @@ public class ExamsFAQActivity extends AppCompatActivity {
         client.get("https://intranet.cb.amrita.edu/?q=exam", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                finalHtml = "" +
+                        "<!DOCTYPE html>\n" +
+                        "<html>\n" +
+                        "<head>\n" +
+                        "\t<title>\n" +
+                        "\t\tExams FAQ from Intranet\n" +
+                        "\t</title>\n" +
+                        "\t <meta charset=\"utf-8\">\n" +
+                        "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                        "    <link href=\"https://fonts.googleapis.com/css?family=Lato\" rel=\"stylesheet\">\n" +
+                        "    <style type=\"text/css\">\n" +
+                        "    \tbody{\n" +
+                        "    \t\tbackground: #1f262a;\n" +
+                        "\t\tfont-family: 'Lato', sans-serif;color:#fff;\n" +
+                        "    \t}\n" +
+                        "    </style>\n" +
+                        "</head>\n" +
+                        "<body>";
                 html = Jsoup.parse(new String(bytes));
-                String content = html.select("div.content").html();
+                String content = html.select("section#post-content").html();
                 finalHtml += content;
                 finalHtml += "</body></html>";
                 mywebview.loadData(finalHtml, "text/html; charset=utf-8", "UTF-8");

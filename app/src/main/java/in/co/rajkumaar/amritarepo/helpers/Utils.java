@@ -32,6 +32,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Looper;
@@ -44,6 +45,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.facebook.ads.AdSettings;
 import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
@@ -53,6 +55,7 @@ import java.util.Calendar;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 
 public class Utils {
@@ -98,10 +101,16 @@ public class Utils {
     }
 
     private static void showAd(final Context context, LinearLayout linearLayout, AdSize adSize) {
-        AudienceNetworkAds.initialize(context);
-        AdView adView = new AdView(context, context.getString(R.string.placement_id), adSize);
-        linearLayout.addView(adView);
-        adView.loadAd();
+        if(!BuildConfig.DEBUG) {
+            AudienceNetworkAds.initialize(context);
+            AdSettings.setMultiprocessSupportMode(AdSettings.MultiprocessSupportMode.MULTIPROCESS_SUPPORT_MODE_OFF);
+            AdSettings.addTestDevice("12ed0d17-5fca-4239-ad1a-512afe8c6cb7");
+            AdSettings.addTestDevice("f7610fc7-789b-4161-86f8-44c72eacdc20");
+            AdSettings.addTestDevice("0f2095f5-ac07-470f-b902-33c302d37d36");
+            AdView adView = new AdView(context, context.getString(R.string.placement_id), adSize);
+            linearLayout.addView(adView);
+            adView.loadAd();
+        }
     }
 
     public static void showSmallAd(Context context, LinearLayout linearLayout) {
@@ -109,7 +118,7 @@ public class Utils {
     }
 
     public static void showBigAd(Context context, LinearLayout linearLayout) {
-        showAd(context, linearLayout, AdSize.BANNER_HEIGHT_90);
+        showAd(context, linearLayout, AdSize.BANNER_HEIGHT_50);
     }
 
     public static ArrayList<String> getAcademicYears() {
