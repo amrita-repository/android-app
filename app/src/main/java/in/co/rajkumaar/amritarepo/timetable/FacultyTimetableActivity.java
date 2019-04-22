@@ -95,7 +95,6 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        ((TextView) findViewById(R.id.made_with_love)).setText(Html.fromHtml("Crafted with &hearts;"));
         final Spinner year = findViewById(R.id.faculty_year);
         final Spinner sem = findViewById(R.id.faculty_sem);
         RelativeLayout facultypage = findViewById(R.id.faculty_page);

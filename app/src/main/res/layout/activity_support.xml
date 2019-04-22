@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/colorBackground"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:padding="16dp"
+    android:scrollbarStyle="outsideOverlay">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="@android:color/white"
+            android:text="@string/donation"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textColor="@color/red"
+            android:text="Choose your amount"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/red"
+            android:layout_marginStart="10dp"
+            android:id="@+id/options"
+            android:textColor="@android:color/white"
+            android:layout_height="wrap_content"
+            tools:ignore="UnusedAttribute" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/buy"
+                android:background="@drawable/button"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Donate" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -396,6 +396,9 @@ public class LaunchingActivity extends AppCompatActivity
             case "About":
                 startActivity(new Intent(getBaseContext(), AboutActivity.class));
                 break;
+            case "Support":
+                startActivity(new Intent(getBaseContext(), SupportActivity.class));
+                break;
         }
     }
 
@@ -636,7 +639,8 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#ffffff", "Timings", FontAwesomeIcons.fa_clock_o));
             items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
             items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
-            items.add(new Item("#f13c20", "About", FontAwesomeIcons.fa_info_circle));
+            items.add(new Item("#f13c20", "Support", FontAwesomeIcons.fa_dollar));
+            items.add(new Item("#259b24", "About", FontAwesomeIcons.fa_info_circle));
         }
 
         @Override

@@ -54,12 +54,6 @@ public class LoginActivity extends AppCompatActivity {
         dob = findViewById(R.id.dob);
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finish();
-            }
-        });
         progressDialog.setMessage("Logging in..");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -156,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 progressDialog.setMessage("Verifying OTP..");
+                progressDialog.show();
                 client.addHeader("Authorization", GlobalData.auth);
                 client.addHeader("token", GlobalData.loginToken);
                 client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/authRes/register?rollno=" +

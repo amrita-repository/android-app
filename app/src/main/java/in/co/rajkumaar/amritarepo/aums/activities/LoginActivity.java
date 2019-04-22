@@ -102,12 +102,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         dialog = new ProgressDialog(this);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finish();
-            }
-        });
 
         SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
         username = findViewById(R.id.username);

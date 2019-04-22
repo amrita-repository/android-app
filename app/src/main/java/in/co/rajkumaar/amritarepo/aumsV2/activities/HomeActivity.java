@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,6 +41,8 @@ public class HomeActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         listView = findViewById(R.id.list);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         name.setText(preferences.getString("name", "N/A"));
         username.setText(preferences.getString("username", "N/A"));
         email.setText(preferences.getString("email", "N/A"));
@@ -68,35 +71,45 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.logout, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
+            case android.R.id.home:
                 onBackPressed();
+                break;
+            case R.id.logout:
+                onLogout();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
+
+    public void onLogout() {
         if (doubleBackToExitPressedOnce) {
-            finish();
+            logout();
             return;
         }
         this.doubleBackToExitPressedOnce = true;
-        Utils.showSnackBar(this, "Press back again to exit AUMS");
+        Utils.showSnackBar(this, "Press back again to logout of AUMS");
         new Handler().postDelayed(new Runnable() {
 
             @Override
             public void run() {
-
                 doubleBackToExitPressedOnce = false;
             }
         }, 2000);
     }
 
-    public void logout(View view) {
+    public void logout() {
         GlobalData.resetUser(this);
         Utils.showToast(this, "Successfully logged out");
         finish();

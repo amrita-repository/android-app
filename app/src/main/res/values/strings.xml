@@ -36,4 +36,7 @@
     <string name="site_change">Site\'s structure has changed. Please wait until I catch up.</string>
     <string name="add_widget">Add widget</string>
     <string name="made_love">Made with {fa-heart-o}</string>
+    <string name="donation">This is a donation for the effort of bringing things from different places under a single roof right at your fingertips.
+        To develop an open source software takes technical knowledge, time, and effort. I would be very glad if you can appreciate my work with your kind donations.
+        All the content brought to you in this app belongs to Amrita Vishwa Vidyapeetham and I don\'t own any of these.\n\nThank you in advance,\nRajkumar</string>
 </resources>
