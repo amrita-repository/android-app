@@ -45,6 +45,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import java.util.Objects;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.SupportActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
@@ -52,25 +53,6 @@ import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 public class AboutActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
-
-    public static void showDisclaimer(Context context) {
-        try {
-            Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.disclaimer);
-            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-            lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
-            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                TextView textView = dialog.findViewById(R.id.text);
-                textView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
-            }
-            dialog.show();
-            dialog.getWindow().setAttributes(lp);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +82,25 @@ public class AboutActivity extends AppCompatActivity {
         });
     }
 
+    public static void showDisclaimer(Context context) {
+        try {
+            Dialog dialog = new Dialog(context);
+            dialog.setContentView(R.layout.disclaimer);
+            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            lp.copyFrom(Objects.requireNonNull(dialog.getWindow()).getAttributes());
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                TextView textView = dialog.findViewById(R.id.text);
+                textView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
+            }
+            dialog.show();
+            dialog.getWindow().setAttributes(lp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @SuppressLint("PrivateResource")
     @Override
     public void onBackPressed() {
@@ -110,5 +111,9 @@ public class AboutActivity extends AppCompatActivity {
     public void ossLicenses(View view) {
         Intent intent = new Intent(this, OssLicensesMenuActivity.class);
         startActivity(intent);
+    }
+
+    public void donate(View view) {
+        startActivity(new Intent(this, SupportActivity.class));
     }
 }

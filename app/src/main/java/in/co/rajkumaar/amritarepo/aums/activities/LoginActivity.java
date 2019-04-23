@@ -44,6 +44,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.florent37.materialtextfield.MaterialTextField;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -118,6 +119,10 @@ public class LoginActivity extends AppCompatActivity {
         password.setText(rmpassword);
         if (!TextUtils.isEmpty(username.getText().toString())) {
             remember.setChecked(true);
+            ((MaterialTextField)findViewById(R.id.username_container)).setHasFocus(true);
+        }
+        if(!password.getText().toString().isEmpty()){
+            ((MaterialTextField)findViewById(R.id.password_container)).setHasFocus(true);
         }
         try {
             username.setSelection(rmusername.length());

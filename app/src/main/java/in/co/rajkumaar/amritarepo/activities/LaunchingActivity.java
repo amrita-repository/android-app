@@ -174,6 +174,13 @@ public class LaunchingActivity extends AppCompatActivity
             showCelebs();
             getSharedPreferences("confetti",MODE_PRIVATE).edit().putBoolean("shown",true).apply();
         }
+
+        findViewById(R.id.floatingActionButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(),SupportActivity.class));
+            }
+        });
     }
 
     private void showCelebs(){
@@ -530,7 +537,6 @@ public class LaunchingActivity extends AppCompatActivity
         }else if (id==R.id.celebs){
             showCelebs();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -539,7 +545,7 @@ public class LaunchingActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         if (id == R.id.nav_downloads) {
             drawer.closeDrawer(GravityCompat.START);
@@ -550,7 +556,7 @@ public class LaunchingActivity extends AppCompatActivity
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Find all question papers under one roof. Download Amrita Repository, the must-have app for exam preparation " +
+                    "Find all features an Amritian needs under one roof. Download Amrita Repository, the must-have app for an Amritian! " +
                             " : https://play.google.com/store/apps/details?id=" + getPackageName());
             sendIntent.setType("text/plain");
             if (sendIntent.resolveActivity(getPackageManager()) != null) {
@@ -577,6 +583,8 @@ public class LaunchingActivity extends AppCompatActivity
                 }
             } else
                 Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+        }else if(id == R.id.nav_donate){
+            startActivity(new Intent(getBaseContext(), SupportActivity.class));
         }
         return true;
     }

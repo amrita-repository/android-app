@@ -81,11 +81,15 @@ public class Utils {
     }
 
     public static void hideKeyboard(Context context) {
-        InputMethodManager inputManager = (InputMethodManager)
-                context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (inputManager.isAcceptingText())
-            inputManager.hideSoftInputFromWindow(Objects.requireNonNull(((Activity) context).getCurrentFocus()).getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
+        try {
+            InputMethodManager inputManager = (InputMethodManager)
+                    context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputManager.isAcceptingText())
+                inputManager.hideSoftInputFromWindow(Objects.requireNonNull(((Activity) context).getCurrentFocus()).getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static void showUnexpectedError(Context context) {

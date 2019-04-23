@@ -7,6 +7,8 @@
 
 `Inspired from `[Amrita Info Desk](https://github.com/niranjan94/amrita-info-desk)
 
+[![ko-fi](https://az743702.vo.msecnd.net/cdn/kofi2.png?v=2)](http://ko-fi.com/rajkumaar23)
+
 ## Features
 
 ### Question Papers:

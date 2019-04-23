@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackground"
     android:orientation="vertical"
     android:id="@+id/container"
@@ -24,43 +25,51 @@
             android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
-            <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:text="Username"
-                android:textColor="@android:color/white"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:id="@+id/username"
+            <com.github.florent37.materialtextfield.MaterialTextField
                 android:layout_width="match_parent"
-                android:textColorHint="@android:color/white"
-                android:layout_height="50dp"
-                android:inputType="textCapCharacters"
-                android:textColor="@android:color/white"
-                android:paddingLeft="2dp"
-                android:backgroundTint="@color/colorAccent"
-                android:paddingRight="2dp"
-                float:inputType="textPassword|textVisiblePassword" />
-            <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:text="Date of birth"
-                android:textColor="@android:color/white"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:id="@+id/dob"
-                android:onClick="selectDOB"
-                android:backgroundTint="@color/colorAccent"
-                android:textColorHint="@android:color/white"
-                android:focusable="false"
-                android:layout_marginTop="5dp"
-                android:textColor="@android:color/white"
+                android:id="@+id/username_container"
+                android:layout_height="wrap_content"
+                app:mtf_labelColor="@android:color/white"
+                app:mtf_openKeyboardOnFocus="true"
+                app:mtf_backgroundColor="@android:color/white"
+                app:mtf_image="@drawable/ic_user"
+                >
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:textColorHint="@android:color/white"
+                    android:textColor="@color/colorPrimary"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:inputType="textCapCharacters"
+                    float:inputType="textPassword|textVisiblePassword"
+                    float:ignore="HardcodedText,UnusedAttribute" />
+            </com.github.florent37.materialtextfield.MaterialTextField>
+            <com.github.florent37.materialtextfield.MaterialTextField
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:inputType="date"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                float:ignore="HardcodedText" />
+                android:layout_marginTop="10dp"
+                android:id="@+id/dob_container"
+                app:mtf_openKeyboardOnFocus="true"
+                android:layout_height="wrap_content"
+                app:mtf_labelColor="@android:color/white"
+                app:mtf_backgroundColor="@android:color/white"
+                app:mtf_image="@drawable/ic_dob"
+                >
+                <EditText
+                    android:id="@+id/dob"
+                    android:onClick="selectDOB"
+                    android:hint="Date of birth"
+                    android:backgroundTint="@color/colorAccent"
+                    android:textColorHint="@android:color/white"
+                    android:focusable="false"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    float:ignore="HardcodedText,UnusedAttribute" />
+            </com.github.florent37.materialtextfield.MaterialTextField>
+
             <Button
                 android:onClick="login"
                 android:layout_width="match_parent"

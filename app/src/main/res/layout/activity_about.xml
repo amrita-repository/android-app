@@ -48,7 +48,17 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"/>
-          <Button
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Donate"
+            android:onClick="donate"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:textColor="@color/colorBackground"
+            android:background="@drawable/button"/>
+        <Button
             android:id="@+id/disclaimer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackground"
     android:layout_height="match_parent"
     android:clipToPadding="false"
@@ -14,6 +14,14 @@
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+            android:textColor="@color/red"
+            android:text="Make a contribution"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:textColor="@android:color/white"
             android:text="@string/donation"
             android:layout_height="wrap_content" />
@@ -34,10 +42,42 @@
             android:textColor="@android:color/white"
             android:layout_height="wrap_content"
             tools:ignore="UnusedAttribute" />
+        <CheckBox
+            android:layout_width="match_parent"
+            android:id="@+id/anonymous"
+            android:backgroundTint="@color/red"
+            android:layout_marginTop="20dp"
+            android:buttonTint="@android:color/white"
+            android:text="Stay Anonymous"
+            android:textColor="@color/red"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText,UnusedAttribute" />
+        <com.github.florent37.materialtextfield.MaterialTextField
+            android:layout_width="match_parent"
+            android:id="@+id/email_container"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            app:mtf_labelColor="@android:color/white"
+            app:mtf_backgroundColor="@android:color/white"
+            app:mtf_openKeyboardOnFocus="true"
+            app:mtf_image="@drawable/ic_user"
+            >
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:textColorHint="@android:color/white"
+                android:textColor="@color/colorPrimary"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your email here"
+                android:inputType="textEmailAddress"
+                tools:ignore="HardcodedText"
+                tools:targetApi="lollipop" />
+        </com.github.florent37.materialtextfield.MaterialTextField>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -48,7 +88,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Donate" />
+                android:text="Donate"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:text="(OR)"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
+        <ImageView
+            android:src="@drawable/kofi"
+            android:layout_width="wrap_content"
+            android:id="@+id/kofi"
+            android:layout_marginBottom="50dp"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 </ScrollView>

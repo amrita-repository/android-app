@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/faculty_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,21 +14,28 @@
         android:layout_margin="20dp"
         android:orientation="vertical">
 
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView1"
+        <com.github.florent37.materialtextfield.MaterialTextField
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:backgroundTint="@android:color/white"
-            android:hint="@string/facultyname"
-            android:singleLine="true"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textSize="15sp"
-            tools:ignore="UnusedAttribute" />
-
+            app:mtf_labelColor="@android:color/white"
+            app:mtf_openKeyboardOnFocus="true"
+            app:mtf_backgroundColor="@android:color/white"
+            app:mtf_image="@drawable/ic_user"
+            >
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView1"
+                android:layout_width="match_parent"
+                android:textColorHint="@android:color/white"
+                android:textColor="@color/colorPrimary"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_height="wrap_content"
+                android:hint="@string/facultyname"
+                android:inputType="textEmailAddress"
+                tools:ignore="HardcodedText"
+                tools:targetApi="lollipop" />
+        </com.github.florent37.materialtextfield.MaterialTextField>
         <Spinner
+            android:layout_marginTop="20dp"
             android:id="@+id/faculty_year"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

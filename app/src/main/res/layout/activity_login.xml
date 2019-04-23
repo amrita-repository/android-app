@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackground"
     android:orientation="vertical"
     android:id="@+id/container"
@@ -24,41 +25,49 @@
             android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
-            <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:text="Username"
-                android:textColor="@android:color/white"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:id="@+id/username"
+            <com.github.florent37.materialtextfield.MaterialTextField
                 android:layout_width="match_parent"
-                android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"
-                android:backgroundTint="@color/colorAccent"
-                android:layout_height="50dp"
-                android:inputType="textCapCharacters"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                float:inputType="textPassword|textVisiblePassword"
-                float:ignore="UnusedAttribute" />
-            <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
-                android:text="Password"
-                android:textColor="@android:color/white"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:id="@+id/password"
-                android:layout_marginTop="5dp"
-                android:textColorHint="@android:color/white"
-                android:textColor="@android:color/white"
-                android:backgroundTint="@color/colorAccent"
+                android:id="@+id/username_container"
+                android:layout_height="wrap_content"
+                app:mtf_labelColor="@android:color/white"
+                app:mtf_openKeyboardOnFocus="true"
+                app:mtf_backgroundColor="@android:color/white"
+                app:mtf_image="@drawable/ic_user"
+                >
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:textColorHint="@android:color/white"
+                    android:textColor="@color/colorPrimary"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:inputType="textCapCharacters"
+                    float:inputType="textPassword|textVisiblePassword"
+                    float:ignore="HardcodedText,UnusedAttribute" />
+            </com.github.florent37.materialtextfield.MaterialTextField>
+            <com.github.florent37.materialtextfield.MaterialTextField
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:inputType="textPassword"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"/>
+                android:layout_marginTop="10dp"
+                android:id="@+id/password_container"
+                android:layout_height="wrap_content"
+                app:mtf_labelColor="@android:color/white"
+                app:mtf_openKeyboardOnFocus="true"
+                app:mtf_backgroundColor="@android:color/white"
+                app:mtf_image="@drawable/ic_eye"
+                >
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:textColorHint="@android:color/white"
+                    android:textColor="@color/colorPrimary"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    float:inputType="textPassword|textVisiblePassword"
+                    float:ignore="HardcodedText,UnusedAttribute" />
+            </com.github.florent37.materialtextfield.MaterialTextField>
             <RelativeLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"

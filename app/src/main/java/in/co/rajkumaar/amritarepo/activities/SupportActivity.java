@@ -1,19 +1,30 @@
 package in.co.rajkumaar.amritarepo.activities;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Handler;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.util.StatsLog;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.solovyev.android.checkout.ActivityCheckout;
 import org.solovyev.android.checkout.Billing;
@@ -25,28 +36,32 @@ import org.solovyev.android.checkout.Purchase;
 
 import java.util.ArrayList;
 
+import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.BillingItem;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
-import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.ParticleSystem;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
+
+import static android.view.View.GONE;
 
 public class SupportActivity extends AppCompatActivity {
 
     private ActivityCheckout mCheckout;
     Spinner options;
+    CheckBox anonymous;
+    EditText email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_support);
         options = findViewById(R.id.options);
+        email=findViewById(R.id.email);
+        anonymous=findViewById(R.id.anonymous);
         ArrayList<String> donations = new ArrayList<>();
         donations.add("Rs 10");
         donations.add("Rs 50");
         donations.add("Rs 100");
+        donations.add("Rs 200");
         donations.add("Rs 500");
         ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, donations);
         optionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -61,15 +76,43 @@ public class SupportActivity extends AppCompatActivity {
                 donateMoney();
             }
         });
+
+        anonymous.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    findViewById(R.id.email_container).setVisibility(GONE);
+                }else{
+                    findViewById(R.id.email_container).setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        findViewById(R.id.kofi).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://ko-fi.com/rajkumaar23"));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                   Utils.showToast(SupportActivity.this, "Error occurred. Please try again later.");
+                }
+            }
+        });
     }
 
     private void donateMoney() {
+        if(!anonymous.isChecked() && email.getText().toString().isEmpty()){
+            Utils.showToast(getBaseContext(),"Please fill in your email (or) choose anonymous if you don't wish to!");
+            return;
+        }
         String donation = "donation";
         switch (options.getSelectedItemPosition()){
             case 0 : donation = "donation"; break;
             case 1 : donation = "donation50"; break;
             case 2 : donation = "donation100"; break;
-            case 3 : donation = "donation500"; break;
+            case 3 : donation = "donation200"; break;
+            case 4 : donation = "donation500"; break;
         }
         mCheckout.startPurchaseFlow(ProductTypes.IN_APP, donation, null, new PurchaseListener());
     }
@@ -89,16 +132,53 @@ public class SupportActivity extends AppCompatActivity {
     private class PurchaseListener extends EmptyRequestListener<Purchase> {
         @Override
         public void onSuccess(@NonNull Purchase purchase) {
+            Log.e("RES",purchase.data);
             showCelebs();
-            Log.i("RES",purchase.data);
+            if(!anonymous.isChecked()) {
+                Bundle params = new Bundle();
+                params.putString("Email", email.getText().toString());
+                FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(SupportActivity.this);
+                mFirebaseAnalytics.logEvent("Donations", params);
+                updateDonatedDetails();
+            }
         }
 
 
         @Override
         public void onError(int response, @NonNull Exception e) {
-            Utils.showToast(getBaseContext(),e.getMessage());
+            Utils.showToast(getBaseContext(),e.getLocalizedMessage());
+            Log.e("ERROR",e.getLocalizedMessage());
             super.onError(response, e);
         }
+    }
+
+    private void updateDonatedDetails() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.add("contactEmail",email.getText().toString());
+        params.add("contactName",email.getText().toString());
+        params.add("contactSubject","Donation "+options.getSelectedItem().toString());
+        params.add("contactMessage","Hey Rajkumar, Someone has made a donation of "+options.getSelectedItem().toString()+" to Amrita Repository!");
+        client.post(getString(R.string.dev_domain)+"/sendmail.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                try {
+                    Log.i("SUCCESS", new String(bytes));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                try {
+                    throwable.printStackTrace();
+                    Crashlytics.log(throwable.getLocalizedMessage());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private class InventoryCallback implements Inventory.Callback {
@@ -118,5 +198,11 @@ public class SupportActivity extends AppCompatActivity {
         TextView textView = thanksGiving.findViewById(R.id.update_text);
         textView.setText(Html.fromHtml("Thanks for donating to Amrita Repository! <br>People like you keep me motivated to do much for the society. &hearts;"));
         thanksGiving.show();
+        thanksGiving.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                finish();
+            }
+        });
     }
 }

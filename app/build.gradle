@@ -6,6 +6,10 @@ apply plugin: 'com.google.gms.google-services'
 def props = new Properties()
 try {
     props.load(new FileInputStream("app/keys.properties"))
+    println("===========")
+    println("Loaded app/keys.properties")
+    println("===========")
+    println()
 } catch (e) {
     props.load(new FileInputStream("app/keys.properties.example"))
     println("===========")
@@ -69,5 +73,6 @@ dependencies {
     implementation("org.solovyev.android:checkout:1.2.1", {
         exclude group: "com.google.code.findbugs", module: "jsr305"
     })
+    implementation 'com.github.florent37:materialtextfield:1.0.7'
 
 }

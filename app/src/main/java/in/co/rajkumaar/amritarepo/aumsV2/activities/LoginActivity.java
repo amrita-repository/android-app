@@ -17,6 +17,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.github.florent37.materialtextfield.MaterialTextField;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -61,6 +62,12 @@ public class LoginActivity extends AppCompatActivity {
         String rmDob = pref.getString("dob", null);
         username.setText(rmUsername);
         dob.setText(rmDob);
+        if(!username.getText().toString().isEmpty()){
+            ((MaterialTextField)findViewById(R.id.username_container)).setHasFocus(true);
+        }
+        if(!dob.getText().toString().isEmpty()){
+            ((MaterialTextField)findViewById(R.id.dob_container)).setHasFocus(true);
+        }
         try {
             username.setSelection(rmUsername.length());
         } catch (NullPointerException e) {
