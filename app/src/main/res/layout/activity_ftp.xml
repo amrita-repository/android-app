@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Follow the steps here to view your downloaded files on any other device."
+            android:text="Follow the steps here to view your Amrita Repository downloads on any other device."
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/red"
             tools:ignore="HardcodedText" />

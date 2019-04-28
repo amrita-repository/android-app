@@ -195,7 +195,7 @@
             android:parentActivityName=".aumsV2.activities.HomeActivity" />
         <activity android:name=".downloads.FTPActivity"
             android:parentActivityName=".downloads.DownloadsActivity"
-            android:label="View files on another device"/>
+            android:label="Share files"/>
     </application>
 
 </manifest>
