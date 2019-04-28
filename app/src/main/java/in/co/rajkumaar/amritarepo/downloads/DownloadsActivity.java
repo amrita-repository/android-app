@@ -26,6 +26,7 @@ package in.co.rajkumaar.amritarepo.downloads;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -38,6 +39,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -83,6 +85,21 @@ public class DownloadsActivity extends AppCompatActivity {
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
 
+        if(getSharedPreferences("user",MODE_PRIVATE).getBoolean("ftp-dialog",true)){
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.ftp_dialog);
+            dialog.setCancelable(false);
+            dialog.findViewById(R.id.okay).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    startActivity(new Intent(getApplicationContext(), FTPActivity.class));
+                }
+            });
+            dialog.show();
+            getSharedPreferences("user",MODE_PRIVATE).edit().putBoolean("ftp-dialog",false).apply();
+        }
+
         if (getIntent().getBooleanExtra("widget", false)) {
             viewPager.setCurrentItem(1);
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -96,6 +113,12 @@ public class DownloadsActivity extends AppCompatActivity {
             alertDialog.show();
         }
 
+        findViewById(R.id.ftp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),FTPActivity.class));
+            }
+        });
 
         // Find the tab layout that shows the tabs
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -127,6 +150,9 @@ public class DownloadsActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.ftp:
+                startActivity(new Intent(this,FTPActivity.class));
+                break;
             case R.id.trash:
                 CharSequence[] items = {"Delete multiple files", "Delete all files"};
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DownloadsActivity.this);

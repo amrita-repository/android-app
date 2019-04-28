@@ -91,6 +91,7 @@ import in.co.rajkumaar.amritarepo.aums.activities.AttendanceActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
 import in.co.rajkumaar.amritarepo.curriculum.CurriculumActivity;
 import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
+import in.co.rajkumaar.amritarepo.downloads.FTPActivity;
 import in.co.rajkumaar.amritarepo.examschedule.ExamCategoryActivity;
 import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
@@ -141,6 +142,23 @@ public class LaunchingActivity extends AppCompatActivity
             }
         }
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+
+        if(pref.getInt("visit",0) >= 3 && pref.getBoolean("ftp-dialog",true)){
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.ftp_dialog);
+            dialog.setCancelable(false);
+            dialog.findViewById(R.id.okay).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                    startActivity(new Intent(getApplicationContext(), FTPActivity.class));
+                }
+            });
+            dialog.show();
+            pref.edit().putBoolean("ftp-dialog",false).apply();
+        }else if(pref.getInt("visit",0) <= 7){
+            pref.edit().putInt("visit",pref.getInt("visit",0)+1).apply();
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

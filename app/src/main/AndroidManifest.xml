@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.android.vending.BILLING"/>
 
@@ -192,6 +193,9 @@
             android:name=".aumsV2.activities.GradesActivity"
             android:label="AUMS - Grades"
             android:parentActivityName=".aumsV2.activities.HomeActivity" />
+        <activity android:name=".downloads.FTPActivity"
+            android:parentActivityName=".downloads.DownloadsActivity"
+            android:label="View files on another device"/>
     </application>
 
 </manifest>

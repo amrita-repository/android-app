@@ -44,7 +44,7 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share this app"/>
+                android:title="Tell a friend"/>
 
         </menu>
     </item>

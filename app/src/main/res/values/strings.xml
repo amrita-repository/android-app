@@ -39,4 +39,8 @@
     <string name="donation">This is a donation for the effort of bringing things from different places under a single roof right at your fingertips.
         To develop an open source software takes technical knowledge, time, and effort. I would be very glad if you can appreciate my work with your kind donations.
         All the content brought to you in this app belongs to Amrita Vishwa Vidyapeetham and I don\'t own any of these.\n\nThank you in advance,\nRajkumar</string>
+    <string name="ftp_steps">1) Turn on WiFi Hotspot on your computer (or) any other device, to which you want to share files of Amrita Repository.
+    \n\n2) Connect your mobile device to that WiFi hotspot.
+    \n\n3) Press the <u>Start Server</u> button below.
+    \n\n4) An URL will be displayed below the button. Open up a browser on your computer and enter this URL and hola! You\'re good to go.</string>
 </resources>
