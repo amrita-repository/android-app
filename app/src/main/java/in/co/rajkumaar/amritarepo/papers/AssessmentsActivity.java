@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
@@ -113,8 +114,8 @@ public class AssessmentsActivity extends AppCompatActivity {
                 document = Jsoup.connect(href).get();
             } catch (IOException e) {
                 try {
-                    document = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", href).execute().parse());
-                    statusCode = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", href).execute().statusCode());
+                    document = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", href).data("hash", BuildConfig.SECRET_HASH).execute().parse());
+                    statusCode = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", href).data("hash", BuildConfig.SECRET_HASH).execute().statusCode());
 
                 } catch (IOException e1) {
                     e1.printStackTrace();

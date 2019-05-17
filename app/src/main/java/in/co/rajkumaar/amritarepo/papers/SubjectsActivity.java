@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.OpenTask;
@@ -117,8 +118,8 @@ public class SubjectsActivity extends AppCompatActivity {
             } catch (IOException e) {
 
                 try {
-                    document = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", href).execute().parse());
-                    statusCode = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", href).execute().statusCode());
+                    document = (Jsoup.connect(proxy).method(Connection.Method.POST).data("hash", BuildConfig.SECRET_HASH).data("data", href).execute().parse());
+                    statusCode = (Jsoup.connect(proxy).method(Connection.Method.POST).data("hash", BuildConfig.SECRET_HASH).data("data", href).execute().statusCode());
                 } catch (IOException v) {
                     v.printStackTrace();
                 }
@@ -135,7 +136,7 @@ public class SubjectsActivity extends AppCompatActivity {
 
                         } catch (IOException ex) {
                             try {
-                                nextDoc = (Jsoup.connect(proxy).method(Connection.Method.POST).data("data", nextUrl).execute().parse());
+                                nextDoc = (Jsoup.connect(proxy).method(Connection.Method.POST).data("hash", BuildConfig.SECRET_HASH).data("data", nextUrl).execute().parse());
                             } catch (IOException r) {
                                 r.printStackTrace();
                             }

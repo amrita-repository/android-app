@@ -45,6 +45,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
+import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
@@ -114,7 +115,7 @@ public class CurriculumActivity extends AppCompatActivity {
 
     void getData(final String dept) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(getString(R.string.dev_domain) + "/utils/btech.php?q=" + dept, new AsyncHttpResponseHandler() {
+        client.get(getString(R.string.dev_domain) + "/utils/btech.php?q=" + dept + "&hash="+ BuildConfig.SECRET_HASH, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 statuscode = statusCode;

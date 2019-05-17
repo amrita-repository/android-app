@@ -25,17 +25,18 @@ android {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 38
-        versionName "3.1.1"
+        versionCode 39
+        versionName "3.1.2"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "PLAY_LICENSE_KEY", "\"${props.getProperty("googlePlayLicenseKey")}\""
+        buildConfigField "String", "SECRET_HASH", "\"${props.getProperty("secretHash")}\""
+
     }
     buildTypes {
         release {
             minifyEnabled true
-
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

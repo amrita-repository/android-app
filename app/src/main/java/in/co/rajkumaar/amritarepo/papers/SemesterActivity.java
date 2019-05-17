@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
@@ -145,8 +146,8 @@ public class SemesterActivity extends AppCompatActivity {
                 document = Jsoup.connect(semUrl).get();
             } catch (IOException e1) {
                 try {
-                    document = Jsoup.connect(proxy).method(Connection.Method.POST).data("data", semUrl).execute().parse();
-                    statusCode = Jsoup.connect(proxy).method(Connection.Method.POST).data("data", semUrl).execute().statusCode();
+                    document = Jsoup.connect(proxy).method(Connection.Method.POST).data("data", semUrl).data("hash", BuildConfig.SECRET_HASH).execute().parse();
+                    statusCode = Jsoup.connect(proxy).method(Connection.Method.POST).data("data", semUrl).data("hash", BuildConfig.SECRET_HASH).execute().statusCode();
                 } catch (IOException e2) {
                     e2.printStackTrace();
                 }

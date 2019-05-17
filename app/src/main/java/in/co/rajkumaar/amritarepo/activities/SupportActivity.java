@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2019 RAJKUMAR S
+ */
+
 package in.co.rajkumaar.amritarepo.activities;
 
 import android.app.Dialog;
