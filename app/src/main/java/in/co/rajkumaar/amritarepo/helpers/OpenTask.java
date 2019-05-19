@@ -201,7 +201,8 @@ public class OpenTask {
                     c.setDoOutput(true);
                     OutputStreamWriter wr = new OutputStreamWriter(c.getOutputStream());
                     String data = URLEncoder.encode("data", "UTF-8")
-                            + "=" + URLEncoder.encode(downloadUrl, "UTF-8");
+                            + "=" + URLEncoder.encode(downloadUrl, "UTF-8")
+                            +"&"+URLEncoder.encode("hash","UTF-8")+"="+URLEncoder.encode(BuildConfig.SECRET_HASH,"UTF-8");
                     wr.write(data);
                     wr.flush();
                     c.connect();
