@@ -32,8 +32,6 @@ public class WebViewActivity extends AppCompatActivity {
             WebView mywebview = (WebView) findViewById(R.id.webView);
             mywebview.getSettings().setJavaScriptEnabled(true);
             dialog = new ProgressDialog(WebViewActivity.this);
-            mywebview.setDrawingCacheBackgroundColor(getResources().getColor(R.color.colorBackground));
-            mywebview.setBackgroundColor(getResources().getColor(R.color.colorBackground));
             if (b.getBoolean("zoom")) {
                 mywebview.getSettings().setSupportZoom(true);
                 mywebview.getSettings().setBuiltInZoomControls(true);

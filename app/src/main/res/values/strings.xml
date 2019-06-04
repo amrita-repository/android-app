@@ -21,7 +21,7 @@
     <string name="incompletefield">Please input all fields</string>
     <string name="xmlUi">/xmlui/handle/</string>
     <string name="protocol">http://</string>
-    <string name="wifi_warning">Please ensure you are connected to Amrita Wifi \n to have a smooth experience.</string>
+    <string name="wifi_warning">An error occurred while connecting to the server.</string>
     <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
     <string name="dev_domain">https://dev.rajkumaar.co.in</string>
     <string name="placement_id">1281797331958232_1281798865291412</string>

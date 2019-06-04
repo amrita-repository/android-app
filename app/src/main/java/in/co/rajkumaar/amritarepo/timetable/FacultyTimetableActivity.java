@@ -279,7 +279,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                         startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.facultyurl) + url)));
 
                     else
-                        showSnackbar("Resource not found");
+                        showSnackbar("The requested timetable has not yet been uploaded. Please check back later.");
                 } else if (choice == 2) {
                     new DownloadTask(FacultyTimetableActivity.this, getString(R.string.facultyurl) + url, 0);
                 }
@@ -362,7 +362,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                showSnackbar("Some error occurred.");
+                showSnackbar("An unexpected error occurred.");
             }
         }
     }

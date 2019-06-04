@@ -122,6 +122,7 @@ public class CurriculumActivity extends AppCompatActivity {
                 try {
                     JSONArray result = new JSONArray(new String(responseBody));
                     Log.e("JSON SIZE", result.length() + "");
+
                     for (int i = 0; i < result.length(); ++i) {
                         ArrayList<String> contents = new ArrayList<>();
                         JSONArray items = result.getJSONArray(i);

@@ -25,6 +25,7 @@
 package in.co.rajkumaar.amritarepo.timetable;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,14 +43,19 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.WebViewActivity;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
+import okhttp3.internal.Util;
 
 public class AcademicTimetableActivity extends AppCompatActivity {
 
@@ -136,17 +142,41 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
     public void viewTimetable(View view) {
-
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Please wait");
+        dialog.setCancelable(false);
+        dialog.show();
         if (batch.getSelectedItemPosition() > 0 && branch.getSelectedItemPosition() > 0 && course.getSelectedItemPosition() > 0 && sem.getSelectedItemPosition() > 0 && year.getSelectedItemPosition() > 0) {
             savePref();
-            TIMETABLE_URL = "https://intranet.cb.amrita.edu/TimeTable/PDF/";
-            buildTimetableUrl();
-            Intent intent = new Intent(AcademicTimetableActivity.this, WebViewActivity.class);
-            intent.putExtra("webview", TIMETABLE_URL);
-            intent.putExtra("zoom", true);
-            intent.putExtra("title", branch.getSelectedItem() + " " + batch.getSelectedItem() + " - Semester " + sem.getSelectedItem());
             if (isNetworkAvailable()) {
-                startActivity(intent);
+                TIMETABLE_URL = "https://intranet.cb.amrita.edu/TimeTable/PDF/";
+                buildTimetableUrl();
+                AsyncHttpClient client = new AsyncHttpClient();
+                client.get(TIMETABLE_URL, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        Intent intent = new Intent(AcademicTimetableActivity.this, WebViewActivity.class);
+                        intent.putExtra("webview", TIMETABLE_URL);
+                        intent.putExtra("zoom", true);
+                        intent.putExtra("title", branch.getSelectedItem() + " " + batch.getSelectedItem() + " - Semester " + sem.getSelectedItem());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Utils.showSnackBar(AcademicTimetableActivity.this,"The requested timetable has not yet been uploaded. Please check back later.");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        try{
+                            dialog.dismiss();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        super.onFinish();
+                    }
+                });
             } else {
                 Snackbar.make(view, "Device not connected to Internet", Snackbar.LENGTH_SHORT).show();
             }
@@ -167,12 +197,37 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                         1);
             } else {
                 if (isNetworkAvailable()) {
+                    final ProgressDialog dialog = new ProgressDialog(this);
+                    dialog.setMessage("Please wait");
+                    dialog.setCancelable(false);
+                    dialog.show();
                     String protocol = "https://";
                     String intranet = getString(R.string.intranet);
                     String timetable = getString(R.string.timetable);
                     TIMETABLE_URL = protocol + intranet + timetable;
                     buildTimetableUrl();
-                    new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL, 0);
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    client.get(TIMETABLE_URL, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL, 0);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Utils.showSnackBar(AcademicTimetableActivity.this,"The requested timetable has not yet been uploaded. Please check back later.");
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            try{
+                                dialog.dismiss();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            super.onFinish();
+                        }
+                    });
                 } else {
                     Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
                 }
@@ -245,10 +300,12 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 branches.add("JLM");
                 break;
         }
-        ArrayAdapter<String> courseAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, branches);
+        ArrayAdapter<String> courseAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, branches);
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         branch.setAdapter(courseAdapter);
-        branch.setSelection(pref.getInt("branch", 0));
+        if(course.getSelectedItemPosition() == pref.getInt("course", 0)){
+            branch.setSelection(pref.getInt("branch",0));
+        }
     }
 
     private void loadLists() {

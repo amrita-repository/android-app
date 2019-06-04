@@ -18,7 +18,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="0dp"/>
+        android:divider="@android:color/white"/>
 
     <!-- Empty view is only visible when the list has no items. -->
     <TextView
