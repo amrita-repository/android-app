@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+<ListView
+    android:id="@+id/list"
+    android:divider="@android:color/white"
+    android:dividerHeight="0dp"
+    android:layout_above="@id/banner_container"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".aums.activities.AttendanceActivity"/>
     <LinearLayout
         android:id="@+id/banner_container"
         android:layout_width="match_parent"
@@ -40,14 +49,4 @@
             android:layout_height="wrap_content"
             tools:ignore="HardcodedText" />
     </LinearLayout>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:divider="@android:color/white"
-    android:dividerHeight="0dp"
-    android:layout_above="@id/banner_container"
-    android:visibility="gone"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".aums.activities.AttendanceActivity"/>
 </RelativeLayout>
