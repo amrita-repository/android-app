@@ -84,59 +84,101 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
         items = new ArrayList<>();
         if (type != null && type.equals("Buses from AB1")) {
             items.add(new DataItem(
-                    "09:35 AM", "ab1"
+                    "09:20 AM", "ab1"
             ));
             items.add(new DataItem(
-                    "10:00 AM", "ab1"
+                    "09:40 AM", "ab1"
             ));
             items.add(new DataItem(
-                    "10:50 AM", "ab1"
+                    "10:10 AM", "ab1"
             ));
             items.add(new DataItem(
-                    "11:50 AM", "ab1"
+                    "10:30 AM", "ab1"
             ));
             items.add(new DataItem(
-                    "12:10 PM", "ab1"
+                    "11:10 AM", "ab1"
             ));
             items.add(new DataItem(
-                    "01:50 PM", "ab1"
+                    "11:20 AM", "ab1"
+            ));
+            items.add(new DataItem(
+                    "12:00 PM", "ab1"
+            ));
+            items.add(new DataItem(
+                    "12:20 PM", "ab1"
+            ));
+            items.add(new DataItem(
+                    "12:50 PM", "ab1"
+            ));
+            items.add(new DataItem(
+                    "01:10 PM", "ab1"
+            ));
+            items.add(new DataItem(
+                    "01:40 PM", "ab1"
+            ));
+            items.add(new DataItem(
+                    "02:00 PM", "ab1"
+            ));
+            items.add(new DataItem(
+                    "02:30 PM", "ab1"
             ));
             items.add(new DataItem(
                     "02:50 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "03:10 PM", "ab1"
+                    "03:20 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "04:10 PM", "ab1"
+                    "03:40 PM", "ab1"
             ));
         } else if (type != null && type.equals("Buses from AB3")) {
             items.add(new DataItem(
-                    "09:35 AM", "ab3"
+                    "09:20 AM", "ab3"
             ));
             items.add(new DataItem(
-                    "10:00 AM", "ab3"
+                    "09:40 AM", "ab3"
             ));
             items.add(new DataItem(
-                    "10:50 AM", "ab3"
+                    "10:10 AM", "ab3"
             ));
             items.add(new DataItem(
-                    "11:50 AM", "ab3"
+                    "10:30 AM", "ab3"
             ));
             items.add(new DataItem(
-                    "12:10 PM", "ab3"
+                    "11:10 AM", "ab3"
             ));
             items.add(new DataItem(
-                    "01:50 PM", "ab3"
+                    "11:20 AM", "ab3"
+            ));
+            items.add(new DataItem(
+                    "12:00 PM", "ab3"
+            ));
+            items.add(new DataItem(
+                    "12:20 PM", "ab3"
+            ));
+            items.add(new DataItem(
+                    "12:50 PM", "ab3"
+            ));
+            items.add(new DataItem(
+                    "01:10 PM", "ab3"
+            ));
+            items.add(new DataItem(
+                    "01:40 PM", "ab3"
+            ));
+            items.add(new DataItem(
+                    "02:00 PM", "ab3"
+            ));
+            items.add(new DataItem(
+                    "02:30 PM", "ab3"
             ));
             items.add(new DataItem(
                     "02:50 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "03:10 PM", "ab3"
+                    "03:20 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "04:10 PM", "ab3"
+                    "03:40 PM", "ab3"
             ));
         }
     }

@@ -22,6 +22,11 @@
             android:title="Support"
             android:checkable="false"/>
         <item
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/ic_feedback"
+            android:title="Feedback"
+            android:checkable="false"/>
+        <item
             android:title="Settings"
             android:id="@+id/settings"
             android:icon="@drawable/settings"

@@ -104,7 +104,7 @@ public class LaunchingActivity extends AppCompatActivity
         FirebaseApp.initializeApp(this);
         Iconify.with(new FontAwesomeModule());
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        final SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
         if (ContextCompat.checkSelfPermission(LaunchingActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -171,6 +171,40 @@ public class LaunchingActivity extends AppCompatActivity
         if(!getSharedPreferences("confetti",MODE_PRIVATE).getBoolean("shown",false)) {
             showCelebs();
             getSharedPreferences("confetti",MODE_PRIVATE).edit().putBoolean("shown",true).apply();
+        }else{
+            if(!pref.getBoolean("ftp-dialog",false) && !pref.getBoolean("first", true) && !pref.getBoolean("feedback-done",true)){
+                String feedbackText = "Hello there, your opinion matters.<br>Could you please spend a minute to leave feedback on your experience? <br>I appreciate your help! &hearts;";
+                try {
+                    final AlertDialog.Builder feedbackDialog = new AlertDialog.Builder(LaunchingActivity.this);
+                    feedbackDialog.setMessage(Html.fromHtml(feedbackText));
+                    feedbackDialog.setPositiveButton("Sure", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("https://rajkumaar.co.in/repo-feedback"));
+                            pref.edit().putBoolean("feedback-done",true).apply();
+                            if (intent.resolveActivity(getPackageManager()) != null)
+                                startActivity(intent);
+                        }
+                    });
+                    feedbackDialog.setNegativeButton("Never", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            pref.edit().putBoolean("feedback-done",true).apply();
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    feedbackDialog.setNeutralButton("Remind me later", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    feedbackDialog.show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -434,13 +468,12 @@ public class LaunchingActivity extends AppCompatActivity
                             Log.e("Latest : " + latest, " Having :" + BuildConfig.VERSION_NAME);
                             if (!latest.equals(BuildConfig.VERSION_NAME)) {
                                 final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
-                                alertDialog.setCancelable(false);
                                 alertDialog.setMessage(Html.fromHtml("An update is available for Amrita Repository.<br><br><strong><font color='#AA0000'>What's New ?</font></strong>" + whatsNewText));
                                 alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+                                        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
                                         if (intent.resolveActivity(getPackageManager()) != null)
                                             startActivity(intent);
                                     }
@@ -448,7 +481,7 @@ public class LaunchingActivity extends AppCompatActivity
                                 alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        finish();
+                                        dialogInterface.dismiss();
                                     }
                                 });
                                 if (active)
@@ -541,14 +574,19 @@ public class LaunchingActivity extends AppCompatActivity
         if (id == R.id.nav_downloads) {
             drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this, DownloadsActivity.class));
-
+        }else if(id == R.id.nav_feedback){
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://rajkumaar.co.in/repo-feedback"));
+            getSharedPreferences("user",MODE_PRIVATE).edit().putBoolean("feedback-done",true).apply();
+            if (intent.resolveActivity(getPackageManager()) != null)
+                startActivity(intent);
         } else if (id == R.id.nav_share) {
             drawer.closeDrawer(GravityCompat.START);
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Find all features an Amritian needs under one roof. Download Amrita Repository, the must-have app for an Amritian! " +
-                            " : https://play.google.com/store/apps/details?id=" + getPackageName());
+                    "Find all features an Amritian needs under one roof. Download Amrita Repository, the must-have app!\n" +
+                            "https://bit.ly/amritarepo");
             sendIntent.setType("text/plain");
             if (sendIntent.resolveActivity(getPackageManager()) != null) {
                 startActivity(sendIntent);

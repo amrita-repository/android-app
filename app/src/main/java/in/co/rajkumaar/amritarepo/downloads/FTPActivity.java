@@ -67,21 +67,26 @@ public class FTPActivity extends AppCompatActivity {
                         if(wifiManager.isWifiEnabled()){
                             if(!Objects.equals(info.getSSID(), "")){
                                 String IP = Formatter.formatIpAddress(info.getIpAddress());
-                                try {
-                                    if(ftpServer.isSuspended())ftpServer.resume(); else ftpServer.start();
-                                    result.setText(Html.fromHtml(
-                                            "You can access your files at <br><strong>ftp://"+IP+":"+port+"</strong>"
-                                    ));
-                                    start.setText("Stop Server");
-                                    start.setBackground(getResources().getDrawable(R.drawable.red_button));
-                                    start.setTextColor(getResources().getColor(android.R.color.white));
-                                    rippleBackground.setVisibility(View.VISIBLE);
-                                    rippleBackground.startRippleAnimation();
-                                    tools.setVisibility(View.VISIBLE);
+                                if(!IP.contains("0.0.0.0")) {
+                                    try {
+                                        if (ftpServer.isSuspended()) ftpServer.resume();
+                                        else ftpServer.start();
+                                        result.setText(Html.fromHtml(
+                                                "You can access your files at <br><strong>ftp://" + IP + ":" + port + "</strong>"
+                                        ));
+                                        start.setText("Stop Server");
+                                        start.setBackground(getResources().getDrawable(R.drawable.red_button));
+                                        start.setTextColor(getResources().getColor(android.R.color.white));
+                                        rippleBackground.setVisibility(View.VISIBLE);
+                                        rippleBackground.startRippleAnimation();
+                                        tools.setVisibility(View.VISIBLE);
 
-                                } catch (FtpException e) {
-                                    Utils.showUnexpectedError(getApplicationContext());
-                                    e.printStackTrace();
+                                    } catch (FtpException e) {
+                                        Utils.showUnexpectedError(getApplicationContext());
+                                        e.printStackTrace();
+                                    }
+                                }else{
+                                    Utils.showToast(getApplicationContext(),"There was an error while turning on FTP. Please connect to your hotspot of your computer and retry.");
                                 }
                             }else{
                                 Utils.showToast(getApplicationContext(),"Please connect to your hotspot.");

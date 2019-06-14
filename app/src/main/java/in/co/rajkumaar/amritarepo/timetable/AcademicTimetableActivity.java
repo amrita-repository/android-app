@@ -142,41 +142,16 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
     public void viewTimetable(View view) {
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Please wait");
-        dialog.setCancelable(false);
-        dialog.show();
         if (batch.getSelectedItemPosition() > 0 && branch.getSelectedItemPosition() > 0 && course.getSelectedItemPosition() > 0 && sem.getSelectedItemPosition() > 0 && year.getSelectedItemPosition() > 0) {
             savePref();
             if (isNetworkAvailable()) {
                 TIMETABLE_URL = "https://intranet.cb.amrita.edu/TimeTable/PDF/";
                 buildTimetableUrl();
-                AsyncHttpClient client = new AsyncHttpClient();
-                client.get(TIMETABLE_URL, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        Intent intent = new Intent(AcademicTimetableActivity.this, WebViewActivity.class);
-                        intent.putExtra("webview", TIMETABLE_URL);
-                        intent.putExtra("zoom", true);
-                        intent.putExtra("title", branch.getSelectedItem() + " " + batch.getSelectedItem() + " - Semester " + sem.getSelectedItem());
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Utils.showSnackBar(AcademicTimetableActivity.this,"The requested timetable has not yet been uploaded. Please check back later.");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        try{
-                            dialog.dismiss();
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        super.onFinish();
-                    }
-                });
+                Intent intent = new Intent(AcademicTimetableActivity.this, WebViewActivity.class);
+                intent.putExtra("webview", TIMETABLE_URL);
+                intent.putExtra("zoom", true);
+                intent.putExtra("title", branch.getSelectedItem() + " " + batch.getSelectedItem() + " - Semester " + sem.getSelectedItem());
+                startActivity(intent);
             } else {
                 Snackbar.make(view, "Device not connected to Internet", Snackbar.LENGTH_SHORT).show();
             }
@@ -197,37 +172,12 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                         1);
             } else {
                 if (isNetworkAvailable()) {
-                    final ProgressDialog dialog = new ProgressDialog(this);
-                    dialog.setMessage("Please wait");
-                    dialog.setCancelable(false);
-                    dialog.show();
                     String protocol = "https://";
                     String intranet = getString(R.string.intranet);
                     String timetable = getString(R.string.timetable);
                     TIMETABLE_URL = protocol + intranet + timetable;
                     buildTimetableUrl();
-                    AsyncHttpClient client = new AsyncHttpClient();
-                    client.get(TIMETABLE_URL, new AsyncHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL, 0);
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Utils.showSnackBar(AcademicTimetableActivity.this,"The requested timetable has not yet been uploaded. Please check back later.");
-                        }
-
-                        @Override
-                        public void onFinish() {
-                            try{
-                                dialog.dismiss();
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
-                            super.onFinish();
-                        }
-                    });
+                    new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL, 0);
                 } else {
                     Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
                 }

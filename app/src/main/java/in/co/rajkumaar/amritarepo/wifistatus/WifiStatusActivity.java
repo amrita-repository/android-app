@@ -61,12 +61,7 @@ public class WifiStatusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wifi_status);
         Utils.showBigAd(this, (LinearLayout) findViewById(R.id.banner_container));
         dialog = new ProgressDialog(WifiStatusActivity.this);
-        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finish();
-            }
-        });
+        dialog.setCancelable(false);
 
 
         Button refresh = findViewById(R.id.wifi_status_refresh);
