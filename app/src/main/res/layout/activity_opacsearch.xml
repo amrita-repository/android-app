@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2019 RAJKUMAR S
+  -->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/banner_container"
+        android:background="@color/colorBackground"
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:context=".opac.OPACSearchActivity">
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="@android:color/white"
+            android:layout_height="wrap_content"
+            android:text="The library catalogue"
+            android:gravity="center_horizontal"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="@android:color/darker_gray"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Document Type"
+            tools:ignore="HardcodedText" />
+        <Spinner
+            android:id="@+id/docType"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UnusedAttribute" />
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="@android:color/darker_gray"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Search based on"
+            tools:ignore="HardcodedText" />
+        <Spinner
+            android:id="@+id/field"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            tools:ignore="UnusedAttribute" />
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="@android:color/darker_gray"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="Enter word (or) phrase"
+            tools:ignore="HardcodedText" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchKeyword"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:backgroundTint="@color/colorAccent"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            tools:ignore="UnusedAttribute" />
+        <Button
+            android:layout_width="match_parent"
+            android:id="@+id/search"
+            android:onClick="searchOPAC"
+            android:text="Search"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/button"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        />
+</RelativeLayout>

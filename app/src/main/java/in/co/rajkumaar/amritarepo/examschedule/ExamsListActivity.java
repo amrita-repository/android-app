@@ -113,21 +113,10 @@ public class ExamsListActivity extends AppCompatActivity {
                 for (int j = 0; j < ul_lists.get(block).select("li").size(); ++j) {
 
                     String text = ul_lists.get(block).select("li").get(j).select("li").text();
-                    String[] temp = text.split("-");
-                    String comp = text.replace(temp[temp.length - 1], " ");
-                    int index = comp.lastIndexOf('-');
-                    if (index != -1) {
-                        comp = comp.substring(0, index);
-                    }
-                    if (!comp.trim().isEmpty()) {
-                        texts.add(comp.trim());
-                        //Log.e("TEXT", comp.trim());
-                        links.add(ul_lists.get(block).select("li").get(j).select("a[href]").attr("href"));
-                        adapter = new ArrayAdapter<>(ExamsListActivity.this, R.layout.custom_list_item, texts);
-                        listView.setAdapter(adapter);
-
-
-                    }//Log.e("LINK", ul_lists.get(i).select("li").get(j).select("a[href]").attr("href"));
+                    texts.add(text.trim());
+                    links.add(ul_lists.get(block).select("li").get(j).select("a[href]").attr("href"));
+                    adapter = new ArrayAdapter<>(ExamsListActivity.this, R.layout.custom_list_item, texts);
+                    listView.setAdapter(adapter);
                 }
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

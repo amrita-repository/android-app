@@ -7,23 +7,33 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
+        android:name=".helpers.BillingItem"
         android:allowBackup="true"
         android:icon="@drawable/logosq"
         android:label="@string/app_name"
-        android:name=".helpers.BillingItem"
         android:roundIcon="@drawable/logosq"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".activities.SupportActivity"
+        <activity android:name=".opac.SearchResultsActivity"
+            android:label="Search Results"
+            android:parentActivityName=".opac.OPACSearchActivity"
+            />
+        <activity
+            android:name=".opac.OPACSearchActivity"
+            android:label="OPAC Search"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.LaunchingActivity" />
+        <activity
+            android:name=".activities.SupportActivity"
             android:label="Support"
-            android:parentActivityName=".activities.LaunchingActivity"/>
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
             android:name=".news.NewsActivity"
             android:label="Latest News"
@@ -85,11 +95,11 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".downloads.DownloadsActivity"
@@ -193,9 +203,10 @@
             android:name=".aumsV2.activities.GradesActivity"
             android:label="AUMS - Grades"
             android:parentActivityName=".aumsV2.activities.HomeActivity" />
-        <activity android:name=".downloads.FTPActivity"
-            android:parentActivityName=".downloads.DownloadsActivity"
-            android:label="Share files"/>
+        <activity
+            android:name=".downloads.FTPActivity"
+            android:label="Share files"
+            android:parentActivityName=".downloads.DownloadsActivity" />
     </application>
 
 </manifest>

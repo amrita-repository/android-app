@@ -108,28 +108,28 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                     "12:20 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "12:50 PM", "ab1"
+                    "01:00 PM", "ab1"
             ));
             items.add(new DataItem(
                     "01:10 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "01:40 PM", "ab1"
+                    "01:50 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "02:00 PM", "ab1"
+                    "02:10 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "02:30 PM", "ab1"
+                    "02:40 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "02:50 PM", "ab1"
+                    "03:00 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "03:20 PM", "ab1"
+                    "03:30 PM", "ab1"
             ));
             items.add(new DataItem(
-                    "03:40 PM", "ab1"
+                    "03:50 PM", "ab1"
             ));
         } else if (type != null && type.equals("Buses from AB3")) {
             items.add(new DataItem(
@@ -157,28 +157,28 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                     "12:20 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "12:50 PM", "ab3"
+                    "01:00 PM", "ab3"
             ));
             items.add(new DataItem(
                     "01:10 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "01:40 PM", "ab3"
+                    "01:50 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "02:00 PM", "ab3"
+                    "02:10 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "02:30 PM", "ab3"
+                    "02:40 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "02:50 PM", "ab3"
+                    "03:00 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "03:20 PM", "ab3"
+                    "03:30 PM", "ab3"
             ));
             items.add(new DataItem(
-                    "03:40 PM", "ab3"
+                    "03:50 PM", "ab3"
             ));
         }
     }

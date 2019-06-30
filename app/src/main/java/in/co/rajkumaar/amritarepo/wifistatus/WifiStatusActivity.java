@@ -143,8 +143,14 @@ public class WifiStatusActivity extends AppCompatActivity {
                     Log.v("COLUMN", status.toString());
                 }
             } catch (Exception e) {
-                Utils.showToast(WifiStatusActivity.this, "An unexpected error occurred. Please try again later.");
-                finish();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Utils.showToast(WifiStatusActivity.this, "An unexpected error occurred. Please try again later.");
+                        finish();
+                    }
+                });
+
                 e.printStackTrace();
             }
             return null;

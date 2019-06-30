@@ -77,6 +77,7 @@ import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 import in.co.rajkumaar.amritarepo.news.NewsActivity;
+import in.co.rajkumaar.amritarepo.opac.OPACSearchActivity;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
 import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
 import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
@@ -407,6 +408,12 @@ public class LaunchingActivity extends AppCompatActivity
             case "Downloads":
                 startActivity(new Intent(LaunchingActivity.this, DownloadsActivity.class));
                 break;
+            case "OPAC Search":
+                if(Utils.isConnected(LaunchingActivity.this)){
+                    startActivity(new Intent(LaunchingActivity.this, OPACSearchActivity.class));
+                }else
+                    Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+                break;
             case "News":
                 if (Utils.isConnected(LaunchingActivity.this))
                     startActivity(new Intent(LaunchingActivity.this, NewsActivity.class));
@@ -671,6 +678,7 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
             items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
+//            items.add(new Item("#03a9f4", "OPAC Search", FontAwesomeIcons.fa_book));
             items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
             items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
             items.add(new Item("#ffffff", "Timings", FontAwesomeIcons.fa_clock_o));

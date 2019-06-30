@@ -105,12 +105,10 @@ public class Utils {
     }
 
     private static void showAd(final Context context, LinearLayout linearLayout, AdSize adSize) {
-        if(!BuildConfig.DEBUG) {
+        if(BuildConfig.DEBUG) {
             AudienceNetworkAds.initialize(context);
             AdSettings.setMultiprocessSupportMode(AdSettings.MultiprocessSupportMode.MULTIPROCESS_SUPPORT_MODE_OFF);
-            AdSettings.addTestDevice("12ed0d17-5fca-4239-ad1a-512afe8c6cb7");
-            AdSettings.addTestDevice("f7610fc7-789b-4161-86f8-44c72eacdc20");
-            AdSettings.addTestDevice("0f2095f5-ac07-470f-b902-33c302d37d36");
+            AdSettings.addTestDevice("9124b9ef-222c-4576-a646-61fa74728a71");
             AdView adView = new AdView(context, context.getString(R.string.placement_id), adSize);
             linearLayout.addView(adView);
             adView.loadAd();
