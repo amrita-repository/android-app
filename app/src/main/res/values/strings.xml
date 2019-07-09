@@ -43,4 +43,8 @@
     \n\n2) Connect your mobile device to that WiFi hotspot.
     \n\n3) Press the <u>Start Server</u> button below.
     \n\n4) An URL will be displayed below the button. Open up a browser on your computer and enter this URL and hola! You\'re good to go.</string>
+
+    <string name="study_materials_info">
+        If you are a faculty and would like to add your site on behalf of your department in this application,
+        please drop a mail to rajkumaar2304@gmail.com</string>
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2019 RAJKUMAR S
+  -->
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/reload"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_refresh"
+        app:showAsAction="ifRoom"
+        android:title="Reload"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/info"
+        android:orderInCategory="200"
+        android:icon="@drawable/ic_info"
+        app:showAsAction="ifRoom"
+        android:title="Reload"
+        tools:ignore="HardcodedText" />
+</menu>

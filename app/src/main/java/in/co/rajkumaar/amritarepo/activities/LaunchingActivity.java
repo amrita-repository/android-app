@@ -8,7 +8,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -34,12 +32,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -67,7 +61,6 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.AboutActivity;
-import in.co.rajkumaar.amritarepo.aums.activities.AttendanceActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
 import in.co.rajkumaar.amritarepo.curriculum.CurriculumActivity;
 import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
@@ -79,6 +72,7 @@ import in.co.rajkumaar.amritarepo.helpers.clearCache;
 import in.co.rajkumaar.amritarepo.news.NewsActivity;
 import in.co.rajkumaar.amritarepo.opac.OPACSearchActivity;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
+import in.co.rajkumaar.amritarepo.study_materials.StudyMaterialsActivity;
 import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
 import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
 import in.co.rajkumaar.amritarepo.timings.ShuttleBusTimingsActivity;
@@ -124,7 +118,7 @@ public class LaunchingActivity extends AppCompatActivity
         }
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
 
-        if(pref.getInt("visit",0) >= 3 && pref.getBoolean("ftp-dialog",true)){
+        if (pref.getInt("visit", 0) >= 3 && pref.getBoolean("ftp-dialog", true)) {
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.ftp_dialog);
             dialog.setCancelable(false);
@@ -136,9 +130,9 @@ public class LaunchingActivity extends AppCompatActivity
                 }
             });
             dialog.show();
-            pref.edit().putBoolean("ftp-dialog",false).apply();
-        }else if(pref.getInt("visit",0) <= 7){
-            pref.edit().putInt("visit",pref.getInt("visit",0)+1).apply();
+            pref.edit().putBoolean("ftp-dialog", false).apply();
+        } else if (pref.getInt("visit", 0) <= 7) {
+            pref.edit().putInt("visit", pref.getInt("visit", 0) + 1).apply();
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -169,11 +163,11 @@ public class LaunchingActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         initialize();
-        if(!getSharedPreferences("confetti",MODE_PRIVATE).getBoolean("shown",false)) {
+        if (!getSharedPreferences("confetti", MODE_PRIVATE).getBoolean("shown", false)) {
             showCelebs();
-            getSharedPreferences("confetti",MODE_PRIVATE).edit().putBoolean("shown",true).apply();
-        }else{
-            if(!pref.getBoolean("ftp-dialog",false) && !pref.getBoolean("first", true) && !pref.getBoolean("feedback-done",true)){
+            getSharedPreferences("confetti", MODE_PRIVATE).edit().putBoolean("shown", true).apply();
+        } else {
+            if (!pref.getBoolean("ftp-dialog", false) && !pref.getBoolean("first", true) && !pref.getBoolean("feedback-done", true)) {
                 String feedbackText = "Hello there, your opinion matters.<br>Could you please spend a minute to leave feedback on your experience? <br>I appreciate your help! &hearts;";
                 try {
                     final AlertDialog.Builder feedbackDialog = new AlertDialog.Builder(LaunchingActivity.this);
@@ -183,7 +177,7 @@ public class LaunchingActivity extends AppCompatActivity
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse("https://rajkumaar.co.in/repo-feedback"));
-                            pref.edit().putBoolean("feedback-done",true).apply();
+                            pref.edit().putBoolean("feedback-done", true).apply();
                             if (intent.resolveActivity(getPackageManager()) != null)
                                 startActivity(intent);
                         }
@@ -191,7 +185,7 @@ public class LaunchingActivity extends AppCompatActivity
                     feedbackDialog.setNegativeButton("Never", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            pref.edit().putBoolean("feedback-done",true).apply();
+                            pref.edit().putBoolean("feedback-done", true).apply();
                             dialogInterface.dismiss();
                         }
                     });
@@ -202,14 +196,14 @@ public class LaunchingActivity extends AppCompatActivity
                         }
                     });
                     feedbackDialog.show();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
     }
 
-    private void showCelebs(){
+    private void showCelebs() {
         ParticleSystem konfettiView = ((KonfettiView) findViewById(R.id.container)).build();
         konfettiView.addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                 .setDirection(359.0, 0.0)
@@ -230,13 +224,13 @@ public class LaunchingActivity extends AppCompatActivity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     thanksGiving.setCancelable(true);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        },3000);
+        }, 3000);
     }
 
     private void initialize() {
@@ -408,10 +402,27 @@ public class LaunchingActivity extends AppCompatActivity
             case "Downloads":
                 startActivity(new Intent(LaunchingActivity.this, DownloadsActivity.class));
                 break;
+            case "Study Materials":
+                if (Utils.isConnected(LaunchingActivity.this)) {
+                    final CharSequence[] depts = {"Computer Science Engineering"};
+                    AlertDialog.Builder departmentDialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
+                    departmentDialogBuilder.setTitle("Select your Department");
+                    departmentDialogBuilder.setItems(depts, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int item) {
+                            Intent curriculum_open = new Intent(LaunchingActivity.this, StudyMaterialsActivity.class);
+                            curriculum_open.putExtra("department", depts[item]);
+                            startActivity(curriculum_open);
+                        }
+                    });
+                    AlertDialog departmentDialog = departmentDialogBuilder.create();
+                    departmentDialog.show();
+                } else
+                    Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+                break;
             case "OPAC Search":
-                if(Utils.isConnected(LaunchingActivity.this)){
+                if (Utils.isConnected(LaunchingActivity.this)) {
                     startActivity(new Intent(LaunchingActivity.this, OPACSearchActivity.class));
-                }else
+                } else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
                 break;
             case "News":
@@ -565,7 +576,7 @@ public class LaunchingActivity extends AppCompatActivity
             it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
             if (it.resolveActivity(getPackageManager()) != null)
                 startActivity(it);
-        }else if (id==R.id.celebs){
+        } else if (id == R.id.celebs) {
             showCelebs();
         }
         return super.onOptionsItemSelected(item);
@@ -581,10 +592,10 @@ public class LaunchingActivity extends AppCompatActivity
         if (id == R.id.nav_downloads) {
             drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this, DownloadsActivity.class));
-        }else if(id == R.id.nav_feedback){
+        } else if (id == R.id.nav_feedback) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://rajkumaar.co.in/repo-feedback"));
-            getSharedPreferences("user",MODE_PRIVATE).edit().putBoolean("feedback-done",true).apply();
+            getSharedPreferences("user", MODE_PRIVATE).edit().putBoolean("feedback-done", true).apply();
             if (intent.resolveActivity(getPackageManager()) != null)
                 startActivity(intent);
         } else if (id == R.id.nav_share) {
@@ -619,7 +630,7 @@ public class LaunchingActivity extends AppCompatActivity
                 }
             } else
                 Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
-        }else if(id == R.id.nav_donate){
+        } else if (id == R.id.nav_donate) {
             startActivity(new Intent(getBaseContext(), SupportActivity.class));
         }
         return true;
@@ -677,6 +688,7 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
+            items.add(new Item("#03a9f4", "Study Materials", FontAwesomeIcons.fa_book));
             items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
 //            items.add(new Item("#03a9f4", "OPAC Search", FontAwesomeIcons.fa_book));
             items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));

@@ -21,10 +21,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".opac.SearchResultsActivity"
+        <activity android:name=".study_materials.StudyMaterialsActivity"
+            android:parentActivityName=".activities.LaunchingActivity"/>
+        <activity
+            android:name=".opac.SearchResultsActivity"
             android:label="Search Results"
-            android:parentActivityName=".opac.OPACSearchActivity"
-            />
+            android:parentActivityName=".opac.OPACSearchActivity" />
         <activity
             android:name=".opac.OPACSearchActivity"
             android:label="OPAC Search"

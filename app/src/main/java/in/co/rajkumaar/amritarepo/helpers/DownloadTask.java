@@ -118,7 +118,7 @@ public class DownloadTask {
             progressDialog.setIndeterminate(false);
             progressDialog.setMax(100);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setCancelable(true);
+            progressDialog.setCancelable(false);
             progressDialog.show();
         }
 
