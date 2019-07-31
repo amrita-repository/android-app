@@ -193,13 +193,17 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         switch (courseID) {
             case 1:
                 branches.add("AEE");
+                branches.add("AIE");
                 branches.add("CHE");
                 branches.add("CIE");
                 branches.add("CVI");
                 branches.add("CSE");
                 branches.add("ECE");
                 branches.add("EEE");
+                branches.add("ELC");
                 branches.add("EIE");
+                branches.add("EAC");
+                branches.add("CCE");
                 branches.add("MEE");
                 break;
             case 2:
@@ -210,6 +214,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 branches.add("CHE");
                 branches.add("MAT");
                 branches.add("PHY");
+                branches.add("DAS");
                 break;
             case 4:
                 branches.add("ATE");
