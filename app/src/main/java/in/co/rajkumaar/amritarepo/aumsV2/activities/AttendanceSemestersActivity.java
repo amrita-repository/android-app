@@ -40,7 +40,7 @@ public class AttendanceSemestersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_semesters);
-        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
         getSupportActionBar().setSubtitle("Logged in as " + preferences.getString("name", ""));
         listView = findViewById(R.id.list);

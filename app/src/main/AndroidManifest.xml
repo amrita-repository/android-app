@@ -21,6 +21,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9341647677012996~5941760118"/>
         <activity android:name=".study_materials.StudyMaterialsActivity"
             android:parentActivityName=".activities.LaunchingActivity"/>
         <activity
@@ -75,10 +78,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/academic_timetable_info" />
         </receiver>
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-4050031085727028~6975537937" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/notification" />

@@ -4,13 +4,17 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
     xmlns:tools="http://schemas.android.com/tools">
-    <LinearLayout
-        android:id="@+id/banner_container"
+   <com.google.android.gms.ads.AdView
+  xmlns:ads="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        />
+  ads:adSize="SMART_BANNER"
+ads:adUnitId="@string/adUnitId"
+  >
+</com.google.android.gms.ads.AdView>
     <ListView
         android:id="@+id/list"
         android:longClickable="true"

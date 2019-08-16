@@ -49,7 +49,7 @@ public class TimingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_bus_timings);
-        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
 
         listView = findViewById(R.id.timings_list);
         Bundle extras = getIntent().getExtras();

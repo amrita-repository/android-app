@@ -83,7 +83,7 @@ public class CurriculumActivity extends AppCompatActivity {
         setContentView(R.layout.activity_curriculum);
         linearLayout = findViewById(R.id.container);
 
-        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         listViews = new ArrayList<>();

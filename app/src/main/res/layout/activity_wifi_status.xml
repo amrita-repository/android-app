@@ -119,11 +119,15 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/button"
         android:text="Refresh"/>
-    <LinearLayout
-        android:id="@+id/banner_container"
+   <com.google.android.gms.ads.AdView
+  xmlns:ads="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        />
+  ads:adSize="SMART_BANNER"
+ads:adUnitId="@string/adUnitId"
+  >
+</com.google.android.gms.ads.AdView>
 </RelativeLayout>

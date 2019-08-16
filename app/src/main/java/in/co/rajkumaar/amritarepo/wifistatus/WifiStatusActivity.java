@@ -39,6 +39,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdView;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -59,7 +61,7 @@ public class WifiStatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_status);
-        Utils.showBigAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showBigAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         dialog = new ProgressDialog(WifiStatusActivity.this);
         dialog.setCancelable(false);
 

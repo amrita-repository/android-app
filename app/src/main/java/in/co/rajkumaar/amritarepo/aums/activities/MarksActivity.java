@@ -63,7 +63,7 @@ public class MarksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marks);
-        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         recyclerView = (RecyclerView) findViewById(R.id.list);
         UserData.refIndex = 1;
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];

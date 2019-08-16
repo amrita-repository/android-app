@@ -47,8 +47,11 @@ import android.widget.Toast;
 
 import com.facebook.ads.AdSettings;
 import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
 import com.facebook.ads.AudienceNetworkAds;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -104,22 +107,25 @@ public class Utils {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
-    private static void showAd(final Context context, LinearLayout linearLayout, AdSize adSize) {
-        if(BuildConfig.DEBUG) {
-            AudienceNetworkAds.initialize(context);
-            AdSettings.setMultiprocessSupportMode(AdSettings.MultiprocessSupportMode.MULTIPROCESS_SUPPORT_MODE_OFF);
-            AdSettings.addTestDevice("9124b9ef-222c-4576-a646-61fa74728a71");
-            AdView adView = new AdView(context, context.getString(R.string.placement_id), adSize);
-            linearLayout.addView(adView);
-            adView.loadAd();
+    private static void showAd(final Context context, AdView linearLayout, AdSize adSize) {
+        if(!BuildConfig.DEBUG) {
+            MobileAds.initialize(context,"ca-app-pub-9341647677012996~5941760118");
+            AdRequest adRequest = new AdRequest.Builder().build();
+            linearLayout.loadAd(adRequest);
+            linearLayout.setAdListener(new AdListener(){
+                @Override
+                public void onAdFailedToLoad(int errorCode) {
+                    Log.e("ERROR LOADING AD", ""+errorCode);
+                }
+            });
         }
     }
 
-    public static void showSmallAd(Context context, LinearLayout linearLayout) {
+    public static void showSmallAd(Context context, AdView linearLayout) {
         showAd(context, linearLayout, AdSize.BANNER_HEIGHT_50);
     }
 
-    public static void showBigAd(Context context, LinearLayout linearLayout) {
+    public static void showBigAd(Context context, AdView linearLayout) {
         showAd(context, linearLayout, AdSize.BANNER_HEIGHT_50);
     }
 

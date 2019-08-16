@@ -154,7 +154,7 @@ public class LaunchingActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
         navigationView.setNavigationItemSelectedListener(this);

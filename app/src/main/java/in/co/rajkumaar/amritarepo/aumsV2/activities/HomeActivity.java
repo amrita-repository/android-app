@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
-        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         getSupportActionBar().setSubtitle("Lite Version");
         preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
         name = findViewById(R.id.name);

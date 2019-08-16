@@ -73,7 +73,7 @@ public class SubjectsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subjects_listview);
-        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         proxy = getString(R.string.proxyurl);
         String protocol = getString(R.string.protocol);
         String cloudSpace = getString(R.string.clouDspace);

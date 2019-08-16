@@ -60,7 +60,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_schedule);
-        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         url_exams = getResources().getString(R.string.url_exams);
         headings = new ArrayList<>();
         texts = new ArrayList<>();

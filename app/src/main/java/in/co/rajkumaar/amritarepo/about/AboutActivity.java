@@ -38,7 +38,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        Utils.showBigAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showBigAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         Button disclaimer = findViewById(R.id.disclaimer);
         disclaimer.setOnClickListener(new View.OnClickListener() {

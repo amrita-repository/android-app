@@ -80,7 +80,7 @@ public class SemesterActivity extends AppCompatActivity {
         assert b != null;
         int course = Integer.parseInt("" + b.get("course"));
         this.setTitle("" + b.get("pageTitle"));
-        Utils.showSmallAd(this, (LinearLayout) findViewById(R.id.banner_container));
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
 
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);
