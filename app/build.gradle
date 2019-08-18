@@ -93,6 +93,8 @@ dependencies {
     implementation 'org.apache.ftpserver:ftpserver-core:1.1.1'
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     implementation 'com.rilixtech:materialfancybuttons:1.8.7'
+    implementation 'com.github.ivbaranov:materiallettericon:0.2.3'
+
 
     //Google Ads
     implementation 'com.google.android.gms:play-services-ads:17.0.0'

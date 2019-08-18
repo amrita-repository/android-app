@@ -29,7 +29,7 @@ public class WebViewActivity extends AppCompatActivity {
             Bundle b = getIntent().getExtras();
             String webviewlink = b.getString("webview");
             this.setTitle(b.getString("title"));
-            WebView mywebview = (WebView) findViewById(R.id.webView);
+            WebView mywebview = findViewById(R.id.webView);
             mywebview.getSettings().setJavaScriptEnabled(true);
             dialog = new ProgressDialog(WebViewActivity.this);
             if (b.getBoolean("zoom")) {

@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorBackground"
-    tools:ignore="HardcodedText"
     android:layout_height="match_parent"
-    tools:context=".activities.SettingsActivity">
+    android:background="@color/colorBackground"
+    tools:context=".activities.SettingsActivity"
+    tools:ignore="HardcodedText">
+
     <LinearLayout
         android:id="@+id/program_container"
         android:layout_width="match_parent"
-        android:padding="10dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="8"
-            android:layout_gravity="center"
-            android:gravity="start"
             android:id="@+id/current_program"
-            android:textColor="@android:color/white"
-            android:textSize="17sp"
-            android:text="Current Academic Program"
-            android:layout_height="wrap_content" />
-        <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:layout_marginLeft="3dp"
+            android:layout_gravity="center"
+            android:layout_weight="8"
+            android:gravity="start"
+            android:text="Current Academic Program"
+            android:textColor="@android:color/white"
+            android:textSize="17sp" />
+
+        <Button
             android:id="@+id/change_program"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_weight="3"
             android:background="@drawable/button"
-            android:text="Change"/>
+            android:text="Change" />
     </LinearLayout>
-   <com.google.android.gms.ads.AdView
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/banner_container"
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-  ads:adSize="SMART_BANNER"
-ads:adUnitId="@string/adUnitId"
-  >
-</com.google.android.gms.ads.AdView>
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
 </RelativeLayout>

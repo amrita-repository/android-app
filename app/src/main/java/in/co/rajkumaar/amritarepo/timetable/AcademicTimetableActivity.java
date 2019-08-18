@@ -25,7 +25,6 @@
 package in.co.rajkumaar.amritarepo.timetable;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,22 +39,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.WebViewActivity;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
-import okhttp3.internal.Util;
 
 public class AcademicTimetableActivity extends AppCompatActivity {
 
@@ -258,8 +251,8 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         ArrayAdapter<String> courseAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, branches);
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         branch.setAdapter(courseAdapter);
-        if(course.getSelectedItemPosition() == pref.getInt("course", 0)){
-            branch.setSelection(pref.getInt("branch",0));
+        if (course.getSelectedItemPosition() == pref.getInt("course", 0)) {
+            branch.setSelection(pref.getInt("branch", 0));
         }
     }
 

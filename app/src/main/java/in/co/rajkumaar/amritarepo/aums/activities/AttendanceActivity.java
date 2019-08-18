@@ -39,7 +39,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -359,10 +358,9 @@ public class AttendanceActivity extends AppCompatActivity {
             title.setText(current.getTitle());
             attended.setText(Html.fromHtml("You attended <b>" + Math.round(Double.parseDouble(current.getAttended())) + "</b> of <b>" + current.getTotal() + "</b> classes"));
             comments.setVisibility(View.VISIBLE);
-            if(percent > 94){
+            if (percent > 94) {
                 comments.setVisibility(View.GONE);
-            }
-            else if (percent < 95 && percent > 75 && current.getBunkingCount() > 0) {
+            } else if (percent < 95 && percent > 75 && current.getBunkingCount() > 0) {
                 comments.setText(
                         (current.getBunkingCount() > 1)
                                 ? "You miss " + current.getBunkingCount() + " more classes and " + idioms[new Random().nextInt((idioms.length))]

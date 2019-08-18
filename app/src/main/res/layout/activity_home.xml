@@ -1,98 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorBackground"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<RelativeLayout android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:paddingTop="20dp"
-    android:layout_above="@id/banner_container"
-    android:background="@color/colorBackground"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <RelativeLayout
-        android:id="@+id/image_holder"
-        android:layout_centerHorizontal="true"
-        android:layout_width="97dp"
-        android:layout_height="128dp">
-        <ProgressBar
-            android:id="@+id/image_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:indeterminate="true" />
-        <com.github.siyamed.shapeimageview.RoundedImageView
-            android:id="@+id/userImage"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackground">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/banner_container"
+        android:background="@color/colorBackground"
+        android:paddingTop="20dp">
+
+        <RelativeLayout
+            android:id="@+id/image_holder"
             android:layout_width="97dp"
             android:layout_height="128dp"
-            android:src="@drawable/logosq"
-            android:visibility="gone"
-            android:layout_centerHorizontal="true"
-            app:siRadius="6dp"
-            app:siBorderWidth="3dp"
-            app:siBorderColor="@android:color/white"
-            app:siSquare="false"/>
+            android:layout_centerHorizontal="true">
 
-    </RelativeLayout>
+            <ProgressBar
+                android:id="@+id/image_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminate="true" />
+
+            <com.github.siyamed.shapeimageview.RoundedImageView
+                android:id="@+id/userImage"
+                android:layout_width="97dp"
+                android:layout_height="128dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/logosq"
+                android:visibility="gone"
+                app:siBorderColor="@android:color/white"
+                app:siBorderWidth="3dp"
+                app:siRadius="6dp"
+                app:siSquare="false" />
+
+        </RelativeLayout>
+
         <TextView
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/image_holder"
             android:layout_centerHorizontal="true"
-            android:id="@+id/name"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/cunia"
             android:text="RAJKUMAR S"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="15dp"
-            android:textSize="20sp"
             android:textAllCaps="true"
-            android:layout_below="@id/image_holder"/>
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:id="@+id/username"
-            android:text="CB.EN.U4CSE17651"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="5dp"
-            android:textSize="20sp"
-            android:fontFamily="@font/cunia"
-            android:textAllCaps="true"
-            android:layout_below="@id/name"/>
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/name"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/cunia"
+            android:text="CB.EN.U4CSE17651"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/cgpa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/username"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/lato"
             android:text="Current CGPA : 8.6"
             android:textColor="@android:color/holo_orange_dark"
-            android:layout_marginTop="5dp"
-            android:textSize="20sp"
-            android:layout_below="@id/username"/>
+            android:textSize="20sp" />
 
 
         <ListView
             android:id="@+id/list"
-            android:layout_marginTop="30dp"
-            android:layout_below="@id/cgpa"
-            android:divider="@android:color/white"
-            android:dividerHeight="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cgpa"
+            android:layout_marginTop="30dp"
+            android:divider="@android:color/white"
+            android:dividerHeight="0dp" />
 
     </RelativeLayout>
-   <com.google.android.gms.ads.AdView
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/banner_container"
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-  ads:adSize="SMART_BANNER"
-ads:adUnitId="@string/adUnitId"
-  >
-</com.google.android.gms.ads.AdView>
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
 </RelativeLayout>

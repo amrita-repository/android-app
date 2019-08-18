@@ -16,16 +16,29 @@
         <item>Life is really simple, but we insist on making it complicated.\n- Confucius</item>
         <item>Your thoughts become things!\n- Rhonda Byrne</item>
         <item>Everything is created twice, first in the mind and then in reality.\n- Robin Sharma</item>
-        <item>When there is no desire, all things are at peace. - Laozi</item>
-        <item>Simplicity is the ultimate sophistication. - Leonardo da Vinci</item>
-        <item>Simplicity is the essence of happiness. - Cedric Bledsoe</item>
-        <item>Smile, breathe, and go slowly. - Thich Nhat Hanh</item>
-        <item>Simplicity is an acquired taste. - Katharine Gerould</item>
-        <item>Well begun is half done. - Aristotle</item>
-        <item>He who is contented is rich. - Laozi</item>
-        <item>Very little is needed to make a happy life. - Marcus Antoninus</item>
-        <item>It is quality rather than quantity that matters. - Lucius Annaeus Seneca</item>
-        <item>Genius is one percent inspiration and ninety-nine percent perspiration. - Thomas Edison</item>
-        <item>Computer science is no more about computers than astronomy is about telescopes. - Edsger Dijkstra</item>
+        <item>When there is no desire, all things are at peace. \n- Laozi</item>
+        <item>Simplicity is the ultimate sophistication. \n- Leonardo da Vinci</item>
+        <item>Simplicity is the essence of happiness. \n- Cedric Bledsoe</item>
+        <item>Smile, breathe, and go slowly. \n- Thich Nhat Hanh</item>
+        <item>Simplicity is an acquired taste. \n-Katharine Gerould</item>
+        <item>Well begun is half done. \n-Aristotle</item>
+        <item>He who is contented is rich. \n-Laozi</item>
+        <item>Very little is needed to make a happy life. \n-Marcus Antoninus</item>
+        <item>It is quality rather than quantity that matters. \n-Lucius Annaeus Seneca</item>
+        <item>Genius is one percent inspiration and ninety-nine percent perspiration. \n-Thomas Edison</item>
+        <item>Computer science is no more about computers than astronomy is about telescopes. \n-Edsger Dijkstra</item>
     </string-array>
+
+    <array name="colors">
+        <item>@color/color_1</item>
+        <item>@color/color_2</item>
+        <item>@color/color_3</item>
+        <item>@color/color_4</item>
+        <item>@color/color_5</item>
+        <item>@color/color_6</item>
+        <item>@color/color_7</item>
+        <item>@color/color_8</item>
+        <item>@color/color_9</item>
+        <item>@color/color_10</item>
+    </array>
 </resources>

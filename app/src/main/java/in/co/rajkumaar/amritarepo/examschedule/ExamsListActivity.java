@@ -31,14 +31,11 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +51,7 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.OpenTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
+import in.co.rajkumaar.amritarepo.papers.PaperAdapter;
 
 public class ExamsListActivity extends AppCompatActivity {
 
@@ -61,7 +59,7 @@ public class ExamsListActivity extends AppCompatActivity {
 
     ArrayList<String> texts, links;
     int block;
-    ArrayAdapter<String> adapter;
+    PaperAdapter adapter;
     private ListView listView;
 
     @Override
@@ -115,16 +113,15 @@ public class ExamsListActivity extends AppCompatActivity {
                     String text = ul_lists.get(block).select("li").get(j).select("li").text();
                     texts.add(text.trim());
                     links.add(ul_lists.get(block).select("li").get(j).select("a[href]").attr("href"));
-                    adapter = new ArrayAdapter<>(ExamsListActivity.this, R.layout.custom_list_item, texts);
-                    listView.setAdapter(adapter);
                 }
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                adapter = new PaperAdapter(ExamsListActivity.this, texts, "examlist");
+
+                adapter.setCustomListener(new PaperAdapter.customListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                    public void onItemClickListener(final int i) {
                         final ArrayList<String> qPaperOptions = new ArrayList<>();
                         qPaperOptions.add("Open");
                         qPaperOptions.add("Download");
-                        final View viewLocal = view;
                         AlertDialog.Builder qPaperBuilder = new AlertDialog.Builder(ExamsListActivity.this);
                         ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(ExamsListActivity.this, android.R.layout.simple_list_item_1, qPaperOptions);
                         qPaperBuilder.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
@@ -140,9 +137,9 @@ public class ExamsListActivity extends AppCompatActivity {
                                                 1);
                                     } else {
                                         if (Utils.isConnected(ExamsListActivity.this)) {
-                                            new OpenTask(ExamsListActivity.this, "https://intranet.cb.amrita.edu" + links.get(position), 2);
+                                            new OpenTask(ExamsListActivity.this, "https://intranet.cb.amrita.edu" + links.get(i), 2);
                                         } else {
-                                            Snackbar.make(viewLocal, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
+                                            Utils.showInternetError(ExamsListActivity.this);
                                         }
 
 
@@ -157,9 +154,9 @@ public class ExamsListActivity extends AppCompatActivity {
                                                 1);
                                     } else {
                                         if (Utils.isConnected(ExamsListActivity.this)) {
-                                            new DownloadTask(ExamsListActivity.this, "https://intranet.cb.amrita.edu" + links.get(position), 2);
+                                            new DownloadTask(ExamsListActivity.this, "https://intranet.cb.amrita.edu" + links.get(i), 2);
                                         } else {
-                                            Snackbar.make(viewLocal, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
+                                            Utils.showInternetError(ExamsListActivity.this);
                                         }
 
 
@@ -172,6 +169,7 @@ public class ExamsListActivity extends AppCompatActivity {
 
                     }
                 });
+                listView.setAdapter(adapter);
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(ExamsListActivity.this, "Unexpected error. Please try again later", Toast.LENGTH_SHORT).show();

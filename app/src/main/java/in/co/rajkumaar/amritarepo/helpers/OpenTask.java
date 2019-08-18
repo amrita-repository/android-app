@@ -63,14 +63,14 @@ public class OpenTask {
         this.downloadUrl = downloadUrl;
 
         if (act == 0) {
-            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());
+            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'));
 
         } else if (act == 1) {
-            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());
+            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'));
 //            downloadFileName = downloadFileName.substring(0, downloadFileName.indexOf("?"));
 //            downloadFileName = downloadFileName.replaceAll("%20", "_");
         } else if (act == 2) {
-            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());
+            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'));
             downloadFileName = downloadFileName.replaceAll("%20", "_");
             downloadFileName = downloadFileName.replaceAll("%26", "&");
             downloadFileName = downloadFileName.replaceAll("%28", "(");
@@ -202,7 +202,7 @@ public class OpenTask {
                     OutputStreamWriter wr = new OutputStreamWriter(c.getOutputStream());
                     String data = URLEncoder.encode("data", "UTF-8")
                             + "=" + URLEncoder.encode(downloadUrl, "UTF-8")
-                            +"&"+URLEncoder.encode("hash","UTF-8")+"="+URLEncoder.encode(BuildConfig.SECRET_HASH,"UTF-8");
+                            + "&" + URLEncoder.encode("hash", "UTF-8") + "=" + URLEncoder.encode(BuildConfig.SECRET_HASH, "UTF-8");
                     wr.write(data);
                     wr.flush();
                     c.connect();

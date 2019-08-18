@@ -34,7 +34,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,13 +47,17 @@ import java.util.Random;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
+import in.co.rajkumaar.amritarepo.papers.AssessmentsActivity;
+import in.co.rajkumaar.amritarepo.papers.PaperAdapter;
+import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
+import okhttp3.internal.Util;
 
 public class ExamCategoryActivity extends AppCompatActivity {
 
     String url_exams;
     ArrayList<String> headings, texts, links;
     ListView listView;
-    ArrayAdapter<String> scheduleBlockArrayAdapter;
+    PaperAdapter scheduleBlockArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,15 +110,23 @@ public class ExamCategoryActivity extends AppCompatActivity {
                         headings.add(head);
                 } //Log.e("TEXT SIZE",String.valueOf(scheduleBlocks.get(1).getTexts().size()));
 
-                scheduleBlockArrayAdapter = new ArrayAdapter<>(ExamCategoryActivity.this, R.layout.custom_list_item, headings);
+
+                scheduleBlockArrayAdapter = new PaperAdapter(ExamCategoryActivity.this, headings, "examcategory");
+
+                scheduleBlockArrayAdapter.setCustomListener(new PaperAdapter.customListener() {
+                    @Override
+                    public void onItemClickListener(int i) {
+                        if (Utils.isConnected(ExamCategoryActivity.this))
+                            startActivity(new Intent(ExamCategoryActivity.this, ExamsListActivity.class).putExtra("block", i));
+                        else
+                            Utils.showInternetError(ExamCategoryActivity.this);
+                    }
+                });
                 listView.setAdapter(scheduleBlockArrayAdapter);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (Utils.isConnected(ExamCategoryActivity.this))
-                            startActivity(new Intent(ExamCategoryActivity.this, ExamsListActivity.class).putExtra("block", position));
-                        else
-                            Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
+
                     }
                 });
 

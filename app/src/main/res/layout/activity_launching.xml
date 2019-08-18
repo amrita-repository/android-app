@@ -5,24 +5,23 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/colorBackground"
+    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:foreground="?android:attr/selectableItemBackground"
         android:layout_width="wrap_content"
-        android:fontFamily="@font/dustismo"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:fontFamily="@font/dustismo"
+        android:foreground="?android:attr/selectableItemBackground"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_launching_drawer" />
 

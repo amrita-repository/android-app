@@ -5,8 +5,8 @@
 package in.co.rajkumaar.amritarepo.opac;
 
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.Map;
 
@@ -15,10 +15,11 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
-    private int docType,field;
-    private String search,username;
+    private int docType, field;
+    private String search, username;
     private OPACClient opacClient;
     private ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +35,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         init();
     }
 
-    private void init(){
+    private void init() {
         dialog.setMessage("Loading results");
         dialog.show();
         opacClient.searchResults(username, docType, field, search, new SearchResponse() {

@@ -35,7 +35,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,6 +81,7 @@ import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.ParticleSystem;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
+import okhttp3.internal.Util;
 
 public class LaunchingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -155,7 +155,7 @@ public class LaunchingActivity extends AppCompatActivity
         toggle.syncState();
 
         Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
         navigationView.setNavigationItemSelectedListener(this);
         TextView versionName = navigationView.getHeaderView(0).findViewById(R.id.versioncode);
@@ -528,10 +528,10 @@ public class LaunchingActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
-                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                NavigationView navigationView = findViewById(R.id.nav_view);
                 navigationView.setCheckedItem(R.id.nav_home);
             } else {
                 super.onBackPressed();
@@ -648,10 +648,16 @@ public class LaunchingActivity extends AppCompatActivity
         Log.e("Dept", title);
         mFirebaseAnalytics.logEvent("EventDept", params);
 
-        Intent intent = new Intent(LaunchingActivity.this, SemesterActivity.class);
-        intent.putExtra("course", position);
-        intent.putExtra("pageTitle", title);
-        startActivity(intent);
+        if(Utils.isConnected(this)){
+
+            Intent intent = new Intent(LaunchingActivity.this, SemesterActivity.class);
+            intent.putExtra("course", position);
+            intent.putExtra("pageTitle", title);
+            startActivity(intent);
+
+        }else{
+            Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+        }
     }
 
     @Override

@@ -1,95 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackground"
-    tools:ignore="HardcodedText"
-    android:fillViewport="false">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:gravity="center"
-        android:layout_marginTop="20dp"
+    android:fillViewport="false"
+    tools:ignore="HardcodedText">
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-
-        <com.github.siyamed.shapeimageview.RoundedImageView
-            android:visibility="visible"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:id="@+id/image"
-            android:src="@drawable/raj"
-            app:siRadius="6dp"
-            app:siBorderWidth="3dp"
-            app:siBorderColor="@android:color/white"
-            app:siSquare="false"/>
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rajkumar"
-            android:id="@+id/name"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/lato"
-            android:textColor="@android:color/white"
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="rajkumaar.co.in"
-            android:autoLink="web"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Donate"
-            android:onClick="donate"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:textColor="@color/colorBackground"
-            android:background="@drawable/button"/>
-        <Button
-            android:id="@+id/disclaimer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Disclaimer"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:textColor="@color/colorBackground"
-            android:background="@drawable/button"/>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Open Source Licenses"
-            android:onClick="ossLicenses"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:textColor="@color/colorBackground"
-            android:background="@drawable/button"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
-</ScrollView>
-   <com.google.android.gms.ads.AdView
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/banner_container"
+
+            <com.github.siyamed.shapeimageview.RoundedImageView
+                android:id="@+id/image"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/raj"
+                android:visibility="visible"
+                app:siBorderColor="@android:color/white"
+                app:siBorderWidth="3dp"
+                app:siRadius="6dp"
+                android:onClick="openWebsite"
+                app:siSquare="false" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:text="Rajkumar"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:textColor="@android:color/white" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/insta"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="5dp" />
+
+                <ImageView
+                    android:id="@+id/fb"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="5dp" />
+
+                <ImageView
+                    android:id="@+id/linkedin"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="5dp" />
+
+                <ImageView
+                    android:id="@+id/github"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="5dp" />
+                <ImageView
+                    android:id="@+id/site"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="5dp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/red"
+                android:text="rajkumaar.co.in"
+                android:onClick="openWebsite"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginEnd="45dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:onClick="donate"
+                    android:text="Donate"
+                    android:textColor="@color/colorBackground" />
+
+                <Button
+                    android:id="@+id/disclaimer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button"
+                    android:text="View Disclaimer"
+                    android:textColor="@color/colorBackground" />
+            </LinearLayout>
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/button"
+                android:onClick="ossLicenses"
+                android:text="Open Source Licenses"
+                android:textColor="@color/colorBackground" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-  ads:adSize="SMART_BANNER"
-ads:adUnitId="@string/adUnitId"
-  >
-</com.google.android.gms.ads.AdView>
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/adUnitId" />
 </RelativeLayout>

@@ -26,7 +26,6 @@ package in.co.rajkumaar.amritarepo.aums.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -40,7 +39,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -119,10 +117,10 @@ public class LoginActivity extends AppCompatActivity {
         password.setText(rmpassword);
         if (!TextUtils.isEmpty(username.getText().toString())) {
             remember.setChecked(true);
-            ((MaterialTextField)findViewById(R.id.username_container)).setHasFocus(true);
+            ((MaterialTextField) findViewById(R.id.username_container)).setHasFocus(true);
         }
-        if(!password.getText().toString().isEmpty()){
-            ((MaterialTextField)findViewById(R.id.password_container)).setHasFocus(true);
+        if (!password.getText().toString().isEmpty()) {
+            ((MaterialTextField) findViewById(R.id.password_container)).setHasFocus(true);
         }
         try {
             username.setSelection(rmusername.length());

@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
-    xmlns:tools="http://schemas.android.com/tools">
-   <com.google.android.gms.ads.AdView
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/banner_container"
+    android:background="@color/colorBackground">
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-  ads:adSize="SMART_BANNER"
-ads:adUnitId="@string/adUnitId"
-  >
-</com.google.android.gms.ads.AdView>
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/adUnitId" />
+
     <ListView
         android:id="@+id/list"
-        android:longClickable="true"
-        android:layout_above="@id/banner_container"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="0dp"/>
+        android:layout_above="@id/banner_container"
+        android:dividerHeight="0dp"
+        android:longClickable="true"
+        android:orientation="vertical" />
 
     <!-- Empty view is only visible when the list has no items. -->
     <TextView
         android:id="@+id/empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:layout_centerInParent="true"
+        android:text="Connection not available! "
         android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:textColor="@android:color/white"
         android:visibility="gone"
-        android:text="Connection not available! "
         tools:ignore="HardcodedText" />
     <!-- Loading indicator -->
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/loading_indicator"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_height="wrap_content">
-        <com.github.ybq.android.spinkit.SpinKitView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
             style="@style/SpinKitView.Circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:SpinKit_Color="@color/colorAccent" />
+
         <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:id="@+id/quote"
-            android:textColor="@android:color/white"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
-            android:text="Details matter, it\'s worth waiting to get it right\n- Steve Jobs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Details matter, it\'s worth waiting to get it right\n- Steve Jobs"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+            android:textColor="@android:color/white"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 

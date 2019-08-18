@@ -5,24 +5,25 @@
     android:padding="@dimen/widget_margin">
 
     <ImageView
+        android:id="@+id/image_widget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
-        android:id="@+id/image_widget"
-        android:src="@drawable/logoround"/>
+        android:src="@drawable/logoround" />
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingBottom="2dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_height="wrap_content"
         android:id="@+id/class_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/white"
         android:fontFamily="@font/bariol"
         android:gravity="center"
-        android:background="@android:color/white"
-        android:layout_centerHorizontal="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="2dp"
         android:text="No image chosen"
         android:textColor="@android:color/black"
         android:textSize="20sp"

@@ -8,21 +8,18 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.util.StatsLog;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -49,18 +46,19 @@ import static android.view.View.GONE;
 
 public class SupportActivity extends AppCompatActivity {
 
-    private ActivityCheckout mCheckout;
     Spinner options;
     CheckBox anonymous;
     EditText email;
+    private ActivityCheckout mCheckout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_support);
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         options = findViewById(R.id.options);
-        email=findViewById(R.id.email);
-        anonymous=findViewById(R.id.anonymous);
+        email = findViewById(R.id.email);
+        anonymous = findViewById(R.id.anonymous);
         ArrayList<String> donations = new ArrayList<>();
         donations.add("Rs 10");
         donations.add("Rs 50");
@@ -84,9 +82,9 @@ public class SupportActivity extends AppCompatActivity {
         anonymous.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     findViewById(R.id.email_container).setVisibility(GONE);
-                }else{
+                } else {
                     findViewById(R.id.email_container).setVisibility(View.VISIBLE);
                 }
             }
@@ -99,24 +97,34 @@ public class SupportActivity extends AppCompatActivity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 } else {
-                   Utils.showToast(SupportActivity.this, "Error occurred. Please try again later.");
+                    Utils.showToast(SupportActivity.this, "Error occurred. Please try again later.");
                 }
             }
         });
     }
 
     private void donateMoney() {
-        if(!anonymous.isChecked() && email.getText().toString().isEmpty()){
-            Utils.showToast(getBaseContext(),"Please fill in your email (or) choose anonymous if you don't wish to!");
+        if (!anonymous.isChecked() && email.getText().toString().isEmpty()) {
+            Utils.showToast(getBaseContext(), "Please fill in your email (or) choose anonymous if you don't wish to!");
             return;
         }
         String donation = "donation";
-        switch (options.getSelectedItemPosition()){
-            case 0 : donation = "donation"; break;
-            case 1 : donation = "donation50"; break;
-            case 2 : donation = "donation100"; break;
-            case 3 : donation = "donation200"; break;
-            case 4 : donation = "donation500"; break;
+        switch (options.getSelectedItemPosition()) {
+            case 0:
+                donation = "donation";
+                break;
+            case 1:
+                donation = "donation50";
+                break;
+            case 2:
+                donation = "donation100";
+                break;
+            case 3:
+                donation = "donation200";
+                break;
+            case 4:
+                donation = "donation500";
+                break;
         }
         mCheckout.startPurchaseFlow(ProductTypes.IN_APP, donation, null, new PurchaseListener());
     }
@@ -133,42 +141,19 @@ public class SupportActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private class PurchaseListener extends EmptyRequestListener<Purchase> {
-        @Override
-        public void onSuccess(@NonNull Purchase purchase) {
-            Log.e("RES",purchase.data);
-            showCelebs();
-            if(!anonymous.isChecked()) {
-                Bundle params = new Bundle();
-                params.putString("Email", email.getText().toString());
-                FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(SupportActivity.this);
-                mFirebaseAnalytics.logEvent("Donations", params);
-                updateDonatedDetails();
-            }
-        }
-
-
-        @Override
-        public void onError(int response, @NonNull Exception e) {
-            Utils.showToast(getBaseContext(),e.getLocalizedMessage());
-            Log.e("ERROR",e.getLocalizedMessage());
-            super.onError(response, e);
-        }
-    }
-
     private void updateDonatedDetails() {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        params.add("contactEmail",email.getText().toString());
-        params.add("contactName",email.getText().toString());
-        params.add("contactSubject","Donation "+options.getSelectedItem().toString());
-        params.add("contactMessage","Hey Rajkumar, Someone has made a donation of "+options.getSelectedItem().toString()+" to Amrita Repository!");
-        client.post(getString(R.string.dev_domain)+"/sendmail.php", params, new AsyncHttpResponseHandler() {
+        params.add("contactEmail", email.getText().toString());
+        params.add("contactName", email.getText().toString());
+        params.add("contactSubject", "Donation " + options.getSelectedItem().toString());
+        params.add("contactMessage", "Hey Rajkumar, Someone has made a donation of " + options.getSelectedItem().toString() + " to Amrita Repository!");
+        client.post(getString(R.string.dev_domain) + "/sendmail.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {
                     Log.i("SUCCESS", new String(bytes));
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -178,25 +163,14 @@ public class SupportActivity extends AppCompatActivity {
                 try {
                     throwable.printStackTrace();
                     Crashlytics.log(throwable.getLocalizedMessage());
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
 
-    private class InventoryCallback implements Inventory.Callback {
-        @Override
-        public void onLoaded(@NonNull Inventory.Products products) {
-            final Inventory.Product product = products.get(ProductTypes.IN_APP);
-            if (!product.supported) {
-                finish();
-                Utils.showToast(getBaseContext(),"Sorry. It is not supported for you yet.");
-            }
-        }
-    }
-
-    private void showCelebs(){
+    private void showCelebs() {
         final Dialog thanksGiving = new Dialog(SupportActivity.this);
         thanksGiving.setContentView(R.layout.thanks_dialog);
         TextView textView = thanksGiving.findViewById(R.id.update_text);
@@ -208,5 +182,39 @@ public class SupportActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private class PurchaseListener extends EmptyRequestListener<Purchase> {
+        @Override
+        public void onSuccess(@NonNull Purchase purchase) {
+            Log.e("RES", purchase.data);
+            showCelebs();
+            if (!anonymous.isChecked()) {
+                Bundle params = new Bundle();
+                params.putString("Email", email.getText().toString());
+                FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(SupportActivity.this);
+                mFirebaseAnalytics.logEvent("Donations", params);
+                updateDonatedDetails();
+            }
+        }
+
+
+        @Override
+        public void onError(int response, @NonNull Exception e) {
+            Utils.showToast(getBaseContext(), e.getLocalizedMessage());
+            Log.e("ERROR", e.getLocalizedMessage());
+            super.onError(response, e);
+        }
+    }
+
+    private class InventoryCallback implements Inventory.Callback {
+        @Override
+        public void onLoaded(@NonNull Inventory.Products products) {
+            final Inventory.Product product = products.get(ProductTypes.IN_APP);
+            if (!product.supported) {
+                finish();
+                Utils.showToast(getBaseContext(), "Sorry. It is not supported for you yet.");
+            }
+        }
     }
 }

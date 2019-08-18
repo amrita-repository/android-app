@@ -1,97 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    tools:context=".downloads.FTPActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+    android:background="@color/colorBackground">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Follow the steps here to view your Amrita Repository downloads on any other device."
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textColor="@color/red"
-            tools:ignore="HardcodedText" />
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:textColor="#fff"
-            android:textAppearance="@android:style/TextAppearance.Small"
-            android:text="@string/ftp_steps"
-            android:layout_height="wrap_content"
-            tools:ignore="HardcodedText" />
-        <Button
-            android:layout_marginTop="10dp"
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/adUnitId" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/banner_container"
+        android:background="@color/colorPrimaryDark"
+        tools:context=".downloads.FTPActivity">
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:text="Start Server"
-            android:id="@+id/start"
-            android:background="@drawable/button"
-            android:layout_height="wrap_content"
-            tools:ignore="HardcodedText" />
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/result"
-            android:textColor="@color/green"
-            android:gravity="center"
-            tools:text="You can access your files at \nftp://192.168.23.4:2304"
-            android:textAppearance="@android:style/TextAppearance.Large"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/tools"
-            android:visibility="gone"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/copy"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/button"
-                android:text="Copy"
-                android:layout_marginEnd="5dp"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp" />
-            <Button
-                android:id="@+id/share"
-                android:layout_width="0dp"
-                android:background="@drawable/button"
-                android:layout_marginStart="5dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp"
-                android:text="Share"/>
-        </LinearLayout>
-        <com.skyfishjy.library.RippleBackground
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="170dp"
-            android:id="@+id/content"
-            app:rb_color="#0099CC"
-            app:rb_radius="15dp"
-            android:visibility="gone"
-            app:rb_rippleAmount="4"
-            app:rb_duration="3000"
-            app:rb_scale="6">
-            <ImageView
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/smartphone"/>
-        </com.skyfishjy.library.RippleBackground>
-    </LinearLayout>
-</ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Follow the steps here to view your Amrita Repository downloads on any other device."
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:textColor="@color/red"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/ftp_steps"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="#fff"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/start"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button"
+                    android:text="Start Server"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:textAppearance="@android:style/TextAppearance.Large"
+                    android:textColor="@color/green"
+                    tools:text="You can access your files at \nftp://192.168.23.4:2304" />
+
+                <LinearLayout
+                    android:id="@+id/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:visibility="gone">
+
+                    <Button
+                        android:id="@+id/copy"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="10dp"
+                        android:text="Copy" />
+
+                    <Button
+                        android:id="@+id/share"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="10dp"
+                        android:text="Share" />
+                </LinearLayout>
+
+                <com.skyfishjy.library.RippleBackground xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:visibility="gone"
+                    app:rb_color="#0099CC"
+                    app:rb_duration="3000"
+                    app:rb_radius="15dp"
+                    app:rb_rippleAmount="4"
+                    app:rb_scale="6">
+
+                    <ImageView
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/smartphone" />
+                </com.skyfishjy.library.RippleBackground>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

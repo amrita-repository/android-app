@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackground"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@color/colorBackground">
+
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/colorBackground"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_above="@id/banner_container"
         android:id="@+id/timings_list"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".timings.TimingsActivity"/>
-   <com.google.android.gms.ads.AdView
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/banner_container"
+        android:layout_above="@id/banner_container"
+        android:background="@color/colorBackground"
+        tools:context=".timings.TimingsActivity" />
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-  ads:adSize="SMART_BANNER"
-ads:adUnitId="@string/adUnitId"
-  >
-</com.google.android.gms.ads.AdView>
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
 </RelativeLayout>

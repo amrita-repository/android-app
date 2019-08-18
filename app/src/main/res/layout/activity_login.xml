@@ -1,90 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorBackground"
-    android:orientation="vertical"
+    xmlns:float="http://schemas.android.com/tools"
     android:id="@+id/container"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:float="http://schemas.android.com/tools">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-       <com.google.android.gms.ads.AdView
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/banner_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-  ads:adSize="SMART_BANNER"
-ads:adUnitId="@string/adUnitId"
-  >
-</com.google.android.gms.ads.AdView>
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
+
         <LinearLayout
-            android:paddingTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="15dp"
+            android:paddingTop="15dp"
             android:paddingRight="15dp">
+
             <com.github.florent37.materialtextfield.MaterialTextField
-                android:layout_width="match_parent"
                 android:id="@+id/username_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mtf_labelColor="@android:color/white"
-                app:mtf_openKeyboardOnFocus="true"
                 app:mtf_backgroundColor="@android:color/white"
                 app:mtf_image="@drawable/ic_user"
-                >
+                app:mtf_labelColor="@android:color/white"
+                app:mtf_openKeyboardOnFocus="true">
+
                 <EditText
                     android:id="@+id/username"
                     android:layout_width="match_parent"
-                    android:textColorHint="@android:color/white"
-                    android:textColor="@color/colorPrimary"
-                    android:backgroundTint="@color/colorAccent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorAccent"
                     android:hint="Username"
                     android:inputType="textCapCharacters"
-                    float:inputType="textPassword|textVisiblePassword"
-                    float:ignore="HardcodedText,UnusedAttribute" />
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@android:color/white"
+                    float:ignore="HardcodedText,UnusedAttribute"
+                    float:inputType="textPassword|textVisiblePassword" />
             </com.github.florent37.materialtextfield.MaterialTextField>
+
             <com.github.florent37.materialtextfield.MaterialTextField
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
                 android:id="@+id/password_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mtf_labelColor="@android:color/white"
-                app:mtf_openKeyboardOnFocus="true"
+                android:layout_marginTop="10dp"
                 app:mtf_backgroundColor="@android:color/white"
                 app:mtf_image="@drawable/ic_eye"
-                >
+                app:mtf_labelColor="@android:color/white"
+                app:mtf_openKeyboardOnFocus="true">
+
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
-                    android:textColorHint="@android:color/white"
-                    android:textColor="@color/colorPrimary"
-                    android:backgroundTint="@color/colorAccent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorAccent"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    float:inputType="textPassword|textVisiblePassword"
-                    float:ignore="HardcodedText,UnusedAttribute" />
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@android:color/white"
+                    float:ignore="HardcodedText,UnusedAttribute"
+                    float:inputType="textPassword|textVisiblePassword" />
             </com.github.florent37.materialtextfield.MaterialTextField>
+
             <RelativeLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
                 <CheckBox
                     android:id="@+id/remember_me"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:textColor="@android:color/white"
+                    android:layout_marginTop="10dp"
                     android:backgroundTint="@android:color/white"
                     android:buttonTint="@color/colorAccent"
-                    android:layout_marginTop="10dp"
                     android:text="Remember me"
+                    android:textColor="@android:color/white"
                     android:textSize="12sp"
                     float:ignore="HardcodedText,UnusedAttribute" />
             </RelativeLayout>
@@ -94,15 +97,14 @@ ads:adUnitId="@string/adUnitId"
                 android:id="@+id/login"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="15dp"
-                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="@drawable/button"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:text="Login"
-                float:ignore="HardcodedText,UnusedAttribute">
-            </Button>
+                float:ignore="HardcodedText,UnusedAttribute"></Button>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

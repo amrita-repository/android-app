@@ -31,14 +31,11 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -181,15 +178,13 @@ public class SubjectsActivity extends AppCompatActivity {
                 TextView wifiwarning = findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.GONE);
                 ListView listView = findViewById(R.id.list);
-                ArrayAdapter<String> semsAdapter = new ArrayAdapter<String>(SubjectsActivity.this, R.layout.white_textview, assessments);
-                listView.setAdapter(semsAdapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                PaperAdapter subsAdapter = new PaperAdapter(SubjectsActivity.this, assessments, "subjects");
+                subsAdapter.setCustomListener(new PaperAdapter.customListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        final ArrayList<String> qPaperOptions = new ArrayList();
+                    public void onItemClickListener(int i) {
+                        final ArrayList<String> qPaperOptions = new ArrayList<>();
                         qPaperOptions.add("Open");
                         qPaperOptions.add("Download");
-                        final View viewLocal = view;
                         final int p = i;
                         AlertDialog.Builder qPaperBuilder = new AlertDialog.Builder(SubjectsActivity.this);
                         ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(SubjectsActivity.this, android.R.layout.simple_list_item_1, qPaperOptions);
@@ -211,7 +206,7 @@ public class SubjectsActivity extends AppCompatActivity {
                                         if (Utils.isConnected(SubjectsActivity.this)) {
                                             new DownloadTask(SubjectsActivity.this, externLink + links.get(p), 1);
                                         } else {
-                                            Snackbar.make(viewLocal, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
+                                            Utils.showToast(SubjectsActivity.this, "Device not connected to Internet.");
                                         }
 
 
@@ -221,10 +216,9 @@ public class SubjectsActivity extends AppCompatActivity {
                         });
                         qPaperBuilder.show();
 
-
                     }
                 });
-
+                listView.setAdapter(subsAdapter);
                 listView.setVisibility(View.VISIBLE);
             }
         }

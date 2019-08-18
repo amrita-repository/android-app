@@ -1,78 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:padding="10dp">
 
     <RelativeLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <RelativeLayout
+            android:id="@+id/image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/image"
-            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_centerVertical="true">
 
-            <ImageView android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@color/colorPrimaryDark"
+            <ImageView
                 android:id="@+id/circle"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
+                android:background="@color/colorPrimaryDark" />
 
             <TextView
+                android:id="@+id/percentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="26%"
-                android:id="@+id/percentage"
-                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="26%"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
 
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_toEndOf="@id/image"
             android:layout_width="wrap_content"
-            android:layout_marginStart="20dp"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/image"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/title"
-                android:textColor="@android:color/white"
-                tools:text="Hello Attendance"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textStyle="bold"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                tools:text="Hello Attendance" />
+
             <TextView
                 android:id="@+id/attended"
-                tools:text="You attended 13 of 15 classes"
-                android:textColor="@android:color/holo_orange_light"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/holo_orange_light"
+                tools:text="You attended 13 of 15 classes" />
 
         </LinearLayout>
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/layout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout1"
+        android:layout_marginTop="5dp">
+
         <TextView
             android:id="@+id/comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            tools:text="You can bunk 3 more classes to get it down to 75%"/>
+            tools:text="You can bunk 3 more classes to get it down to 75%" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:paddingEnd="10dp"
-    android:layout_height="wrap_content"
     tools:ignore="RtlSymmetry,UnusedAttribute">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="0dp"
-    android:layout_weight="9"
-    android:id="@+id/landing_item_holder"
-    android:layout_height="80dp">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/landing_item_holder"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_weight="9">
 
-    <ImageView
-        android:id="@+id/landing_picture"
-        android:layout_width="100dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:layout_centerVertical="true" />
+        <ImageView
+            android:id="@+id/landing_picture"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/landing_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/landing_picture"
-        android:layout_centerVertical="true"
-        android:layout_gravity="bottom|center"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:ellipsize="marquee"
-        android:paddingTop="10dp"
-        android:textSize="20sp"
-        android:textColor="@android:color/white" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/landing_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="bottom|center"
+            android:layout_toEndOf="@id/landing_picture"
+            android:ellipsize="marquee"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
     <ImageView
         android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_right"
-        android:layout_height="20dp" />
+        android:src="@drawable/ic_right" />
 </LinearLayout>

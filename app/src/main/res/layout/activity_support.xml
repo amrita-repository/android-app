@@ -1,111 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorBackground"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:padding="16dp"
-    android:scrollbarStyle="outsideOverlay">
-    <LinearLayout
+    android:background="@color/colorBackground">
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="@color/red"
-            android:text="Make a contribution"
-            android:layout_height="wrap_content"
-            tools:ignore="HardcodedText" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:textColor="@android:color/white"
-            android:text="@string/donation"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="@color/red"
-            android:text="Choose your amount"
-            android:layout_height="wrap_content"
-            tools:ignore="HardcodedText" />
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_marginTop="15dp"
-            android:backgroundTint="@color/red"
-            android:layout_marginStart="10dp"
-            android:id="@+id/options"
-            android:textColor="@android:color/white"
-            android:layout_height="wrap_content"
-            tools:ignore="UnusedAttribute" />
-        <CheckBox
-            android:layout_width="match_parent"
-            android:id="@+id/anonymous"
-            android:backgroundTint="@color/red"
-            android:layout_marginTop="20dp"
-            android:buttonTint="@android:color/white"
-            android:text="Stay Anonymous"
-            android:textColor="@color/red"
-            android:layout_height="wrap_content"
-            tools:ignore="HardcodedText,UnusedAttribute" />
-        <com.github.florent37.materialtextfield.MaterialTextField
-            android:layout_width="match_parent"
-            android:id="@+id/email_container"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content"
-            app:mtf_labelColor="@android:color/white"
-            app:mtf_backgroundColor="@android:color/white"
-            app:mtf_openKeyboardOnFocus="true"
-            app:mtf_image="@drawable/ic_user"
-            >
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:textColorHint="@android:color/white"
-                android:textColor="@color/colorPrimary"
-                android:backgroundTint="@color/colorAccent"
-                android:layout_height="wrap_content"
-                android:hint="Enter your email here"
-                android:inputType="textEmailAddress"
-                tools:ignore="HardcodedText"
-                tools:targetApi="lollipop" />
-        </com.github.florent37.materialtextfield.MaterialTextField>
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/adUnitId" />
+
+    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/banner_container"
+        android:background="@color/colorBackground"
+        android:clipToPadding="false"
+        android:padding="16dp"
+        android:scrollbarStyle="outsideOverlay">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/buy"
-                android:background="@drawable/button"
-                android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="Donate"
+                android:text="Make a contribution"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:textColor="@color/red"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/donation"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Choose your amount"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:textColor="@color/red"
+                tools:ignore="HardcodedText" />
+
+            <Spinner
+                android:id="@+id/options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/red"
+                android:textColor="@android:color/white"
+                tools:ignore="UnusedAttribute" />
+
+            <CheckBox
+                android:id="@+id/anonymous"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/red"
+                android:buttonTint="@android:color/white"
+                android:text="Stay Anonymous"
+                android:textColor="@color/red"
+                tools:ignore="HardcodedText,UnusedAttribute" />
+
+            <com.github.florent37.materialtextfield.MaterialTextField
+                android:id="@+id/email_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:mtf_backgroundColor="@android:color/white"
+                app:mtf_image="@drawable/ic_user"
+                app:mtf_labelColor="@android:color/white"
+                app:mtf_openKeyboardOnFocus="true">
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorAccent"
+                    android:hint="Enter your email here"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/colorPrimary"
+                    android:textColorHint="@android:color/white"
+                    tools:ignore="HardcodedText"
+                    tools:targetApi="lollipop" />
+            </com.github.florent37.materialtextfield.MaterialTextField>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/button"
+                    android:gravity="center"
+                    android:text="Donate"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="(OR)"
+                android:textColor="@color/red"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/kofi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:src="@drawable/kofi"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="@color/red"
-            android:text="(OR)"
-            android:layout_height="wrap_content"
-            tools:ignore="HardcodedText" />
-        <ImageView
-            android:src="@drawable/kofi"
-            android:layout_width="wrap_content"
-            android:id="@+id/kofi"
-            android:layout_marginBottom="50dp"
-            android:layout_height="wrap_content"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>

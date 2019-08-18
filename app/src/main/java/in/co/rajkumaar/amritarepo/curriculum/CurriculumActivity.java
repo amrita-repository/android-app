@@ -115,7 +115,7 @@ public class CurriculumActivity extends AppCompatActivity {
 
     void getData(final String dept) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(getString(R.string.dev_domain) + "/utils/btech.php?q=" + dept + "&hash="+ BuildConfig.SECRET_HASH, new AsyncHttpResponseHandler() {
+        client.get(getString(R.string.dev_domain) + "/utils/btech.php?q=" + dept + "&hash=" + BuildConfig.SECRET_HASH, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 statuscode = statusCode;

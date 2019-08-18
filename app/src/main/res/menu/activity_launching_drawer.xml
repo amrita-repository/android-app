@@ -8,30 +8,29 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
+            android:checked="true"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="Home"
-            android:checked="true"/>
+            android:title="Home" />
         <item
             android:id="@+id/nav_downloads"
+            android:checkable="false"
             android:icon="@drawable/ic_get_app_black_24dp"
-            android:title="Downloads"
-            android:checkable="false"/>
+            android:title="Downloads" />
         <item
             android:id="@+id/nav_donate"
+            android:checkable="false"
             android:icon="@drawable/ic_dollar"
-            android:title="Support"
-            android:checkable="false"/>
+            android:title="Support" />
         <item
             android:id="@+id/nav_feedback"
-            android:icon="@drawable/ic_feedback"
-            android:title="Feedback"
-            android:checkable="false"/>
-        <item
-            android:title="Settings"
-            android:id="@+id/settings"
-            android:icon="@drawable/settings"
             android:checkable="false"
-            />
+            android:icon="@drawable/ic_feedback"
+            android:title="Feedback" />
+        <item
+            android:id="@+id/settings"
+            android:checkable="false"
+            android:icon="@drawable/settings"
+            android:title="Settings" />
     </group>
 
     <item android:title="Extras">
@@ -39,17 +38,15 @@
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_info_black_24dp"
-                android:title="About"
-                />
+                android:title="About" />
             <item
                 android:id="@+id/nav_review"
                 android:icon="@drawable/ic_stars_black_24dp"
-                android:title="Leave a review"
-                />
+                android:title="Leave a review" />
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Tell a friend"/>
+                android:title="Tell a friend" />
 
         </menu>
     </item>

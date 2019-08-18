@@ -5,7 +5,6 @@
 package in.co.rajkumaar.amritarepo.study_materials;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -49,17 +47,17 @@ public class StudyMaterialsActivity extends AppCompatActivity {
             myWebView = findViewById(R.id.webView);
             myWebView.getSettings().setJavaScriptEnabled(true);
             dialog = new ProgressDialog(StudyMaterialsActivity.this);
-            if (b.getBoolean("zoom",false)) {
+            if (b.getBoolean("zoom", false)) {
                 myWebView.getSettings().setSupportZoom(true);
                 myWebView.getSettings().setBuiltInZoomControls(true);
             }
             myWebView.getSettings().setLoadWithOverviewMode(true);
             myWebView.getSettings().setUseWideViewPort(true);
             showProgressDialog();
-            myWebView.setWebChromeClient(new WebChromeClient(){
+            myWebView.setWebChromeClient(new WebChromeClient() {
                 public void onProgressChanged(WebView view, int progress) {
                     showProgressDialog();
-                    if(progress == 100)
+                    if (progress == 100)
                         dismissProgressDialog();
                 }
             });
@@ -144,29 +142,29 @@ public class StudyMaterialsActivity extends AppCompatActivity {
     }
 
     public void dismissProgressDialog() {
-        try{
+        try {
             if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void showProgressDialog() {
-        try{
-            Log.i("LINK",myWebView.getUrl());
+        try {
+            Log.i("LINK", myWebView.getUrl());
             dialog.setMessage("Loading..");
             dialog.setCancelable(false);
             dialog.show();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void onBackPressed() {
-        if(myWebView.canGoBack())
+        if (myWebView.canGoBack())
             myWebView.goBack();
         else
             super.onBackPressed();

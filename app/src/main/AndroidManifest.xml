@@ -21,11 +21,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9341647677012996~5941760118"/>
-        <activity android:name=".study_materials.StudyMaterialsActivity"
-            android:parentActivityName=".activities.LaunchingActivity"/>
+            android:value="ca-app-pub-9341647677012996~5941760118" />
+
+        <activity
+            android:name=".study_materials.StudyMaterialsActivity"
+            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
             android:name=".opac.SearchResultsActivity"
             android:label="Search Results"
@@ -78,6 +83,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/academic_timetable_info" />
         </receiver>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/notification" />

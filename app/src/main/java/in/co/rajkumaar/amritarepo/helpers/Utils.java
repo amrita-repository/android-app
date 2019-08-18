@@ -32,7 +32,6 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Looper;
@@ -42,12 +41,9 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.facebook.ads.AdSettings;
 import com.facebook.ads.AdSize;
-import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -59,7 +55,6 @@ import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import in.co.rajkumaar.amritarepo.BuildConfig;
-import in.co.rajkumaar.amritarepo.R;
 
 public class Utils {
 
@@ -90,7 +85,7 @@ public class Utils {
             if (inputManager.isAcceptingText())
                 inputManager.hideSoftInputFromWindow(Objects.requireNonNull(((Activity) context).getCurrentFocus()).getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -108,16 +103,20 @@ public class Utils {
     }
 
     private static void showAd(final Context context, AdView linearLayout, AdSize adSize) {
-        if(!BuildConfig.DEBUG) {
-            MobileAds.initialize(context,"ca-app-pub-9341647677012996~5941760118");
-            AdRequest adRequest = new AdRequest.Builder().build();
-            linearLayout.loadAd(adRequest);
-            linearLayout.setAdListener(new AdListener(){
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    Log.e("ERROR LOADING AD", ""+errorCode);
-                }
-            });
+        if (!BuildConfig.DEBUG) {
+            try {
+                MobileAds.initialize(context, "ca-app-pub-9341647677012996~5941760118");
+                AdRequest adRequest = new AdRequest.Builder().build();
+                linearLayout.loadAd(adRequest);
+                linearLayout.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(int errorCode) {
+                        Log.e("ERROR LOADING AD", "" + errorCode);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -208,7 +207,7 @@ public class Utils {
         public IBinder getBinder() throws InterruptedException {
             if (this.retrieved) throw new IllegalStateException();
             this.retrieved = true;
-            return (IBinder) this.queue.take();
+            return this.queue.take();
         }
     }
 

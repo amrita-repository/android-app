@@ -32,8 +32,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -163,11 +161,10 @@ public class AssessmentsActivity extends AppCompatActivity {
                 TextView wifiwarning = findViewById(R.id.wifiwarning);
                 wifiwarning.setVisibility(View.GONE);
                 ListView listView = findViewById(R.id.list);
-                ArrayAdapter<String> semsAdapter = new ArrayAdapter<String>(AssessmentsActivity.this, R.layout.white_textview, assessments);
-                listView.setAdapter(semsAdapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                PaperAdapter semsAdapter = new PaperAdapter(AssessmentsActivity.this, assessments, "assessments");
+                semsAdapter.setCustomListener(new PaperAdapter.customListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    public void onItemClickListener(int i) {
                         if (Utils.isConnected(AssessmentsActivity.this)) {
                             Intent intent = new Intent(AssessmentsActivity.this, SubjectsActivity.class);
                             intent.putExtra("href", externLink + links.get(i));
@@ -175,6 +172,13 @@ public class AssessmentsActivity extends AppCompatActivity {
                             startActivity(intent);
                         } else
                             Utils.showSnackBar(AssessmentsActivity.this, "Device not connected to Internet");
+                    }
+                });
+                listView.setAdapter(semsAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
                     }
                 });
                 listView.setVisibility(View.VISIBLE);

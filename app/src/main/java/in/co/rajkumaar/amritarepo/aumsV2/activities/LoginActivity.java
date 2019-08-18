@@ -33,7 +33,6 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
-import okhttp3.internal.Util;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -57,16 +56,17 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Logging in..");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
 
         String rmUsername = pref.getString("username", null);
         String rmDob = pref.getString("dob", null);
         username.setText(rmUsername);
         dob.setText(rmDob);
-        if(!username.getText().toString().isEmpty()){
-            ((MaterialTextField)findViewById(R.id.username_container)).setHasFocus(true);
+        if (!username.getText().toString().isEmpty()) {
+            ((MaterialTextField) findViewById(R.id.username_container)).setHasFocus(true);
         }
-        if(!dob.getText().toString().isEmpty()){
-            ((MaterialTextField)findViewById(R.id.dob_container)).setHasFocus(true);
+        if (!dob.getText().toString().isEmpty()) {
+            ((MaterialTextField) findViewById(R.id.dob_container)).setHasFocus(true);
         }
         try {
             username.setSelection(rmUsername.length());

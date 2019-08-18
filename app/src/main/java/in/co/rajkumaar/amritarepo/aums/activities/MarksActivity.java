@@ -32,7 +32,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +63,7 @@ public class MarksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marks);
         Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
-        recyclerView = (RecyclerView) findViewById(R.id.list);
+        recyclerView = findViewById(R.id.list);
         UserData.refIndex = 1;
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);
@@ -246,14 +245,14 @@ public class MarksActivity extends AppCompatActivity {
             ViewHolder(View v) {
                 super(v);
                 try {
-                    name = (TextView) v.findViewById(R.id.name);
-                    value = (TextView) v.findViewById(R.id.value);
-                    indicator = (View) v.findViewById(R.id.indicator);
+                    name = v.findViewById(R.id.name);
+                    value = v.findViewById(R.id.value);
+                    indicator = v.findViewById(R.id.indicator);
                 } catch (Exception ignored) {
                 }
 
                 try {
-                    sectionHeader = (TextView) v.findViewById(R.id.section_header);
+                    sectionHeader = v.findViewById(R.id.section_header);
                 } catch (Exception ignored) {
                 }
             }

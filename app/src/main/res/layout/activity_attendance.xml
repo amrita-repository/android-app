@@ -1,56 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/image_holder"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/image_holder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
-    android:layout_width="match_parent"
-    android:background="@color/colorBackground"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-<ListView
-    android:id="@+id/list"
-    android:divider="@android:color/white"
-    android:dividerHeight="0dp"
-    android:layout_above="@id/banner_container"
-    android:visibility="gone"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".aums.activities.AttendanceActivity"/>
-   <com.google.android.gms.ads.AdView
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/banner_container"
+    android:background="@color/colorBackground">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/banner_container"
+        android:divider="@android:color/white"
+        android:dividerHeight="0dp"
+        android:visibility="gone"
+        tools:context=".aums.activities.AttendanceActivity" />
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-  ads:adSize="SMART_BANNER"
-ads:adUnitId="@string/adUnitId"
-  >
-</com.google.android.gms.ads.AdView>
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
+
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/progressBar"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_height="wrap_content">
-        <com.github.ybq.android.spinkit.SpinKitView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
             style="@style/SpinKitView.Circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             app:SpinKit_Color="@color/colorAccent" />
+
         <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:id="@+id/quote"
-            android:textColor="@android:color/white"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
-            android:text="Details matter, it\'s worth waiting to get it right\n- Steve Jobs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="Details matter, it\'s worth waiting to get it right\n- Steve Jobs"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+            android:textColor="@android:color/white"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 </RelativeLayout>

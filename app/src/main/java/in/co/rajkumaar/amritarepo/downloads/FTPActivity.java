@@ -38,8 +38,30 @@ public class FTPActivity extends AppCompatActivity {
     RippleBackground rippleBackground;
     TextView result;
 
-    Button copy,share;
+    Button copy, share;
     LinearLayout tools;
+    private BroadcastReceiver wifiStateReceiver = new BroadcastReceiver() {
+        @SuppressLint("SetTextI18n")
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int wifiStateExtra = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE,
+                    WifiManager.WIFI_STATE_UNKNOWN);
+
+            if (wifiStateExtra == WifiManager.WIFI_STATE_DISABLED) {
+                if (!result.getText().toString().trim().isEmpty()) {
+                    ftpServer.suspend();
+                    result.setText("");
+                    start.setText("Start Server");
+                    start.setTextColor(getResources().getColor(android.R.color.black));
+                    start.setBackground(getResources().getDrawable(R.drawable.button));
+                    rippleBackground.stopRippleAnimation();
+                    rippleBackground.setVisibility(View.GONE);
+                    Utils.showToast(getApplicationContext(), "WiFi got disconnected :(");
+                }
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +71,13 @@ public class FTPActivity extends AppCompatActivity {
         rippleBackground = findViewById(R.id.content);
         copy = findViewById(R.id.copy);
         share = findViewById(R.id.share);
-        tools=findViewById(R.id.tools);
+        tools = findViewById(R.id.tools);
 
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
 
         final String home = Environment.getExternalStorageDirectory() + "/" + "AmritaRepo/";
         final int port = 2304;
-        ftpServer = FTPHelper.createServer(port,10,5000,true,home);
+        ftpServer = FTPHelper.createServer(port, 10, 5000, true, home);
         final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         final WifiInfo info = wifiManager.getConnectionInfo();
 
@@ -62,12 +85,12 @@ public class FTPActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
-                switch (start.getText().toString().toLowerCase()){
+                switch (start.getText().toString().toLowerCase()) {
                     case "start server":
-                        if(wifiManager.isWifiEnabled()){
-                            if(!Objects.equals(info.getSSID(), "")){
+                        if (wifiManager.isWifiEnabled()) {
+                            if (!Objects.equals(info.getSSID(), "")) {
                                 String IP = Formatter.formatIpAddress(info.getIpAddress());
-                                if(!IP.contains("0.0.0.0")) {
+                                if (!IP.contains("0.0.0.0")) {
                                     try {
                                         if (ftpServer.isSuspended()) ftpServer.resume();
                                         else ftpServer.start();
@@ -85,14 +108,14 @@ public class FTPActivity extends AppCompatActivity {
                                         Utils.showUnexpectedError(getApplicationContext());
                                         e.printStackTrace();
                                     }
-                                }else{
-                                    Utils.showToast(getApplicationContext(),"There was an error while turning on FTP. Please connect to your hotspot of your computer and retry.");
+                                } else {
+                                    Utils.showToast(getApplicationContext(), "There was an error while turning on FTP. Please connect to your hotspot of your computer and retry.");
                                 }
-                            }else{
-                                Utils.showToast(getApplicationContext(),"Please connect to your hotspot.");
+                            } else {
+                                Utils.showToast(getApplicationContext(), "Please connect to your hotspot.");
                             }
-                        }else{
-                            Utils.showToast(getApplicationContext(),"Please enable WiFi and connect to your hotspot.");
+                        } else {
+                            Utils.showToast(getApplicationContext(), "Please enable WiFi and connect to your hotspot.");
                         }
                         break;
                     case "stop server":
@@ -112,11 +135,11 @@ public class FTPActivity extends AppCompatActivity {
         copy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(result.getText().toString().trim().isEmpty()){
-                    Utils.showToast(getApplicationContext(),"Start the server to get an address");
+                if (result.getText().toString().trim().isEmpty()) {
+                    Utils.showToast(getApplicationContext(), "Start the server to get an address");
                     return;
                 }
-                final ClipboardManager clipboardManager = (ClipboardManager)getSystemService(CLIPBOARD_SERVICE);
+                final ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("Source Text", result.getText().toString().split("at")[1].trim());
                 clipboardManager.setPrimaryClip(clipData);
             }
@@ -124,8 +147,8 @@ public class FTPActivity extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(result.getText().toString().trim().isEmpty()){
-                    Utils.showToast(getApplicationContext(),"Start the server to get an address");
+                if (result.getText().toString().trim().isEmpty()) {
+                    Utils.showToast(getApplicationContext(), "Start the server to get an address");
                     return;
                 }
                 Intent sendIntent = new Intent();
@@ -143,10 +166,9 @@ public class FTPActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(!result.getText().toString().trim().isEmpty())
-        {
+        if (!result.getText().toString().trim().isEmpty()) {
             ftpServer.stop();
-            Utils.showToast(getApplicationContext(),"File sharing has been stopped.");
+            Utils.showToast(getApplicationContext(), "File sharing has been stopped.");
         }
         super.onDestroy();
     }
@@ -163,26 +185,4 @@ public class FTPActivity extends AppCompatActivity {
         super.onStop();
         unregisterReceiver(wifiStateReceiver);
     }
-
-    private BroadcastReceiver wifiStateReceiver = new BroadcastReceiver() {
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int wifiStateExtra = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE,
-                    WifiManager.WIFI_STATE_UNKNOWN);
-
-            if (wifiStateExtra == WifiManager.WIFI_STATE_DISABLED) {
-                if(!result.getText().toString().trim().isEmpty()){
-                    ftpServer.suspend();
-                    result.setText("");
-                    start.setText("Start Server");
-                    start.setTextColor(getResources().getColor(android.R.color.black));
-                    start.setBackground(getResources().getDrawable(R.drawable.button));
-                    rippleBackground.stopRippleAnimation();
-                    rippleBackground.setVisibility(View.GONE);
-                    Utils.showToast(getApplicationContext(),"WiFi got disconnected :(");
-                }
-            }
-        }
-    };
 }

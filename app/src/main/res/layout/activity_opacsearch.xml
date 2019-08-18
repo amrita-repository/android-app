@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2019 RAJKUMAR S
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -16,91 +14,97 @@
         android:orientation="vertical"
         android:padding="10dp"
         tools:context=".opac.OPACSearchActivity">
+
         <TextView
             android:layout_width="match_parent"
-            android:textColor="@android:color/white"
             android:layout_height="wrap_content"
-            android:text="The library catalogue"
             android:gravity="center_horizontal"
+            android:text="The library catalogue"
+            android:textColor="@android:color/white"
             tools:ignore="HardcodedText" />
+
         <TextView
             android:layout_width="match_parent"
-            android:textColor="@android:color/darker_gray"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="30dp"
             android:text="Document Type"
+            android:textColor="@android:color/darker_gray"
             tools:ignore="HardcodedText" />
+
         <Spinner
             android:id="@+id/docType"
-            android:backgroundTint="@color/colorAccent"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/colorAccent"
             tools:ignore="UnusedAttribute" />
+
         <TextView
             android:layout_width="match_parent"
-            android:textColor="@android:color/darker_gray"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="30dp"
             android:text="Search based on"
+            android:textColor="@android:color/darker_gray"
             tools:ignore="HardcodedText" />
+
         <Spinner
             android:id="@+id/field"
-            android:backgroundTint="@color/colorAccent"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/colorAccent"
             tools:ignore="UnusedAttribute" />
+
         <TextView
             android:layout_width="match_parent"
-            android:textColor="@android:color/darker_gray"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="30dp"
             android:text="Enter word (or) phrase"
+            android:textColor="@android:color/darker_gray"
             tools:ignore="HardcodedText" />
+
         <EditText
+            android:id="@+id/searchKeyword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/searchKeyword"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/colorAccent"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white"
-            android:backgroundTint="@color/colorAccent"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
             tools:ignore="UnusedAttribute" />
+
         <Button
-            android:layout_width="match_parent"
             android:id="@+id/search"
-            android:onClick="searchOPAC"
-            android:text="Search"
-            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/button"
-            android:layout_height="wrap_content"
+            android:onClick="searchOPAC"
+            android:text="Search"
             tools:ignore="HardcodedText" />
     </LinearLayout>
-   <com.google.android.gms.ads.AdView
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/banner_container"
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/banner_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-  ads:adSize="SMART_BANNER"
-ads:adUnitId="@string/adUnitId"
-  >
-</com.google.android.gms.ads.AdView>
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
 </RelativeLayout>

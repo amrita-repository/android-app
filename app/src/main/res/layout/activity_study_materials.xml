@@ -1,31 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2019 RAJKUMAR S
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/banner_container"
-        android:id="@+id/webView"/>
+        android:layout_above="@id/banner_container" />
+
     <LinearLayout
         android:id="@+id/banner_container"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryDark"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_height="wrap_content">
+        android:background="@color/colorPrimaryDark">
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Open in browser"
-            android:onClick="openInBrowser"
-            android:background="@drawable/button"
             android:layout_margin="10dp"
+            android:background="@drawable/button"
+            android:onClick="openInBrowser"
             android:orientation="vertical"
+            android:text="Open in browser"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 

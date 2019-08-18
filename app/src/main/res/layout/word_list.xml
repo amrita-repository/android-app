@@ -1,65 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.SwipeRefreshLayout
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipe_downloads"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:background="@color/colorBackground"
-    android:layout_height="match_parent">
 
-
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:longClickable="true"
-        android:layout_above="@id/banner_container"
-        android:id="@+id/dlist"
-        android:dividerHeight="0dp"
-        android:orientation="vertical"
-        android:drawSelectorOnTop="true"/>
-    <LinearLayout
-        android:visibility="invisible"
-        android:textColor="@color/colorAccent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:id="@+id/dempty_view">
-        <ImageView
-            android:layout_marginBottom="10dp"
-            android:layout_width="200dp"
-            android:src="@drawable/img_no_feed"
-            android:layout_height="200dp" />
-        <TextView
-            android:textColor="#FF201B"
+        android:background="@color/colorBackground">
+
+
+        <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/dlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/banner_container"
+            android:dividerHeight="0dp"
+            android:drawSelectorOnTop="true"
+            android:longClickable="true"
+            android:orientation="vertical" />
+
+        <LinearLayout
+            android:id="@+id/dempty_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical"
             android:textAlignment="center"
-            android:text="No downloads in this category yet!"
-            android:textAppearance="?android:textAppearanceMedium"/>
-    </LinearLayout>
+            android:textColor="@color/colorAccent"
+            android:visibility="invisible">
 
-   <com.google.android.gms.ads.AdView
-  xmlns:ads="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/banner_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-  ads:adSize="SMART_BANNER"
-ads:adUnitId="@string/adUnitId"
-  >
-</com.google.android.gms.ads.AdView>
-</RelativeLayout>
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/img_no_feed" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No downloads in this category yet!"
+                android:textAlignment="center"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#FF201B" />
+        </LinearLayout>
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
+    </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

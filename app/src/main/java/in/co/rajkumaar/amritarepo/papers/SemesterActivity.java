@@ -30,9 +30,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +56,7 @@ public class SemesterActivity extends AppCompatActivity {
     int statusCode;
     List<String> sems = new ArrayList<>();
     List<String> links = new ArrayList<>();
-    ArrayAdapter<String> semsAdapter;
+    PaperAdapter semsAdapter;
 
     @SuppressLint("PrivateResource")
     @Override
@@ -185,11 +182,10 @@ public class SemesterActivity extends AppCompatActivity {
                     TextView wifiwarning = findViewById(R.id.wifiwarning);
                     wifiwarning.setVisibility(View.GONE);
                     ListView listView = findViewById(R.id.list);
-                    semsAdapter = new ArrayAdapter<String>(SemesterActivity.this, R.layout.white_textview, sems);
-                    listView.setAdapter(semsAdapter);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    semsAdapter = new PaperAdapter(SemesterActivity.this, sems, "sem");
+                    semsAdapter.setCustomListener(new PaperAdapter.customListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        public void onItemClickListener(int i) {
                             if (Utils.isConnected(SemesterActivity.this)) {
                                 Intent intent = new Intent(SemesterActivity.this, AssessmentsActivity.class);
                                 intent.putExtra("href", externLink + links.get(i));
@@ -199,8 +195,7 @@ public class SemesterActivity extends AppCompatActivity {
                                 Utils.showSnackBar(SemesterActivity.this, "Device not connected to Internet");
                         }
                     });
-
-
+                    listView.setAdapter(semsAdapter);
                     listView.setVisibility(View.VISIBLE);
                 } else {
                     TextView textView = findViewById(R.id.empty_view);

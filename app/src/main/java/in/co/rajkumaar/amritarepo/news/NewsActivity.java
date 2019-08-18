@@ -51,6 +51,8 @@ public class NewsActivity extends AppCompatActivity {
         String randomQuote = quotes[new Random().nextInt(quotes.length)];
         quoteView.setText(randomQuote);
 
+        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         NewsClient newsClient = new NewsClient();
         newsClient.getArticles(new NewsResponse() {
             @Override
