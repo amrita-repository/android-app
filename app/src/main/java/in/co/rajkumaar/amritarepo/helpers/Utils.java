@@ -49,6 +49,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
@@ -118,6 +120,14 @@ public class Utils {
                 e.printStackTrace();
             }
         }
+    }
+    public static String getUrlWithoutParameters(String url) throws URISyntaxException {
+        URI uri = new URI(url);
+        return new URI(uri.getScheme(),
+                uri.getAuthority(),
+                uri.getPath(),
+                null, // Ignore the query part of the input url
+                uri.getFragment()).toString();
     }
 
     public static void showSmallAd(Context context, AdView linearLayout) {

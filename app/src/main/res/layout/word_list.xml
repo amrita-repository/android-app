@@ -54,6 +54,6 @@
             android:layout_alignParentBottom="true"
             android:orientation="vertical"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
+            ads:adUnitId="@string/adUnitId" />
     </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

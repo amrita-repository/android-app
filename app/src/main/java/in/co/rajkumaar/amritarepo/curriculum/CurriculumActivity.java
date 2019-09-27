@@ -24,13 +24,27 @@
 
 package in.co.rajkumaar.amritarepo.curriculum;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -41,159 +55,143 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONArray;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
+import in.co.rajkumaar.amritarepo.helpers.OpenTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
+import in.co.rajkumaar.amritarepo.papers.SubjectsActivity;
 
 public class CurriculumActivity extends AppCompatActivity {
 
-    ArrayList<ListView> listViews;
-    LinearLayout linearLayout;
-    ProgressDialog progressDialog;
-    int statuscode;
+    ProgressDialog dialog;
+    WebView myWebView;
+    String webViewLink;
 
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null)
-            return;
 
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
-        int totalHeight = 0;
-        View view = null;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            view = listAdapter.getView(i, view, listView);
-            if (i == 0)
-                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += view.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-    }
-
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curriculum);
-        linearLayout = findViewById(R.id.container);
-
         Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
-
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        listViews = new ArrayList<>();
-        listViews.add((ListView) findViewById(R.id.sem1));
-        listViews.add((ListView) findViewById(R.id.sem2));
-        listViews.add((ListView) findViewById(R.id.sem3));
-        listViews.add((ListView) findViewById(R.id.sem4));
-        listViews.add((ListView) findViewById(R.id.sem5));
-        listViews.add((ListView) findViewById(R.id.sem6));
-        listViews.add((ListView) findViewById(R.id.sem7));
-        listViews.add((ListView) findViewById(R.id.sem8));
-
-
-        String dept = getIntent().getStringExtra("department");
         try {
-            assert actionBar != null;
-            actionBar.setSubtitle(dept);
-        } catch (NullPointerException e) {
+            webViewLink = "https://dev.rajkumaar.co.in/utils/curriculum.php";
+            if (webViewLink == null) {
+                Utils.showToast(CurriculumActivity.this, "Invalid URL");
+                finish();
+                return;
+            }
+            this.setTitle("Curriculum");
+            myWebView = findViewById(R.id.webView);
+            myWebView.getSettings().setJavaScriptEnabled(true);
+            dialog = new ProgressDialog(CurriculumActivity.this);
+            myWebView.getSettings().setLoadWithOverviewMode(true);
+            myWebView.getSettings().setUseWideViewPort(true);
+            showProgressDialog();
+            myWebView.setWebChromeClient(new WebChromeClient() {
+                public void onProgressChanged(WebView view, int progress) {
+                    showProgressDialog();
+                    if (progress == 100)
+                        dismissProgressDialog();
+                }
+            });
+            myWebView.setWebViewClient(new WebViewClient() {
+                @Nullable
+                @Override
+                public WebResourceResponse shouldInterceptRequest(WebView view, final String url) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if(Utils.getUrlWithoutParameters(url).contains(".pdf")) {
+                                    final ArrayList<String> options = new ArrayList<>();
+                                    options.add("View");
+                                    options.add("Download");
+                                    AlertDialog.Builder optionsBuilder = new AlertDialog.Builder(CurriculumActivity.this);
+                                    ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(CurriculumActivity.this, android.R.layout.simple_list_item_1, options);
+                                    optionsBuilder.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int pos) {
+                                            if (pos == 0) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url)));
+                                            } else if (pos == 1) {
+                                                if (ContextCompat.checkSelfPermission(CurriculumActivity.this,
+                                                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                                        != PackageManager.PERMISSION_GRANTED) {
+
+                                                    ActivityCompat.requestPermissions(CurriculumActivity.this,
+                                                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                            1);
+                                                } else {
+                                                    if (Utils.isConnected(CurriculumActivity.this)) {
+                                                        try {
+                                                            new DownloadTask(CurriculumActivity.this, Utils.getUrlWithoutParameters(url), 0);
+                                                        } catch (URISyntaxException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    } else {
+                                                        Utils.showToast(CurriculumActivity.this, "Device not connected to Internet.");
+                                                    }
+
+
+                                                }
+                                            }
+                                        }
+                                    });
+                                    optionsBuilder.show();
+                                }
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    return super.shouldInterceptRequest(view, url);
+                }
+
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    try {
+                        return !Utils.getUrlWithoutParameters(url).contains(".pdf");
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                        return true;
+                    }
+                }
+            });
+            myWebView.loadUrl(webViewLink);
+        } catch (Exception e) {
+            e.printStackTrace();
+            finish();
+            Toast.makeText(CurriculumActivity.this, "Unexpected error. Please try again later", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void dismissProgressDialog() {
+        try {
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-
-        getData(getUrl(dept));
     }
 
-    void getData(final String dept) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(getString(R.string.dev_domain) + "/utils/btech.php?q=" + dept + "&hash=" + BuildConfig.SECRET_HASH, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                statuscode = statusCode;
-                try {
-                    JSONArray result = new JSONArray(new String(responseBody));
-                    Log.e("JSON SIZE", result.length() + "");
-
-                    for (int i = 0; i < result.length(); ++i) {
-                        ArrayList<String> contents = new ArrayList<>();
-                        JSONArray items = result.getJSONArray(i);
-                        int j = 0;
-                        for (; j < items.length(); ++j) {
-                            if (items.getString(j).isEmpty())
-                                break;
-                            String temp = items.getString(j).trim();
-                            temp = temp.split("\n")[0];
-                            contents.add(Html.fromHtml("&#8226;") + " " + temp);
-                        }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(CurriculumActivity.this, R.layout.curriculum_item, contents);
-                        listViews.get(i).setAdapter(adapter);
-                        setListViewHeightBasedOnChildren(listViews.get(i));
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                try {
-                    if (progressDialog.isShowing())
-                        progressDialog.dismiss();
-                    if (statuscode == 200)
-                        linearLayout.setVisibility(View.VISIBLE);
-                    else {
-                        finish();
-                        Toast.makeText(CurriculumActivity.this, "Unexpected error occurred.Please try again later", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    finish();
-                    Toast.makeText(CurriculumActivity.this, "Unexpected error occurred.Please try again later", Toast.LENGTH_SHORT).show();
-                }
-
-                super.onFinish();
-            }
-        });
-    }
-
-    String getUrl(String dept) {
-        switch (dept) {
-            case "Aerospace Engineering":
-                return "ae";
-            case "Civil Engineering":
-                return "cvi";
-            case "Chemical Engineering":
-                return "che";
-            case "Computer Science Engineering":
-                return "cse";
-            case "Electrical & Electronics Engineering":
-                return "eee";
-            case "Electronics & Communication Engineering":
-                return "ece";
-            case "Mechanical Engineering":
-                return "me";
-            case "Electronics & Instrumentation Engineering":
-                return "eie";
-            default:
-                return "cse";
+    public void showProgressDialog() {
+        try {
+//            Log.i("LINK", myWebView.getUrl());
+            dialog.setMessage("Loading..");
+            dialog.setCancelable(false);
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
-
-
 }

@@ -3,16 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <item
+        android:id="@+id/action_download"
+        android:icon="@drawable/ic_downloads"
+        android:orderInCategory="1"
+        android:title="Downloads"
+        app:showAsAction="ifRoom"
+        tools:ignore="HardcodedText" />
+    <item
         android:id="@+id/action_bug_report"
         android:icon="@drawable/ic_bug"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/celebs"
-        android:icon="@drawable/ic_cake"
-        android:orderInCategory="2"
-        android:title="Celebrations"
+        android:icon="@drawable/ic_info"
+        android:orderInCategory="3"
+        android:title="About"
         app:showAsAction="ifRoom"
         tools:ignore="HardcodedText" />
 </menu>

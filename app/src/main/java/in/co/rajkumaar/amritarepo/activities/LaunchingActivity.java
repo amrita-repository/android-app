@@ -137,7 +137,7 @@ public class LaunchingActivity extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setSubtitle(Html.fromHtml("Crafted with &hearts; by Rajkumar"));
+//        toolbar.setSubtitle(Html.fromHtml("Crafted with &hearts; by Rajkumar"));
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,7 +219,7 @@ public class LaunchingActivity extends AppCompatActivity
         thanksGiving.setContentView(R.layout.thanks_dialog);
         thanksGiving.setCancelable(false);
         TextView textView = thanksGiving.findViewById(R.id.update_text);
-        textView.setText(Html.fromHtml("Amrita Repository <br>celebrates 5000+ downloads in Play Store. <br>Thanks for being an active user. &hearts;<br><br>I’m convinced that the only thing that kept me going was that I loved what I did. You’ve got to find what you love.<br>- Steve Jobs"));
+        textView.setText(Html.fromHtml("Amrita Repository <br>celebrates 7000+ downloads in Play Store. <br>Thanks for being an active user. &hearts;<br><br>I’m convinced that the only thing that kept me going was that I loved what I did. You’ve got to find what you love.<br>- Steve Jobs"));
         thanksGiving.show();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -384,18 +384,8 @@ public class LaunchingActivity extends AppCompatActivity
                 break;
             case "Curriculum":
                 if (Utils.isConnected(LaunchingActivity.this)) {
-                    final CharSequence[] depts = {"Computer Science Engineering", "Electronics & Communication Engineering", "Aerospace Engineering", "Civil Engineering", "Chemical Engineering", "Electrical & Electronics Engineering", "Electronics & Instrumentation Engineering", "Mechanical Engineering"};
-                    AlertDialog.Builder departmentDialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
-                    departmentDialogBuilder.setTitle("Select your Department");
-                    departmentDialogBuilder.setItems(depts, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int item) {
-                            Intent curriculum_open = new Intent(LaunchingActivity.this, CurriculumActivity.class);
-                            curriculum_open.putExtra("department", depts[item]);
-                            startActivity(curriculum_open);
-                        }
-                    });
-                    AlertDialog departmentDialog = departmentDialogBuilder.create();
-                    departmentDialog.show();
+                    Intent curriculum_open = new Intent(LaunchingActivity.this, CurriculumActivity.class);
+                    startActivity(curriculum_open);
                 } else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
                 break;
@@ -442,6 +432,17 @@ public class LaunchingActivity extends AppCompatActivity
                     startActivity(new Intent(LaunchingActivity.this, ExamsFAQActivity.class));
                 else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
+                break;
+            case "CMS":
+                Intent launchIntent = getPackageManager().getLaunchIntentForPackage("in.co.rajkumaar.amritacms");
+                if (launchIntent != null) {
+                    startActivity(launchIntent);
+                }else{
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritacms"));
+                    if (intent.resolveActivity(getPackageManager()) != null)
+                        startActivity(intent);
+                }
                 break;
             case "About":
                 startActivity(new Intent(getBaseContext(), AboutActivity.class));
@@ -577,7 +578,9 @@ public class LaunchingActivity extends AppCompatActivity
             if (it.resolveActivity(getPackageManager()) != null)
                 startActivity(it);
         } else if (id == R.id.celebs) {
-            showCelebs();
+            startActivity(new Intent(this,AboutActivity.class));
+        }else if(id == R.id.action_download){
+            startActivity(new Intent(this,DownloadsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -691,14 +694,15 @@ public class LaunchingActivity extends AppCompatActivity
             items.clear();
             items.add(new Item("#FF201B", "Question Papers", FontAwesomeIcons.fa_paper_plane));
             items.add(new Item("#009688", "AUMS", FontAwesomeIcons.fa_graduation_cap));
+            items.add(new Item("#a4123f", "CMS", FontAwesomeIcons.fa_university));
             items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
-            items.add(new Item("#03a9f4", "Study Materials", FontAwesomeIcons.fa_book));
+            items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
             items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
+            items.add(new Item("#03a9f4", "Study Materials", FontAwesomeIcons.fa_book));
 //            items.add(new Item("#03a9f4", "OPAC Search", FontAwesomeIcons.fa_book));
             items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
-            items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
             items.add(new Item("#ffffff", "Timings", FontAwesomeIcons.fa_clock_o));
             items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
             items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));

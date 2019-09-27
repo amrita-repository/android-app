@@ -55,6 +55,7 @@ public class StudyMaterialsActivity extends AppCompatActivity {
             myWebView.getSettings().setUseWideViewPort(true);
             showProgressDialog();
             myWebView.setWebChromeClient(new WebChromeClient() {
+
                 public void onProgressChanged(WebView view, int progress) {
                     showProgressDialog();
                     if (progress == 100)
