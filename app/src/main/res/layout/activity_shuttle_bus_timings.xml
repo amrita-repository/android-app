@@ -4,12 +4,12 @@
     android:layout_height="wrap_content"
     android:background="@color/colorBackground">
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <GridView xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/timings_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/banner_container"
+        android:numColumns="2"
         android:background="@color/colorBackground"
         tools:context=".timings.TimingsActivity" />
 
@@ -20,5 +20,5 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
         ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
+        ads:adUnitId="@string/adUnitId" />
 </RelativeLayout>

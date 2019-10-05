@@ -35,6 +35,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -275,6 +277,35 @@ public class AttendanceActivity extends AppCompatActivity {
             return listItemView;
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.timings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.info) {
+            final android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(AttendanceActivity.this);
+            alertDialog.setMessage(Html.fromHtml("Amrita Repository is not responsible if your attendance is not updated.<br><br>Follow the instructions given here <strong><font color=#AA0000>at your own risk.</font></strong>"));
+            alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialog.show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

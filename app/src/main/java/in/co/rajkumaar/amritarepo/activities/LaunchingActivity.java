@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -42,6 +43,11 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
@@ -471,55 +477,47 @@ public class LaunchingActivity extends AppCompatActivity
      * Compares existing version with latest and prompts for update
      */
     public void checkUpdate() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://play.google.com/store/apps/details?id=" + getPackageName(), new AsyncHttpResponseHandler() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference versionInDB = firebaseDatabase.getReference("update");
+        versionInDB.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                try {
-                    Document document = Jsoup.parse(new String(bytes));
-                    Elements version = document.select("span.htlgb");
-                    String latest = version.get(6).text();
-
-                    Elements whatsNew = document.select("div.DWPxHb");
-                    String whatsNewText = whatsNew.get(1).toString().trim();
-                    if (latest != null && !latest.isEmpty()) {
-                        if (active) {
-                            Log.e("Latest : " + latest, " Having :" + BuildConfig.VERSION_NAME);
-                            if (!latest.equals(BuildConfig.VERSION_NAME)) {
-                                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
-                                alertDialog.setMessage(Html.fromHtml("An update is available for Amrita Repository.<br><br><strong><font color='#AA0000'>What's New ?</font></strong>" + whatsNewText));
-                                alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
-                                        if (intent.resolveActivity(getPackageManager()) != null)
-                                            startActivity(intent);
-                                    }
-                                });
-                                alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                });
-                                if (active)
-                                    alertDialog.show();
-                            }
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Long latestVersion = dataSnapshot.child("version").getValue(Long.class);
+                String whatsNewText = dataSnapshot.child("whatsnew").getValue(String.class);
+                if (latestVersion > BuildConfig.VERSION_CODE) {
+                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
+                    alertDialog.setMessage(Html.fromHtml(
+                            "An update is available for Amrita Repository.<br><br><strong><font color='#AA0000'>What's New ?</font></strong><br>"
+                                    + whatsNewText));
+                    alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
+                            if (intent.resolveActivity(getPackageManager()) != null)
+                                startActivity(intent);
                         }
+                    });
+                    alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    try{
+                        if (active)
+                            alertDialog.show();
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    Crashlytics.log(e.getLocalizedMessage());
-                    e.printStackTrace();
                 }
-
             }
 
             @Override
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                try {
-                    Crashlytics.log(throwable.getLocalizedMessage());
-                } catch (Exception e) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                try{
+                    Crashlytics.log(databaseError.getMessage());
+                }catch (Exception e){
                     e.printStackTrace();
                 }
             }

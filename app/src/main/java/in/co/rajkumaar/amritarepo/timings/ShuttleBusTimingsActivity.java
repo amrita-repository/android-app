@@ -25,15 +25,20 @@
 package in.co.rajkumaar.amritarepo.timings;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -61,7 +66,7 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ShuttleBusTimingsActivity extends AppCompatActivity {
 
-    private ListView listView;
+    private GridView listView;
     private ArrayList<DataItem> items;
     private SharedPreferences preferences;
     String type;
@@ -177,16 +182,45 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                     String font_color = "<font color='#ff8800'>";
 
                     if (item.from.equals("ab1"))
-                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from AB1 at " + font_color + item.departure + "</font>"));
+                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml( font_color + item.departure + "</font>"));
                     if (item.from.equals("ab3"))
-                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from AB3 at " + font_color + item.departure + "</font>"));
+                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml( font_color + item.departure + "</font>"));
                     return convertView;
                 }
             };
             listView.setAdapter(dataItemArrayAdapter);
             listView.setTextFilterEnabled(true);
-            listView.setItemsCanFocus(false);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.timings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.info) {
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ShuttleBusTimingsActivity.this);
+            alertDialog.setMessage(Html.fromHtml("Users are advised to have backup plans before making any decision " +
+                    "based on the information provided here. Amrita Repository will not be responsible for any liability."));
+            alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialog.show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
