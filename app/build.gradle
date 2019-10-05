@@ -28,7 +28,7 @@ android {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 49
+        versionCode 50
         versionName "3.2.2"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -94,7 +94,7 @@ dependencies {
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     implementation 'com.rilixtech:materialfancybuttons:1.8.7'
     implementation 'com.github.ivbaranov:materiallettericon:0.2.3'
-
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     //Google Ads
     implementation 'com.google.android.gms:play-services-ads:17.0.0'
