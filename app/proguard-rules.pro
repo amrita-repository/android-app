@@ -27,3 +27,7 @@
 -keep class com.shockwave.**
 -keep class org.xmlpull.v1.** { *;}
 
+ # Add this global rule
+-keepattributes Signature
+-keepclassmembers class in.co.rajkumaar.amritarepo.** {*;}
+

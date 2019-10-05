@@ -29,20 +29,10 @@
         android:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/arrival"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/departure"
-        android:layout_centerHorizontal="true"
-        android:text="Reaches Ettimadai at 17:30 hours"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/white" />
-
-    <TextView
         android:id="@+id/days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/arrival"
+        android:layout_below="@+id/departure"
         android:layout_centerHorizontal="true"
         android:text="Runs on All Days"
         android:textAppearance="?android:attr/textAppearanceSmall"

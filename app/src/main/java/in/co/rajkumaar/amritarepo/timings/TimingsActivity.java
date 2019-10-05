@@ -24,17 +24,36 @@
 
 package in.co.rajkumaar.amritarepo.timings;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
@@ -43,6 +62,7 @@ public class TimingsActivity extends AppCompatActivity {
 
     private ListView listView;
     private ArrayList<DataItem> items;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,319 +72,251 @@ public class TimingsActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.timings_list);
         Bundle extras = getIntent().getExtras();
-        String type = extras.getString("type");
+        final String type = extras.getString("type");
 
+        preferences = getSharedPreferences("public",MODE_PRIVATE);
         getSupportActionBar().setTitle(type);
-        loadData(type);
 
-        ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items) {
-            @NonNull
-            @Override
-            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-                if (convertView == null) {
-                    convertView = getLayoutInflater().inflate(R.layout.timing_item, null);
-                }
-                DataItem item = getItem(position);
-                ((TextView) convertView.findViewById(R.id.name)).setText(item.name);
-                String font_color = "<font color='#b71c1c'>";
+        try {
+            if(!preferences.contains("from-cbe")){
+                fetchData(type);
+            }else{
+                loadData(type);
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("timings").child("public");
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String version = dataSnapshot.child("version").getValue(String.class);
+                        if(!version.equals(preferences.getString("version", null))){
+                            preferences.edit().putString("version",version).apply();
+                            fetchData(type);
+                        }
+                    }
 
-                if (item.from.equals("cbe"))
-                    ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Coimbatore at " + font_color + item.departure + "</font>"));
-                if (item.from.equals("etmd"))
-                    ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Ettimadai at " + font_color + item.departure + "</font>"));
-                if (item.from.equals("pkd"))
-                    ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Palghat at " + font_color + item.departure + "</font>"));
-
-                if (item.to.equals("cbe"))
-                    ((TextView) convertView.findViewById(R.id.arrival)).setText(Html.fromHtml("Reaches Coimbatore at " + font_color + item.arrival + "</font>"));
-                if (item.to.equals("etmd"))
-                    ((TextView) convertView.findViewById(R.id.arrival)).setText(Html.fromHtml("Reaches Ettimadai at " + font_color + item.arrival + "</font>"));
-                if (item.to.equals("pkd"))
-                    ((TextView) convertView.findViewById(R.id.arrival)).setText(Html.fromHtml("Reaches Palghat at " + font_color + item.arrival + "</font>"));
-
-                if (item.days.equals("All Days"))
-                    ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days"));
-                else
-                    ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days " + item.days));
-
-                return convertView;
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("FBDB", "Failed to read value.", error.toException());
+                        Utils.showUnexpectedError(TimingsActivity.this);
+                        finish();
+                    }
+                });
             }
-        };
-        listView.setAdapter(dataItemArrayAdapter);
-        listView.setTextFilterEnabled(true);
-        listView.setItemsCanFocus(false);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Utils.showUnexpectedError(TimingsActivity.this);
+            finish();
+        }
     }
 
-    private void loadData(String type) {
-        items = new ArrayList<>();
+    private void fetchData(final String type) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("timings").child("public");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<List<DataItem>> t = new GenericTypeIndicator<List<DataItem>>() {};
 
+                //Trains from CBE
+                DataSnapshot tempShot = dataSnapshot.child("trains").child("from").child("cbe");
+                List<DataItem> timings = new ArrayList<>();
+                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                    timings.add(postSnapshot.getValue(DataItem.class));
+                }
+                if( timings == null ) {
+                    System.out.println("No timings");
+                }
+                else {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(timings);
+                    preferences.edit().putString("trains-from-cbe",json).apply();
+                }
+
+                //Trains from PKD
+                timings = new ArrayList<DataItem>();
+                tempShot = dataSnapshot.child("trains").child("from").child("pkd");
+                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                    timings.add(postSnapshot.getValue(DataItem.class));
+                }
+                if( timings == null ) {
+                    System.out.println("No timings");
+                }
+                else {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(timings);
+                    preferences.edit().putString("trains-from-pkd",json).apply();
+                }
+
+
+                //Trains to CBE
+                timings.clear();
+                tempShot=dataSnapshot.child("trains").child("to").child("cbe");
+                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                    timings.add(postSnapshot.getValue(DataItem.class));
+                }
+                if( timings == null ) {
+                    System.out.println("No timings");
+                }
+                else {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(timings);
+                    preferences.edit().putString("trains-to-cbe",json).apply();
+                }
+
+
+                //Trains to PKD
+                timings.clear();
+                tempShot = dataSnapshot.child("trains").child("to").child("pkd");
+                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                    timings.add(postSnapshot.getValue(DataItem.class));
+                }
+                if( timings == null ) {
+                    System.out.println("No timings");
+                }
+                else {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(timings);
+                    preferences.edit().putString("trains-to-pkd",json).apply();
+                }
+
+
+                //Bus from CBE
+                timings.clear();
+                tempShot= dataSnapshot.child("bus").child("from").child("cbe");
+                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                    timings.add(postSnapshot.getValue(DataItem.class));
+                }
+                if( timings == null ) {
+                    System.out.println("No timings");
+                }
+                else {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(timings);
+                    preferences.edit().putString("bus-from-cbe",json).apply();
+                }
+
+                //Bus to CBE
+                timings.clear();
+                tempShot= dataSnapshot.child("bus").child("to").child("cbe");
+                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                    timings.add(postSnapshot.getValue(DataItem.class));
+                }
+                if( timings == null ) {
+                    System.out.println("No timings");
+                }
+                else {
+                    Gson gson = new Gson();
+                    String json = gson.toJson(timings);
+                    preferences.edit().putString("bus-to-cbe",json).apply();
+                }
+
+
+                Log.d("INFO","Loading after fetch");
+                try {
+                    loadData(type);
+                } catch (JSONException e) {
+                    Utils.showUnexpectedError(TimingsActivity.this);
+                    finish();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("FBDB", "Failed to read value.", error.toException());
+                Utils.showUnexpectedError(TimingsActivity.this);
+                finish();
+            }
+        });
+    }
+
+    private void loadData(String type) throws JSONException {
+        items = new ArrayList<>();
+        Gson gson = new Gson();
 
         if (type != null && type.equals("Trains from Coimbatore")) {
-            items.add(new DataItem(
-                    "56323 Coimbatore Mangalore Fast Passenger",
-                    "All Days",
-                    "07:30 hours",
-                    "08:00 hours",
-                    "cbe",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66605 Coimbatore Shoranur Passenger",
-                    "Except Sundays",
-                    "09:45 hours",
-                    "10:14 hours",
-                    "cbe",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66609 Erode Palakkad MEMU",
-                    "Except Thursdays",
-                    "10:30 hours",
-                    "11:04 hours",
-                    "cbe",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56651 Coimbatore Kannur Fast Passenger",
-                    "All Days",
-                    "14:10 hours",
-                    "14:36 hours",
-                    "cbe",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56605 Coimbatore Thrissur Passenger ",
-                    "All Days",
-                    "16:40 hours",
-                    "17:07 hours",
-                    "cbe",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66607 Coimbatore Palakkad Town Passenger",
-                    "Except Sundays",
-                    "18:10 hours",
-                    "18:37 hours",
-                    "cbe",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56713 Trichy - Palakkad Town Fast Passenger ",
-                    "All Days",
-                    "18:30 hours",
-                    "19:03 hours",
-                    "cbe",
-                    "etmd",
-                    "train"
-            ));
+
+            String json = preferences.getString("trains-from-cbe", null);
+//            Type listType = new TypeToken<ArrayList<JSONObject>>() {}.getType();
+//            ArrayList<JSONObject> timings = gson.fromJson(json, listType);
+            JSONArray timings = new JSONArray(json);
+            System.out.println(timings.toString());
+            for(int i=0;i<timings.length();++i){
+                JSONObject item = timings.getJSONObject(i);
+                items.add(new DataItem(
+                        item.getString("name"),
+                        item.getString("days"),
+                        item.getString("dep"),
+                        "cbe",
+                        "etmd",
+                        "train"
+                ));
+            }
         }
 
         if (type != null && type.equals("Trains from Palghat")) {
-            items.add(new DataItem(
-                    "56712 Palghat Town Tiruchchirapalli Fast Passenger",
-                    "All Days",
-                    "06:43 hours",
-                    "07:24 hours",
-                    "pkd",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66606 Palghat Town Coimbatore Passenger",
-                    "Except Sundays",
-                    "07:33 hours",
-                    "08:14 hours",
-                    "pkd",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56604 Shoranur Coimbatore Passenger",
-                    "All Days",
-                    "09:10 hours",
-                    "09:54 hours",
-                    "pkd",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56650 Kannur Coimbatore Fast Passenger",
-                    "All Days",
-                    "11:25 hours",
-                    "12:14 hours",
-                    "pkd",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66608 Palakkad Erode MEMU",
-                    "Except Thursdays",
-                    "14:45 hours",
-                    "15:31 hours",
-                    "pkd",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66604 Shoranur Coimbatore Passenger",
-                    "Except Sundays",
-                    "15:55 hours",
-                    "16:39 hours",
-                    "pkd",
-                    "etmd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56324 Mangalore - Coimbatore Fast Passenger",
-                    "All Days",
-                    "17:50 hours",
-                    "18:39 hours",
-                    "pkd",
-                    "etmd",
-                    "train"
-            ));
+            String json = preferences.getString("trains-from-pkd", null);
+            Type listType = new TypeToken<ArrayList<JSONObject>>() {}.getType();
+            ArrayList<JSONObject> timings = gson.fromJson(json, listType);
+            for (JSONObject item:timings) {
+                items.add(new DataItem(
+                        item.getString("name"),
+                        item.getString("days"),
+                        item.getString("dep"),
+                        "pkd",
+                        "etmd",
+                        "train"
+                ));
+            }
         }
 
         if (type != null && type.equals("Trains to Coimbatore")) {
-            items.add(new DataItem(
-                    "56712 Palghat Town Tiruchchirapalli Fast Passenger",
-                    "All Days",
-                    "07:25 hours",
-                    "08:05 hours",
-                    "etmd",
-                    "cbe",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66606 Palghat Town Coimbatore Passenger",
-                    "Except Sundays",
-                    "08:15 hours",
-                    "09:00 hours",
-                    "etmd",
-                    "cbe",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56604 Shoranur Coimbatore Passenger",
-                    "All Days",
-                    "09:55 hours",
-                    "10:50 hours",
-                    "etmd",
-                    "cbe",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56650 Kannur Coimbatore Fast Passenger",
-                    "All Days",
-                    "12:15 hours",
-                    "13:30 hours",
-                    "etmd",
-                    "cbe",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66608 Palakkad Erode MEMU",
-                    "Except Thursdays",
-                    "15:32 hours",
-                    "16:05 hours",
-                    "etmd",
-                    "cbe",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66604 Shoranur Coimbatore Passenger",
-                    "Except Sundays",
-                    "16:40 hours",
-                    "17:40 hours",
-                    "etmd",
-                    "cbe",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56324 Mangalore - Coimbatore Fast Passenger",
-                    "All Days",
-                    "18:40 hours",
-                    "19:35 hours",
-                    "etmd",
-                    "cbe",
-                    "train"
-            ));
+            String json = preferences.getString("trains-to-cbe", null);
+            Type listType = new TypeToken<ArrayList<JSONObject>>() {}.getType();
+            ArrayList<JSONObject> timings = gson.fromJson(json, listType);
+            for (JSONObject item:timings) {
+                items.add(new DataItem(
+                        item.getString("name"),
+                        item.getString("days"),
+                        item.getString("dep"),
+                        "etmd",
+                        "cbe",
+                        "train"
+                ));
+            }
         }
 
         if (type != null && type.equals("Trains to Palghat")) {
-            items.add(new DataItem(
-                    "56323 Coimbatore Mangalore Fast Passenger",
-                    "All Days",
-                    "07:58 hours",
-                    "08:55  hours",
-                    "etmd",
-                    "pkd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66605 Coimbatore Shoranur Passenger",
-                    "Except Sundays",
-                    "10:15 hours",
-                    "11:00 hours",
-                    "etmd",
-                    "pkd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66609 Erode Palakkad MEMU",
-                    "Except Thursdays",
-                    "11:05 hours",
-                    "11:50  hours",
-                    "etmd",
-                    "pkd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56651 Coimbatore Kannur Fast Passenger",
-                    "All Days",
-                    "14:37 hours",
-                    "15:15 hours",
-                    "etmd",
-                    "pkd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56605 Coimbatore Thrissur Passenger",
-                    "All Days",
-                    "17:08 hours",
-                    "17:50 hours",
-                    "etmd",
-                    "pkd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "66607 Coimbatore Palakkad Town Passenger",
-                    "Except Sundays",
-                    "18:38 hours",
-                    "19:23 hours",
-                    "etmd",
-                    "pkd",
-                    "train"
-            ));
-            items.add(new DataItem(
-                    "56847 Trichy - Palakkad Town Fast Passenger",
-                    "All Days",
-                    "19:04 hours",
-                    "19:55 hours",
-                    "etmd",
-                    "pkd",
-                    "train"
-            ));
+            String json = preferences.getString("trains-to-pkd", null);
+            Type listType = new TypeToken<ArrayList<JSONObject>>() {}.getType();
+            ArrayList<JSONObject> timings = gson.fromJson(json, listType);
+            for (JSONObject item:timings) {
+                items.add(new DataItem(
+                        item.getString("name"),
+                        item.getString("days"),
+                        item.getString("dep"),
+                        "etmd",
+                        "pkd",
+                        "train"
+                ));
+            }
         }
 
         if (type != null && type.equals("Buses from Coimbatore")) {
-            items.add(new DataItem(
+            String json = preferences.getString("bus-from-cbe", null);
+            Type listType = new TypeToken<ArrayList<JSONObject>>() {}.getType();
+            ArrayList<JSONObject> timings = gson.fromJson(json, listType);
+            for (JSONObject item:timings) {
+                items.add(new DataItem(
+                        item.getString("name"),
+                        item.getString("days"),
+                        item.getString("dep"),
+                        "cbe",
+                        "etmd",
+                        "bus"
+                ));
+            }
+            /*items.add(new DataItem(
                     "Local Govt. Transport Bus 'A3'",
                     "All Days",
                     "06:15 hours",
@@ -426,11 +378,24 @@ public class TimingsActivity extends AppCompatActivity {
                     "cbe",
                     "etmd",
                     "bus"
-            ));
+            ));*/
         }
 
         if (type != null && type.equals("Buses to Coimbatore")) {
-            items.add(new DataItem(
+            String json = preferences.getString("bus-to-cbe", null);
+            Type listType = new TypeToken<ArrayList<JSONObject>>() {}.getType();
+            ArrayList<JSONObject> timings = gson.fromJson(json, listType);
+            for (JSONObject item:timings) {
+                items.add(new DataItem(
+                        item.getString("name"),
+                        item.getString("days"),
+                        item.getString("dep"),
+                        "etmd",
+                        "cbe",
+                        "bus"
+                ));
+            }
+            /*items.add(new DataItem(
                     "Local Govt. Transport Bus 'A3'",
                     "All Days",
                     "08:30 hours",
@@ -492,30 +457,41 @@ public class TimingsActivity extends AppCompatActivity {
                     "etmd",
                     "cbe",
                     "bus"
-            ));
+            ));*/
+        }
+
+        if(items!=null){
+            ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items) {
+                @NonNull
+                @Override
+                public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                    if (convertView == null) {
+                        convertView = getLayoutInflater().inflate(R.layout.timing_item, null);
+                    }
+                    DataItem item = getItem(position);
+                    ((TextView) convertView.findViewById(R.id.name)).setText(item.name);
+                    String font_color = "<font color='#b71c1c'>";
+
+                    if (item.from.equals("cbe"))
+                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Coimbatore at " + font_color + item.dep + "</font>"));
+                    if (item.from.equals("etmd"))
+                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Ettimadai at " + font_color + item.dep + "</font>"));
+                    if (item.from.equals("pkd"))
+                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml("Departs from Palghat at " + font_color + item.dep + "</font>"));
+
+
+                    if (item.days.equals("All Days"))
+                        ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days"));
+                    else
+                        ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days " + item.days));
+
+                    return convertView;
+                }
+            };
+            listView.setAdapter(dataItemArrayAdapter);
+            listView.setTextFilterEnabled(true);
+            listView.setItemsCanFocus(false);
         }
     }
-
-    private class DataItem {
-        String name;
-        String days;
-        String departure;
-        String arrival;
-        String from;
-        String to;
-        String type;
-
-        DataItem(String name, String days, String departure, String arrival, String from, String to, String type) {
-            this.name = name;
-            this.days = days;
-            this.departure = departure;
-            this.arrival = arrival;
-            this.from = from;
-            this.to = to;
-            this.type = type;
-        }
-    }
-
-
 }
 
