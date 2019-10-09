@@ -1,5 +1,6 @@
 language: android
 jdk: oraclejdk8
+sudo: required
 env:
  global:
     - ANDROID_API_LEVEL=28
@@ -22,6 +23,6 @@ android:
     - extra-android-m2repository
     - addon-google_apis-google-$ANDROID_API_LEVEL
 before_script:
-    - cp ./app/mock-google-services.json "$ANDROID_HOME/app/google-services.json"
+    - cp ./app/mock-google-services.json "$ANDROID_HOMEapp/google-services.json"
 script:
     - ./gradlew build check
