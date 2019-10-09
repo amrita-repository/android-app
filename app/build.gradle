@@ -23,6 +23,7 @@ android {
     compileSdkVersion 28
     lintOptions {
         checkReleaseBuilds false
+        abortOnError false
     }
     defaultConfig {
         applicationId "in.co.rajkumaar.amritarepo"
