@@ -24,5 +24,6 @@ android:
     - addon-google_apis-google-$ANDROID_API_LEVEL
 before_script:
     - cp app/mock-google-services.json app/google-services.json
+    - cp app/keys.properties.example app/keys.properties
 script:
     - ./gradlew build check
