@@ -83,7 +83,7 @@ public class CurriculumActivity extends AppCompatActivity {
         setContentView(R.layout.activity_curriculum);
         Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
         try {
-            webViewLink = "https://dev.rajkumaar.co.in/utils/curriculum.php";
+            webViewLink = getString(R.string.dev_domain)+"/utils/curriculum.php";
             if (webViewLink == null) {
                 Utils.showToast(CurriculumActivity.this, "Invalid URL");
                 finish();

@@ -11,12 +11,7 @@ try {
     println("===========")
     println()
 } catch (e) {
-    props.load(new FileInputStream("app/keys.properties.example"))
-    println("===========")
-    println(e.message)
-    println("Loaded app/keys.properties.example instead.")
-    println("===========")
-    println()
+    throw e
 }
 
 android {
@@ -29,8 +24,8 @@ android {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 51
-        versionName "3.2.3"
+        versionCode 52
+        versionName "3.2.4"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
