@@ -75,7 +75,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
         }
         setContentView(R.layout.activity_timetable);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         pref = getSharedPreferences("student_timetable", MODE_PRIVATE);
         editor = pref.edit();
         new clearCache().clear();

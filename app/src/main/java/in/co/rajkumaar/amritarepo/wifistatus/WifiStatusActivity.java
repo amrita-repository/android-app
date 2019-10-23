@@ -57,7 +57,7 @@ public class WifiStatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_status);
-        Utils.showBigAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         dialog = new ProgressDialog(WifiStatusActivity.this);
         dialog.setCancelable(false);
 

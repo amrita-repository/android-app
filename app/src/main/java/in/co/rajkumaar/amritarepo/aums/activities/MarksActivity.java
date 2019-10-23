@@ -51,7 +51,6 @@ import java.util.Random;
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 
 public class MarksActivity extends AppCompatActivity {
@@ -62,7 +61,7 @@ public class MarksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marks);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         recyclerView = findViewById(R.id.list);
         UserData.refIndex = 1;
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];

@@ -48,8 +48,5 @@
         If you are a faculty and would like to add your site on behalf of your department in this application,
         please drop a mail to rajkumaar2304@gmail.com</string>
 
-
-    <string name="adUnitId">@string/realAdUnitId</string>
-    <string name="realAdUnitId">ca-app-pub-9341647677012996/4224040687</string>
-    <string name="testAdUnitId">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="donate">If you &#x2665; the app, consider donating here</string>
 </resources>

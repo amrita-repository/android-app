@@ -5,6 +5,8 @@
 package in.co.rajkumaar.amritarepo.activities;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -46,6 +48,7 @@ import static android.view.View.GONE;
 
 public class SupportActivity extends AppCompatActivity {
 
+    private static final String GOOGLE_TEZ_PACKAGE_NAME = "com.google.android.apps.nbu.paisa.user";
     Spinner options;
     CheckBox anonymous;
     EditText email;
@@ -55,7 +58,7 @@ public class SupportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_support);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         options = findViewById(R.id.options);
         email = findViewById(R.id.email);
         anonymous = findViewById(R.id.anonymous);
@@ -92,12 +95,23 @@ public class SupportActivity extends AppCompatActivity {
         findViewById(R.id.kofi).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://ko-fi.com/rajkumaar23"));
-                if (intent.resolveActivity(getPackageManager()) != null) {
+                try {
+                    Uri uri =
+                            new Uri.Builder()
+                                    .scheme("upi")
+                                    .authority("pay")
+                                    .appendQueryParameter("pa", "rajkumaar2304@oksbi")
+                                    .appendQueryParameter("pn", "Rajkumar S")
+                                    .appendQueryParameter("tn", "Donation to Amrita Repository")
+                                    .appendQueryParameter("cu", "INR")
+                                    .build();
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(uri);
+                    intent.setPackage(GOOGLE_TEZ_PACKAGE_NAME);
                     startActivity(intent);
-                } else {
-                    Utils.showToast(SupportActivity.this, "Error occurred. Please try again later.");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Utils.showUnexpectedError(SupportActivity.this);
                 }
             }
         });
@@ -182,6 +196,13 @@ public class SupportActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void copyUPI(View view) {
+        final ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("Source Text", "rajkumaar2304@oksbi");
+        clipboardManager.setPrimaryClip(clipData);
+        Utils.showToast(this, "UPI ID copied to clipboard");
     }
 
     private class PurchaseListener extends EmptyRequestListener<Purchase> {

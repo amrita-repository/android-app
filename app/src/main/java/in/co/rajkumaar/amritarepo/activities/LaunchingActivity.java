@@ -52,17 +52,10 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.AboutActivity;
@@ -87,7 +80,6 @@ import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.ParticleSystem;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
-import okhttp3.internal.Util;
 
 public class LaunchingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -160,7 +152,7 @@ public class LaunchingActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_home));
         navigationView.setNavigationItemSelectedListener(this);
@@ -443,7 +435,7 @@ public class LaunchingActivity extends AppCompatActivity
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage("in.co.rajkumaar.amritacms");
                 if (launchIntent != null) {
                     startActivity(launchIntent);
-                }else{
+                } else {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritacms"));
                     if (intent.resolveActivity(getPackageManager()) != null)
@@ -504,10 +496,10 @@ public class LaunchingActivity extends AppCompatActivity
                             dialogInterface.dismiss();
                         }
                     });
-                    try{
+                    try {
                         if (active)
                             alertDialog.show();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -515,9 +507,9 @@ public class LaunchingActivity extends AppCompatActivity
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                try{
+                try {
                     Crashlytics.log(databaseError.getMessage());
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -567,18 +559,10 @@ public class LaunchingActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_bug_report) {
-            Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto", "rajkumaar2304@gmail.com", null));
-            it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
-            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
-            if (it.resolveActivity(getPackageManager()) != null)
-                startActivity(it);
-        } else if (id == R.id.celebs) {
-            startActivity(new Intent(this,AboutActivity.class));
-        }else if(id == R.id.action_download){
-            startActivity(new Intent(this,DownloadsActivity.class));
+        if (id == R.id.celebs) {
+            startActivity(new Intent(this, AboutActivity.class));
+        } else if (id == R.id.action_download) {
+            startActivity(new Intent(this, DownloadsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -633,6 +617,13 @@ public class LaunchingActivity extends AppCompatActivity
                 Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
         } else if (id == R.id.nav_donate) {
             startActivity(new Intent(getBaseContext(), SupportActivity.class));
+        } else if (id == R.id.nav_bugreport) {
+            Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", "rajkumaar2304@gmail.com", null));
+            it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
+            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
+            if (it.resolveActivity(getPackageManager()) != null)
+                startActivity(it);
         }
         return true;
     }
@@ -649,14 +640,14 @@ public class LaunchingActivity extends AppCompatActivity
         Log.e("Dept", title);
         mFirebaseAnalytics.logEvent("EventDept", params);
 
-        if(Utils.isConnected(this)){
+        if (Utils.isConnected(this)) {
 
             Intent intent = new Intent(LaunchingActivity.this, SemesterActivity.class);
             intent.putExtra("course", position);
             intent.putExtra("pageTitle", title);
             startActivity(intent);
 
-        }else{
+        } else {
             Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
         }
     }
@@ -677,6 +668,10 @@ public class LaunchingActivity extends AppCompatActivity
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    public void openSupport(View view) {
+        startActivity(new Intent(this, SupportActivity.class));
     }
 
     class HomeItemAdapter extends BaseAdapter {

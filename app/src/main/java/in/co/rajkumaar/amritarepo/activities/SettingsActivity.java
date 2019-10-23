@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -28,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        Utils.showBigAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         current_program = findViewById(R.id.current_program);
         change_program = findViewById(R.id.change_program);
         pref = getSharedPreferences("user", MODE_PRIVATE);

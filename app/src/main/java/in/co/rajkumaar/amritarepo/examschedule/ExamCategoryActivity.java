@@ -28,12 +28,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,10 +45,7 @@ import java.util.Random;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
-import in.co.rajkumaar.amritarepo.papers.AssessmentsActivity;
 import in.co.rajkumaar.amritarepo.papers.PaperAdapter;
-import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
-import okhttp3.internal.Util;
 
 public class ExamCategoryActivity extends AppCompatActivity {
 
@@ -63,7 +58,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_schedule);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         url_exams = getResources().getString(R.string.url_exams);
         headings = new ArrayList<>();
         texts = new ArrayList<>();

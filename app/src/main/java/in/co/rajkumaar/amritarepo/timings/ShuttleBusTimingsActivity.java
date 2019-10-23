@@ -26,6 +26,7 @@ package in.co.rajkumaar.amritarepo.timings;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -39,7 +40,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -52,40 +52,35 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ShuttleBusTimingsActivity extends AppCompatActivity {
 
+    String type;
+    ProgressDialog dialog;
     private GridView listView;
     private ArrayList<DataItem> items;
     private SharedPreferences preferences;
-    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shuttle_bus_timings);
-        Utils.showBigAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
 
-        preferences = getSharedPreferences("timings",MODE_PRIVATE);
+
+        preferences = getSharedPreferences("timings", MODE_PRIVATE);
         listView = findViewById(R.id.timings_list);
         Bundle extras = getIntent().getExtras();
         type = extras.getString("type");
         getSupportActionBar().setTitle(type);
 
-        if(!preferences.contains("ab1")){
+        if (!preferences.contains("ab1")) {
             fetchData();
-        }else{
+        } else {
             loadData(type);
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("timings").child("shuttle");
@@ -93,8 +88,8 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String version = dataSnapshot.child("version").getValue(String.class);
-                    if(!version.equals(preferences.getString("version", null))){
-                        preferences.edit().putString("version",version).apply();
+                    if (!version.equals(preferences.getString("version", null))) {
+                        preferences.edit().putString("version", version).apply();
                         fetchData();
                     }
                 }
@@ -109,32 +104,43 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
         }
     }
 
-    private void fetchData(){
+    private void fetchData() {
+        try {
+            dialog = new ProgressDialog(this);
+            dialog.setMessage("Please wait while data is fetched & cached");
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("timings").child("shuttle");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
+                GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {
+                };
                 List timings = dataSnapshot.child("ab1").getValue(t);
-                if( timings == null ) {
+                if (timings == null) {
                     System.out.println("No timings");
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     String json = gson.toJson(timings);
-                    preferences.edit().putString("ab1",json).apply();
+                    preferences.edit().putString("ab1", json).apply();
                 }
                 timings = dataSnapshot.child("ab3").getValue(t);
-                if( timings == null ) {
+                if (timings == null) {
                     System.out.println("No timings");
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     String json = gson.toJson(timings);
-                    preferences.edit().putString("ab3",json).apply();
+                    preferences.edit().putString("ab3", json).apply();
                 }
-                Log.d("INFO","Loading after fetch");
+                try {
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.d("INFO", "Loading after fetch");
                 loadData(type);
             }
 
@@ -152,24 +158,26 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
         Gson gson = new Gson();
         if (type != null && type.equals("Buses from AB1")) {
             String json = preferences.getString("ab1", null);
-            Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+            Type listType = new TypeToken<ArrayList<String>>() {
+            }.getType();
             ArrayList<String> timings = gson.fromJson(json, listType);
-            for (String item:timings) {
+            for (String item : timings) {
                 items.add(new DataItem(
                         item, "ab1"
                 ));
             }
         } else if (type != null && type.equals("Buses from AB3")) {
             String json = preferences.getString("ab3", null);
-            Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+            Type listType = new TypeToken<ArrayList<String>>() {
+            }.getType();
             ArrayList<String> timings = gson.fromJson(json, listType);
-            for (String item:timings) {
+            for (String item : timings) {
                 items.add(new DataItem(
                         item, "ab3"
                 ));
             }
         }
-        if(items!=null){
+        if (items != null) {
             ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items) {
                 @SuppressLint("InflateParams")
                 @NonNull
@@ -182,9 +190,9 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                     String font_color = "<font color='#ff8800'>";
 
                     if (item.from.equals("ab1"))
-                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml( font_color + item.departure + "</font>"));
+                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml(font_color + item.departure + "</font>"));
                     if (item.from.equals("ab3"))
-                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml( font_color + item.departure + "</font>"));
+                        ((TextView) convertView.findViewById(R.id.departure)).setText(Html.fromHtml(font_color + item.departure + "</font>"));
                     return convertView;
                 }
             };
@@ -222,7 +230,6 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     private class DataItem {

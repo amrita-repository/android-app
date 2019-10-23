@@ -30,7 +30,7 @@ public class ExamsFAQActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         try {
             this.setTitle("Frequently Asked Questions");
             dialog = new ProgressDialog(ExamsFAQActivity.this);

@@ -4,7 +4,7 @@
 
 package in.co.rajkumaar.amritarepo.timings;
 
-public class DataItem{
+public class DataItem {
 
     public String name = "";
     public String days = "";
@@ -13,7 +13,7 @@ public class DataItem{
     public String to = "";
     public String type = "";
 
-    public DataItem(){
+    public DataItem() {
 
     }
 

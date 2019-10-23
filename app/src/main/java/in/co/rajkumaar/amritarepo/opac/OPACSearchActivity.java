@@ -39,7 +39,7 @@ public class OPACSearchActivity extends AppCompatActivity {
         docTypeSpinner = findViewById(R.id.docType);
         fieldSpinner = findViewById(R.id.field);
         searchKeyword = findViewById(R.id.searchKeyword);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         init();
     }
 

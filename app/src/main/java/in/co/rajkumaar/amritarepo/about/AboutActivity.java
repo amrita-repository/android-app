@@ -28,49 +28,12 @@ import java.util.Objects;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.SupportActivity;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAnalytics mFirebaseAnalytics;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
-        Utils.showBigAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
-
-        ImageView insta,fb,linkedin,github,website;
-        insta = findViewById(R.id.insta);
-        fb = findViewById(R.id.fb);
-        linkedin = findViewById(R.id.linkedin);
-        github = findViewById(R.id.github);
-        website = findViewById(R.id.site);
-
-        insta.setImageDrawable(new IconDrawable(this,FontAwesomeIcons.fa_instagram).color(Color.parseColor("#ffffff")));
-        fb.setImageDrawable(new IconDrawable(this,FontAwesomeIcons.fa_facebook_square).color(Color.parseColor("#ffffff")));
-        linkedin.setImageDrawable(new IconDrawable(this,FontAwesomeIcons.fa_linkedin).color(Color.parseColor("#ffffff")));
-        github.setImageDrawable(new IconDrawable(this,FontAwesomeIcons.fa_github).color(Color.parseColor("#ffffff")));
-        website.setImageDrawable(new IconDrawable(this,FontAwesomeIcons.fa_user).color(Color.parseColor("#ffffff")));
-
-        insta.setOnClickListener(this);
-        fb.setOnClickListener(this);
-        linkedin.setOnClickListener(this);
-        github.setOnClickListener(this);
-        website.setOnClickListener(this);
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Button disclaimer = findViewById(R.id.disclaimer);
-        disclaimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDisclaimer(AboutActivity.this);
-            }
-        });
-        ((TextView) findViewById(R.id.name)).setText(Html.fromHtml("Crafted with &hearts; by <br><strong>RAJKUMAR</strong>"));
-    }
 
     public static void showDisclaimer(Context context) {
         try {
@@ -89,6 +52,42 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about);
+
+
+        ImageView insta, fb, linkedin, github, website;
+        insta = findViewById(R.id.insta);
+        fb = findViewById(R.id.fb);
+        linkedin = findViewById(R.id.linkedin);
+        github = findViewById(R.id.github);
+        website = findViewById(R.id.site);
+
+        insta.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_instagram).color(Color.parseColor("#ffffff")));
+        fb.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_facebook_square).color(Color.parseColor("#ffffff")));
+        linkedin.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_linkedin).color(Color.parseColor("#ffffff")));
+        github.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_github).color(Color.parseColor("#ffffff")));
+        website.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_user).color(Color.parseColor("#ffffff")));
+
+        insta.setOnClickListener(this);
+        fb.setOnClickListener(this);
+        linkedin.setOnClickListener(this);
+        github.setOnClickListener(this);
+        website.setOnClickListener(this);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Button disclaimer = findViewById(R.id.disclaimer);
+        disclaimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDisclaimer(AboutActivity.this);
+            }
+        });
+        ((TextView) findViewById(R.id.name)).setText(Html.fromHtml("Crafted with &hearts; by <br><strong>RAJKUMAR</strong>"));
     }
 
     @SuppressLint("PrivateResource")
@@ -113,21 +112,26 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         String url = "";
         params.putString("IMAGE_CLICK", "About");
         mFirebaseAnalytics.logEvent("IMAGE_CLICK", params);
-        switch (v.getId()){
-            case R.id.insta : {
-                url = "https://instagram.com/rajkumaar23"; break;
+        switch (v.getId()) {
+            case R.id.insta: {
+                url = "https://instagram.com/rajkumaar23";
+                break;
             }
-            case R.id.fb : {
-                url = "https://facebook.com/rajkumaar23"; break;
+            case R.id.fb: {
+                url = "https://facebook.com/rajkumaar23";
+                break;
             }
-            case R.id.github : {
-                url = "https://github.com/rajkumaar23"; break;
+            case R.id.github: {
+                url = "https://github.com/rajkumaar23";
+                break;
             }
-            case R.id.linkedin : {
-                url = "https://linkedin.com/in/rajkumaar23"; break;
+            case R.id.linkedin: {
+                url = "https://linkedin.com/in/rajkumaar23";
+                break;
             }
-            case R.id.site : {
-                url = "http://rajkumaar.co.in"; break;
+            case R.id.site: {
+                url = "http://rajkumaar.co.in";
+                break;
             }
         }
         Intent i = new Intent(Intent.ACTION_VIEW);

@@ -66,7 +66,7 @@ public class GradesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grades);
         preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
         list = findViewById(R.id.list);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         sem = getIntent().getStringExtra("sem");
         findViewById(R.id.section_header).setVisibility(View.GONE);
         getSupportActionBar().setSubtitle("Logged in as " + preferences.getString("name", ""));

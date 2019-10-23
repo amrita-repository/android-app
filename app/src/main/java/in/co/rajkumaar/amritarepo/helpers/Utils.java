@@ -25,38 +25,19 @@
 package in.co.rajkumaar.amritarepo.helpers;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.IBinder;
-import android.os.IInterface;
-import android.os.Looper;
-import android.os.Parcel;
-import android.os.RemoteException;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
-
-import com.facebook.ads.AdSize;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
-import java.util.concurrent.LinkedBlockingQueue;
-
-import in.co.rajkumaar.amritarepo.BuildConfig;
 
 public class Utils {
 
@@ -104,23 +85,6 @@ public class Utils {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
-    private static void showAd(final Context context, AdView linearLayout, AdSize adSize) {
-        if (!BuildConfig.DEBUG) {
-            try {
-                MobileAds.initialize(context, "ca-app-pub-9341647677012996~5941760118");
-                AdRequest adRequest = new AdRequest.Builder().build();
-                linearLayout.loadAd(adRequest);
-                linearLayout.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(int errorCode) {
-                        Log.e("ERROR LOADING AD", "" + errorCode);
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
     public static String getUrlWithoutParameters(String url) throws URISyntaxException {
         URI uri = new URI(url);
         return new URI(uri.getScheme(),
@@ -130,139 +94,13 @@ public class Utils {
                 uri.getFragment()).toString();
     }
 
-    public static void showSmallAd(Context context, AdView linearLayout) {
-        showAd(context, linearLayout, AdSize.BANNER_HEIGHT_50);
-    }
-
-    public static void showBigAd(Context context, AdView linearLayout) {
-        showAd(context, linearLayout, AdSize.BANNER_HEIGHT_50);
-    }
-
     public static ArrayList<String> getAcademicYears() {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         ArrayList<String> years = new ArrayList<>();
         years.add("[Choose year]");
-        years.add((currentYear - 4) + "_" + String.valueOf(currentYear - 3).substring(2, 4));
-        years.add((currentYear - 3) + "_" + String.valueOf(currentYear - 2).substring(2, 4));
-        years.add((currentYear - 2) + "_" + String.valueOf(currentYear - 1).substring(2, 4));
-        years.add((currentYear - 1) + "_" + String.valueOf(currentYear).substring(2, 4));
-        years.add((currentYear) + "_" + String.valueOf(currentYear + 1).substring(2, 4));
-        years.add((currentYear + 1) + "_" + String.valueOf(currentYear + 2).substring(2, 4));
+        for (int i = 4; i > -1; --i) {
+            years.add((currentYear - i) + "_" + String.valueOf(currentYear - (i - 1)).substring(2, 4));
+        }
         return years;
-    }
-
-    public static void printAAID(final Context context) {
-        new Thread(new Runnable() {
-            public void run() {
-                if (Looper.myLooper() == Looper.getMainLooper())
-                    throw new IllegalStateException("Cannot be called from the main thread");
-
-                try {
-                    PackageManager pm = context.getPackageManager();
-                    pm.getPackageInfo("com.android.vending", 0);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                AdvertisingConnection connection = new AdvertisingConnection();
-                Intent intent = new Intent("com.google.android.gms.ads.identifier.service.START");
-                intent.setPackage("com.google.android.gms");
-                if (context.bindService(intent, connection, Context.BIND_AUTO_CREATE)) {
-                    try {
-                        AdvertisingInterface adInterface = new AdvertisingInterface(connection.getBinder());
-                        AdInfo adInfo = new AdInfo(adInterface.getId(), adInterface.isLimitAdTrackingEnabled(true));
-                        Log.v("ADS-ID", adInfo.getId());
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    } finally {
-                        context.unbindService(connection);
-                    }
-                }
-            }
-        }).start();
-    }
-
-    public static final class AdInfo {
-        private final String advertisingId;
-        private final boolean limitAdTrackingEnabled;
-
-        AdInfo(String advertisingId, boolean limitAdTrackingEnabled) {
-            this.advertisingId = advertisingId;
-            this.limitAdTrackingEnabled = limitAdTrackingEnabled;
-        }
-
-        public String getId() {
-            return this.advertisingId;
-        }
-
-        public boolean isLimitAdTrackingEnabled() {
-            return this.limitAdTrackingEnabled;
-        }
-    }
-
-    private static final class AdvertisingConnection implements ServiceConnection {
-        private final LinkedBlockingQueue<IBinder> queue = new LinkedBlockingQueue<IBinder>(1);
-        boolean retrieved = false;
-
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            try {
-                this.queue.put(service);
-            } catch (InterruptedException localInterruptedException) {
-            }
-        }
-
-        public void onServiceDisconnected(ComponentName name) {
-        }
-
-        public IBinder getBinder() throws InterruptedException {
-            if (this.retrieved) throw new IllegalStateException();
-            this.retrieved = true;
-            return this.queue.take();
-        }
-    }
-
-    private static final class AdvertisingInterface implements IInterface {
-        private IBinder binder;
-
-        public AdvertisingInterface(IBinder pBinder) {
-            binder = pBinder;
-        }
-
-        public IBinder asBinder() {
-            return binder;
-        }
-
-        public String getId() throws RemoteException {
-            Parcel data = Parcel.obtain();
-            Parcel reply = Parcel.obtain();
-            String id;
-            try {
-                data.writeInterfaceToken("com.google.android.gms.ads.identifier.internal.IAdvertisingIdService");
-                binder.transact(1, data, reply, 0);
-                reply.readException();
-                id = reply.readString();
-            } finally {
-                reply.recycle();
-                data.recycle();
-            }
-            return id;
-        }
-
-        public boolean isLimitAdTrackingEnabled(boolean paramBoolean) throws RemoteException {
-            Parcel data = Parcel.obtain();
-            Parcel reply = Parcel.obtain();
-            boolean limitAdTracking;
-            try {
-                data.writeInterfaceToken("com.google.android.gms.ads.identifier.internal.IAdvertisingIdService");
-                data.writeInt(paramBoolean ? 1 : 0);
-                binder.transact(2, data, reply, 0);
-                reply.readException();
-                limitAdTracking = 0 != reply.readInt();
-            } finally {
-                reply.recycle();
-                data.recycle();
-            }
-            return limitAdTracking;
-        }
     }
 }

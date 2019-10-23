@@ -54,7 +54,6 @@ import java.util.Random;
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class GradesActivity extends AppCompatActivity {
 
@@ -65,7 +64,7 @@ public class GradesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grades);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         actionBar = findViewById(R.id.section_header);
         list = findViewById(R.id.list);
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];

@@ -48,7 +48,6 @@ import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.downloads.adapters.CategoryAdapter;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class DownloadsActivity extends AppCompatActivity {
@@ -59,7 +58,7 @@ public class DownloadsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_downloads);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -112,12 +111,6 @@ public class DownloadsActivity extends AppCompatActivity {
             alertDialog.show();
         }
 
-        findViewById(R.id.ftp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), FTPActivity.class));
-            }
-        });
 
         // Find the tab layout that shows the tabs
         TabLayout tabLayout = findViewById(R.id.tabs);

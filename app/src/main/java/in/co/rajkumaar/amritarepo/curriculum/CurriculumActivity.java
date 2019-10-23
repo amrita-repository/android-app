@@ -37,37 +37,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import org.json.JSONArray;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
-import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
-import in.co.rajkumaar.amritarepo.helpers.OpenTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
-import in.co.rajkumaar.amritarepo.papers.SubjectsActivity;
 
 public class CurriculumActivity extends AppCompatActivity {
 
@@ -81,9 +63,9 @@ public class CurriculumActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_curriculum);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         try {
-            webViewLink = getString(R.string.dev_domain)+"/utils/curriculum.php";
+            webViewLink = getString(R.string.dev_domain) + "/utils/curriculum.php";
             if (webViewLink == null) {
                 Utils.showToast(CurriculumActivity.this, "Invalid URL");
                 finish();
@@ -111,7 +93,7 @@ public class CurriculumActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
-                                if(Utils.getUrlWithoutParameters(url).contains(".pdf")) {
+                                if (Utils.getUrlWithoutParameters(url).contains(".pdf")) {
                                     final ArrayList<String> options = new ArrayList<>();
                                     options.add("View");
                                     options.add("Download");

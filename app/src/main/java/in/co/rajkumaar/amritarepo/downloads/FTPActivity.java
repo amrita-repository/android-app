@@ -73,7 +73,6 @@ public class FTPActivity extends AppCompatActivity {
         share = findViewById(R.id.share);
         tools = findViewById(R.id.tools);
 
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
 
         final String home = Environment.getExternalStorageDirectory() + "/" + "AmritaRepo/";
         final int port = 2304;
@@ -142,7 +141,7 @@ public class FTPActivity extends AppCompatActivity {
                 final ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("Source Text", result.getText().toString().split("at")[1].trim());
                 clipboardManager.setPrimaryClip(clipData);
-                Utils.showToast(FTPActivity.this,"Copied to clipboard");
+                Utils.showToast(FTPActivity.this, "Copied to clipboard");
             }
         });
         share.setOnClickListener(new View.OnClickListener() {

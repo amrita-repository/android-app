@@ -25,10 +25,9 @@
 package in.co.rajkumaar.amritarepo.timings;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +60,7 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class TimingsActivity extends AppCompatActivity {
 
+    ProgressDialog dialog;
     private ListView listView;
     private ArrayList<DataItem> items;
     private SharedPreferences preferences;
@@ -69,13 +69,13 @@ public class TimingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_bus_timings);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
 
         listView = findViewById(R.id.timings_list);
         Bundle extras = getIntent().getExtras();
         final String type = extras.getString("type");
 
-        preferences = getSharedPreferences("public-transport",MODE_PRIVATE);
+        preferences = getSharedPreferences("public-transport", MODE_PRIVATE);
         getSupportActionBar().setTitle(type);
 
         try {
@@ -86,10 +86,10 @@ public class TimingsActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String version = dataSnapshot.child("version").getValue(String.class);
-                    Log.d("VERSION FROM FBDB",version);
-                    if(!version.equals(preferences.getString("version", null))){
-                        preferences.edit().putString("version",version).apply();
-                        Log.d("VERSION AFTER EDIT PREF",preferences.getString("version",null));
+                    Log.d("VERSION FROM FBDB", version);
+                    if (!version.equals(preferences.getString("version", null))) {
+                        preferences.edit().putString("version", version).apply();
+                        Log.d("VERSION AFTER EDIT PREF", preferences.getString("version", null));
                         fetchData(type);
                     }
                 }
@@ -109,6 +109,13 @@ public class TimingsActivity extends AppCompatActivity {
     }
 
     private void fetchData(final String type) {
+        try {
+            dialog = new ProgressDialog(this);
+            dialog.setMessage("Please wait while data is fetched & cached");
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("timings").child("public");
         myRef.addValueEventListener(new ValueEventListener() {
@@ -118,98 +125,96 @@ public class TimingsActivity extends AppCompatActivity {
                 //Trains from CBE
                 DataSnapshot tempShot = dataSnapshot.child("trains").child("from").child("cbe");
                 List<DataItem> timings = new ArrayList<>();
-                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                for (DataSnapshot postSnapshot : tempShot.getChildren()) {
                     timings.add(postSnapshot.getValue(DataItem.class));
                 }
-                if( timings == null ) {
+                if (timings == null) {
                     System.out.println("No timings");
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     String json = gson.toJson(timings);
-                    preferences.edit().putString("trains-from-cbe",json).apply();
+                    preferences.edit().putString("trains-from-cbe", json).apply();
                 }
 
                 //Trains from PKD
                 timings.clear();
                 tempShot = dataSnapshot.child("trains").child("from").child("pkd");
-                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                for (DataSnapshot postSnapshot : tempShot.getChildren()) {
                     timings.add(postSnapshot.getValue(DataItem.class));
                 }
-                if( timings == null ) {
+                if (timings == null) {
                     System.out.println("No timings");
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     String json = gson.toJson(timings);
-                    preferences.edit().putString("trains-from-pkd",json).apply();
+                    preferences.edit().putString("trains-from-pkd", json).apply();
                 }
 
 
                 //Trains to CBE
                 timings.clear();
-                tempShot=dataSnapshot.child("trains").child("to").child("cbe");
-                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                tempShot = dataSnapshot.child("trains").child("to").child("cbe");
+                for (DataSnapshot postSnapshot : tempShot.getChildren()) {
                     timings.add(postSnapshot.getValue(DataItem.class));
                 }
-                if( timings == null ) {
+                if (timings == null) {
                     System.out.println("No timings");
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     String json = gson.toJson(timings);
-                    preferences.edit().putString("trains-to-cbe",json).apply();
+                    preferences.edit().putString("trains-to-cbe", json).apply();
                 }
 
 
                 //Trains to PKD
                 timings.clear();
                 tempShot = dataSnapshot.child("trains").child("to").child("pkd");
-                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                for (DataSnapshot postSnapshot : tempShot.getChildren()) {
                     timings.add(postSnapshot.getValue(DataItem.class));
                 }
-                if( timings == null ) {
+                if (timings == null) {
                     System.out.println("No timings");
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     String json = gson.toJson(timings);
-                    preferences.edit().putString("trains-to-pkd",json).apply();
+                    preferences.edit().putString("trains-to-pkd", json).apply();
                 }
 
 
                 //Bus from CBE
                 timings.clear();
-                tempShot= dataSnapshot.child("bus").child("from").child("cbe");
-                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                tempShot = dataSnapshot.child("bus").child("from").child("cbe");
+                for (DataSnapshot postSnapshot : tempShot.getChildren()) {
                     timings.add(postSnapshot.getValue(DataItem.class));
                 }
-                if( timings == null ) {
+                if (timings == null) {
                     System.out.println("No timings");
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     String json = gson.toJson(timings);
-                    preferences.edit().putString("bus-from-cbe",json).apply();
+                    preferences.edit().putString("bus-from-cbe", json).apply();
                 }
 
                 //Bus to CBE
                 timings.clear();
-                tempShot= dataSnapshot.child("bus").child("to").child("cbe");
-                for (DataSnapshot postSnapshot: tempShot.getChildren()) {
+                tempShot = dataSnapshot.child("bus").child("to").child("cbe");
+                for (DataSnapshot postSnapshot : tempShot.getChildren()) {
                     timings.add(postSnapshot.getValue(DataItem.class));
                 }
-                if( timings == null ) {
+                if (timings == null) {
                     System.out.println("No timings");
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     String json = gson.toJson(timings);
-                    preferences.edit().putString("bus-to-cbe",json).apply();
+                    preferences.edit().putString("bus-to-cbe", json).apply();
                 }
 
-
-                Log.d("INFO","Loading after fetch");
+                try {
+                    dialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.d("INFO", "Loading after fetch");
                 try {
                     loadData(type);
                 } catch (JSONException e) {
@@ -234,10 +239,10 @@ public class TimingsActivity extends AppCompatActivity {
         if (type != null && type.equals("Trains from Coimbatore")) {
 
             String json = preferences.getString("trains-from-cbe", null);
-            if(json!=null){
+            if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
-                for(int i=0;i<timings.length();++i){
+                for (int i = 0; i < timings.length(); ++i) {
                     JSONObject item = timings.getJSONObject(i);
                     items.add(new DataItem(
                             item.getString("name"),
@@ -253,7 +258,7 @@ public class TimingsActivity extends AppCompatActivity {
 
         if (type != null && type.equals("Trains from Palghat")) {
             String json = preferences.getString("trains-from-pkd", null);
-            if(json!=null) {
+            if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
@@ -272,7 +277,7 @@ public class TimingsActivity extends AppCompatActivity {
 
         if (type != null && type.equals("Trains to Coimbatore")) {
             String json = preferences.getString("trains-to-cbe", null);
-            if(json!=null) {
+            if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
@@ -291,7 +296,7 @@ public class TimingsActivity extends AppCompatActivity {
 
         if (type != null && type.equals("Trains to Palghat")) {
             String json = preferences.getString("trains-to-pkd", null);
-            if(json!=null) {
+            if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
@@ -310,7 +315,7 @@ public class TimingsActivity extends AppCompatActivity {
 
         if (type != null && type.equals("Buses from Coimbatore")) {
             String json = preferences.getString("bus-from-cbe", null);
-            if(json!=null) {
+            if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
@@ -329,7 +334,7 @@ public class TimingsActivity extends AppCompatActivity {
 
         if (type != null && type.equals("Buses to Coimbatore")) {
             String json = preferences.getString("bus-to-cbe", null);
-            if(json!=null) {
+            if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
@@ -346,8 +351,8 @@ public class TimingsActivity extends AppCompatActivity {
             }
         }
 
-        if(items!=null){
-            Log.d("REFRESHING ADAPTER","HERE");
+        if (items != null) {
+            Log.d("REFRESHING ADAPTER", "HERE");
             ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items) {
                 @NonNull
                 @Override

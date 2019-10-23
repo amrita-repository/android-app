@@ -73,7 +73,7 @@ public class AttendanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_attendance);
         preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
         list = findViewById(R.id.list);
-        Utils.showSmallAd(this, (com.google.android.gms.ads.AdView) findViewById(R.id.banner_container));
+
         sem = getIntent().getStringExtra("sem");
         getSupportActionBar().setSubtitle("Logged in as " + preferences.getString("name", ""));
         getAttendance(sem);
@@ -150,6 +150,34 @@ public class AttendanceActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.timings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.info) {
+            final android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(AttendanceActivity.this);
+            alertDialog.setMessage(Html.fromHtml("Amrita Repository is not responsible if your attendance is not updated.<br><br>Follow the instructions given here <strong><font color=#AA0000>at your own risk.</font></strong>"));
+            alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialog.show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     class CourseData {
         private String code, title, total, attended, percentage;
@@ -200,7 +228,6 @@ public class AttendanceActivity extends AppCompatActivity {
                     : (int) Math.ceil(Math.abs(((0.75 * (Double.parseDouble(getTotal()))) - Double.parseDouble(getAttended())) / 0.25));
         }
     }
-
 
     class AttendanceAdapter extends ArrayAdapter<CourseData> {
         AttendanceAdapter(Context context, ArrayList<CourseData> HomeItems) {
@@ -277,35 +304,6 @@ public class AttendanceActivity extends AppCompatActivity {
             return listItemView;
 
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.timings_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.info) {
-            final android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(AttendanceActivity.this);
-            alertDialog.setMessage(Html.fromHtml("Amrita Repository is not responsible if your attendance is not updated.<br><br>Follow the instructions given here <strong><font color=#AA0000>at your own risk.</font></strong>"));
-            alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-            alertDialog.show();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 

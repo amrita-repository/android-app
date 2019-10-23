@@ -8,15 +8,6 @@
     tools:context=".timetable.AcademicTimetableActivity"
     tools:ignore="HardcodedText,UnusedAttribute">
 
-    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/banner_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/adUnitId"></com.google.android.gms.ads.AdView>
-
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
