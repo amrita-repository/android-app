@@ -8,21 +8,17 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
+import com.vansuita.materialabout.builder.AboutBuilder;
+import com.vansuita.materialabout.views.AboutView;
 
 import java.util.Objects;
 
@@ -31,9 +27,7 @@ import in.co.rajkumaar.amritarepo.activities.SupportActivity;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
-public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private FirebaseAnalytics mFirebaseAnalytics;
+public class AboutActivity extends AppCompatActivity{
 
     public static void showDisclaimer(Context context) {
         try {
@@ -59,35 +53,46 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-
-        ImageView insta, fb, linkedin, github, website;
-        insta = findViewById(R.id.insta);
-        fb = findViewById(R.id.fb);
-        linkedin = findViewById(R.id.linkedin);
-        github = findViewById(R.id.github);
-        website = findViewById(R.id.site);
-
-        insta.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_instagram).color(Color.parseColor("#ffffff")));
-        fb.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_facebook_square).color(Color.parseColor("#ffffff")));
-        linkedin.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_linkedin).color(Color.parseColor("#ffffff")));
-        github.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_github).color(Color.parseColor("#ffffff")));
-        website.setImageDrawable(new IconDrawable(this, FontAwesomeIcons.fa_user).color(Color.parseColor("#ffffff")));
-
-        insta.setOnClickListener(this);
-        fb.setOnClickListener(this);
-        linkedin.setOnClickListener(this);
-        github.setOnClickListener(this);
-        website.setOnClickListener(this);
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        Button disclaimer = findViewById(R.id.disclaimer);
-        disclaimer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDisclaimer(AboutActivity.this);
-            }
-        });
-        ((TextView) findViewById(R.id.name)).setText(Html.fromHtml("Crafted with &hearts; by <br><strong>RAJKUMAR</strong>"));
+        AboutView view = AboutBuilder.with(this)
+                .setAppIcon(R.drawable.logosq)
+                .setAppName(R.string.app_name)
+                .setPhoto(R.drawable.raj)
+                .setCover(R.mipmap.profile_cover)
+                .setLinksAnimated(true)
+                .setDividerDashGap(13)
+                .setName("Rajkumar S")
+                .setSubTitle("Full Stack & Mobile App Developer")
+                .setLinksColumnsCount(4)
+                .setBrief("Ever in awe of the wonders that 0s and 1s could create.")
+                .addGooglePlayStoreLink("Rajkumar+S")
+                .addGitHubLink("rajkumaar23")
+                .addFacebookLink("rajkumaar23")
+                .addTwitterLink("rajkumaar23")
+                .addInstagramLink("rajkumaar23")
+                .addLinkedInLink("in/rajkumaar23")
+                .addEmailLink("rajkumaar2304@gmail.com")
+                .addWebsiteLink("http://rajkumaar.co.in")
+                .addFiveStarsAction()
+                .setVersionNameAsAppSubTitle()
+                .addShareAction(R.string.app_name)
+                .setActionsColumnsCount(2)
+                .addAction(BitmapFactory.decodeResource(getResources(), R.drawable.disclaimer), "Disclaimer", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showDisclaimer(AboutActivity.this);
+                    }
+                })
+                .addAction(BitmapFactory.decodeResource(getResources(), R.drawable.donate), "Donate", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        donate();
+                    }
+                })
+                .setWrapScrollView(true)
+                .setShowAsCard(true)
+                .build();
+        final FrameLayout frameLayout = findViewById(R.id.holder);
+        frameLayout.addView(view);
     }
 
     @SuppressLint("PrivateResource")
@@ -97,55 +102,8 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
-    public void ossLicenses(View view) {
-        Intent intent = new Intent(this, OssLicensesMenuActivity.class);
-        startActivity(intent);
+    public void donate() {
+        startActivity (new Intent(this, SupportActivity.class));
     }
 
-    public void donate(View view) {
-        startActivity(new Intent(this, SupportActivity.class));
-    }
-
-    @Override
-    public void onClick(View v) {
-        Bundle params = new Bundle();
-        String url = "";
-        params.putString("IMAGE_CLICK", "About");
-        mFirebaseAnalytics.logEvent("IMAGE_CLICK", params);
-        switch (v.getId()) {
-            case R.id.insta: {
-                url = "https://instagram.com/rajkumaar23";
-                break;
-            }
-            case R.id.fb: {
-                url = "https://facebook.com/rajkumaar23";
-                break;
-            }
-            case R.id.github: {
-                url = "https://github.com/rajkumaar23";
-                break;
-            }
-            case R.id.linkedin: {
-                url = "https://linkedin.com/in/rajkumaar23";
-                break;
-            }
-            case R.id.site: {
-                url = "http://rajkumaar.co.in";
-                break;
-            }
-        }
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
-    }
-
-    public void openWebsite(View view) {
-        Bundle params = new Bundle();
-        String url = "http://rajkumaar.co.in";
-        params.putString("IMAGE_CLICK", "About");
-        mFirebaseAnalytics.logEvent("IMAGE_CLICK", params);
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
-    }
 }

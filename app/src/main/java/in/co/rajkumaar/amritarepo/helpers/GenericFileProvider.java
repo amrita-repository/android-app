@@ -24,7 +24,7 @@
 
 package in.co.rajkumaar.amritarepo.helpers;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 public class GenericFileProvider extends FileProvider {
 
