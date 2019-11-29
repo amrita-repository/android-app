@@ -70,7 +70,7 @@ public class AboutActivity extends AppCompatActivity{
                 .addTwitterLink("rajkumaar23")
                 .addInstagramLink("rajkumaar23")
                 .addLinkedInLink("in/rajkumaar23")
-                .addEmailLink("rajkumaar2304@gmail.com")
+                .addEmailLink("rajkumaar2304@icloud.com")
                 .addWebsiteLink("http://rajkumaar.co.in")
                 .addFiveStarsAction()
                 .setVersionNameAsAppSubTitle()

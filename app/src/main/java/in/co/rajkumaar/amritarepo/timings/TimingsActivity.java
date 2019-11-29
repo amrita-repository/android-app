@@ -79,28 +79,32 @@ public class TimingsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(type);
 
         try {
-            loadData(type);
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("timings").child("public");
-            myRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String version = dataSnapshot.child("version").getValue(String.class);
-                    Log.d("VERSION FROM FBDB", version);
-                    if (!version.equals(preferences.getString("version", null))) {
-                        preferences.edit().putString("version", version).apply();
-                        Log.d("VERSION AFTER EDIT PREF", preferences.getString("version", null));
-                        fetchData(type);
+            if (!preferences.contains("trains-from-cbe")) {
+                fetchData(type);
+            } else {
+                loadData(type);
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("timings").child("public");
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String version = dataSnapshot.child("version").getValue(String.class);
+                        Log.d("VERSION FROM FBDB", version);
+                        if (!version.equals(preferences.getString("version", null))) {
+                            preferences.edit().putString("version", version).apply();
+                            Log.d("VERSION AFTER EDIT PREF", preferences.getString("version", null));
+                            fetchData(type);
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.w("FBDB", "Failed to read value.", error.toException());
-                    Utils.showUnexpectedError(TimingsActivity.this);
-                    finish();
-                }
-            });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("FBDB", "Failed to read value.", error.toException());
+                        Utils.showUnexpectedError(TimingsActivity.this);
+                        finish();
+                    }
+                });
+            }
         } catch (JSONException e) {
             e.printStackTrace();
             Utils.showUnexpectedError(TimingsActivity.this);
@@ -110,9 +114,15 @@ public class TimingsActivity extends AppCompatActivity {
 
     private void fetchData(final String type) {
         try {
-            dialog = new ProgressDialog(this);
-            dialog.setMessage("Please wait while data is fetched & cached");
-            dialog.show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialog = new ProgressDialog(TimingsActivity.this);
+                    dialog.setCancelable(false);
+                    dialog.setMessage("Please wait while data is fetched & cached");
+                    dialog.show();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -209,11 +219,6 @@ public class TimingsActivity extends AppCompatActivity {
                     preferences.edit().putString("bus-to-cbe", json).apply();
                 }
 
-                try {
-                    dialog.dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 Log.d("INFO", "Loading after fetch");
                 try {
                     loadData(type);
@@ -383,6 +388,11 @@ public class TimingsActivity extends AppCompatActivity {
             listView.setAdapter(dataItemArrayAdapter);
             listView.setTextFilterEnabled(true);
             listView.setItemsCanFocus(false);
+            try {
+                dialog.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

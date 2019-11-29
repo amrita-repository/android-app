@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
 
         SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
         username = findViewById(R.id.username);

@@ -86,7 +86,6 @@ public class DownloadsActivity extends AppCompatActivity {
         if (getSharedPreferences("user", MODE_PRIVATE).getBoolean("ftp-dialog", true)) {
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.ftp_dialog);
-            dialog.setCancelable(false);
             dialog.findViewById(R.id.okay).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

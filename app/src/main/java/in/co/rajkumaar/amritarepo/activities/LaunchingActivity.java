@@ -119,7 +119,6 @@ public class LaunchingActivity extends AppCompatActivity
         if (pref.getInt("visit", 0) >= 3 && pref.getBoolean("ftp-dialog", true)) {
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.ftp_dialog);
-            dialog.setCancelable(false);
             dialog.findViewById(R.id.okay).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

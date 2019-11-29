@@ -15,7 +15,7 @@ try {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
@@ -23,9 +23,9 @@ android {
     defaultConfig {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 54
-        versionName "3.2.6"
+        targetSdkVersion 29
+        versionCode 55
+        versionName "3.2.7"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

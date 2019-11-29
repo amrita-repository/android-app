@@ -107,6 +107,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
     private void fetchData() {
         try {
             dialog = new ProgressDialog(this);
+            dialog.setCancelable(false);
             dialog.setMessage("Please wait while data is fetched & cached");
             dialog.show();
         } catch (Exception e) {

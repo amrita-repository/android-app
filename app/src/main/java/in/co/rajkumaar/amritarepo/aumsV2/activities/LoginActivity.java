@@ -152,6 +152,7 @@ public class LoginActivity extends AppCompatActivity {
         otpEdittext.setInputType(InputType.TYPE_CLASS_NUMBER);
         layout.addView(otpEdittext, params);
         alertDialog.setView(layout);
+        alertDialog.setCancelable(false);
 
         alertDialog.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
