@@ -50,6 +50,7 @@ import java.util.List;
 
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.downloads.DeleteFilesActivity;
 
 public class DocumentsFragment extends Fragment {
 
@@ -155,6 +156,7 @@ public class DocumentsFragment extends Fragment {
                         qPaperOptions.add("Open");
                         qPaperOptions.add("Delete");
                         qPaperOptions.add("Rename");
+                        qPaperOptions.add("Delete multiple files");
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity()); //Read Update
                         ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, qPaperOptions);
                         alertDialog.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
@@ -215,6 +217,8 @@ public class DocumentsFragment extends Fragment {
                                         }
                                     });
                                     alertDialog.show();
+                                }else if(pos == 3){
+                                    startActivity(new Intent(getContext(), DeleteFilesActivity.class));
                                 }
                             }
 
