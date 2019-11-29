@@ -14,7 +14,7 @@
     <string name="wifinotworking">Not working</string>
     <string name="category_docs">Documents</string>
     <string name="facultyname">Enter faculty name</string>
-    <string name="facultyurl">http://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
+    <string name="facultyurl">https://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
     <string name="port">8080</string>
     <string name="category_images">Images</string>
     <string name="proxyurl">http://dev.rajkumaar.co.in/proxy.php</string>
@@ -22,7 +22,7 @@
     <string name="xmlUi">/xmlui/handle/</string>
     <string name="protocol">http://</string>
     <string name="wifi_warning">An error occurred while connecting to the server.</string>
-    <string name="url_exams">http://intranet.cb.amrita.edu/?q=node/244</string>
+    <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
     <string name="dev_domain">http://dev.rajkumaar.co.in</string>
     <string name="placement_id">1281797331958232_1281798865291412</string>
 

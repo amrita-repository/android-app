@@ -25,13 +25,20 @@
 package in.co.rajkumaar.amritarepo.helpers;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
+
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -50,7 +57,8 @@ import in.co.rajkumaar.amritarepo.R;
 
 public class DownloadTask {
 
-
+    private static final String CHANNEL_ID = "DOWNLOAD_ALERT";
+    private static final String CHANNEL_NAME = "Show download alert";
     private static final String TAG = "Download Task";
     private Context context;
 
@@ -130,21 +138,33 @@ public class DownloadTask {
                     Toast.makeText(context, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
                     File file = new File(Environment.getExternalStorageDirectory() + "/"
                             + "AmritaRepo/" + downloadFileName);
-                    MimeTypeMap map = MimeTypeMap.getSingleton();
-                    String ext = MimeTypeMap.getFileExtensionFromUrl(file.getName());
-                    String type = map.getMimeTypeFromExtension(ext);
-
-                    if (type == null)
-                        type = "*/*";
 
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.setDataAndType(data, getMime(downloadFileName));
-                    if (intent.resolveActivity(context.getPackageManager()) != null)
-                        context.startActivity(intent);
-                    else
-                        Toast.makeText(context, "Sorry, there's no appropriate app in the device to open this file.", Toast.LENGTH_LONG).show();
+                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    NotificationCompat.Builder notification = new NotificationCompat.Builder(context,CHANNEL_ID)
+                            .setPriority(NotificationCompat.PRIORITY_MAX)
+                            .setSmallIcon(R.drawable.notification)
+                            .setContentTitle(downloadFileName.substring(1))
+                            .setContentText("Download complete.")
+                            .setAutoCancel(true)
+                            .setContentIntent(pendingIntent);
+
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        int importance = NotificationManager.IMPORTANCE_HIGH;
+                        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+                        notificationChannel.enableLights(true);
+                        notificationChannel.setLightColor(Color.RED);
+                        notificationChannel.enableVibration(true);
+                        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                        notification.setChannelId(CHANNEL_ID);
+                        notificationManager.createNotificationChannel(notificationChannel);
+                    }
+                    notificationManager.notify(2,notification.build());
 
 
                 } else {
