@@ -25,7 +25,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 56
-        versionName "3.3"
+        versionName "4.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -71,7 +71,7 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.ivbaranov:materiallettericon:0.2.3'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2'
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3'
