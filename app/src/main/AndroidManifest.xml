@@ -21,9 +21,18 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity android:name=".timings.TimingsHomeActivity"
+            android:label="Timings"
+            android:parentActivityName=".activities.LaunchingActivity"/>
+        <activity
+            android:name=".opac.BookDetailActivity"
+            android:label="Book Details"
+            android:parentActivityName=".opac.SearchResultsActivity" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9341647677012996~5941760118" />
@@ -34,6 +43,7 @@
         <activity
             android:name=".opac.SearchResultsActivity"
             android:label="Search Results"
+            android:launchMode="singleTop"
             android:parentActivityName=".opac.OPACSearchActivity" />
         <activity
             android:name=".opac.OPACSearchActivity"
@@ -199,7 +209,7 @@
             android:label="Your Marks"
             android:parentActivityName=".aums.activities.HomeActivity" />
         <activity
-            android:name=".timings.TimingsActivity"
+            android:name=".timings.PublicTransportsActivity"
             android:label="Timings"
             android:parentActivityName=".activities.LaunchingActivity" />
         <activity

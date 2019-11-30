@@ -13,5 +13,5 @@
         android:background="@color/colorBackground"
         android:divider="@android:color/white"
         android:dividerHeight="1dp"
-        tools:context=".timings.TimingsActivity" />
+        tools:context=".timings.PublicTransportsActivity" />
 </RelativeLayout>

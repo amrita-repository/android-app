@@ -74,7 +74,8 @@ import in.co.rajkumaar.amritarepo.study_materials.StudyMaterialsActivity;
 import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
 import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
 import in.co.rajkumaar.amritarepo.timings.ShuttleBusTimingsActivity;
-import in.co.rajkumaar.amritarepo.timings.TimingsActivity;
+import in.co.rajkumaar.amritarepo.timings.PublicTransportsActivity;
+import in.co.rajkumaar.amritarepo.timings.TimingsHomeActivity;
 import in.co.rajkumaar.amritarepo.wifistatus.WifiStatusActivity;
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.ParticleSystem;
@@ -341,43 +342,7 @@ public class LaunchingActivity extends AppCompatActivity
                 dialogBuilder.create().show();
                 break;
             case "Timings":
-                items = new CharSequence[]{"Campus Shuttle Buses", "Public Transport"};
-                dialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
-                dialogBuilder.setTitle("View timings of ?");
-                dialogBuilder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        dialog.dismiss();
-                        if (item == 0) {
-                            final CharSequence[] items = {"Buses from AB1", "Buses from AB3"};
-                            AlertDialog.Builder dialogBuilderInner = new AlertDialog.Builder(LaunchingActivity.this);
-                            dialogBuilderInner.setTitle("View timings of ?");
-                            dialogBuilderInner.setItems(items, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int item) {
-                                    Intent trainBusOpen = new Intent(LaunchingActivity.this, ShuttleBusTimingsActivity.class);
-                                    trainBusOpen.putExtra("type", items[item]);
-                                    startActivity(trainBusOpen);
-                                }
-                            });
-                            AlertDialog dialogInner = dialogBuilderInner.create();
-                            dialogInner.show();
-                        } else {
-                            final CharSequence[] items = {"Trains from Coimbatore", "Trains from Palghat", "Trains to Coimbatore", "Trains to Palghat", "Buses from Coimbatore", "Buses to Coimbatore"};
-                            AlertDialog.Builder dialogBuilderInner = new AlertDialog.Builder(LaunchingActivity.this);
-                            dialogBuilderInner.setTitle("View timings of ?");
-                            dialogBuilderInner.setItems(items, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int item) {
-                                    Intent trainBusOpen = new Intent(LaunchingActivity.this, TimingsActivity.class);
-                                    trainBusOpen.putExtra("type", items[item]);
-                                    startActivity(trainBusOpen);
-                                }
-                            });
-                            AlertDialog dialogInner = dialogBuilderInner.create();
-                            dialogInner.show();
-                        }
-                    }
-                });
-                AlertDialog dialog = dialogBuilder.create();
-                dialog.show();
+                startActivity(new Intent(this, TimingsHomeActivity.class));
                 break;
             case "Curriculum":
                 if (Utils.isConnected(LaunchingActivity.this)) {
@@ -618,9 +583,9 @@ public class LaunchingActivity extends AppCompatActivity
             startActivity(new Intent(getBaseContext(), SupportActivity.class));
         } else if (id == R.id.nav_bugreport) {
             Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto", "rajkumaar2304@gmail.com", null));
+                    "mailto", "rajkumaar2304@icloud.com", null));
             it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
-            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
+            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@icloud.com"});
             if (it.resolveActivity(getPackageManager()) != null)
                 startActivity(it);
         }
@@ -689,13 +654,13 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#a4123f", "CMS", FontAwesomeIcons.fa_university));
             items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
+            items.add(new Item("#03a9f4", "OPAC Search", FontAwesomeIcons.fa_laptop));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
             items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
             items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
             items.add(new Item("#ffffff", "Timings", FontAwesomeIcons.fa_clock_o));
             items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
             items.add(new Item("#03a9f4", "Study Materials", FontAwesomeIcons.fa_book));
-//            items.add(new Item("#03a9f4", "OPAC Search", FontAwesomeIcons.fa_book));
             items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
             items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
             items.add(new Item("#f13c20", "Support", FontAwesomeIcons.fa_dollar));

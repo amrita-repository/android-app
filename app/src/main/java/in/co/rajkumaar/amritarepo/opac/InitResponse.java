@@ -9,5 +9,5 @@ import java.util.Map;
 import in.co.rajkumaar.amritarepo.responses.BaseResponse;
 
 public interface InitResponse extends BaseResponse {
-    void onSuccess(String user_name, Map<String, Integer> Docu_type, Map<String, Integer> FIELD);
+    void onSuccess(Map<String, Integer> Docu_type, Map<String, Integer> FIELD);
 }

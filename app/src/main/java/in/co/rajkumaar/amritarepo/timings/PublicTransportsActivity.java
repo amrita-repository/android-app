@@ -58,7 +58,7 @@ import java.util.List;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class TimingsActivity extends AppCompatActivity {
+public class PublicTransportsActivity extends AppCompatActivity {
 
     ProgressDialog dialog;
     private ListView listView;
@@ -100,14 +100,14 @@ public class TimingsActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Log.w("FBDB", "Failed to read value.", error.toException());
-                        Utils.showUnexpectedError(TimingsActivity.this);
+                        Utils.showUnexpectedError(PublicTransportsActivity.this);
                         finish();
                     }
                 });
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            Utils.showUnexpectedError(TimingsActivity.this);
+            Utils.showUnexpectedError(PublicTransportsActivity.this);
             finish();
         }
     }
@@ -117,7 +117,7 @@ public class TimingsActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    dialog = new ProgressDialog(TimingsActivity.this);
+                    dialog = new ProgressDialog(PublicTransportsActivity.this);
                     dialog.setCancelable(false);
                     dialog.setMessage("Please wait while data is fetched & cached");
                     dialog.show();
@@ -223,7 +223,7 @@ public class TimingsActivity extends AppCompatActivity {
                 try {
                     loadData(type);
                 } catch (JSONException e) {
-                    Utils.showUnexpectedError(TimingsActivity.this);
+                    Utils.showUnexpectedError(PublicTransportsActivity.this);
                     finish();
                     e.printStackTrace();
                 }
@@ -232,7 +232,7 @@ public class TimingsActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w("FBDB", "Failed to read value.", error.toException());
-                Utils.showUnexpectedError(TimingsActivity.this);
+                Utils.showUnexpectedError(PublicTransportsActivity.this);
                 finish();
             }
         });
@@ -412,7 +412,7 @@ public class TimingsActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.info) {
-            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(TimingsActivity.this);
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(PublicTransportsActivity.this);
             alertDialog.setMessage(Html.fromHtml("Users are advised to have backup plans before making any decision " +
                     "based on the information provided here. Amrita Repository will not be responsible for any liability."));
             alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {

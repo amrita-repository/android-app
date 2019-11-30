@@ -11,6 +11,6 @@
 
         android:background="@color/colorBackground"
         android:numColumns="2"
-        tools:context=".timings.TimingsActivity" />
+        tools:context=".timings.PublicTransportsActivity" />
 
 </RelativeLayout>

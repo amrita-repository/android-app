@@ -19,17 +19,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="The library catalogue"
+            android:text="The library catalogue of\nAmrita Vishwa Vidyapeetham\nCoimbatore"
             android:textColor="@android:color/white"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="25dp"
-            android:layout_marginEnd="30dp"
-            android:text="Document Type"
+            android:layout_marginEnd="20dp"
+            android:text="Database"
             android:textColor="@android:color/darker_gray"
             tools:ignore="HardcodedText" />
 
@@ -38,18 +38,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="@color/colorAccent"
             tools:ignore="UnusedAttribute" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="25dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:text="Search based on"
             android:textColor="@android:color/darker_gray"
             tools:ignore="HardcodedText" />
@@ -59,18 +59,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="@color/colorAccent"
             tools:ignore="UnusedAttribute" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="25dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:text="Enter word (or) phrase"
             android:textColor="@android:color/darker_gray"
             tools:ignore="HardcodedText" />
@@ -79,23 +79,35 @@
             android:id="@+id/searchKeyword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="@color/colorAccent"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white"
             tools:ignore="UnusedAttribute" />
 
-        <Button
-            android:id="@+id/search"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/button"
-            android:onClick="searchOPAC"
-            android:text="Search"
-            tools:ignore="HardcodedText" />
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:onClick="searchOPAC"
+                android:layout_margin="20dp"
+                android:text="Search"
+                tools:ignore="HardcodedText" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_margin="20dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button"
+                android:onClick="clear"
+                android:text="Clear"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

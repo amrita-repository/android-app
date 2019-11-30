@@ -4,87 +4,130 @@
 
 package in.co.rajkumaar.amritarepo.opac;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
+import in.co.rajkumaar.amritarepo.R;
 
-public class OPACClient {
+class OPACClient {
 
     private String domain;
     private AsyncHttpClient client;
+    private Context context;
+    private SharedPreferences sharedPreferences;
 
-    public OPACClient() {
-        this.domain = "http://172.17.9.22";
+    OPACClient(Context context) {
+        this.domain = context.getString(R.string.lib_catalog_domain);
         this.client = new AsyncHttpClient();
+        this.context = context;
+        this.sharedPreferences = context.getSharedPreferences("library-catalog",Context.MODE_PRIVATE);
     }
 
-    public void init(final InitResponse initResponse) {
-        this.client.get(this.domain + "/cgi-bin/lsbrows1.cgi?" + URLEncoder.encode("Database_no_opt=++++"), new AsyncHttpResponseHandler() {
+    void init(final InitResponse initResponse) throws JSONException {
+        if(sharedPreferences.contains("mappings")){
+            sendInitData(new JSONObject(sharedPreferences.getString("mappings","")),initResponse);
+        }
+        this.client.get(this.domain + "/mappings", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String response = new String(responseBody);
-                sendInitData(response, initResponse);
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    sharedPreferences.edit().putString("mappings",jsonObject.toString()).apply();
+                    Log.i("LIBRARY-CATALOG","MAPPINGS CACHED");
+                    sendInitData(jsonObject, initResponse);
+                } catch (JSONException e) {
+                    initResponse.onFailure(e);
+                }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                initProxy(initResponse);
+                initResponse.onFailure(new Exception(error));
             }
         });
     }
 
-    public void searchResults(String username, int docType, int field, String search, final SearchResponse searchResponse) {
+    void searchResults(int docType, int field, final String search, final SearchResponse searchResponse) {
         RequestParams params = new RequestParams();
-        params.add("user_name", username);
-        params.add("Docu_type", String.valueOf(docType));
-        params.add("FIELD", String.valueOf(field));
-        params.add("T", search);
-        params.add("OPTION", String.valueOf(2));
-        params.add("ch_period", String.valueOf(0));
-        params.add("TR", "");
-        this.client.addHeader("Content-Type", "application/x-www-form-urlencoded");
-        this.client.post(this.domain + "/cgi-bin/lsbrows6N.cgi", params, new AsyncHttpResponseHandler() {
+        params.add("docType", String.valueOf(docType));
+        params.add("field", String.valueOf(field));
+        params.add("q", search);
+
+        this.client.get(this.domain + "/search", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String response = new String(responseBody);
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    searchResponse.onSuccess(
+                            jsonObject.getJSONArray("data"),
+                            jsonObject.getString("action"),
+                            jsonObject.getString("user_name")
+                    );
+                } catch (JSONException e) {
+                    searchResponse.onFailure(e);
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
+                searchResponse.onFailure(new Exception(error));
             }
         });
     }
 
-    public void initProxy(final InitResponse initResponse) {
+    private void sendInitData(JSONObject response, final InitResponse initResponse) throws JSONException {
+        JSONArray docTypes = response.getJSONArray("docTypes");
+        JSONArray fields = response.getJSONArray("fields");
+        Map<String, Integer> docTypesMap = new HashMap<>();
+        for (int i = 0; i < docTypes.length(); ++i) {
+            JSONObject current = docTypes.getJSONObject(i);
+            docTypesMap.put(current.getString("text"), current.getInt("id"));
+        }
 
+        Map<String, Integer> fieldsMap = new HashMap<>();
+        for (int i = 0; i < fields.length(); ++i) {
+            JSONObject current = fields.getJSONObject(i);
+            fieldsMap.put(current.getString("text"), current.getInt("id"));
+        }
+        initResponse.onSuccess(docTypesMap, fieldsMap);
     }
 
-    private void sendInitData(String response, final InitResponse initResponse) {
-        Document document = Jsoup.parse(response);
-        Element element = document.select("form[name=form_s] > input[name=user_name]").first();
-        String username = element.attr("value");
-        Elements docTypes = document.select("select[name=Docu_type]").first().getElementsByTag("option");
-        Map<String, Integer> docTypesMap = new HashMap<>();
-        for (Element type : docTypes) {
-            docTypesMap.put(type.text(), Integer.parseInt(type.attr("value")));
-        }
-        Elements fields = document.select("select[name=FIELD]").first().getElementsByTag("option");
-        Map<String, Integer> fieldsMap = new HashMap<>();
-        for (Element type : fields) {
-            fieldsMap.put(type.text(), Integer.parseInt(type.attr("value")));
-        }
-        initResponse.onSuccess(username, docTypesMap, fieldsMap);
+    public void getBookDetails(String action, String username, int id, final BookDetailResponse bookDetailResponse){
+        RequestParams params = new RequestParams();
+        params.add("action",action);
+        params.add("user_name",username);
+        params.add("id", String.valueOf(id));
+
+        this.client.post(this.domain + "/get-book-details", params,new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    bookDetailResponse.onSuccess(new JSONObject(new String(responseBody)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    bookDetailResponse.onFailure(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                bookDetailResponse.onFailure(new Exception(error));
+            }
+        });
     }
 }

@@ -116,7 +116,7 @@ public class StudyMaterialsActivity extends AppCompatActivity {
 
                         /* Fill it with Data */
                         emailIntent.setType("plain/text");
-                        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@gmail.com"});
+                        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@icloud.com"});
                         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Adding study materials in Amrita Repository");
 
                         /* Send it off to the Activity-Chooser */
