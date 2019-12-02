@@ -17,7 +17,7 @@
     <string name="facultyurl">https://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
     <string name="port">8080</string>
     <string name="category_images">Images</string>
-    <string name="proxyurl">http://dev.rajkumaar.co.in/proxy.php</string>
+    <string name="proxyurl">http://ctf.cb.amrita.edu:4310/app/proxy.php</string>
     <string name="incompletefield">Please input all fields</string>
     <string name="xmlUi">/xmlui/handle/</string>
     <string name="protocol">http://</string>
@@ -53,8 +53,6 @@
 
     <string name="donate">If you &#x2665; the app, consider donating here</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="upi_id">7592903711@upi</string>
 
 </resources>

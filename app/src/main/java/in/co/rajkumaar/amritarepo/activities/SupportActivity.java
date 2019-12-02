@@ -111,7 +111,7 @@ public class SupportActivity extends AppCompatActivity {
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Utils.showUnexpectedError(SupportActivity.this);
+                    Utils.showToast(SupportActivity.this,"Please install Google Pay first.");
                 }
             }
         });
