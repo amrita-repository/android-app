@@ -100,7 +100,7 @@ public class SupportActivity extends AppCompatActivity {
                             new Uri.Builder()
                                     .scheme("upi")
                                     .authority("pay")
-                                    .appendQueryParameter("pa", "rajkumaar2304@oksbi")
+                                    .appendQueryParameter("pa", getString(R.string.upi_id))
                                     .appendQueryParameter("pn", "Rajkumar S")
                                     .appendQueryParameter("tn", "Donation to Amrita Repository")
                                     .appendQueryParameter("cu", "INR")
