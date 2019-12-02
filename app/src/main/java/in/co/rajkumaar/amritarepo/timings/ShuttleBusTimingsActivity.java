@@ -228,6 +228,8 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                 }
             });
             alertDialog.show();
+        }else if(id == android.R.id.home) {
+            this.finish();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -69,6 +69,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_bus_timings);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         listView = findViewById(R.id.timings_list);
@@ -110,6 +111,11 @@ public class PublicTransportsActivity extends AppCompatActivity {
             Utils.showUnexpectedError(PublicTransportsActivity.this);
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     private void fetchData(final String type) {
@@ -422,6 +428,8 @@ public class PublicTransportsActivity extends AppCompatActivity {
                 }
             });
             alertDialog.show();
+        }else if(id == android.R.id.home) {
+            this.finish();
         }
         return super.onOptionsItemSelected(item);
     }

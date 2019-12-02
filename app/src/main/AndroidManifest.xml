@@ -78,8 +78,7 @@
             android:label="AUMS - Login"
             android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".timings.ShuttleBusTimingsActivity"
-            android:parentActivityName=".activities.LaunchingActivity" />
+            android:name=".timings.ShuttleBusTimingsActivity" />
         <activity
             android:name=".faq.ExamsFAQActivity"
             android:parentActivityName=".activities.LaunchingActivity" />
@@ -210,8 +209,7 @@
             android:parentActivityName=".aums.activities.HomeActivity" />
         <activity
             android:name=".timings.PublicTransportsActivity"
-            android:label="Timings"
-            android:parentActivityName=".activities.LaunchingActivity" />
+            android:label="Timings" />
         <activity
             android:name=".activities.SettingsActivity"
             android:label="Settings"
