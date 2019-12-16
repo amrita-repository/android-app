@@ -24,14 +24,17 @@
 
 package in.co.rajkumaar.amritarepo.aums.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,12 +42,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
@@ -57,28 +69,38 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
+import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
+import in.co.rajkumaar.amritarepo.helpers.CheckForSDCard;
+import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
+import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
 
 public class AttendanceActivity extends AppCompatActivity {
 
     String domain;
     ListView list;
     Map<String, String> courses;
+    ArrayList<CourseData> attendanceData;
     String sem;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
         list = findViewById(R.id.list);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait");
+        progressDialog.setCancelable(false);
 
         courses = new HashMap<>();
         UserData.refIndex = 1;
@@ -87,72 +109,107 @@ public class AttendanceActivity extends AppCompatActivity {
         getAttendance(UserData.client, sem);
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);
-        /*list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getSubjectAttendance(GlobalData.client);
+                if (ContextCompat.checkSelfPermission(AttendanceActivity.this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(AttendanceActivity.this,
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            1);
+                } else {
+                    if (Utils.isConnected(AttendanceActivity.this)) {
+                        progressDialog.show();
+                        if(courses.size() > 0)
+                            getSubjectAttendance(UserData.client,attendanceData.get(position).getCode());
+                        else
+                            loadCourseMapping(UserData.client,sem,true,attendanceData.get(position).getCode());
+                    } else {
+                        Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
+                    }
+                }
             }
-        });*/
+        });
     }
 
-    void getSubjectAttendance(final AsyncHttpClient client) {
-        RequestParams params = new RequestParams();
-        params.put("htmlPageTopContainer_txtrollnumber", "");
-        params.put("Page_refIndex_hidden", UserData.refIndex++);
-        params.put("htmlPageTopContainer_selectSem", sem);
-        params.put("htmlPageTopContainer_selectCourse", "35569");
-        params.put("htmlPageTopContainer_selectType", "1");
-        params.put("htmlPageTopContainer_hiddentSummary", "");
-        params.put("htmlPageTopContainer_status", "");
-        params.put("htmlPageTopContainer_action", "UMS-ATD_SHOW_ATDREPORTSTUD_SCREEN");
-        params.put("htmlPageTopContainer_notify", "");
-        params.put("htmlPageTopContainer_hidrollNo", "Student");
-        client.addHeader("Referer", "https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
-        client.post(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0", params, new AsyncHttpResponseHandler() {
+    void getSubjectAttendance(final AsyncHttpClient client, final String code) {
+        client.get(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true", new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                client.removeHeader("Referer");
-                client.addHeader("Referer", "https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
-                client.get(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=1", new AsyncHttpResponseHandler() {
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                RequestParams params = new RequestParams();
+                params.put("htmlPageTopContainer_txtrollnumber", "");
+                params.put("Page_refIndex_hidden", UserData.refIndex++);
+                params.put("htmlPageTopContainer_selectSem", sem);
+                params.put("htmlPageTopContainer_selectCourse", courses.get(code));
+                params.put("htmlPageTopContainer_selectType", "1");
+                params.put("htmlPageTopContainer_hiddentSummary", "");
+                params.put("htmlPageTopContainer_status", "");
+                params.put("htmlPageTopContainer_action", "UMS-ATD_SHOW_ATDREPORTSTUD_SCREEN");
+                params.put("htmlPageTopContainer_notify", "");
+                params.put("htmlPageTopContainer_hidrollNo", "Student");
+                client.post(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp", params, new AsyncHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                        client.removeHeader("Referer");
-                        client.addHeader("Referer", "https://amritavidya1.amrita.edu:8444/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0");
-                        client.get(domain + "/aums/AUMSReportServlet", new FileAsyncHttpResponseHandler(AttendanceActivity.this) {
-                            @Override
-                            public void onFailure(int i, Header[] headers, Throwable throwable, File file) {
-
-                            }
-
-                            @Override
-                            public void onSuccess(int i, Header[] headers, File file) {
-                                try {
-                                    FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory() + "/AmritaRepo/temp");
-                                    fos.write(file.toString().getBytes());
-                                    fos.close();
-                                    Log.e("SUCCESS", "File written");
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                        new saveAUMSReport().execute(responseBody);
                     }
 
                     @Override
-                    public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Utils.showUnexpectedError(AttendanceActivity.this);
                     }
                 });
             }
 
             @Override
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Utils.showUnexpectedError(AttendanceActivity.this);
             }
         });
     }
 
+
+    void loadCourseMapping(final AsyncHttpClient client, final String sem, final boolean download, final String code) {
+        RequestParams params = new RequestParams();
+        params.put("Page_refIndex_hidden", UserData.refIndex++);
+        params.put("htmlPageTopContainer_selectSem", sem);
+        params.put("htmlPageTopContainer_selectCourse", "0");
+        params.put("htmlPageTopContainer_selectType", "1");
+        params.put("htmlPageTopContainer_txtrollnumber", "");
+        params.put("htmlPageTopContainer_status", "");
+        params.put("htmlPageTopContainer_action", "UMS-ATD_CHANGESEM_ATDREPORTSTUD_SCREEN");
+        params.put("htmlPageTopContainer_notify", "");
+        params.put("htmlPageTopContainer_hidrollNo", "Student");
+        client.addHeader("Referer", domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=1");
+        client.post(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true&pagePostSerialID=0", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Document doc = Jsoup.parse(new String(responseBody));
+                try {
+                    Element subjectSpinner = doc.select("select[name=htmlPageTopContainer_selectCourse]").get(0);
+                    Elements items = subjectSpinner.select("option");
+                    for (Element item : items) {
+                        courses.put(item.text().split(":")[0].trim(), item.attr("value"));
+                    }
+                    if(courses.size() > 0 && download){
+                        getSubjectAttendance(client,code);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+
+    }
+
     void getAttendance(final AsyncHttpClient client, final String sem) {
+        loadCourseMapping(client,sem,false,null);
         RequestParams params = new RequestParams();
         params.put("action", "UMS-ATD_INIT_ATDREPORTSTUD_SCREEN");
         params.put("isMenu", "true");
@@ -173,7 +230,6 @@ public class AttendanceActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         Document doc = Jsoup.parse(new String(responseBody));
-                        //Toast.makeText(AttendanceActivity.this,new String(responseBody),Toast.LENGTH_LONG).show();
                         try {
                             Element table = doc.select("table[width=75%] > tbody").first();
                             Elements rows = table.select("tr:gt(0)");
@@ -187,7 +243,7 @@ public class AttendanceActivity extends AppCompatActivity {
                                 });
                             } else {
                                 rows = table.select("tr");
-                                ArrayList<CourseData> attendanceData = new ArrayList<>();
+                                attendanceData = new ArrayList<>();
                                 int index = 0;
                                 for (Element row : rows) {
                                     index++;
@@ -231,7 +287,6 @@ public class AttendanceActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
-
                             }
                         } catch (Exception e) {
                             Toast.makeText(AttendanceActivity.this, getString(R.string.site_change), Toast.LENGTH_LONG).show();
@@ -285,6 +340,46 @@ public class AttendanceActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("StaticFieldLeak")
+    class saveAUMSReport extends AsyncTask<byte[], String, String> {
+
+        @Override
+        protected String doInBackground(byte[]... file) {
+            if (!new CheckForSDCard().isSDCardPresent()) {
+                Toast.makeText(AttendanceActivity.this, "Oops!! There is no storage.", Toast.LENGTH_SHORT).show();
+            }else {
+                File report = new File(Environment.getExternalStorageDirectory(), ".AmritaRepoCache/AUMSReport.pdf");
+
+                if (report.exists()) {
+                    report.delete();
+                }
+                try {
+                    FileOutputStream fos = new FileOutputStream(report.getPath());
+                    fos.write(file[0]);
+                    fos.close();
+                    Log.e("AUMS PDF", "Saved");
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    Uri data = FileProvider.getUriForFile(AttendanceActivity.this, BuildConfig.APPLICATION_ID + ".provider", report);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.setDataAndType(data, "application/pdf");
+                    if (intent.resolveActivity(getPackageManager()) != null)
+                        startActivity(intent);
+                    else
+                        Utils.showToast(AttendanceActivity.this, "Sorry, there's no appropriate app in the device to open this file.");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                        }
+                    });
+                } catch (java.io.IOException e) {
+                    Log.e("AUMS", "Exception in AUMS Attendance", e);
+                    Utils.showUnexpectedError(AttendanceActivity.this);
+                }
+            }
+            return (null);
+        }
+    }
 
     class CourseData {
         private String code, title, total, attended, percentage;

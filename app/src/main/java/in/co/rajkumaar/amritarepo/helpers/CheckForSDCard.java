@@ -26,9 +26,9 @@ package in.co.rajkumaar.amritarepo.helpers;
 
 import android.os.Environment;
 
-class CheckForSDCard {
+public class CheckForSDCard {
     //Check If SD Card is present or not method
-    boolean isSDCardPresent() {
+    public boolean isSDCardPresent() {
         return (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED));
     }
 }

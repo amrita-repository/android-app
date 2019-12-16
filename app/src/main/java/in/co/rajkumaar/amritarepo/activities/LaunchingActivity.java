@@ -68,6 +68,7 @@ import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 import in.co.rajkumaar.amritarepo.news.NewsActivity;
+import in.co.rajkumaar.amritarepo.opac.OPACHomeActivity;
 import in.co.rajkumaar.amritarepo.opac.OPACSearchActivity;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
 import in.co.rajkumaar.amritarepo.study_materials.StudyMaterialsActivity;
@@ -371,9 +372,9 @@ public class LaunchingActivity extends AppCompatActivity
                 } else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
                 break;
-            case "Library Catalog":
+            case "Library OPAC":
                 if (Utils.isConnected(LaunchingActivity.this)) {
-                    startActivity(new Intent(LaunchingActivity.this, OPACSearchActivity.class));
+                    startActivity(new Intent(LaunchingActivity.this, OPACHomeActivity.class));
                 } else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
                 break;
@@ -654,7 +655,7 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#a4123f", "CMS", FontAwesomeIcons.fa_university));
             items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
-            items.add(new Item("#03a9f4", "Library Catalog", FontAwesomeIcons.fa_laptop));
+            items.add(new Item("#03a9f4", "Library OPAC", FontAwesomeIcons.fa_laptop));
             items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
             items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
             items.add(new Item("#ffffff", "Timings", FontAwesomeIcons.fa_clock_o));
