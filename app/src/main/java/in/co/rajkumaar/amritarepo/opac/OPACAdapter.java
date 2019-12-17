@@ -4,7 +4,9 @@
 
 package in.co.rajkumaar.amritarepo.opac;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -66,28 +70,21 @@ class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
                         context.startActivity(new Intent(context,EResourcesActivity.class).putExtra("useful-sites",true));
                         break;
                     case "Account":
-                        AlertDialog.Builder alert = new AlertDialog.Builder(context);
-
-                        alert.setTitle("Authentication");
-                        alert.setMessage("Enter your member ID (Contact Library Dept if you don\'t know!)");
-
-                        final EditText input = new EditText(context);
-                        alert.setView(input);
-
-                        alert.setPositiveButton("Login", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                String value = input.getText().toString();
-                                context.startActivity(new Intent(context,OPACAccountActivity.class).putExtra("id",value));
+                        Dialog dj = new Dialog(context);
+                        dj.setContentView(R.layout.library_patron_dialog);
+                        final EditText username = dj.findViewById(R.id.id);
+                        final EditText password = dj.findViewById(R.id.password);
+                        Button bt = dj.findViewById(R.id.submit);
+                        bt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                context.startActivity(new Intent(getContext(),OPACAccountActivity.class)
+                                        .putExtra("id",username.getText().toString())
+                                        .putExtra("password",password.getText().toString())
+                                );
                             }
                         });
-
-                        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // Canceled.
-                            }
-                        });
-
-                        alert.show();
+                        dj.show();
                         break;
 
                 }

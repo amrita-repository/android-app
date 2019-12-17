@@ -61,7 +61,7 @@
             android:name=".opac.OPACSearchActivity"
             android:label="OPAC Search"
             android:launchMode="singleTop"
-            android:parentActivityName=".activities.LaunchingActivity" />
+            android:parentActivityName=".opac.OPACHomeActivity" />
         <activity
             android:name=".activities.SupportActivity"
             android:label="Support"

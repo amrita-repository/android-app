@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:layout_height="wrap_content"
     android:padding="10dp">
 
@@ -40,6 +41,8 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/mainContainer"
+            android:layout_toStartOf="@id/rightArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -65,6 +68,14 @@
                 tools:text="You attended 13 of 15 classes" />
 
         </LinearLayout>
+        <ImageView
+            android:id="@+id/rightArrow"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_right" />
     </RelativeLayout>
 
     <RelativeLayout

@@ -130,4 +130,27 @@ class OPACClient {
             }
         });
     }
+
+    public void getProfile(String username,String password,final BookDetailResponse bookDetailResponse){
+        RequestParams params = new RequestParams();
+        params.add("memberid",username);
+        params.add("password",password);
+
+        this.client.post(this.domain + "/checkouts", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    bookDetailResponse.onSuccess(new JSONObject(new String(responseBody)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    bookDetailResponse.onFailure(e);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                bookDetailResponse.onFailure(new Exception(error));
+            }
+        });
+    }
 }

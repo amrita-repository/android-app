@@ -372,7 +372,7 @@ public class LaunchingActivity extends AppCompatActivity
                 } else
                     Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
                 break;
-            case "Library OPAC":
+            case "Central Library":
                 if (Utils.isConnected(LaunchingActivity.this)) {
                     startActivity(new Intent(LaunchingActivity.this, OPACHomeActivity.class));
                 } else
@@ -655,7 +655,7 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#a4123f", "CMS", FontAwesomeIcons.fa_university));
             items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
-            items.add(new Item("#03a9f4", "Library OPAC", FontAwesomeIcons.fa_laptop));
+            items.add(new Item("#03a9f4", "Central Library", FontAwesomeIcons.fa_laptop));
             items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
             items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
             items.add(new Item("#ffffff", "Timings", FontAwesomeIcons.fa_clock_o));

@@ -3,11 +3,66 @@
   ~ Copyright (c) 2019 RAJKUMAR S
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".opac.OPACAccountActivity">
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/progressBar"
+        style="@style/SpinKitView.Circle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="@color/colorAccent" />
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        tools:text="Henlo, Rajkumar"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:textColor="@android:color/white"
+        tools:ignore="HardcodedText" />
+    <TextView
+        android:id="@+id/noOfCheckouts"
+        android:layout_below="@id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        tools:text="Henlo, Rajkumar"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:textColor="@android:color/white"
+        tools:ignore="HardcodedText" />
+    <TextView
+        android:id="@+id/lastChecked"
+        android:layout_below="@id/noOfCheckouts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        tools:text="Henlo, Rajkumar"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:textColor="@android:color/white"
+        tools:ignore="HardcodedText" />
+    <TextView
+        android:id="@+id/fine"
+        android:layout_below="@id/lastChecked"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        tools:text="Henlo, Rajkumar"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:textColor="@android:color/white"
+        tools:ignore="HardcodedText" />
+    <WebView
+        android:id="@+id/webView"
+        android:layout_margin="15dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@id/fine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-</LinearLayout>
+</RelativeLayout>
