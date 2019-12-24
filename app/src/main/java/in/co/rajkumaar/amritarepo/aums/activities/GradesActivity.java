@@ -54,6 +54,7 @@ import java.util.Random;
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class GradesActivity extends AppCompatActivity {
 
@@ -152,7 +153,7 @@ public class GradesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(GradesActivity.this, "An error occurred while connecting to server", Toast.LENGTH_LONG).show();
+                Utils.showUnexpectedError(GradesActivity.this);
                 finish();
             }
         });

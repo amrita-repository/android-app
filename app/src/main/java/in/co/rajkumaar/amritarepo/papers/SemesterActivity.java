@@ -166,7 +166,7 @@ public class SemesterActivity extends AppCompatActivity {
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
-                Toast.makeText(SemesterActivity.this, "Some error occurred. Please try using Amrita Wi-Fi. If problem still persists, report to the developer.", Toast.LENGTH_LONG).show();
+                Utils.showUnexpectedError(SemesterActivity.this);
                 SemesterActivity.this.finish();
             }
             findViewById(R.id.loading_indicator).setVisibility(View.GONE);

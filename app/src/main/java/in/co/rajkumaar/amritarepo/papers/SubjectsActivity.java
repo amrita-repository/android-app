@@ -163,7 +163,7 @@ public class SubjectsActivity extends AppCompatActivity {
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
-                Toast.makeText(SubjectsActivity.this, "Some error occurred. Please report to the developer.", Toast.LENGTH_LONG).show();
+                Utils.showUnexpectedError(SubjectsActivity.this);
                 SubjectsActivity.this.finish();
             }
             findViewById(R.id.loading_indicator).setVisibility(View.GONE);

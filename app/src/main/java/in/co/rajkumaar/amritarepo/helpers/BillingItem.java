@@ -32,7 +32,7 @@ public class BillingItem extends Application {
         mBilling.addPlayStoreListener(new PlayStoreListener() {
             @Override
             public void onPurchasesChanged() {
-                Toast.makeText(BillingItem.this, R.string.app_name, Toast.LENGTH_LONG).show();
+                Utils.showToast(BillingItem.this, getString(R.string.app_name));
             }
         });
     }

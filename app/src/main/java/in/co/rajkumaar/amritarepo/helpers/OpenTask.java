@@ -125,7 +125,6 @@ public class OpenTask {
             try {
                 if (outputFile != null) {
                     progressDialog.dismiss();
-                    //Toast.makeText(context, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
                     File file = new File(Environment.getExternalStorageDirectory() + "/"
                             + ".AmritaRepoCache/" + downloadFileName);
                     MimeTypeMap map = MimeTypeMap.getSingleton();
@@ -143,7 +142,7 @@ public class OpenTask {
                     if (intent.resolveActivity(context.getPackageManager()) != null)
                         context.startActivity(intent);
                     else
-                        Toast.makeText(context, "Sorry, there's no appropriate app in the device to open this file.", Toast.LENGTH_LONG).show();
+                        Utils.showToast(context, "Sorry, there's no appropriate app in the device to open this file.");
 
 
                 } else {
@@ -157,7 +156,6 @@ public class OpenTask {
                     Toast toast = Toast.makeText(context, "Error. Opening Failed", Toast.LENGTH_SHORT);
                     if (!toast.getView().isShown())     // true if visible
                         toast.show();
-                    //Toast.makeText(context,"Error. Download Failed. ",Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Log.e(TAG, "Download Failed");
 
@@ -227,7 +225,7 @@ public class OpenTask {
                                 Environment.getExternalStorageDirectory() + "/"
                                         + ".AmritaRepoCache");
                     } else
-                        Toast.makeText(context, "Oops!! There is no SD Card.", Toast.LENGTH_SHORT).show();
+                        Utils.showToast(context, "Oops!! There is no SD Card.");
 
                     //If File is not present create directory
                     if (!apkStorage.exists()) {

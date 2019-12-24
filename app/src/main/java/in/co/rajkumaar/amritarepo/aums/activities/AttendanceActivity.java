@@ -237,7 +237,7 @@ public class AttendanceActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(AttendanceActivity.this, "Attendance data unavailable for this semester!", Toast.LENGTH_LONG).show();
+                                        Utils.showToast(AttendanceActivity.this, "Attendance data unavailable for this semester!");
                                         finish();
                                     }
                                 });
@@ -346,9 +346,21 @@ public class AttendanceActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(byte[]... file) {
             if (!new CheckForSDCard().isSDCardPresent()) {
-                Toast.makeText(AttendanceActivity.this, "Oops!! There is no storage.", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(AttendanceActivity.this, "Oops!! There is no storage.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }else {
-                File report = new File(Environment.getExternalStorageDirectory(), ".AmritaRepoCache/AUMSReport.pdf");
+                File report = new File(Environment.getExternalStorageDirectory(), ".AmritaRepoCache");
+
+                if (!report.exists()) {
+                    report.mkdir();
+                    Log.e("AUMS Report", "Directory Created.");
+                }
+
+                report = new File(report,"AUMSReport.pdf");
 
                 if (report.exists()) {
                     report.delete();
@@ -364,8 +376,14 @@ public class AttendanceActivity extends AppCompatActivity {
                     intent.setDataAndType(data, "application/pdf");
                     if (intent.resolveActivity(getPackageManager()) != null)
                         startActivity(intent);
-                    else
-                        Utils.showToast(AttendanceActivity.this, "Sorry, there's no appropriate app in the device to open this file.");
+                    else{
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Utils.showToast(AttendanceActivity.this, "Sorry, there's no appropriate app in the device to open this file.");
+                            }
+                        });
+                    }
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

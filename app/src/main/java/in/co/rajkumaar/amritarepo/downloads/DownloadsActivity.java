@@ -48,6 +48,7 @@ import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.downloads.adapters.CategoryAdapter;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class DownloadsActivity extends AppCompatActivity {
@@ -191,7 +192,7 @@ public class DownloadsActivity extends AppCompatActivity {
                                                                         }
                                                                     }
                                                                     if (flag) {
-                                                                        Toast.makeText(DownloadsActivity.this, "All documents deleted", Toast.LENGTH_SHORT).show();
+                                                                       Utils.showToast(DownloadsActivity.this, "All documents deleted");
                                                                         finish();
                                                                         startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
                                                                     }

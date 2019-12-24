@@ -137,7 +137,7 @@ public class AssessmentsActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(AssessmentsActivity.this, "Unexpected error occurred. Please try again later", Toast.LENGTH_LONG).show();
+                            Utils.showUnexpectedError(AssessmentsActivity.this);
                             finish();
                         }
                     });

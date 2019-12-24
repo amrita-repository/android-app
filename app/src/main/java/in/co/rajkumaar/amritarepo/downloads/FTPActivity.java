@@ -158,7 +158,7 @@ public class FTPActivity extends AppCompatActivity {
                 if (sendIntent.resolveActivity(getPackageManager()) != null) {
                     startActivity(sendIntent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Error.", Toast.LENGTH_SHORT).show();
+                    Utils.showUnexpectedError(FTPActivity.this);
                 }
             }
         });
