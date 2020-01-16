@@ -17,15 +17,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import com.google.android.material.navigation.NavigationView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +31,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.crashlytics.android.Crashlytics;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
@@ -69,13 +70,10 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 import in.co.rajkumaar.amritarepo.news.NewsActivity;
 import in.co.rajkumaar.amritarepo.opac.OPACHomeActivity;
-import in.co.rajkumaar.amritarepo.opac.OPACSearchActivity;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
 import in.co.rajkumaar.amritarepo.study_materials.StudyMaterialsActivity;
 import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
 import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
-import in.co.rajkumaar.amritarepo.timings.ShuttleBusTimingsActivity;
-import in.co.rajkumaar.amritarepo.timings.PublicTransportsActivity;
 import in.co.rajkumaar.amritarepo.timings.TimingsHomeActivity;
 import in.co.rajkumaar.amritarepo.wifistatus.WifiStatusActivity;
 import nl.dionsegijn.konfetti.KonfettiView;
@@ -542,6 +540,11 @@ public class LaunchingActivity extends AppCompatActivity
         if (id == R.id.nav_downloads) {
             drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this, DownloadsActivity.class));
+        } else if (id == R.id.nav_bot) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://t.me/amrepobot"));
+            if (intent.resolveActivity(getPackageManager()) != null)
+                startActivity(intent);
         } else if (id == R.id.nav_feedback) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("https://rajkumaar.co.in/repo-feedback"));

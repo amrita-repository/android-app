@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fontFamily="@font/dustismo"
     tools:ignore="HardcodedText"
     tools:showIn="navigation_view">
 
@@ -26,6 +25,11 @@
             android:checkable="false"
             android:icon="@drawable/ic_feedback"
             android:title="Feedback" />
+        <item
+            android:id="@+id/nav_bot"
+            android:checkable="false"
+            android:icon="@drawable/robot"
+            android:title="Telegram Bot" />
         <item
             android:id="@+id/settings"
             android:checkable="false"

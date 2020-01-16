@@ -19,7 +19,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@android:color/white"
-        android:fontFamily="@font/bariol"
         android:gravity="center"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

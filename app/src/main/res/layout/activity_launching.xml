@@ -20,7 +20,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        android:fontFamily="@font/dustismo"
         android:foreground="?android:attr/selectableItemBackground"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_launching_drawer" />

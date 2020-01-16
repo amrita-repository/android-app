@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/cunia"
         android:text="Amrita Vishwa Vidyapeetham\nCoimbatore Campus"
         android:textAlignment="center"
         android:textAllCaps="true"
