@@ -74,7 +74,7 @@ public class FTPActivity extends AppCompatActivity {
         tools = findViewById(R.id.tools);
 
 
-        final String home = Environment.getExternalStorageDirectory() + "/" + "AmritaRepo/";
+        final String home = getExternalFilesDir(null) + "/" + "AmritaRepo/";
         final int port = 2304;
         ftpServer = FTPHelper.createServer(port, 10, 5000, true, home);
         final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);

@@ -63,7 +63,7 @@ public class AssessmentsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view);
-        new clearCache().clear();
+        new clearCache().clear(this);
         String protocol = getString(R.string.protocol);
         String cloudSpace = getString(R.string.clouDspace);
         String amrita = getString(R.string.amrita);

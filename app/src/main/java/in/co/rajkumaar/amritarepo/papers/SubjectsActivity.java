@@ -89,7 +89,7 @@ public class SubjectsActivity extends AppCompatActivity {
         assert bundle != null;
         href = "" + bundle.get("href");
         this.setTitle("" + bundle.get("pageTitle"));
-        new clearCache().clear();
+        new clearCache().clear(this);
         new Load().execute();
     }
 

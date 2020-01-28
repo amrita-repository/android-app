@@ -353,7 +353,7 @@ public class AttendanceActivity extends AppCompatActivity {
                     }
                 });
             }else {
-                File report = new File(Environment.getExternalStorageDirectory(), ".AmritaRepoCache");
+                File report = new File(getExternalFilesDir(null), ".AmritaRepoCache");
 
                 if (!report.exists()) {
                     report.mkdir();

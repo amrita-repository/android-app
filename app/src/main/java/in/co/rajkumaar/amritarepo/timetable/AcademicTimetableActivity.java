@@ -78,7 +78,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
         pref = getSharedPreferences("student_timetable", MODE_PRIVATE);
         editor = pref.edit();
-        new clearCache().clear();
+        new clearCache().clear(this);
 
 
         year = findViewById(R.id.acad_year);

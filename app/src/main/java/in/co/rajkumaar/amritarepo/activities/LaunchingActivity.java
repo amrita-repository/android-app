@@ -106,7 +106,7 @@ public class LaunchingActivity extends AppCompatActivity
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         } else {
-            new clearCache().clear();
+            new clearCache().clear(this);
             if (pref.getBoolean("first", true)) {
                 AboutActivity.showDisclaimer(this);
                 SharedPreferences.Editor editor = getSharedPreferences("user", MODE_PRIVATE).edit();
@@ -424,7 +424,7 @@ public class LaunchingActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        new clearCache().clear();
+        new clearCache().clear(this);
         super.onDestroy();
     }
 

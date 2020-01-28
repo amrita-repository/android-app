@@ -87,7 +87,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         editor = pref.edit();
 
 
-        new clearCache().clear();
+        new clearCache().clear(this);
         dialog = new ProgressDialog(FacultyTimetableActivity.this);
         if (dialog.isShowing()) {
             dialog.dismiss();

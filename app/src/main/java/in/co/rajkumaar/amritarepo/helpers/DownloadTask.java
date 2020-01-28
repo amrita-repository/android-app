@@ -88,7 +88,7 @@ public class DownloadTask {
         //Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
 
-        new clearCache().clear();
+        new clearCache().clear(context);
         //Start Downloading Task
         new DownloadingTask().execute();
 
@@ -136,7 +136,7 @@ public class DownloadTask {
                 if (outputFile != null) {
                     progressDialog.dismiss();
                     Toast.makeText(context, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
-                    File file = new File(Environment.getExternalStorageDirectory() + "/"
+                    File file = new File(context.getExternalFilesDir(null) + "/"
                             + "AmritaRepo/" + downloadFileName);
 
                     Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -245,7 +245,7 @@ public class DownloadTask {
                     if (new CheckForSDCard().isSDCardPresent()) {
 
                         apkStorage = new File(
-                                Environment.getExternalStorageDirectory() + "/"
+                                context.getExternalFilesDir(null) + "/"
                                         + "AmritaRepo");
                     } else
                         Toast.makeText(context, "Oops!! There is no SD Card.", Toast.LENGTH_SHORT).show();

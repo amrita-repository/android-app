@@ -32,10 +32,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
-import androidx.core.content.FileProvider;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
+
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -78,7 +79,7 @@ public class OpenTask {
         }
         //Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
-        new clearCache().clear();
+        new clearCache().clear(context);
         //Start Downloading Task
         new DownloadingTask().execute();
 
@@ -125,7 +126,7 @@ public class OpenTask {
             try {
                 if (outputFile != null) {
                     progressDialog.dismiss();
-                    File file = new File(Environment.getExternalStorageDirectory() + "/"
+                    File file = new File(context.getExternalFilesDir(null) + "/"
                             + ".AmritaRepoCache/" + downloadFileName);
                     MimeTypeMap map = MimeTypeMap.getSingleton();
                     String ext = MimeTypeMap.getFileExtensionFromUrl(file.getName());
@@ -222,14 +223,13 @@ public class OpenTask {
                     if (new CheckForSDCard().isSDCardPresent()) {
 
                         apkStorage = new File(
-                                Environment.getExternalStorageDirectory() + "/"
-                                        + ".AmritaRepoCache");
+                                context.getExternalFilesDir(null) + "/" + ".AmritaRepoCache");
                     } else
                         Utils.showToast(context, "Oops!! There is no SD Card.");
 
                     //If File is not present create directory
                     if (!apkStorage.exists()) {
-                        apkStorage.mkdir();
+                        Log.v("DIRECTORY CREATION : ", String.valueOf(apkStorage.mkdir()));
                         Log.e(TAG, "Directory Created.");
                     }
 

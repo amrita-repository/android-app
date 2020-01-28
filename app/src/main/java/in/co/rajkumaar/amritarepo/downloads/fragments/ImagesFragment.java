@@ -59,11 +59,12 @@ import in.co.rajkumaar.amritarepo.downloads.DeleteFilesActivity;
 import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
 
 public class ImagesFragment extends Fragment {
-    final String dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
+
     SwipeRefreshLayout swipeRefreshLayout;
     ListView listView;
-    File dir = new File(dirPath);
     File[] files;
+    File dir;
+    String dirPath;
     ArrayAdapter<String> fileAdapter;
     private List<String> fileList = new ArrayList<String>();
 
@@ -75,6 +76,8 @@ public class ImagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.word_list, container, false);
+        dirPath = getContext().getExternalFilesDir(null) + "/AmritaRepo";
+        dir = new File(dirPath);
 
         swipeRefreshLayout = rootView.findViewById(R.id.swipe_downloads);
         swipeRefreshLayout.setColorScheme(R.color.colorAccent);

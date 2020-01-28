@@ -24,16 +24,17 @@
 
 package in.co.rajkumaar.amritarepo.helpers;
 
+import android.content.Context;
 import android.os.Environment;
 
 import java.io.File;
 
 public class clearCache {
-    public void clear() {
+    public void clear(Context context) {
         try {
-            final String dirPath = Environment.getExternalStorageDirectory() + "/.AmritaRepoCache";
+            final String dirPath = context.getExternalFilesDir(null) + "/.AmritaRepoCache";
             File dir = new File(dirPath);
-            final String dirPathOld = Environment.getExternalStorageDirectory() + "/AmritaRepoCache";
+            final String dirPathOld = context.getExternalFilesDir(null) + "/AmritaRepoCache";
             File dirOld = new File(dirPathOld);
             if (dirOld.exists())
                 dirOld.delete();

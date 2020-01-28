@@ -77,7 +77,7 @@ public class DownloadsActivity extends AppCompatActivity {
         }
 
 
-        new clearCache().clear();
+        new clearCache().clear(this);
         // Create an adapter that knows which fragment should be shown on each page
         CategoryAdapter adapter = new CategoryAdapter(this, getSupportFragmentManager());
 
@@ -153,7 +153,7 @@ public class DownloadsActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 0:
-                                        String dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
+                                        String dirPath = getExternalFilesDir(null) + "/AmritaRepo";
                                         File dir = new File(dirPath);
                                         File[] files;
                                         files = dir.listFiles();
@@ -162,7 +162,7 @@ public class DownloadsActivity extends AppCompatActivity {
                                         }
                                         break;
                                     case 1: {
-                                        dirPath = Environment.getExternalStorageDirectory() + "/AmritaRepo";
+                                        dirPath = getExternalFilesDir(null) + "/AmritaRepo";
                                         dir = new File(dirPath);
                                         final File[] filesList = dir.listFiles();
                                         if (filesList != null && filesList.length > 0) {
