@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AmritaRepo.iml" filepath="$PROJECT_DIR$/AmritaRepo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/AmritaRepo-app.iml" filepath="$PROJECT_DIR$/app/AmritaRepo-app.iml" group="AmritaRepo/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects-AmritaRepo.iml" filepath="$PROJECT_DIR$/projects-AmritaRepo.iml" group="AmritaRepo" />
     </modules>
   </component>
 </project>

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground"
@@ -72,11 +73,12 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/upi_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="UPI ID : rajkumaar2304@oksbi"
+                    android:text="UPI ID : "
                     android:textColor="@android:color/white"
                     tools:ignore="HardcodedText" />
 
@@ -138,9 +140,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:mtf_backgroundColor="@android:color/white"
+                app:mtf_hasFocus="false"
                 app:mtf_image="@drawable/ic_user"
                 app:mtf_labelColor="@android:color/white"
-                app:mtf_openKeyboardOnFocus="true">
+                app:mtf_openKeyboardOnFocus="false">
 
                 <EditText
                     android:id="@+id/email"

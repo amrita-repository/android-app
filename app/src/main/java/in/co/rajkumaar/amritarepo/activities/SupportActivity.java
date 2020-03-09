@@ -11,8 +11,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +20,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -52,6 +53,7 @@ public class SupportActivity extends AppCompatActivity {
     Spinner options;
     CheckBox anonymous;
     EditText email;
+    TextView upi_id;
     private ActivityCheckout mCheckout;
 
     @Override
@@ -62,6 +64,7 @@ public class SupportActivity extends AppCompatActivity {
         options = findViewById(R.id.options);
         email = findViewById(R.id.email);
         anonymous = findViewById(R.id.anonymous);
+        upi_id = findViewById(R.id.upi_id);
         ArrayList<String> donations = new ArrayList<>();
         donations.add("Rs 10");
         donations.add("Rs 50");
@@ -82,6 +85,7 @@ public class SupportActivity extends AppCompatActivity {
             }
         });
 
+        upi_id.setText(String.format("UPI ID : %s", getString(R.string.upi_id)));
         anonymous.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -111,7 +115,7 @@ public class SupportActivity extends AppCompatActivity {
                     startActivity(intent);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Utils.showToast(SupportActivity.this,"Please install Google Pay first.");
+                    Utils.showToast(SupportActivity.this, "Please install Google Pay first.");
                 }
             }
         });

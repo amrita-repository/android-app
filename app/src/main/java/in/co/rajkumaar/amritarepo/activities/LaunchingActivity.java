@@ -665,8 +665,8 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
             items.add(new Item("#03a9f4", "Study Materials", FontAwesomeIcons.fa_book));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
-            items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
-            items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
+//            items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
+//            items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
             items.add(new Item("#f13c20", "Support", FontAwesomeIcons.fa_dollar));
             items.add(new Item("#259b24", "About", FontAwesomeIcons.fa_info_circle));
         }
