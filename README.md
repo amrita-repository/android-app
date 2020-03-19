@@ -1,15 +1,14 @@
-[![Inspiration](https://img.shields.io/badge/Inspired%20From-Amrita%20Info%20Desk-success)](https://github.com/niranjan94/amrita-info-desk) [![Play Store Info](https://img.shields.io/badge/Play_Store-v4.1.5-36B0C1.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-7.9k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Build Status](https://travis-ci.com/rajkumaar23/AmritaRepo.svg?token=BvF3kD99REFpE5nHTptS&branch=master)](https://travis-ci.com/rajkumaar23/AmritaRepo)
+[![Inspiration](https://img.shields.io/badge/Inspired%20From-Amrita%20Info%20Desk-success)](https://github.com/niranjan94/amrita-info-desk) [![Build Status](https://travis-ci.com/rajkumaar23/AmritaRepo.svg?token=BvF3kD99REFpE5nHTptS&branch=master)](https://travis-ci.com/rajkumaar23/AmritaRepo) [![Play Store Info](https://img.shields.io/badge/Play_Store-v4.1.5-36B0C1.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-7.9k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-<a href="https://paypal.me/rajkumaar23"><img src="blue.svg" height="40"></a>  
-If you enjoyed this project — or just feeling generous, consider buying me a coffee. Cheers! :beers:
-
 # Amrita Repository
 ![Amrita Repository](https://github.com/rajkumaar23/AmritaRepo/blob/master/banner.jpg?raw=true)
 
-[<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" width="200" alt="Get Amrita Repository on Google Play" />](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo "Get Amrita Repository on Google Play")
+[<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" width="200"  alt="Get Amrita Repository on Google Play" />](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo "Get Amrita Repository on Google Play") [<img src="blue.svg" width="200" height=70 alt="PayPal Link" />](https://paypal.me/rajkumaar23)
+
+If you enjoyed this project — or just feeling generous, consider buying me a coffee. Cheers! :beers:
 
 ## Features
 
