@@ -40,7 +40,7 @@ Be up-to-date with what's happening at Amrita. Be notified of news articles pull
 - Fork this repository
 - Clone the repo locally
 - Create a new firebase project at [Firebase Console](https://console.firebase.google.com/). Download the google-services.json configuration file into the app/ directory.
-- Copy `app/keys.properties.example` and paste at `app/keys.properties`
+- Copy `app/keys.properties.example` and paste as a new file named `app/keys.properties` ( Do not bother about the content)
 - Import the project into Android Studio and start working.
 - Make your awesome changes, push your changes into a new branch.
 - Send in a pull-request :)
