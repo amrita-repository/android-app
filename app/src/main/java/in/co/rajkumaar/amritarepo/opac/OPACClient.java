@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -21,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
-import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.BuildConfig;
 
 class OPACClient {
 
@@ -31,7 +30,7 @@ class OPACClient {
     private SharedPreferences sharedPreferences;
 
     OPACClient(Context context) {
-        this.domain = context.getString(R.string.lib_catalog_domain);
+        this.domain = BuildConfig.LIB_CATALOG;
         this.client = new AsyncHttpClient();
         this.context = context;
         this.sharedPreferences = context.getSharedPreferences("library-catalog",Context.MODE_PRIVATE);

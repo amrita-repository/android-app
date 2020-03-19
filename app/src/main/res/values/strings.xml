@@ -10,24 +10,20 @@
     <string name="action_settings">Report a bug</string>
     <string name="intranet">intranet.cb.amrita.edu</string>
     <string name="timetable">/TimeTable/PDF/</string>
-    <string name="wifiworking">Working</string>
-    <string name="wifinotworking">Not working</string>
+    <string name="wifiWorking">Working</string>
+    <string name="wifiNotWorking">Not working</string>
     <string name="category_docs">Documents</string>
-    <string name="facultyname">Enter faculty name</string>
-    <string name="facultyurl">https://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
+    <string name="facultyName">Enter faculty name</string>
+    <string name="facultyURL">https://intranet.cb.amrita.edu/TimeTable/Faculty/</string>
     <string name="port">8080</string>
     <string name="category_images">Images</string>
-    <string name="proxyurl">http://ctf.cb.amrita.edu:4310/app/proxy.php</string>
-    <string name="incompletefield">Please input all fields</string>
+    <string name="incompleteField">Please input all fields</string>
     <string name="xmlUi">/xmlui/handle/</string>
     <string name="protocol">http://</string>
     <string name="wifi_warning">An error occurred while connecting to the server.</string>
     <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
     <string name="dev_domain">http://dev.rajkumaar.co.in</string>
-    <string name="lib_catalog_domain">http://ctf.cb.amrita.edu:4310/app/library-catalog</string>
 
-
-    <string name="placement_id">1281797331958232_1281798865291412</string>
 
     <string name="default_notification_channel_id" translatable="false">Alerts</string>
     <string name="disclaimer">

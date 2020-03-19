@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/colorAccent"
-                android:hint="@string/facultyname"
+                android:hint="@string/facultyName"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/colorPrimary"
                 android:textColorHint="@android:color/white"

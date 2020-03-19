@@ -35,10 +35,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -50,6 +46,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -148,7 +150,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                     acadyear = year.getSelectedItemPosition();
                     name = actv.getText().toString();
                     if (actv.getText().toString().isEmpty() || acadyear == 0 || sem.getSelectedItemPosition() == 0)
-                        showSnackbar(getString(R.string.incompletefield));
+                        showSnackbar(getString(R.string.incompleteField));
                     else {
                         switch (sem.getSelectedItemPosition()) {
                             case 1:
@@ -207,7 +209,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                                 1);
                     } else {
                         if (isNetworkAvailable()) {
-                            Log.e("Download url", getString(R.string.facultyurl) + url);
+                            Log.e("Download url", getString(R.string.facultyURL) + url);
                             new PostRequest().execute(name, yearAdapter.getItem(acadyear), acadsem, "2");
 
                         } else {
@@ -273,12 +275,12 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 Log.e("URL", url);
                 if (choice == 1) {
                     if (url != null && !url.isEmpty())
-                        startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.facultyurl) + url)));
+                        startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.facultyURL) + url)));
 
                     else
                         showSnackbar("The requested timetable has not yet been uploaded. Please check back later.");
                 } else if (choice == 2) {
-                    new DownloadTask(FacultyTimetableActivity.this, getString(R.string.facultyurl) + url, 0);
+                    new DownloadTask(FacultyTimetableActivity.this, getString(R.string.facultyURL) + url, 0);
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();

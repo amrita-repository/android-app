@@ -25,7 +25,6 @@
 package in.co.rajkumaar.amritarepo.helpers;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,14 +34,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
-import android.util.Log;
-import android.webkit.MimeTypeMap;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -203,7 +200,7 @@ public class DownloadTask {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            String proxy = context.getString(R.string.proxyurl);
+            String proxy = BuildConfig.PROXY_URL;
             try {
 
                 URL url;

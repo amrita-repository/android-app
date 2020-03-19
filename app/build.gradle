@@ -31,6 +31,8 @@ android {
 
         buildConfigField "String", "PLAY_LICENSE_KEY", "\"${props.getProperty("googlePlayLicenseKey")}\""
         buildConfigField "String", "SECRET_HASH", "\"${props.getProperty("secretHash")}\""
+        buildConfigField "String", "PROXY_URL", "\"${props.getProperty("proxyURL")}\""
+        buildConfigField "String", "LIB_CATALOG", "\"${props.getProperty("libCatalog")}\""
 
     }
     buildTypes {

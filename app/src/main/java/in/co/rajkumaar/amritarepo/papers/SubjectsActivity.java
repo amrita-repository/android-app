@@ -31,14 +31,14 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -71,7 +71,7 @@ public class SubjectsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.subjects_listview);
 
-        proxy = getString(R.string.proxyurl);
+        proxy = BuildConfig.PROXY_URL;
         String protocol = getString(R.string.protocol);
         String cloudSpace = getString(R.string.clouDspace);
         String amrita = getString(R.string.amrita);

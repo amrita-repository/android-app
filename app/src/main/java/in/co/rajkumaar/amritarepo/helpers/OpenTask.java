@@ -30,7 +30,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -47,7 +46,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import in.co.rajkumaar.amritarepo.BuildConfig;
-import in.co.rajkumaar.amritarepo.R;
 
 public class OpenTask {
 
@@ -181,7 +179,7 @@ public class OpenTask {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            String proxy = context.getString(R.string.proxyurl);
+            String proxy = BuildConfig.PROXY_URL;
             try {
 
                 URL url;

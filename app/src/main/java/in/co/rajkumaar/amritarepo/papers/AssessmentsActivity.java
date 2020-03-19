@@ -28,13 +28,13 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -97,7 +97,7 @@ public class AssessmentsActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     private class Load extends AsyncTask<Void, Void, Void> {
-        String proxy = getString(R.string.proxyurl);
+        String proxy = BuildConfig.PROXY_URL;
 
         Document document = null;
 
