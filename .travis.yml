@@ -1,31 +1,42 @@
 language: android
-jdk: oraclejdk8
 sudo: required
-before_install:
-    - yes | sdkmanager "platforms;android-29"
+jdk: oraclejdk8
+
 env:
- global:
+  global:
     - ANDROID_API_LEVEL=29
-    - ANDROID_BUILD_TOOLS_VERSION=29.0.2
+    - ANDROID_BUILD_TOOLS_VERSION=29.0.3
+    - ANDROID_ABI=armeabi-v7a
+
 android:
- licenses:
-    - 'android-sdk-preview-license-.+'
+  components:
+    - tools
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    - android-$ANDROID_API_LEVEL
+    - extra-android-m2repository
+  licenses:
+    - 'android-sdk-preview-license-52d11cd2'
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
- components:
-    - tools
-    - platform-tools
-    # The BuildTools version used by your project
-    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-    # The SDK version used to compile your project
-    - android-$ANDROID_API_LEVEL
-    # Additional components
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
-    - addon-google_apis-google-$ANDROID_API_LEVEL
+
+before_install:
+  - touch $HOME/.android/repositories.cfg
+  - yes | sdkmanager "platforms;android-28"
+  - yes | sdkmanager "platforms;android-29"
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
+
 before_script:
-    - cp app/mock-google-services.json app/google-services.json
-    - cp app/keys.properties.example app/keys.properties
+  - chmod +x gradlew
+  - cp app/mock-google-services.json app/google-services.json
+  - cp app/keys.properties.example app/keys.properties
 script:
     - ./gradlew build check
