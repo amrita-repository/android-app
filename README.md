@@ -1,4 +1,7 @@
-[![Play Store Info](https://img.shields.io/badge/Play_Store-v2.2-36B0C1.svg?style=flat-square&v=2.8)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![GitHub app version](https://img.shields.io/badge/GitHub-v2.8-yellow.svg?style=flat-square&v=2.8)](https://github.com/rajkumaar23/AmritaRepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-7.1k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Build Status](https://travis-ci.com/rajkumaar23/AmritaRepo.svg?token=BvF3kD99REFpE5nHTptS&branch=master)](https://travis-ci.com/rajkumaar23/AmritaRepo)
+[![Play Store Info](https://img.shields.io/badge/Play_Store-v2.2-36B0C1.svg?style=flat-square&v=4.1.5)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![GitHub app version](https://img.shields.io/badge/GitHub-v2.8-yellow.svg?style=flat-square&v=4.1.5)](https://github.com/rajkumaar23/AmritaRepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-7.9k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Build Status](https://travis-ci.com/rajkumaar23/AmritaRepo.svg?token=BvF3kD99REFpE5nHTptS&branch=master)](https://travis-ci.com/rajkumaar23/AmritaRepo)
+
+<a href="https://paypal.me/rajkumaar23"><img src="blue.svg" height="40"></a>  
+If you enjoyed this project — or just feeling generous, consider buying me a coffee. Cheers! :beers:
 
 # Amrita Repository
 ![Amrita Repository](https://github.com/rajkumaar23/AmritaRepo/blob/master/banner.jpg?raw=true)
@@ -6,8 +9,6 @@
 [<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" width="200" alt="Get Amrita Repository on Google Play" />](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo "Get Amrita Repository on Google Play")
 
 `Inspired from `[Amrita Info Desk](https://github.com/niranjan94/amrita-info-desk)
-
-[![ko-fi](https://az743702.vo.msecnd.net/cdn/kofi2.png?v=2)](http://ko-fi.com/rajkumaar23)
 
 ## Features
 
