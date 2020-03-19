@@ -43,6 +43,16 @@ Be up-to-date with what's happening at Amrita. Be notified of news articles pull
 - Make your awesome changes, push your changes into a new branch.
 - Send in a pull-request :)
 
+## Misc. Info
+- If you run the app on your device, question papers module won't work in mobile data. As a workaround, you can use [SonicWall VPN](https://play.google.com/store/apps/details?id=com.sonicwall.mobileconnect&hl=en) and create a connection using the below details :
+```
+  Connection Name : Amrita
+  Server : 117.240.224.2:4433
+  Username/Password : Your CMS/Amrita WiFi credentials
+```
+- Further details on the VPN available [here](https://intranet.cb.amrita.edu/?q=node/684).
+- Unfortunately, you can't contribute to the OPAC (Library) module yet.
+
 ## Open Source License
 
 See license at https://github.com/rajkumaar23/AmritaRepo/blob/master/LICENSE
