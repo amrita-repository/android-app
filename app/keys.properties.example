@@ -1,1 +1,4 @@
-googlePlayLicenseKey=<your_play_license_key_here>
+googlePlayLicenseKey=abcdefg
+secretHash=abcdefg
+proxyURL=http://duck.com
+libCatalog=http://duck.com
