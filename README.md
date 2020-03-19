@@ -1,4 +1,7 @@
-[![Inspiration](https://img.shields.io/badge/Inspired%20From-Amrita%20Info%20Desk-success)](https://github.com/niranjan94/amrita-info-desk) [![Play Store Info](https://img.shields.io/badge/Play_Store-v4.1.5-36B0C1.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-7.9k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Build Status](https://travis-ci.com/rajkumaar23/AmritaRepo.svg?token=BvF3kD99REFpE5nHTptS&branch=master)](https://travis-ci.com/rajkumaar23/AmritaRepo) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e31fb0f0c2984f5e93bfa754ff65ef1b)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rajkumaar23/AmritaRepo&amp;utm_campaign=Badge_Grade)
+[![Inspiration](https://img.shields.io/badge/Inspired%20From-Amrita%20Info%20Desk-success)](https://github.com/niranjan94/amrita-info-desk) [![Play Store Info](https://img.shields.io/badge/Play_Store-v4.1.5-36B0C1.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-7.9k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Build Status](https://travis-ci.com/rajkumaar23/AmritaRepo.svg?token=BvF3kD99REFpE5nHTptS&branch=master)](https://travis-ci.com/rajkumaar23/AmritaRepo)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <a href="https://paypal.me/rajkumaar23"><img src="blue.svg" height="40"></a>  
 If you enjoyed this project — or just feeling generous, consider buying me a coffee. Cheers! :beers:
@@ -56,3 +59,22 @@ Be up-to-date with what's happening at Amrita. Be notified of news articles pull
 ## Open Source License
 
 See license at https://github.com/rajkumaar23/AmritaRepo/blob/master/LICENSE
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://rajkumaar.co.in"><img src="https://avatars1.githubusercontent.com/u/37476886?v=4" width="100px;" alt=""/><br /><sub><b>Rajkumar S</b></sub></a><br /><a href="https://github.com/rajkumaar23/AmritaRepo/commits?author=rajkumaar23" title="Documentation">📖</a> <a href="#design-rajkumaar23" title="Design">🎨</a> <a href="https://github.com/rajkumaar23/AmritaRepo/commits?author=rajkumaar23" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
