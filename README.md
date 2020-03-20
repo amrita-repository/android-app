@@ -1,6 +1,6 @@
 [![Inspiration](https://img.shields.io/badge/Inspired%20From-Amrita%20Info%20Desk-success)](https://github.com/niranjan94/amrita-info-desk) [![Build Status](https://travis-ci.com/rajkumaar23/amrita-repository.svg?branch=master)](https://travis-ci.com/rajkumaar23/AmritaRepo) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6f10dfede144eebbafbacdcda684287)](https://www.codacy.com/manual/rajkumaar23/amrita-repository?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rajkumaar23/amrita-repository&amp;utm_campaign=Badge_Grade) [![Play Store Info](https://img.shields.io/badge/Play_Store-v4.1.5-36B0C1.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-7.9k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # Amrita Repository
@@ -68,7 +68,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://rajkumaar.co.in"><img src="https://avatars1.githubusercontent.com/u/37476886?v=4" width="100px;" alt=""/><br /><sub><b>Rajkumar S</b></sub></a><br /><a href="https://github.com/rajkumaar23/AmritaRepo/commits?author=rajkumaar23" title="Documentation">📖</a> <a href="#design-rajkumaar23" title="Design">🎨</a> <a href="https://github.com/rajkumaar23/AmritaRepo/commits?author=rajkumaar23" title="Code">💻</a></td>
+    <td align="center"><a href="https://rajkumaar.co.in"><img src="https://avatars1.githubusercontent.com/u/37476886?v=4" width="100px;" alt=""/><br /><sub><b>Rajkumar S</b></sub></a><br /><a href="https://github.com/rajkumaar23/amrita-repository/commits?author=rajkumaar23" title="Documentation">📖</a> <a href="#design-rajkumaar23" title="Design">🎨</a> <a href="https://github.com/rajkumaar23/amrita-repository/commits?author=rajkumaar23" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/sa276"><img src="https://avatars0.githubusercontent.com/u/62176377?v=4" width="100px;" alt=""/><br /><sub><b>sa276</b></sub></a><br /><a href="https://github.com/rajkumaar23/amrita-repository/commits?author=sa276" title="Code">💻</a></td>
   </tr>
 </table>
 
