@@ -34,7 +34,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,7 +58,6 @@ import androidx.core.content.FileProvider;
 import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.jsoup.Jsoup;
@@ -79,9 +77,8 @@ import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.helpers.CheckForSDCard;
-import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
-import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
+
 
 public class AttendanceActivity extends AppCompatActivity {
 

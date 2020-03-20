@@ -29,6 +29,8 @@ import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 public class AboutActivity extends AppCompatActivity{
 
+
+
     public static void showDisclaimer(Context context) {
         try {
             Dialog dialog = new Dialog(context);
