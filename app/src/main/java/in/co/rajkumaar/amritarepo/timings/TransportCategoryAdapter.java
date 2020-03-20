@@ -11,9 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.downloads.fragments.DocumentsFragment;
-import in.co.rajkumaar.amritarepo.downloads.fragments.ImagesFragment;
+
 import in.co.rajkumaar.amritarepo.timings.fragments.PublicTransportFragment;
 import in.co.rajkumaar.amritarepo.timings.fragments.ShuttleBusFragment;
 

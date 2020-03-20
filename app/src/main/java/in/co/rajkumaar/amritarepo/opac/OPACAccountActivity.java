@@ -8,13 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.Html;
-import android.util.StatsLog;
+
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.loopj.android.http.AsyncHttpClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -10,7 +10,7 @@ import android.content.IntentFilter;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Environment;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.text.format.Formatter;
@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.skyfishjy.library.RippleBackground;
 
