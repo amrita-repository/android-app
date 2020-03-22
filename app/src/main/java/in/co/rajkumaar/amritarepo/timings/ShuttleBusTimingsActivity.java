@@ -63,7 +63,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
     String type;
     ProgressDialog dialog;
     private GridView listView;
-    private ArrayList<DataItem> items;
+    private ArrayList<DataItem> items_fill;
     private SharedPreferences preferences;
 
     @Override
@@ -155,7 +155,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
     }
 
     private void loadData(String type) {
-        items = new ArrayList<>();
+        items_fill = new ArrayList<>();
         Gson gson = new Gson();
         if (type != null && type.equals("Buses from AB1")) {
             String json = preferences.getString("ab1", null);
@@ -163,7 +163,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             }.getType();
             ArrayList<String> timings = gson.fromJson(json, listType);
             for (String item : timings) {
-                items.add(new DataItem(
+                items_fill.add(new DataItem(
                         item, "ab1"
                 ));
             }
@@ -173,13 +173,13 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             }.getType();
             ArrayList<String> timings = gson.fromJson(json, listType);
             for (String item : timings) {
-                items.add(new DataItem(
+                items_fill.add(new DataItem(
                         item, "ab3"
                 ));
             }
         }
-        if (items != null) {
-            ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items) {
+        if (items_fill != null) {
+            ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items_fill) {
                 @SuppressLint("InflateParams")
                 @NonNull
                 @Override

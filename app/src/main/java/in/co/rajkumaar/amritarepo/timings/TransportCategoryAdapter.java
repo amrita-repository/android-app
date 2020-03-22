@@ -16,11 +16,11 @@ import in.co.rajkumaar.amritarepo.timings.fragments.PublicTransportFragment;
 import in.co.rajkumaar.amritarepo.timings.fragments.ShuttleBusFragment;
 
 public class TransportCategoryAdapter extends FragmentPagerAdapter {
-    private Context mContext;
+    private Context m_Context;
 
     public TransportCategoryAdapter(Context context, FragmentManager fm) {
         super(fm);
-        mContext = context;
+        m_Context = context;
     }
 
     /**

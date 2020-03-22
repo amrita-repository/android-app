@@ -61,8 +61,8 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 public class PublicTransportsActivity extends AppCompatActivity {
 
     ProgressDialog dialog;
-    private ListView listView;
-    private ArrayList<DataItem> items;
+    private ListView list_View;
+    private ArrayList<DataItem> items_fill;
     private SharedPreferences preferences;
 
     @Override
@@ -72,7 +72,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        listView = findViewById(R.id.timings_list);
+        list_View = findViewById(R.id.timings_list);
         Bundle extras = getIntent().getExtras();
         final String type = extras.getString("type");
 
@@ -245,7 +245,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
     }
 
     private void loadData(String type) throws JSONException {
-        items = new ArrayList<>();
+        items_fill = new ArrayList<>();
 
         if (type != null && type.equals("Trains from Coimbatore")) {
 
@@ -255,7 +255,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
                     JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
+                    items_fill.add(new DataItem(
                             item.getString("name"),
                             item.getString("days"),
                             item.getString("dep"),
@@ -274,7 +274,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
                     JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
+                    items_fill.add(new DataItem(
                             item.getString("name"),
                             item.getString("days"),
                             item.getString("dep"),
@@ -293,7 +293,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
                     JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
+                    items_fill.add(new DataItem(
                             item.getString("name"),
                             item.getString("days"),
                             item.getString("dep"),
@@ -312,7 +312,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
                     JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
+                    items_fill.add(new DataItem(
                             item.getString("name"),
                             item.getString("days"),
                             item.getString("dep"),
@@ -331,7 +331,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
                     JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
+                    items_fill.add(new DataItem(
                             item.getString("name"),
                             item.getString("days"),
                             item.getString("dep"),
@@ -350,7 +350,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                 System.out.println(timings.toString());
                 for (int i = 0; i < timings.length(); ++i) {
                     JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
+                    items_fill.add(new DataItem(
                             item.getString("name"),
                             item.getString("days"),
                             item.getString("dep"),
@@ -362,9 +362,9 @@ public class PublicTransportsActivity extends AppCompatActivity {
             }
         }
 
-        if (items != null) {
+        if (items_fill != null) {
             Log.d("REFRESHING ADAPTER", "HERE");
-            ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items) {
+            ArrayAdapter<DataItem> dataItemArrayAdapter = new ArrayAdapter<DataItem>(getBaseContext(), R.layout.timing_item, items_fill) {
                 @NonNull
                 @Override
                 public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -391,9 +391,9 @@ public class PublicTransportsActivity extends AppCompatActivity {
                     return convertView;
                 }
             };
-            listView.setAdapter(dataItemArrayAdapter);
-            listView.setTextFilterEnabled(true);
-            listView.setItemsCanFocus(false);
+            list_View.setAdapter(dataItemArrayAdapter);
+            list_View.setTextFilterEnabled(true);
+            list_View.setItemsCanFocus(false);
             try {
                 dialog.dismiss();
             } catch (Exception e) {

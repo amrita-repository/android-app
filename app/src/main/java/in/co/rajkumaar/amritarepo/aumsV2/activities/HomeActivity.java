@@ -24,9 +24,9 @@ public class HomeActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
     private boolean doubleBackToExitPressedOnce = false;
-    private TextView name, username;
-    private TextView email;
-    private ListView listView;
+    private TextView name, user_name;
+    private TextView e_mail;
+    private ListView list_View;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +36,22 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle("Lite Version");
         preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
         name = findViewById(R.id.name);
-        username = findViewById(R.id.username);
-        email = findViewById(R.id.email);
-        listView = findViewById(R.id.list);
+        user_name = findViewById(R.id.username);
+        e_mail = findViewById(R.id.email);
+        list_View = findViewById(R.id.list);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         name.setText(preferences.getString("name", "N/A"));
-        username.setText(preferences.getString("username", "N/A"));
-        email.setText(preferences.getString("email", "N/A"));
+        user_name.setText(preferences.getString("username", "N/A"));
+        e_mail.setText(preferences.getString("email", "N/A"));
 
         final ArrayList<HomeItem> items = new ArrayList<>();
         items.add(new HomeItem("Attendance Status", R.drawable.attendance));
         items.add(new HomeItem("Grades", R.drawable.grades));
         HomeItemAdapter homeItemAdapter = new HomeItemAdapter(this, items);
-        listView.setAdapter(homeItemAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        list_View.setAdapter(homeItemAdapter);
+        list_View.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (Utils.isConnected(HomeActivity.this)) {
