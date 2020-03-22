@@ -53,14 +53,18 @@ import in.co.rajkumaar.amritarepo.helpers.clearCache;
 public class AcademicTimetableActivity extends AppCompatActivity {
 
     public String TIMETABLE_URL;
-    public Spinner year, course, branch, sem, batch;
-    List<String> years = new ArrayList<>();
-    List<String> courses = new ArrayList<>();
-    List<String> branches = new ArrayList<>();
-    List<String> sems = new ArrayList<>();
-    List<String> batches = new ArrayList<>();
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+    public Spinner year;
+    public Spinner course;
+    public Spinner branch;
+    public Spinner sem;
+    public Spinner batch;
+    private List<String> years = new ArrayList<>();
+    private List<String> courses = new ArrayList<>();
+    private List<String> branches = new ArrayList<>();
+    private List<String> sems = new ArrayList<>();
+    private List<String> batches = new ArrayList<>();
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

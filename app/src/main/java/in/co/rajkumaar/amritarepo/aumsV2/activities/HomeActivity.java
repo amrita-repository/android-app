@@ -22,9 +22,10 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class HomeActivity extends AppCompatActivity {
 
-    SharedPreferences preferences;
+    private SharedPreferences preferences;
     private boolean doubleBackToExitPressedOnce = false;
-    private TextView name, user_name;
+    private TextView name;
+    private TextView user_name;
     private TextView e_mail;
     private ListView list_View;
 

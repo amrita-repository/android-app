@@ -60,7 +60,7 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class PublicTransportsActivity extends AppCompatActivity {
 
-    ProgressDialog dialog;
+    private ProgressDialog dialog;
     private ListView list_View;
     private ArrayList<DataItem> items_fill;
     private SharedPreferences preferences;

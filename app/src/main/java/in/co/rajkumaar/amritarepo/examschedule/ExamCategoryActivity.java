@@ -49,10 +49,12 @@ import in.co.rajkumaar.amritarepo.papers.PaperAdapter;
 
 public class ExamCategoryActivity extends AppCompatActivity {
 
-    String url_exams;
-    ArrayList<String> headings, texts, links;
-    ListView listView;
-    PaperAdapter scheduleBlockArrayAdapter;
+    private String url_exams;
+    private ArrayList<String> headings;
+    private ArrayList<String> texts;
+    private ArrayList<String> links;
+    private ListView listView;
+    private PaperAdapter scheduleBlockArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +73,10 @@ public class ExamCategoryActivity extends AppCompatActivity {
 
 
     @SuppressLint("StaticFieldLeak")
-    class retrieveSchedule extends AsyncTask<Void, Void, Void> {
+    private class retrieveSchedule extends AsyncTask<Void, Void, Void> {
         Document document = null;
-        Elements titles, ul_lists;
+        Elements titles;
+        Elements ul_lists;
 
         @Override
         protected void onPreExecute() {

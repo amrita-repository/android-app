@@ -44,13 +44,13 @@ import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 
 public class DeleteFilesActivity extends AppCompatActivity {
 
-    String dirPath;
+    private String dirPath;
 
-    File dir;
-    File[] files;
-    ListView listView;
-    ArrayAdapter<DownloadsItem> fileAdapter;
-    int count;
+    private File dir;
+    private File[] files;
+    private ListView listView;
+    private ArrayAdapter<DownloadsItem> fileAdapter;
+    private int count;
     private ArrayList<DownloadsItem> fileList;
 
     @Override
@@ -108,7 +108,7 @@ public class DeleteFilesActivity extends AppCompatActivity {
 
     }
 
-    void retrieveFiles() {
+    private void retrieveFiles() {
         files = dir.listFiles();
         fileList.clear();
         if (files != null) {
@@ -118,7 +118,7 @@ public class DeleteFilesActivity extends AppCompatActivity {
         }
     }
 
-    void listFiles() {
+    private void listFiles() {
         if (!fileList.isEmpty()) {
             fileAdapter = new DownloadsItemAdapter(this, fileList);
             final ListView downloads = listView;

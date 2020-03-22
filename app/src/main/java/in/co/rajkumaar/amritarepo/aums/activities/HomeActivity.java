@@ -63,12 +63,14 @@ import static android.view.View.GONE;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TextView name, username, cgpa;
-    ImageView pic;
-    ListView list;
-    String semester;
-    AsyncHttpClient client;
-    ProgressBar image_progress;
+    private TextView name;
+    private TextView username;
+    private TextView cgpa;
+    private ImageView pic;
+    private ListView list;
+    private String semester;
+    private AsyncHttpClient client;
+    private ProgressBar image_progress;
     boolean doubleBackToExitPressedOnce = false;
     private Map<String, String> semesterMapping;
 
@@ -138,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void getPhoto(final AsyncHttpClient client) {
+    private void getPhoto(final AsyncHttpClient client) {
 
         RequestParams params = new RequestParams();
         params.add("action", "UMS-SRMHR_SHOW_PERSON_PHOTO");
@@ -193,7 +195,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    void setData() {
+    private void setData() {
         name.setText(UserData.name);
         username.setText(UserData.username);
         cgpa.setText("Current CGPA : " + UserData.CGPA);

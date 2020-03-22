@@ -59,17 +59,15 @@ import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
 
 public class ImagesFragment extends Fragment {
 
-    SwipeRefreshLayout swipeRefreshLayout;
-    ListView listView;
-    File[] files;
-    File dir;
-    String dirPath;
-    ArrayAdapter<String> fileAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ListView listView;
+    private File[] files;
+    private File dir;
+    private String dirPath;
+    private ArrayAdapter<String> fileAdapter;
     private List<String> fileList = new ArrayList<String>();
 
-    public ImagesFragment() {
-        // Required empty public constructor
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

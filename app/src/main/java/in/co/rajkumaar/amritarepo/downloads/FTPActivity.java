@@ -33,13 +33,14 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class FTPActivity extends AppCompatActivity {
 
-    FtpServer ftpServer;
-    Button start;
-    RippleBackground rippleBackground;
-    TextView result;
+    private FtpServer ftpServer;
+    private Button start;
+    private RippleBackground rippleBackground;
+    private TextView result;
 
-    Button copy, share;
-    LinearLayout tools;
+    private Button copy;
+    private Button share;
+    private LinearLayout tools;
     private BroadcastReceiver wifiStateReceiver = new BroadcastReceiver() {
         @SuppressLint("SetTextI18n")
         @Override

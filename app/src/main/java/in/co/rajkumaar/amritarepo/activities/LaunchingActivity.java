@@ -716,8 +716,8 @@ public class LaunchingActivity extends AppCompatActivity
 
         private class Item {
 
-            final String color;
-            final String name;
+            private final String color;
+            private final String name;
             private FontAwesomeIcons image;
 
             Item(String color, String name, FontAwesomeIcons imageID) {

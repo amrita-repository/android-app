@@ -51,7 +51,7 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class WifiStatusActivity extends AppCompatActivity {
-    ProgressDialog dialog;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,19 +96,19 @@ public class WifiStatusActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     private class scrapeWifiData extends AsyncTask<Void, Void, Void> {
-        HashMap<String, Boolean> status = new HashMap<>();
-        TextView textView1 = findViewById(R.id.text1);
-        TextView textView2 = findViewById(R.id.text2);
-        TextView textView3 = findViewById(R.id.text3);
-        TextView textView4 = findViewById(R.id.text4);
-        TextView textView5 = findViewById(R.id.text5);
-        TextView textView6 = findViewById(R.id.text6);
-        ImageView image1 = findViewById(R.id.image1);
-        ImageView image2 = findViewById(R.id.image2);
-        ImageView image3 = findViewById(R.id.image3);
-        ArrayList<TextView> titles = new ArrayList<>();
-        ArrayList<TextView> messages = new ArrayList<>();
-        ArrayList<ImageView> images = new ArrayList<>();
+        private HashMap<String, Boolean> status = new HashMap<>();
+        private TextView textView1 = findViewById(R.id.text1);
+        private TextView textView2 = findViewById(R.id.text2);
+        private TextView textView3 = findViewById(R.id.text3);
+        private TextView textView4 = findViewById(R.id.text4);
+        private TextView textView5 = findViewById(R.id.text5);
+        private TextView textView6 = findViewById(R.id.text6);
+        private ImageView image1 = findViewById(R.id.image1);
+        private ImageView image2 = findViewById(R.id.image2);
+        private ImageView image3 = findViewById(R.id.image3);
+        private ArrayList<TextView> titles = new ArrayList<>();
+        private ArrayList<TextView> messages = new ArrayList<>();
+        private ArrayList<ImageView> images = new ArrayList<>();
 
         @Override
         protected void onPreExecute() {

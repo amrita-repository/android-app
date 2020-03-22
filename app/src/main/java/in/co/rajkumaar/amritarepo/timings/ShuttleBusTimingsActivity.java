@@ -60,8 +60,8 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ShuttleBusTimingsActivity extends AppCompatActivity {
 
-    String type;
-    ProgressDialog dialog;
+    private String type;
+    private ProgressDialog dialog;
     private GridView listView;
     private ArrayList<DataItem> items_fill;
     private SharedPreferences preferences;
@@ -236,8 +236,8 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
 
 
     private class DataItem {
-        String departure;
-        String from;
+        private String departure;
+        private String from;
 
         DataItem(String departure, String from) {
             this.departure = departure;
