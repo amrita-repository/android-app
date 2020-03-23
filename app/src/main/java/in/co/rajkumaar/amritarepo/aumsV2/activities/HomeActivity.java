@@ -22,12 +22,10 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private SharedPreferences preferences;
     private boolean doubleBackToExitPressedOnce = false;
     private TextView name;
     private TextView user_name;
     private TextView e_mail;
-    private ListView list_View;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +33,11 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home2);
 
         getSupportActionBar().setSubtitle("Lite Version");
-        preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
         name = findViewById(R.id.name);
         user_name = findViewById(R.id.username);
         e_mail = findViewById(R.id.email);
-        list_View = findViewById(R.id.list);
+        ListView list_View = findViewById(R.id.list);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

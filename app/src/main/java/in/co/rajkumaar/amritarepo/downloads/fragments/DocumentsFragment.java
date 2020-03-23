@@ -57,7 +57,6 @@ public class DocumentsFragment extends Fragment {
     private String dirPath;
     private SwipeRefreshLayout swipeRefreshLayout;
     private File dir;
-    private File[] files;
     private ListView listView;
     private ArrayAdapter<String> fileAdapter;
     private View rootView;
@@ -106,7 +105,7 @@ public class DocumentsFragment extends Fragment {
     }
 
     public void retrieveFiles() {
-        files = dir.listFiles();
+        File[] files = dir.listFiles();
         fileList.clear();
         if (files != null) {
             for (File file : files) {

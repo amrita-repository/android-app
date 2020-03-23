@@ -44,10 +44,7 @@ import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 
 public class DeleteFilesActivity extends AppCompatActivity {
 
-    private String dirPath;
-
     private File dir;
-    private File[] files;
     private ListView listView;
     private ArrayAdapter<DownloadsItem> fileAdapter;
     private int count;
@@ -57,7 +54,7 @@ public class DeleteFilesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_files);
-        dirPath = getExternalFilesDir(null) + "/AmritaRepo";
+        String dirPath = getExternalFilesDir(null) + "/AmritaRepo";
         dir = new File(dirPath);
         fileList = new ArrayList<DownloadsItem>();
         listView = findViewById(R.id.list);
@@ -109,7 +106,7 @@ public class DeleteFilesActivity extends AppCompatActivity {
     }
 
     private void retrieveFiles() {
-        files = dir.listFiles();
+        File[] files = dir.listFiles();
         fileList.clear();
         if (files != null) {
             for (File file : files) {

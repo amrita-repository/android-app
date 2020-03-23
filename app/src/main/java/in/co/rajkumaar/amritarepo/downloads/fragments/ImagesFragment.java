@@ -61,7 +61,6 @@ public class ImagesFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView listView;
-    private File[] files;
     private File dir;
     private String dirPath;
     private ArrayAdapter<String> fileAdapter;
@@ -108,7 +107,7 @@ public class ImagesFragment extends Fragment {
     }
 
     public void retrieveFiles() {
-        files = dir.listFiles();
+        File[] files = dir.listFiles();
         fileList.clear();
         if (files != null) {
             for (File file : files) {

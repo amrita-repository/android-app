@@ -38,8 +38,6 @@ public class FTPActivity extends AppCompatActivity {
     private RippleBackground rippleBackground;
     private TextView result;
 
-    private Button copy;
-    private Button share;
     private LinearLayout tools;
     private BroadcastReceiver wifiStateReceiver = new BroadcastReceiver() {
         @SuppressLint("SetTextI18n")
@@ -70,8 +68,8 @@ public class FTPActivity extends AppCompatActivity {
         result = findViewById(R.id.result);
         start = findViewById(R.id.start);
         rippleBackground = findViewById(R.id.content);
-        copy = findViewById(R.id.copy);
-        share = findViewById(R.id.share);
+        Button copy = findViewById(R.id.copy);
+        Button share = findViewById(R.id.share);
         tools = findViewById(R.id.tools);
 
 

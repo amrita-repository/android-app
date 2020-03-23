@@ -51,8 +51,6 @@ public class ExamCategoryActivity extends AppCompatActivity {
 
     private String url_exams;
     private ArrayList<String> headings;
-    private ArrayList<String> texts;
-    private ArrayList<String> links;
     private ListView listView;
     private PaperAdapter scheduleBlockArrayAdapter;
 
@@ -63,20 +61,20 @@ public class ExamCategoryActivity extends AppCompatActivity {
 
         url_exams = getResources().getString(R.string.url_exams);
         headings = new ArrayList<>();
-        texts = new ArrayList<>();
-        links = new ArrayList<>();
+        ArrayList<String> texts = new ArrayList<>();
+        ArrayList<String> links = new ArrayList<>();
         listView = findViewById(R.id.list);
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);
-        new retrieveSchedule().execute();
+        new RetrieveSchedule().execute();
     }
 
 
     @SuppressLint("StaticFieldLeak")
-    private class retrieveSchedule extends AsyncTask<Void, Void, Void> {
-        Document document = null;
-        Elements titles;
-        Elements ul_lists;
+    private class RetrieveSchedule extends AsyncTask<Void, Void, Void> {
+        private Document document = null;
+        private Elements titles;
+        private Elements ul_lists;
 
         @Override
         protected void onPreExecute() {

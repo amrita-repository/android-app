@@ -67,9 +67,6 @@ public class HomeActivity extends AppCompatActivity {
     private TextView username;
     private TextView cgpa;
     private ImageView pic;
-    private ListView list;
-    private String semester;
-    private AsyncHttpClient client;
     private ProgressBar image_progress;
     boolean doubleBackToExitPressedOnce = false;
     private Map<String, String> semesterMapping;
@@ -94,10 +91,10 @@ public class HomeActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         cgpa = findViewById(R.id.cgpa);
         pic = findViewById(R.id.userImage);
-        list = findViewById(R.id.list);
+        ListView list = findViewById(R.id.list);
         image_progress = findViewById(R.id.image_progress);
 
-        client = UserData.client;
+        AsyncHttpClient client = UserData.client;
         setData();
         ArrayList<HomeItem> items = new ArrayList<>();
 
@@ -172,7 +169,7 @@ public class HomeActivity extends AppCompatActivity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
-                semester = semesterMapping.get(items[pos]);
+               String semester = semesterMapping.get(items[pos]);
                 if (Utils.isConnected(HomeActivity.this)) {
                     switch (position) {
                         case 0:
