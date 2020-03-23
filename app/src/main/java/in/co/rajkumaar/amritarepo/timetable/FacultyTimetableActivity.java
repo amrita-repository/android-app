@@ -74,8 +74,6 @@ public class FacultyTimetableActivity extends AppCompatActivity {
     static String search = null;
     private ProgressDialog dialog;
     private String url;
-    private ArrayAdapter<String> adapter;
-    private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
 
@@ -85,7 +83,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_faculty);
 
 
-        pref = getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences("user", MODE_PRIVATE);
         editor = pref.edit();
 
 
@@ -351,7 +349,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 AutoCompleteTextView actv = findViewById(R.id.autoCompleteTextView1);
                 if (!res.isEmpty()) {
                     Log.e("First ", String.valueOf(res.size()));
-                    adapter = new ArrayAdapter<String>
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>
                             (FacultyTimetableActivity.this, android.R.layout.simple_spinner_dropdown_item, res);
                     actv.setThreshold(1);
                     actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView

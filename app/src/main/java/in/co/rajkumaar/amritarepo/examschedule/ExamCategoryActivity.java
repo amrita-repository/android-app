@@ -61,8 +61,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
 
         url_exams = getResources().getString(R.string.url_exams);
         headings = new ArrayList<>();
-        ArrayList<String> texts = new ArrayList<>();
-        ArrayList<String> links = new ArrayList<>();
+
         listView = findViewById(R.id.list);
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);

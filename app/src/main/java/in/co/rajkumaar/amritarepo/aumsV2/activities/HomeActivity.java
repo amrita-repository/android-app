@@ -23,9 +23,6 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 public class HomeActivity extends AppCompatActivity {
 
     private boolean doubleBackToExitPressedOnce = false;
-    private TextView name;
-    private TextView user_name;
-    private TextView e_mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +31,9 @@ public class HomeActivity extends AppCompatActivity {
 
         getSupportActionBar().setSubtitle("Lite Version");
         SharedPreferences preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
-        name = findViewById(R.id.name);
-        user_name = findViewById(R.id.username);
-        e_mail = findViewById(R.id.email);
+        TextView name = findViewById(R.id.name);
+        TextView user_name = findViewById(R.id.username);
+        TextView e_mail = findViewById(R.id.email);
         ListView list_View = findViewById(R.id.list);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

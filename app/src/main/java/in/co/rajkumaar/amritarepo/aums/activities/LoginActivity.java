@@ -66,13 +66,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText username;
     private EditText  password;
-    private Button login;
     private Client mainClient;
 
     private String sessionAction;
     private String  sessionID;
-    private String rmusername;
-    private String rmpassword;
     private String domain;
 
     private String name;
@@ -110,13 +107,13 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
-        login = findViewById(R.id.login);
+        Button login = findViewById(R.id.login);
         remember = findViewById(R.id.remember_me);
         mainClient = new Client(this);
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
-        rmusername = pref.getString("username", null);
-        rmpassword = pref.getString("password", null);
+        String rmusername = pref.getString("username", null);
+        String rmpassword = pref.getString("password", null);
 
         username.setText(rmusername);
         password.setText(rmpassword);
