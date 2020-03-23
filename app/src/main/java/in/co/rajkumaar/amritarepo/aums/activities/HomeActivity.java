@@ -67,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView username;
     private TextView cgpa;
     private ImageView pic;
-    private ProgressBar image_progress;
+    private ProgressBar imageProgress;
     boolean doubleBackToExitPressedOnce = false;
     private Map<String, String> semesterMapping;
 
@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity {
         cgpa = findViewById(R.id.cgpa);
         pic = findViewById(R.id.userImage);
         ListView list = findViewById(R.id.list);
-        image_progress = findViewById(R.id.image_progress);
+        imageProgress = findViewById(R.id.image_progress);
 
         AsyncHttpClient client = UserData.client;
         setData();
@@ -147,14 +147,14 @@ public class HomeActivity extends AppCompatActivity {
         client.get(UserData.domain + "/aums/FileUploadServlet", params, new FileAsyncHttpResponseHandler(HomeActivity.this) {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
-                image_progress.setVisibility(GONE);
+                imageProgress.setVisibility(GONE);
                 pic.setVisibility(View.VISIBLE);
                 pic.setImageResource(R.drawable.user);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, File file) {
-                image_progress.setVisibility(GONE);
+                imageProgress.setVisibility(GONE);
                 pic.setVisibility(View.VISIBLE);
                 Picasso.get().load(file).into(pic);
             }

@@ -49,7 +49,7 @@ import in.co.rajkumaar.amritarepo.papers.PaperAdapter;
 
 public class ExamCategoryActivity extends AppCompatActivity {
 
-    private String url_exams;
+    private String urlExams;
     private ArrayList<String> headings;
     private ListView listView;
     private PaperAdapter scheduleBlockArrayAdapter;
@@ -59,7 +59,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_schedule);
 
-        url_exams = getResources().getString(R.string.url_exams);
+        urlExams = getResources().getString(R.string.url_exams);
         headings = new ArrayList<>();
 
         listView = findViewById(R.id.list);
@@ -73,7 +73,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
     private class RetrieveSchedule extends AsyncTask<Void, Void, Void> {
         private Document document = null;
         private Elements titles;
-        private Elements ul_lists;
+        private Elements ulLists;
 
         @Override
         protected void onPreExecute() {
@@ -83,7 +83,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                document = Jsoup.connect(url_exams).get();
+                document = Jsoup.connect(urlExams).get();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -96,7 +96,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
 
             try {
                 titles = document.select("div.field-items").select("p");
-                ul_lists = document.select("div.field-items").select("ul");
+                ulLists = document.select("div.field-items").select("ul");
                 Log.e("ELEMENTS ", String.valueOf(titles.size()));
                 for (int i = 0; i < titles.size(); ++i) {
                     String spanstyle = titles.get(i).select("span[style]").attr("style");

@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
         TextView name = findViewById(R.id.name);
         TextView user_name = findViewById(R.id.username);
         TextView e_mail = findViewById(R.id.email);
-        ListView list_View = findViewById(R.id.list);
+        ListView listView = findViewById(R.id.list);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -46,8 +46,8 @@ public class HomeActivity extends AppCompatActivity {
         items.add(new HomeItem("Attendance Status", R.drawable.attendance));
         items.add(new HomeItem("Grades", R.drawable.grades));
         HomeItemAdapter homeItemAdapter = new HomeItemAdapter(this, items);
-        list_View.setAdapter(homeItemAdapter);
-        list_View.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setAdapter(homeItemAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (Utils.isConnected(HomeActivity.this)) {
