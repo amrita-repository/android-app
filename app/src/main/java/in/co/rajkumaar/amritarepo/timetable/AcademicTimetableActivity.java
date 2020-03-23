@@ -25,6 +25,7 @@
 package in.co.rajkumaar.amritarepo.timetable;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,17 +34,27 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.WebViewActivity;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
@@ -54,7 +65,6 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
     public String TIMETABLE_URL;
     public Spinner year, course, branch, sem, batch;
-    List<String> years = new ArrayList<>();
     List<String> courses = new ArrayList<>();
     List<String> branches = new ArrayList<>();
     List<String> sems = new ArrayList<>();
@@ -62,6 +72,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,19 +90,24 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         pref = getSharedPreferences("student_timetable", MODE_PRIVATE);
         editor = pref.edit();
         new clearCache().clear(this);
-
-
         year = findViewById(R.id.acad_year);
         course = findViewById(R.id.acad_course);
         branch = findViewById(R.id.acad_branch);
         sem = findViewById(R.id.acad_sem);
         batch = findViewById(R.id.acad_batch);
 
+
         loadLists();
         loadFromPref();
         course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Gson gson = new Gson();
+                List<String> dummydisplay = new ArrayList<>();
+                dummydisplay.add("[Choose branch]");
+                String dummydisplayjson =gson.toJson(dummydisplay);
+                pref.edit().putString("[Choose course]",dummydisplayjson).apply();
                 buildBranchesSpinner(position);
             }
 
@@ -182,71 +198,17 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
     private void buildBranchesSpinner(int courseID) {
         branches = new ArrayList<>();
-        branches.add("[Choose Branch]");
-        switch (courseID) {
-            case 1:
-                branches.add("AEE");
-                branches.add("AIE");
-                branches.add("CHE");
-                branches.add("CIE");
-                branches.add("CVI");
-                branches.add("CSE");
-                branches.add("ECE");
-                branches.add("EEE");
-                branches.add("ELC");
-                branches.add("EIE");
-                branches.add("EAC");
-                branches.add("CCE");
-                branches.add("MEE");
-                break;
-            case 2:
-                branches.add("MAC");
-                branches.add("ENG");
-                break;
-            case 3:
-                branches.add("CHE");
-                branches.add("MAT");
-                branches.add("PHY");
-                branches.add("DAS");
-                break;
-            case 4:
-                branches.add("ATE");
-                branches.add("ATL");
-                branches.add("BME");
-                branches.add("CEN");
-                branches.add("CHE");
-                branches.add("CIE");
-                branches.add("CSE");
-                branches.add("CSP");
-                branches.add("CVI");
-                branches.add("CYS");
-                branches.add("EBS");
-                branches.add("EDN");
-                branches.add("MFG");
-                branches.add("MSE");
-                branches.add("PWE");
-                branches.add("RET");
-                branches.add("RSW");
-                branches.add("SCE");
-                branches.add("VLD");
-                break;
-            case 5:
-                branches.add("CMN");
-                branches.add("MAC");
-                branches.add("ENG");
-                break;
-            case 6:
-                branches.add("MBA");
-                break;
-            case 7:
-                branches.add("MCA");
-                break;
-            case 8:
-                branches.add("MSW");
-                break;
-            case 9:
-                branches.add("JLM");
-                break;
+        branches.add("[Choose branch]");
+        if (!pref.contains(courses.get(courseID))) {
+            getBranches(courseID);
+        } else {
+            branches = new ArrayList<>();
+            Gson gson = new Gson();
+            String json = pref.getString(courses.get(courseID), null);
+            Type listType = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            ArrayList<String> timings = gson.fromJson(json, listType);
+            branches.addAll(timings);
         }
         ArrayAdapter<String> courseAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, branches);
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -257,19 +219,19 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
     private void loadLists() {
-
-        courses = new ArrayList<>();
         courses.add("[Choose course]");
-        courses.add("BTech");
-        courses.add("BA");
-        courses.add("IMSc");
-        courses.add("MTech");
-        courses.add("MA");
-        courses.add("MBA");
-        courses.add("MCA");
-        courses.add("MSW");
-        courses.add("PGD");
-        ArrayAdapter<String> courseAdapter = new ArrayAdapter<String>(AcademicTimetableActivity.this, R.layout.spinner_item1, courses);
+        if (!pref.contains("courses")) {
+            getCourse();
+        } else {
+            courses = new ArrayList<>();
+            Gson gson = new Gson();
+            String json = pref.getString("courses", null);
+            Type listType = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            ArrayList<String> timings = gson.fromJson(json, listType);
+            courses.addAll(timings);
+        }
+        ArrayAdapter<String> courseAdapter = new ArrayAdapter<>(AcademicTimetableActivity.this, R.layout.spinner_item1, courses);
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         course.setAdapter(courseAdapter);
 
@@ -279,7 +241,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         while (i <= 10) {
             sems.add(String.valueOf(i++));
         }
-        ArrayAdapter<String> semAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, sems);
+        ArrayAdapter<String> semAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, sems);
         semAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sem.setAdapter(semAdapter);
 
@@ -290,14 +252,96 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         batches.add("D");
         batches.add("E");
         batches.add("F");
-        ArrayAdapter<String> batchAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, batches);
+        ArrayAdapter<String> batchAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, batches);
         batchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         batch.setAdapter(batchAdapter);
 
-        ArrayAdapter<String> yearAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, Utils.getAcademicYears());
+        ArrayAdapter<String> yearAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, Utils.getAcademicYears());
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         year.setAdapter(yearAdapter);
 
     }
 
+    private HashMap<String, String> initializehashmap(HashMap<String, String> parse) {
+        parse.put("Int MSc", "IMSc");
+        parse.put("MSc", "MSC");
+        parse.put("Int MA", "IMA");
+        return parse;
+    }
+
+    private void getCourse() {
+        HashMap<String, String> parse = new HashMap<>();
+        parse = initializehashmap(parse);
+        AsyncHttpClient client = new AsyncHttpClient();
+        final HashMap<String, String> finalParse = parse;
+        client.get("https://intranet.cb.amrita.edu/TimeTable/", new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                Document html = Jsoup.parse(new String(bytes));
+                Elements rows = html.select("center > table").select("tbody>tr").select("td>table").select("tbody>tr").select("td>form").select("select");
+                for (Element row : rows) {
+                    Elements columns = row.getElementsByTag("option");
+                    if (columns.get(0).text().equals("Course")) {
+                        for (int j = 1; j < columns.size(); j++) {
+                            String parsedCourse = columns.get(j).text().replace(".", "");
+                            if (finalParse.containsKey(parsedCourse)) {
+                                courses.add(finalParse.get(parsedCourse));
+                            } else {
+                                courses.add(parsedCourse);
+                            }
+                        }
+                    }
+                }
+                Gson gson = new Gson();
+                String coursesjson =gson.toJson(courses);
+                pref.edit().putString("courses",coursesjson).apply();
+            }
+
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Utils.showToast(AcademicTimetableActivity.this, "An unexpected error occurred. Please try again later");
+                finish();
+            }
+        });
+    }
+    private void getBranches(final int position) {
+        HashMap<String, String> parse = new HashMap<>();
+        parse = initializehashmap(parse);
+        AsyncHttpClient client = new AsyncHttpClient();
+        final HashMap<String, String> finalParse = parse;
+        String html ="https://intranet.cb.amrita.edu/TimeTable/funcTimeTable.php?func=drop_1&drop_var="+courses.get(position);
+        client.get(html, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                Document html = Jsoup.parse(new String(bytes));
+                Elements rows = html.select("body>select");
+                Log.v("COLUMN", rows.toString());
+                for (Element row : rows) {
+                    Elements columns = row.getElementsByTag("option");
+                    Log.v("COLUMN", columns.toString());
+                        for (int j = 1; j < columns.size(); j++) {
+                            String parsedCourse = columns.get(j).text().replace(".", "");
+                            if (finalParse.containsKey(parsedCourse)) {
+                                branches.add(finalParse.get(parsedCourse));
+                            } else {
+                                branches.add(parsedCourse);
+                            }
+                        }
+                }
+                Gson gson = new Gson();
+                String branchJson =gson.toJson(branches);
+                pref.edit().putString(courses.get(position),branchJson).apply();
+            }
+
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Utils.showToast(AcademicTimetableActivity.this, "An unexpected error occurred. Please try again later");
+                finish();
+            }
+        });
+    }
+
 }
+
