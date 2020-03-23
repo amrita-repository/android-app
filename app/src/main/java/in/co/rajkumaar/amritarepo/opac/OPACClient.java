@@ -26,13 +26,13 @@ class OPACClient {
 
     private String domain;
     private AsyncHttpClient client;
-    private Context context;
+    private Context context1;
     private SharedPreferences sharedPreferences;
 
     OPACClient(Context context) {
         this.domain = BuildConfig.LIB_CATALOG;
         this.client = new AsyncHttpClient();
-        this.context = context;
+        this.context1 = context;
         this.sharedPreferences = context.getSharedPreferences("library-catalog",Context.MODE_PRIVATE);
     }
 

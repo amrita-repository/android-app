@@ -53,14 +53,14 @@ import in.co.rajkumaar.amritarepo.helpers.clearCache;
 public class AcademicTimetableActivity extends AppCompatActivity {
 
     public String TIMETABLE_URL;
-    public Spinner year, course, branch, sem, batch;
-    List<String> years = new ArrayList<>();
-    List<String> courses = new ArrayList<>();
-    List<String> branches = new ArrayList<>();
-    List<String> sems = new ArrayList<>();
-    List<String> batches = new ArrayList<>();
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+    public Spinner year;
+    public Spinner course;
+    public Spinner branch;
+    public Spinner sem;
+    public Spinner batch;
+    private List<String> batches = new ArrayList<>();
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +181,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
     private void buildBranchesSpinner(int courseID) {
-        branches = new ArrayList<>();
+        List<String> branches = new ArrayList<>();
         branches.add("[Choose Branch]");
         switch (courseID) {
             case 1:
@@ -258,7 +258,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
     private void loadLists() {
 
-        courses = new ArrayList<>();
+        List<String> courses = new ArrayList<>();
         courses.add("[Choose course]");
         courses.add("BTech");
         courses.add("BA");
@@ -273,7 +273,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         course.setAdapter(courseAdapter);
 
-        sems = new ArrayList<>();
+        List<String> sems = new ArrayList<>();
         sems.add("[Choose semester]");
         int i = 1;
         while (i <= 10) {

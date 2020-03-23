@@ -72,11 +72,9 @@ import in.co.rajkumaar.amritarepo.helpers.clearCache;
 public class FacultyTimetableActivity extends AppCompatActivity {
     static ArrayList<String> res = new ArrayList<>();
     static String search = null;
-    ProgressDialog dialog;
-    String url;
-    ArrayAdapter<String> adapter;
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+    private ProgressDialog dialog;
+    private String url;
+    private SharedPreferences.Editor editor;
 
 
     @Override
@@ -85,7 +83,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_faculty);
 
 
-        pref = getSharedPreferences("user", MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences("user", MODE_PRIVATE);
         editor = pref.edit();
 
 
@@ -145,7 +143,8 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 if (!isNetworkAvailable())
                     showSnackbar("Device not connected to internet");
                 else {
-                    String name, acadsem;
+                    String name;
+                    String acadsem;
                     int acadyear;
                     acadyear = year.getSelectedItemPosition();
                     name = actv.getText().toString();
@@ -185,7 +184,8 @@ public class FacultyTimetableActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 hideKeyboard();
-                String name = null, acadsem;
+                String name = null;
+                String acadsem;
                 int acadyear;
                 acadyear = year.getSelectedItemPosition();
                 name = actv.getText().toString();
@@ -260,8 +260,8 @@ public class FacultyTimetableActivity extends AppCompatActivity {
 
     private class PostRequest extends AsyncTask<String, Void, Void> {
 
-        Document doc1 = null;
-        int choice = 0;
+        private Document doc1 = null;
+        private int choice = 0;
 
         @Override
         protected void onPostExecute(Void aVoid) {
@@ -349,7 +349,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
                 AutoCompleteTextView actv = findViewById(R.id.autoCompleteTextView1);
                 if (!res.isEmpty()) {
                     Log.e("First ", String.valueOf(res.size()));
-                    adapter = new ArrayAdapter<String>
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>
                             (FacultyTimetableActivity.this, android.R.layout.simple_spinner_dropdown_item, res);
                     actv.setThreshold(1);
                     actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
@@ -367,7 +367,7 @@ public class FacultyTimetableActivity extends AppCompatActivity {
     }
 
     public class addListenerOnTextChange implements TextWatcher {
-        AutoCompleteTextView mEdittextview;
+        private AutoCompleteTextView mEdittextview;
         private Context mContext;
 
         private addListenerOnTextChange(Context context, AutoCompleteTextView edittextview) {

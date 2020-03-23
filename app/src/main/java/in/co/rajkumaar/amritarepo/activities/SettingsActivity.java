@@ -18,18 +18,18 @@ import in.co.rajkumaar.amritarepo.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    TextView current_program;
+    TextView currentProgram;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
-    Button change_program;
+    Button changeProgram;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        current_program = findViewById(R.id.current_program);
-        change_program = findViewById(R.id.change_program);
+        currentProgram = findViewById(R.id.current_program);
+        changeProgram = findViewById(R.id.change_program);
         pref = getSharedPreferences("user", MODE_PRIVATE);
         setCurrentProgram();
 
@@ -40,8 +40,8 @@ public class SettingsActivity extends AppCompatActivity {
      */
     private void setCurrentProgram() {
         final String program_text = "Academic Program : ";
-        current_program.setText(program_text.concat(pref.getString("program", "N/A")));
-        change_program.setOnClickListener(new View.OnClickListener() {
+        currentProgram.setText(program_text.concat(pref.getString("program", "N/A")));
+        changeProgram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -58,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
                         editor.putInt("pos", which);
                         editor.putString("program", dataAdapter.getItem(which));
                         editor.apply();
-                        current_program.setText(program_text.concat(pref.getString("program", "N/A")));
+                        currentProgram.setText(program_text.concat(pref.getString("program", "N/A")));
                     }
                 });
                 programs_builder.show();
