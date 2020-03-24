@@ -33,27 +33,30 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.WebViewActivity;
@@ -98,16 +101,16 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
 
         loadLists();
-        loadFromPref();
+        //loadFromPref();
         course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 Gson gson = new Gson();
-                List<String> dummydisplay = new ArrayList<>();
-                dummydisplay.add("[Choose branch]");
-                String dummydisplayjson =gson.toJson(dummydisplay);
-                pref.edit().putString("[Choose course]",dummydisplayjson).apply();
+                List<String> dummyDisplay = new ArrayList<>();
+                dummyDisplay.add("[Choose branch]");
+                String dummyDisplayJson = gson.toJson(dummyDisplay);
+                pref.edit().putString("[Choose course]", dummyDisplayJson).apply();
                 buildBranchesSpinner(position);
             }
 
@@ -207,8 +210,8 @@ public class AcademicTimetableActivity extends AppCompatActivity {
             String json = pref.getString(courses.get(courseID), null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            ArrayList<String> timings = gson.fromJson(json, listType);
-            branches.addAll(timings);
+            ArrayList<String> branch = gson.fromJson(json, listType);
+            branches.addAll(branch);
         }
         ArrayAdapter<String> courseAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, branches);
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -262,42 +265,26 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
     }
 
-    private HashMap<String, String> initializehashmap(HashMap<String, String> parse) {
-        parse.put("Int MSc", "IMSc");
-        parse.put("MSc", "MSC");
-        parse.put("Int MA", "IMA");
-        return parse;
-    }
-
     private void getCourse() {
-        HashMap<String, String> parse = new HashMap<>();
-        parse = initializehashmap(parse);
         AsyncHttpClient client = new AsyncHttpClient();
-        final HashMap<String, String> finalParse = parse;
-        client.get("https://intranet.cb.amrita.edu/TimeTable/", new AsyncHttpResponseHandler() {
+        client.get(getString(R.string.course_name_url), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 Document html = Jsoup.parse(new String(bytes));
-                Elements rows = html.select("center > table").select("tbody>tr").select("td>table").select("tbody>tr").select("td>form").select("select");
+                Elements rows = html.select("center > table>tbody>tr").select("td>table>tbody>tr>td>form>select");
                 for (Element row : rows) {
                     Elements columns = row.getElementsByTag("option");
                     if (columns.get(0).text().equals("Course")) {
                         for (int j = 1; j < columns.size(); j++) {
-                            String parsedCourse = columns.get(j).text().replace(".", "");
-                            if (finalParse.containsKey(parsedCourse)) {
-                                courses.add(finalParse.get(parsedCourse));
-                            } else {
-                                courses.add(parsedCourse);
-                            }
+                            String parsedCourse = columns.get(j).attr("value");
+                            courses.add(parsedCourse);
                         }
                     }
                 }
                 Gson gson = new Gson();
-                String coursesjson =gson.toJson(courses);
-                pref.edit().putString("courses",coursesjson).apply();
+                String coursesjson = gson.toJson(courses);
+                pref.edit().putString("courses", coursesjson).apply();
             }
-
-
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Utils.showToast(AcademicTimetableActivity.this, "An unexpected error occurred. Please try again later");
@@ -305,33 +292,26 @@ public class AcademicTimetableActivity extends AppCompatActivity {
             }
         });
     }
+
     private void getBranches(final int position) {
-        HashMap<String, String> parse = new HashMap<>();
-        parse = initializehashmap(parse);
         AsyncHttpClient client = new AsyncHttpClient();
-        final HashMap<String, String> finalParse = parse;
-        String html ="https://intranet.cb.amrita.edu/TimeTable/funcTimeTable.php?func=drop_1&drop_var="+courses.get(position);
+        String html = getString(R.string.branch_name_url) + courses.get(position);
         client.get(html, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 Document html = Jsoup.parse(new String(bytes));
                 Elements rows = html.select("body>select");
-                Log.v("COLUMN", rows.toString());
+
                 for (Element row : rows) {
                     Elements columns = row.getElementsByTag("option");
-                    Log.v("COLUMN", columns.toString());
-                        for (int j = 1; j < columns.size(); j++) {
-                            String parsedCourse = columns.get(j).text().replace(".", "");
-                            if (finalParse.containsKey(parsedCourse)) {
-                                branches.add(finalParse.get(parsedCourse));
-                            } else {
-                                branches.add(parsedCourse);
-                            }
-                        }
+                    for (int j = 1; j < columns.size(); j++) {
+                        String parsedCourse = columns.get(j).text().replace(".", "");
+                        branches.add(parsedCourse);
+                    }
                 }
                 Gson gson = new Gson();
-                String branchJson =gson.toJson(branches);
-                pref.edit().putString(courses.get(position),branchJson).apply();
+                String branchJson = gson.toJson(branches);
+                pref.edit().putString(courses.get(position), branchJson).apply();
             }
 
 
