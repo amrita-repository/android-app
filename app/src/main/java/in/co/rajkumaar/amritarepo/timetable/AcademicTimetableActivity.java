@@ -101,11 +101,10 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
 
         loadLists();
-        //loadFromPref();
+        loadFromPref();
         course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 Gson gson = new Gson();
                 List<String> dummyDisplay = new ArrayList<>();
                 dummyDisplay.add("[Choose branch]");
@@ -221,18 +220,20 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         }
     }
 
+
     private void loadLists() {
         courses.add("[Choose course]");
         if (!pref.contains("courses")) {
             getCourse();
+
         } else {
             courses = new ArrayList<>();
             Gson gson = new Gson();
             String json = pref.getString("courses", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            ArrayList<String> timings = gson.fromJson(json, listType);
-            courses.addAll(timings);
+            ArrayList<String> course = gson.fromJson(json, listType);
+            courses.addAll(course);
         }
         ArrayAdapter<String> courseAdapter = new ArrayAdapter<>(AcademicTimetableActivity.this, R.layout.spinner_item1, courses);
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -284,7 +285,14 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 String coursesjson = gson.toJson(courses);
                 pref.edit().putString("courses", coursesjson).apply();
+                courses = new ArrayList<>();
+                String json = pref.getString("courses", null);
+                Type listType = new TypeToken<ArrayList<String>>() {
+                }.getType();
+                ArrayList<String> course = gson.fromJson(json, listType);
+                courses.addAll(course);
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 Utils.showToast(AcademicTimetableActivity.this, "An unexpected error occurred. Please try again later");
@@ -312,6 +320,12 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 String branchJson = gson.toJson(branches);
                 pref.edit().putString(courses.get(position), branchJson).apply();
+                branches = new ArrayList<>();
+                String json = pref.getString(courses.get(position), null);
+                Type listType = new TypeToken<ArrayList<String>>() {
+                }.getType();
+                ArrayList<String> branch = gson.fromJson(json, listType);
+                branches.addAll(branch);
             }
 
 
