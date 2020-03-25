@@ -49,31 +49,31 @@ import in.co.rajkumaar.amritarepo.papers.PaperAdapter;
 
 public class ExamCategoryActivity extends AppCompatActivity {
 
-    String url_exams;
-    ArrayList<String> headings, texts, links;
-    ListView listView;
-    PaperAdapter scheduleBlockArrayAdapter;
+    private String urlExams;
+    private ArrayList<String> headings;
+    private ListView listView;
+    private PaperAdapter scheduleBlockArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_schedule);
 
-        url_exams = getResources().getString(R.string.url_exams);
+        urlExams = getResources().getString(R.string.url_exams);
         headings = new ArrayList<>();
-        texts = new ArrayList<>();
-        links = new ArrayList<>();
+
         listView = findViewById(R.id.list);
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);
-        new retrieveSchedule().execute();
+        new RetrieveSchedule().execute();
     }
 
 
     @SuppressLint("StaticFieldLeak")
-    class retrieveSchedule extends AsyncTask<Void, Void, Void> {
-        Document document = null;
-        Elements titles, ul_lists;
+    private class RetrieveSchedule extends AsyncTask<Void, Void, Void> {
+        private Document document = null;
+        private Elements titles;
+        private Elements ulLists;
 
         @Override
         protected void onPreExecute() {
@@ -83,7 +83,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                document = Jsoup.connect(url_exams).get();
+                document = Jsoup.connect(urlExams).get();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -96,7 +96,7 @@ public class ExamCategoryActivity extends AppCompatActivity {
 
             try {
                 titles = document.select("div.field-items").select("p");
-                ul_lists = document.select("div.field-items").select("ul");
+                ulLists = document.select("div.field-items").select("ul");
                 Log.e("ELEMENTS ", String.valueOf(titles.size()));
                 for (int i = 0; i < titles.size(); ++i) {
                     String spanstyle = titles.get(i).select("span[style]").attr("style");

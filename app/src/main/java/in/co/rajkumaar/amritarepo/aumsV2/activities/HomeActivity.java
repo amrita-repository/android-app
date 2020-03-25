@@ -22,11 +22,7 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class HomeActivity extends AppCompatActivity {
 
-    SharedPreferences preferences;
     private boolean doubleBackToExitPressedOnce = false;
-    private TextView name, username;
-    private TextView email;
-    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +30,17 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home2);
 
         getSupportActionBar().setSubtitle("Lite Version");
-        preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
-        name = findViewById(R.id.name);
-        username = findViewById(R.id.username);
-        email = findViewById(R.id.email);
-        listView = findViewById(R.id.list);
+        SharedPreferences preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
+        TextView name = findViewById(R.id.name);
+        TextView user_name = findViewById(R.id.username);
+        TextView e_mail = findViewById(R.id.email);
+        ListView listView = findViewById(R.id.list);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         name.setText(preferences.getString("name", "N/A"));
-        username.setText(preferences.getString("username", "N/A"));
-        email.setText(preferences.getString("email", "N/A"));
+        user_name.setText(preferences.getString("username", "N/A"));
+        e_mail.setText(preferences.getString("email", "N/A"));
 
         final ArrayList<HomeItem> items = new ArrayList<>();
         items.add(new HomeItem("Attendance Status", R.drawable.attendance));

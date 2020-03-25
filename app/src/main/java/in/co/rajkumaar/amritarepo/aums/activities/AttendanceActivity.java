@@ -34,7 +34,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,7 +58,6 @@ import androidx.core.content.FileProvider;
 import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.jsoup.Jsoup;
@@ -79,18 +77,17 @@ import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.helpers.CheckForSDCard;
-import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
-import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
+
 
 public class AttendanceActivity extends AppCompatActivity {
 
-    String domain;
-    ListView list;
-    Map<String, String> courses;
-    ArrayList<CourseData> attendanceData;
-    String sem;
-    ProgressDialog progressDialog;
+    private String domain;
+    private ListView list;
+    private Map<String, String> courses;
+    private ArrayList<CourseData> attendanceData;
+    private String sem;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +131,7 @@ public class AttendanceActivity extends AppCompatActivity {
         });
     }
 
-    void getSubjectAttendance(final AsyncHttpClient client, final String code) {
+    private void getSubjectAttendance(final AsyncHttpClient client, final String code) {
         client.get(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp?action=UMS-ATD_INIT_ATDREPORTSTUD_SCREEN&isMenu=true", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -152,7 +149,7 @@ public class AttendanceActivity extends AppCompatActivity {
                 client.post(domain + "/aums/Jsp/Attendance/AttendanceReportStudent.jsp", params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        new saveAUMSReport().execute(responseBody);
+                        new SaveAUMSReport().execute(responseBody);
                     }
 
                     @Override
@@ -170,7 +167,7 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
 
-    void loadCourseMapping(final AsyncHttpClient client, final String sem, final boolean download, final String code) {
+    private void loadCourseMapping(final AsyncHttpClient client, final String sem, final boolean download, final String code) {
         RequestParams params = new RequestParams();
         params.put("Page_refIndex_hidden", UserData.refIndex++);
         params.put("htmlPageTopContainer_selectSem", sem);
@@ -208,7 +205,7 @@ public class AttendanceActivity extends AppCompatActivity {
 
     }
 
-    void getAttendance(final AsyncHttpClient client, final String sem) {
+    private void getAttendance(final AsyncHttpClient client, final String sem) {
         loadCourseMapping(client,sem,false,null);
         RequestParams params = new RequestParams();
         params.put("action", "UMS-ATD_INIT_ATDREPORTSTUD_SCREEN");
@@ -341,7 +338,7 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
     @SuppressLint("StaticFieldLeak")
-    class saveAUMSReport extends AsyncTask<byte[], String, String> {
+    class SaveAUMSReport extends AsyncTask<byte[], String, String> {
 
         @Override
         protected String doInBackground(byte[]... file) {
@@ -400,7 +397,11 @@ public class AttendanceActivity extends AppCompatActivity {
     }
 
     class CourseData {
-        private String code, title, total, attended, percentage;
+        private String code;
+        private String title;
+        private String total;
+        private String attended;
+        private String percentage;
 
         public String getAttended() {
             return attended;
@@ -434,7 +435,7 @@ public class AttendanceActivity extends AppCompatActivity {
             this.title = title;
         }
 
-        String getTotal() {
+        private String getTotal() {
             return total;
         }
 
@@ -442,7 +443,7 @@ public class AttendanceActivity extends AppCompatActivity {
             this.total = total;
         }
 
-        int getBunkingCount() {
+        private int getBunkingCount() {
             return Double.parseDouble(getPercentage()) > 75.0 ?
                     (int) Math.floor(Math.abs((Double.parseDouble(this.attended) / 76) * 100 - Double.parseDouble(total)))
                     : (int) Math.ceil(Math.abs(((0.75 * (Double.parseDouble(getTotal()))) - Double.parseDouble(getAttended())) / 0.25));

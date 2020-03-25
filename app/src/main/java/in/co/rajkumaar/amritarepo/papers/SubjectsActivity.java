@@ -59,12 +59,12 @@ import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class SubjectsActivity extends AppCompatActivity {
 
-    String href;
-    String externLink;
-    List<String> assessments = new ArrayList<>();
-    int statusCode;
-    String proxy;
-    List<String> links = new ArrayList<>();
+    private String href;
+    private String externLink;
+    private List<String> assessments = new ArrayList<>();
+    private int statusCode;
+    private String proxy;
+    private List<String> links = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +102,8 @@ public class SubjectsActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     private class Load extends AsyncTask<Void, Void, Void> {
-        Document nextDoc, document = null;
+        private Document nextDoc;
+        private Document document = null;
 
         @Override
         protected Void doInBackground(Void... voids) {

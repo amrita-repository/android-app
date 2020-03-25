@@ -53,11 +53,11 @@ import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class AssessmentsActivity extends AppCompatActivity {
 
-    String href;
-    String externLink;
-    List<String> assessments = new ArrayList<>();
-    int statusCode;
-    List<String> links = new ArrayList<>();
+    private String href;
+    private String externLink;
+    private List<String> assessments = new ArrayList<>();
+    private int statusCode;
+    private List<String> links = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +97,9 @@ public class AssessmentsActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     private class Load extends AsyncTask<Void, Void, Void> {
-        String proxy = BuildConfig.PROXY_URL;
+        private String proxy = BuildConfig.PROXY_URL;
 
-        Document document = null;
+        private Document document = null;
 
         @Override
         protected Void doInBackground(Void... voids) {

@@ -15,10 +15,19 @@
         "design",
         "code"
       ]
+    },
+    {
+      "login": "sa276",
+      "name": "sa276",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/62176377?v=4",
+      "profile": "https://github.com/sa276",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "projectName": "AmritaRepo",
+  "projectName": "amrita-repository",
   "projectOwner": "rajkumaar23",
   "repoType": "github",
   "repoHost": "https://github.com",

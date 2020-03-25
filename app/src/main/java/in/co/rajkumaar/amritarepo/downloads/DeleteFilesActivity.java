@@ -27,7 +27,7 @@ package in.co.rajkumaar.amritarepo.downloads;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Environment;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -44,20 +44,17 @@ import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 
 public class DeleteFilesActivity extends AppCompatActivity {
 
-    String dirPath;
-
-    File dir;
-    File[] files;
-    ListView listView;
-    ArrayAdapter<DownloadsItem> fileAdapter;
-    int count;
+    private File dir;
+    private ListView listView;
+    private ArrayAdapter<DownloadsItem> fileAdapter;
+    private int count;
     private ArrayList<DownloadsItem> fileList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_files);
-        dirPath = getExternalFilesDir(null) + "/AmritaRepo";
+        String dirPath = getExternalFilesDir(null) + "/AmritaRepo";
         dir = new File(dirPath);
         fileList = new ArrayList<DownloadsItem>();
         listView = findViewById(R.id.list);
@@ -108,8 +105,8 @@ public class DeleteFilesActivity extends AppCompatActivity {
 
     }
 
-    void retrieveFiles() {
-        files = dir.listFiles();
+    private void retrieveFiles() {
+        File[] files = dir.listFiles();
         fileList.clear();
         if (files != null) {
             for (File file : files) {
@@ -118,7 +115,7 @@ public class DeleteFilesActivity extends AppCompatActivity {
         }
     }
 
-    void listFiles() {
+    private void listFiles() {
         if (!fileList.isEmpty()) {
             fileAdapter = new DownloadsItemAdapter(this, fileList);
             final ListView downloads = listView;

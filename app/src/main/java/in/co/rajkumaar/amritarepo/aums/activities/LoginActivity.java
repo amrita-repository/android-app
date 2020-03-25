@@ -64,18 +64,19 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText username, password;
-    Button login;
-    Client mainClient;
+    private EditText username;
+    private EditText  password;
+    private Client mainClient;
 
-    String sessionAction, sessionID;
-    String rmusername, rmpassword;
-    String domain;
+    private String sessionAction;
+    private String  sessionID;
+    private String domain;
 
-    String name, studentHashId;
+    private String name;
+    private String studentHashId;
 
-    ProgressDialog dialog;
-    CheckBox remember;
+    private ProgressDialog dialog;
+    private CheckBox remember;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -106,13 +107,13 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
-        login = findViewById(R.id.login);
+        Button login = findViewById(R.id.login);
         remember = findViewById(R.id.remember_me);
         mainClient = new Client(this);
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
-        rmusername = pref.getString("username", null);
-        rmpassword = pref.getString("password", null);
+        String rmusername = pref.getString("username", null);
+        String rmpassword = pref.getString("password", null);
 
         username.setText(rmusername);
         password.setText(rmpassword);
@@ -162,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    boolean validate() {
+    private boolean validate() {
         if (username.getText().toString().isEmpty()) {
             username.setError("This field cannot be empty");
             return false;
@@ -174,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    void actionDoneCloseInput() {
+    private void actionDoneCloseInput() {
         username.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -197,13 +198,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    void closeLoginDialog() {
+    private void closeLoginDialog() {
         if (dialog.isShowing())
             dialog.dismiss();
     }
 
 
-    void getSession(final AsyncHttpClient client) {
+    private void getSession(final AsyncHttpClient client) {
         RequestParams params = new RequestParams();
         params.put("service", domain + "/aums/Jsp/Common/index.jsp");
 
@@ -238,7 +239,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    void login(final AsyncHttpClient client) {
+    private void login(final AsyncHttpClient client) {
         RequestParams params = new RequestParams();
         params.put("username", username.getText().toString());
         params.put("password", password.getText().toString());
@@ -268,7 +269,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    void getUserData(final AsyncHttpClient client) {
+    private void getUserData(final AsyncHttpClient client) {
         client.get(domain + "/aums/Jsp/Core_Common/index.jsp?task=off", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -324,7 +325,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    void getCGPA(final AsyncHttpClient client) {
+    private void getCGPA(final AsyncHttpClient client) {
         RequestParams params = new RequestParams();
         params.put("action", "UMS-EVAL_STUDPERFORMSURVEY_INIT_SCREEN");
         params.put("isMenu", "true");

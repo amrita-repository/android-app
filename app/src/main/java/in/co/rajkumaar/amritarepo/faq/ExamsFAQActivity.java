@@ -23,7 +23,7 @@ public class ExamsFAQActivity extends AppCompatActivity {
     ProgressDialog dialog;
     String finalHtml;
     WebView mywebview;
-    private Document html;
+    private Document htmlDoc;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -84,8 +84,8 @@ public class ExamsFAQActivity extends AppCompatActivity {
                         "    </style>\n" +
                         "</head>\n" +
                         "<body>";
-                html = Jsoup.parse(new String(bytes));
-                String content = html.select("section#post-content").html();
+                htmlDoc = Jsoup.parse(new String(bytes));
+                String content = htmlDoc.select("section#post-content").html();
                 finalHtml += content;
                 finalHtml += "</body></html>";
                 mywebview.loadData(finalHtml, "text/html; charset=utf-8", "UTF-8");
