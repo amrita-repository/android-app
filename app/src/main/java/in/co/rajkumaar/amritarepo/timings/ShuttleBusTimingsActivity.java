@@ -77,7 +77,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
     private TextView nextBus;
     private TextView countdownTimer;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa");
-
+    private int flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,7 +169,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
     private void loadData(String type) {
         items = new ArrayList<>();
         Gson gson = new Gson();
-        int flag;
+
         if (type != null && type.equals("Buses from AB1")) {
             String json = preferences.getString("ab1", null);
             Type listType = new TypeToken<ArrayList<String>>() {
@@ -180,21 +180,13 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                 ArrayList<String> timings = gson.fromJson(json, listType);
                 for (String item : timings) {
                     Date busTimeDate = dateFormat.parse(item);
-                    Calendar busTime = Calendar.getInstance();
-                    busTime.setTime(new Date());
-                    busTime.set(Calendar.HOUR_OF_DAY, busTimeDate.getHours());
-                    busTime.set(Calendar.MINUTE, busTimeDate.getMinutes());
+                    Calendar busTime = setBusTime(busTimeDate);
                     items.add(new DataItem(
                             item, "ab1"
                     ));
 
                     if (busTime.after(currentTime) && flag == 0) {
-                        nextBus.setText(getString(R.string.nextBusText) + item);
-                        flag = 1;
-                        Date startTime = currentTime.getTime();
-                        Date endTime = busTime.getTime();
-                        long timediff = endTime.getTime() - startTime.getTime();
-                        countdown(timediff);
+                        calcTimeDiff(item, currentTime, busTime);
                     }
                 }
                 if (flag == 0) {
@@ -215,22 +207,12 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                 ArrayList<String> timings = gson.fromJson(json, listType);
                 for (String item : timings) {
                     Date busTimeDate = dateFormat.parse(item);
-                    Calendar busTime = Calendar.getInstance();
-                    busTime.setTime(new Date());
-                    busTime.set(Calendar.HOUR_OF_DAY, busTimeDate.getHours());
-                    busTime.set(Calendar.MINUTE, busTimeDate.getMinutes());
-
-
+                    Calendar busTime = setBusTime(busTimeDate);
                     items.add(new DataItem(
                             item, "ab3"
                     ));
                     if (busTime.after(currentTime) && flag == 0) {
-                        nextBus.setText(getString(R.string.nextBusText) + item);
-                        flag = 1;
-                        Date startTime = currentTime.getTime();
-                        Date endTime = busTime.getTime();
-                        long timediff = endTime.getTime() - startTime.getTime();
-                        countdown(timediff);
+                        calcTimeDiff(item, currentTime, busTime);
                     }
                 }
                 if (flag == 0) {
@@ -308,6 +290,22 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
         }
     }
 
+    private Calendar setBusTime(Date time) {
+        Calendar busTime = Calendar.getInstance();
+        busTime.setTime(new Date());
+        busTime.set(Calendar.HOUR_OF_DAY, time.getHours());
+        busTime.set(Calendar.MINUTE, time.getMinutes());
+        return busTime;
+    }
+
+    private void calcTimeDiff(String time, Calendar currentTime, Calendar busTime) {
+        nextBus.setText(String.format("%s%s", getString(R.string.nextBusText), time));
+        flag = 1;
+        Date startTime = currentTime.getTime();
+        Date endTime = busTime.getTime();
+        long timediff = endTime.getTime() - startTime.getTime();
+        countdown(timediff);
+    }
     private void countdown(long timeDiff) {
         new CountDownTimer(timeDiff, 1000) {
 
