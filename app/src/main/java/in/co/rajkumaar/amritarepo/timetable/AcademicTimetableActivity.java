@@ -55,6 +55,7 @@ import org.jsoup.select.Elements;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -76,8 +77,6 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     ArrayAdapter<String> courseAdapter;
     ArrayAdapter<String> branchAdapter;
-    boolean needupdatecourse;
-    boolean needupdatebranch;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -203,43 +202,43 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
     private void buildBranchesSpinner(int courseID) {
-        List<String> branchestemp = new ArrayList<>();
-        branchestemp.add("[Choose branch]");
+        List<String> branchesTemp = new ArrayList<>();
+        branchesTemp.add("[Choose branch]");
+        boolean needUpdateBranch;
         if (!pref.contains(courses.get(courseID))) {
-            needupdatebranch = true;
-            getBranches(courseID, branchestemp);
+            needUpdateBranch = true;
+            getBranches(courseID, branchesTemp, needUpdateBranch);
         } else {
             branches = new ArrayList<>();
             Gson gson = new Gson();
             String json = pref.getString(courses.get(courseID), null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            ArrayList<String> parsedbranch = gson.fromJson(json, listType);
-            branches.addAll(gson.fromJson(json, listType));
+            branches.addAll((Collection<? extends String>) gson.fromJson(json, listType));
             setBranchSpinner();
-            needupdatebranch = false;
-            getBranches(courseID, branchestemp);
+            needUpdateBranch = false;
+            getBranches(courseID, branchesTemp, needUpdateBranch);
         }
     }
 
 
     private void loadLists() {
-        List<String> coursestemp = new ArrayList<>();
-        coursestemp.add("[Choose course]");
+        List<String> coursesTemp = new ArrayList<>();
+        coursesTemp.add("[Choose course]");
+        boolean needUpdateCourse;
         if (!pref.contains("courses")) {
-            needupdatecourse = true;
-            getCourse(coursestemp);
+            needUpdateCourse = true;
+            getCourse(coursesTemp, needUpdateCourse);
         } else {
             courses = new ArrayList<>();
             Gson gson = new Gson();
             String json = pref.getString("courses", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            ArrayList<String> parsedCourse = gson.fromJson(json, listType);
-            courses.addAll(parsedCourse);
+            courses.addAll((Collection<? extends String>) gson.fromJson(json, listType));
             setCourseSpinner();
-            needupdatecourse = false;
-            getCourse(coursestemp);
+            needUpdateCourse = false;
+            getCourse(coursesTemp, needUpdateCourse);
         }
 
 
@@ -286,7 +285,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         }
     }
 
-    private void getCourse(final List<String> coursestemp) {
+    private void getCourse(final List<String> coursesTemp, final boolean needUpdateCourse) {
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(getString(R.string.course_name_url), new AsyncHttpResponseHandler() {
             @Override
@@ -297,15 +296,15 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 if (columns.get(0).text().equals("Course")) {
                     for (int j = 1; j < columns.size(); j++) {
                         String parsedCourse = columns.get(j).attr("value");
-                        coursestemp.add(parsedCourse);
+                        coursesTemp.add(parsedCourse);
                     }
                 }
                 Gson gson = new Gson();
-                String coursesjson = gson.toJson(coursestemp);
+                String coursesjson = gson.toJson(coursesTemp);
                 pref.edit().putString("courses", coursesjson).apply();
-                courses = new ArrayList<>();
-                courses.addAll(coursesTemp);
-                if (needupdatecourse) {
+                if (needUpdateCourse) {
+                    courses = new ArrayList<>();
+                    courses.addAll(coursesTemp);
                     setCourseSpinner();
                 }
             }
@@ -318,7 +317,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         });
     }
 
-    private void getBranches(final int position, final List<String> branchestemp) {
+    private void getBranches(final int position, final List<String> branchesTemp, final boolean needUpdateBranch) {
         AsyncHttpClient client = new AsyncHttpClient();
         String html = getString(R.string.branch_name_url) + courses.get(position);
         client.get(html, new AsyncHttpResponseHandler() {
@@ -328,15 +327,15 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 Element row = html.getElementById("drop_2");
                 Elements columns = row.getElementsByTag("option");
                 for (int j = 1; j < columns.size(); j++) {
-                    String parsedCourse = columns.get(j).text().replace(".", "");
-                    branchestemp.add(parsedCourse);
+                    String parsedCourse = columns.get(j).attr("value");
+                    branchesTemp.add(parsedCourse);
                 }
                 Gson gson = new Gson();
-                String branchJson = gson.toJson(branchestemp);
+                String branchJson = gson.toJson(branchesTemp);
                 pref.edit().putString(courses.get(position), branchJson).apply();
-                branches = new ArrayList<>();
-                branches.addAll(branchesTemp);
-                if (needupdatebranch) {
+                if (needUpdateBranch) {
+                    branches = new ArrayList<>();
+                    branches.addAll(branchesTemp);
                     setBranchSpinner();
                 }
             }
@@ -351,3 +350,4 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
 }
+
