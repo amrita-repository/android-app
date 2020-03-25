@@ -75,7 +75,8 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private TextView nextBus;
     private TextView countdownTimer;
-
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa");
+    private int flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,7 +164,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             }
         });
     }
-    SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa");
+
     private void loadData(String type) {
         items = new ArrayList<>();
         Gson gson = new Gson();
@@ -171,7 +172,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             String json = preferences.getString("ab1", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            int flag=0;
+            flag=0;
             try {
                 Calendar currentTime = Calendar.getInstance();
                 Log.e("TAG", "loadData: "+currentTime.getTime() );
@@ -210,7 +211,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             String json = preferences.getString("ab3", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            int flag=0;
+            flag=0;
             try {
                 Calendar currentTime = Calendar.getInstance();
                 Log.e("TAG", "loadData: "+currentTime.getTime() );

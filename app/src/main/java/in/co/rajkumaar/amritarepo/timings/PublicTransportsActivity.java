@@ -79,7 +79,8 @@ public class PublicTransportsActivity extends AppCompatActivity {
     private TextView nextTrainBus;
     private TextView countdownTimer;
     private ImageView trainbus;
-    int flag;
+    private int flag;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -258,7 +259,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
             }
         });
     }
-    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+
     private void loadData(String type) throws JSONException {
 
         items = new ArrayList<>();
