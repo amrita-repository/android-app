@@ -102,7 +102,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
 
         loadLists();
-        //loadFromPref();
+        loadFromPref();
         course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -202,7 +202,6 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     private void buildBranchesSpinner(int courseID) {
         List<String> branchesTemp = new ArrayList<>();
         branchesTemp.add("[Choose branch]");
-        boolean needUpdateBranch;
         if (!pref.contains(courses.get(courseID))) {
             getBranches(courseID, branchesTemp, true);
         } else {
@@ -221,7 +220,6 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     private void loadLists() {
         List<String> coursesTemp = new ArrayList<>();
         coursesTemp.add("[Choose course]");
-        boolean needUpdateCourse;
         if (!pref.contains("courses")) {
             getCourse(coursesTemp, true);
         } else {
