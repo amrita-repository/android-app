@@ -55,6 +55,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,8 +85,6 @@ public class PublicTransportsActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
 
-    public PublicTransportsActivity() {
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -442,7 +441,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                                 "bus"
                         ));
                         if (busTime.after(currentTime) && flag == 0) {
-                            nextTrainBus.setText(String.format("%s%s", getString(R.string.nextBusText), item.getString("dep")));
+                            nextTrainBus.setText(String.format("%s %s", getString(R.string.nextBusText), item.getString("dep")));
                             flag = 1;
                             Date startTime = currentTime.getTime();
                             Date endTime = busTime.getTime();
@@ -483,7 +482,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                                 "bus"
                         ));
                         if (busTime.after(currentTime) && flag == 0) {
-                            nextTrainBus.setText(String.format("%s%s", getString(R.string.nextBusText), item.getString("dep")));
+                            nextTrainBus.setText(String.format("%s %s", getString(R.string.nextBusText), item.getString("dep")));
                             flag = 1;
                             Date startTime = currentTime.getTime();
                             Date endTime = busTime.getTime();
@@ -579,14 +578,15 @@ public class PublicTransportsActivity extends AppCompatActivity {
     }
 
     private Calendar setTrainTime(Date time) {
+        DateTime dateTime = new DateTime(time);
         Calendar trainTime = Calendar.getInstance();
         trainTime.setTime(new Date());
-        trainTime.set(Calendar.HOUR_OF_DAY, time.getHours());
-        trainTime.set(Calendar.MINUTE, time.getMinutes());
+        trainTime.set(Calendar.HOUR_OF_DAY, dateTime.getHourOfDay());
+        trainTime.set(Calendar.MINUTE, dateTime.getMinuteOfHour());
         return trainTime;
     }
     private void calcTimeDiff(String time, Calendar currentTime, Calendar trainTime) {
-        nextTrainBus.setText(String.format("%s%s", getString(R.string.nextTrainText), time));
+        nextTrainBus.setText(String.format("%s %s", getString(R.string.nextTrainText), time));
         flag = 1;
         Date startTime = currentTime.getTime();
         Date endTime = trainTime.getTime();

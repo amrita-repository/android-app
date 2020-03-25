@@ -55,6 +55,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.joda.time.DateTime;
+
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -291,15 +293,16 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
     }
 
     private Calendar setBusTime(Date time) {
+        DateTime dateTime = new DateTime(time);
         Calendar busTime = Calendar.getInstance();
         busTime.setTime(new Date());
-        busTime.set(Calendar.HOUR_OF_DAY, time.getHours());
-        busTime.set(Calendar.MINUTE, time.getMinutes());
+        busTime.set(Calendar.HOUR_OF_DAY, dateTime.getHourOfDay());
+        busTime.set(Calendar.MINUTE, dateTime.getMinuteOfHour());
         return busTime;
     }
 
     private void calcTimeDiff(String time, Calendar currentTime, Calendar busTime) {
-        nextBus.setText(String.format("%s%s", getString(R.string.nextBusText), time));
+        nextBus.setText(String.format("%s %s", getString(R.string.nextBusText), time));
         flag = 1;
         Date startTime = currentTime.getTime();
         Date endTime = busTime.getTime();
