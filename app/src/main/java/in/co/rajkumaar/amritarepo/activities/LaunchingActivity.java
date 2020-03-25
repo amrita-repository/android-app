@@ -299,11 +299,19 @@ public class LaunchingActivity extends AppCompatActivity
                 }
                 break;
             case "Academic Timetable":
-                startActivity(new Intent(LaunchingActivity.this, AcademicTimetableActivity.class));
+                if (Utils.isConnected(LaunchingActivity.this)) {
+                    startActivity(new Intent(LaunchingActivity.this, AcademicTimetableActivity.class));
+                } else {
+                    Utils.showInternetError(this);
+                }
                 break;
 
             case "Faculty Timetable":
-                startActivity(new Intent(LaunchingActivity.this, FacultyTimetableActivity.class));
+                if (Utils.isConnected(LaunchingActivity.this)) {
+                    startActivity(new Intent(LaunchingActivity.this, FacultyTimetableActivity.class));
+                } else {
+                    Utils.showInternetError(this);
+                }
                 break;
             case "Exam Schedule":
                 if (Utils.isConnected(LaunchingActivity.this))
