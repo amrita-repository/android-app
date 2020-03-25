@@ -57,7 +57,7 @@ Be up-to-date with what's happening at Amrita. Be notified of news articles pull
 
 ## Open Source License
 
-See license at https://github.com/rajkumaar23/AmritaRepo/blob/master/LICENSE
+Read the license [here](https://github.com/rajkumaar23/AmritaRepo/blob/master/LICENSE)
 
 ## Contributors ✨
 
