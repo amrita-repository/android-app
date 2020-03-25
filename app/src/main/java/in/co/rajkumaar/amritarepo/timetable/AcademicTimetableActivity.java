@@ -304,11 +304,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 String coursesjson = gson.toJson(coursestemp);
                 pref.edit().putString("courses", coursesjson).apply();
                 courses = new ArrayList<>();
-                String json = pref.getString("courses", null);
-                Type listType = new TypeToken<ArrayList<String>>() {
-                }.getType();
-                ArrayList<String> course = gson.fromJson(json, listType);
-                courses.addAll(course);
+                courses.addAll(coursesTemp);
                 if (needupdatecourse) {
                     setCourseSpinner();
                 }
