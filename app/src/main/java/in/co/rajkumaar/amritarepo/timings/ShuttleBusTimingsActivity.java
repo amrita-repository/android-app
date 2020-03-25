@@ -219,7 +219,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                     busTime.setTime(new Date());
                     busTime.set(Calendar.HOUR_OF_DAY, busTimeDate.getHours());
                     busTime.set(Calendar.MINUTE, busTimeDate.getMinutes());
-                    
+
 
                     items.add(new DataItem(
                             item, "ab3"
