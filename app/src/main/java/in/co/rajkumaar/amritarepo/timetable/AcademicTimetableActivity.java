@@ -335,11 +335,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 String branchJson = gson.toJson(branchestemp);
                 pref.edit().putString(courses.get(position), branchJson).apply();
                 branches = new ArrayList<>();
-                String json = pref.getString(courses.get(position), null);
-                Type listType = new TypeToken<ArrayList<String>>() {
-                }.getType();
-                ArrayList<String> branch = gson.fromJson(json, listType);
-                branches.addAll(branch);
+                branches.addAll(branchesTemp);
                 if (needupdatebranch) {
                     setBranchSpinner();
                 }
