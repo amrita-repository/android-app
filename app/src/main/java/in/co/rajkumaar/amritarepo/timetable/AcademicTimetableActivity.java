@@ -213,7 +213,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
             String json = pref.getString(courses.get(courseID), null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            branches.addAll((Collection<? extends String>) gson.fromJson(json, listType));
+            branches.addAll(gson.<Collection<? extends String>>fromJson(json, listType));
             setBranchSpinner();
             getBranches(courseID, branchesTemp, false);
         }
@@ -231,7 +231,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
             String json = pref.getString("courses", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            courses.addAll((Collection<? extends String>) gson.fromJson(json, listType));
+            courses.addAll(gson.<Collection<? extends String>>fromJson(json, listType));
             setCourseSpinner();
             getCourse(coursesTemp, false);
         }
