@@ -32,6 +32,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -52,26 +55,33 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ShuttleBusTimingsActivity extends AppCompatActivity {
 
-    String type;
-    ProgressDialog dialog;
+    private String type;
+    private ProgressDialog dialog;
     private GridView listView;
     private ArrayList<DataItem> items;
     private SharedPreferences preferences;
+    private TextView nextBus;
+    private TextView countdownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shuttle_bus_timings);
-
-
+        nextBus=findViewById(R.id.nextBusTime);
+        countdownTimer=findViewById(R.id.countdownTime);
         preferences = getSharedPreferences("timings", MODE_PRIVATE);
         listView = findViewById(R.id.timings_list);
         Bundle extras = getIntent().getExtras();
@@ -153,7 +163,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             }
         });
     }
-
+    SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa");
     private void loadData(String type) {
         items = new ArrayList<>();
         Gson gson = new Gson();
@@ -161,21 +171,78 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             String json = preferences.getString("ab1", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            ArrayList<String> timings = gson.fromJson(json, listType);
-            for (String item : timings) {
-                items.add(new DataItem(
-                        item, "ab1"
-                ));
+            int flag=0;
+            try {
+                Calendar currentTime = Calendar.getInstance();
+                Log.e("TAG", "loadData: "+currentTime.getTime() );
+                ArrayList<String> timings = gson.fromJson(json, listType);
+                for (String item : timings) {
+                    Date busTimeDate=dateFormat.parse(item);
+                    Calendar busTime =Calendar.getInstance();
+                    busTime.setTime(new Date());
+                    busTime.set(Calendar.HOUR_OF_DAY,busTimeDate.getHours());
+                    busTime.set(Calendar.MINUTE,busTimeDate.getMinutes());
+                    Log.e("TAG", "loadData: "+busTime.getTime() );
+                    items.add(new DataItem(
+                            item, "ab1"
+                    ));
+
+                    if(busTime.after(currentTime)&&flag==0)
+                    {
+                        nextBus.setText("Next Bus @ "+item);
+                        flag=1;
+                        Date startTime=currentTime.getTime();
+                        Date endTime=busTime.getTime();
+                        long timediff=endTime.getTime()-startTime.getTime();
+                        countdown(timediff);
+                    }
+                }
+                if(flag==0)
+                {
+                    nextBus.setText("No Buses");
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
+
         } else if (type != null && type.equals("Buses from AB3")) {
             String json = preferences.getString("ab3", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            ArrayList<String> timings = gson.fromJson(json, listType);
-            for (String item : timings) {
-                items.add(new DataItem(
-                        item, "ab3"
-                ));
+            int flag=0;
+            try {
+                Calendar currentTime = Calendar.getInstance();
+                Log.e("TAG", "loadData: "+currentTime.getTime() );
+                ArrayList<String> timings = gson.fromJson(json, listType);
+                for (String item : timings) {
+                    Date busTimeDate=dateFormat.parse(item);
+                    Calendar busTime =Calendar.getInstance();
+                    busTime.setTime(new Date());
+                    busTime.set(Calendar.HOUR_OF_DAY,busTimeDate.getHours());
+                    busTime.set(Calendar.MINUTE,busTimeDate.getMinutes());
+                    Log.e("TAG", "loadData: "+busTime.getTime() );
+
+                    items.add(new DataItem(
+                            item, "ab3"
+                    ));
+                    if(busTime.after(currentTime)&&flag==0)
+                    {
+                        nextBus.setText("Next Bus @ "+item);
+                        flag=1;
+                        Date startTime=currentTime.getTime();
+                        Date endTime=busTime.getTime();
+                        long timediff=endTime.getTime()-startTime.getTime();
+                        countdown(timediff);
+                    }
+                }
+                if(flag==0)
+                {
+                    nextBus.setText("No Buses");
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
         if (items != null) {
@@ -236,13 +303,46 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
 
 
     private class DataItem {
-        String departure;
-        String from;
+        private String departure;
+        private String from;
 
         DataItem(String departure, String from) {
             this.departure = departure;
             this.from = from;
         }
+    }
+    private void countdown(long timeDiff)
+    {
+        new CountDownTimer(timeDiff, 1000) {
+
+            @SuppressLint("DefaultLocale")
+            public void onTick(long millisUntilFinished) {
+                if(TimeUnit.MILLISECONDS.toMinutes( millisUntilFinished)==0)
+                {
+                    countdownTimer.setText(String.format(" %d Sec Left",
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                }
+                else {
+                    countdownTimer.setText(String.format(" %d Min : %d Sec Left",
+                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                }
+            }
+
+            public void onFinish() {
+                countdownTimer.setText("Departed");
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadData(type);
+                    }
+                }, 0);
+
+            }
+        }.start();
     }
 
 

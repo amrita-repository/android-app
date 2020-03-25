@@ -2,14 +2,66 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackground">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:id="@+id/nextBusTrainCard"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        app:cardBackgroundColor="@color/black_overlay"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="3dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/busTrainLogo"
+                android:layout_margin="16dp"
+                android:layout_width="64dp"
+                android:layout_gravity="center"
+                android:layout_height="64dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                >
+                <TextView
+                    android:id="@+id/nextBusTrainTime"
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_3"
+                    android:textSize="16sp"
+                    android:layout_margin="1dp"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/countdownTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:text=""
+                    android:layout_margin="1dp"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    android:textSize="16sp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
     <ListView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/timings_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:layout_below="@+id/nextBusTrainCard"
         android:background="@color/colorBackground"
         android:divider="@android:color/white"
         android:dividerHeight="1dp"
