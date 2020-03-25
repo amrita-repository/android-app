@@ -73,6 +73,7 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 public class PublicTransportsActivity extends AppCompatActivity {
 
     private String type;
+    private int flag;
     private ProgressDialog dialog;
     private ListView listView;
     private ArrayList<DataItem> items;
@@ -81,7 +82,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
     private TextView countdownTimer;
     private ImageView trainBusImage;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-    private SimpleDateFormat dayFormat = new SimpleDateFormat("EEE");
+    private SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,7 +266,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
     private void loadData(String type) throws JSONException {
 
         items = new ArrayList<>();
-        int flag;
+
         if (type != null && type.equals("Trains from Coimbatore")) {
             trainBusImage.setImageResource(R.drawable.trainimage);
             flag = 0;
@@ -290,20 +291,14 @@ public class PublicTransportsActivity extends AppCompatActivity {
                                 "etmd",
                                 "train"
                         ));
-                        if ((dayFormat.format(trainTime.getTime()).equals("Sun") && item.getString("days").equals("All Days Except Sundays")) ||
-                                (dayFormat.format(trainTime.getTime()).equals("Thu") && item.getString("days").equals("All Days Except Thursdays"))) {
+                        if (item.getString("days").toLowerCase().contains(dayFormat.format(trainTime.getTime()).toLowerCase())) {
                             continue;
                         } else if (trainTime.after(currentTime) && flag == 0) {
-                            nextTrainBus.setText("Next Train @ " + item.getString("dep"));
-                            flag = 1;
-                            Date startTime = currentTime.getTime();
-                            Date endTime = trainTime.getTime();
-                            long timediff = endTime.getTime() - startTime.getTime();
-                            countdown(timediff);
+                            calcTimeDiff(item.getString("dep"), currentTime, trainTime);
                         }
                     }
                     if (flag == 0) {
-                        nextTrainBus.setText("No Trains");
+                        nextTrainBus.setText(R.string.noTrainsText);
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -335,20 +330,14 @@ public class PublicTransportsActivity extends AppCompatActivity {
                                 "etmd",
                                 "train"
                         ));
-                        if ((dayFormat.format(trainTime.getTime()).equals("Sun") && item.getString("days").equals("All Days Except Sundays")) ||
-                                (dayFormat.format(trainTime.getTime()).equals("Thu") && item.getString("days").equals("All Days Except Thursdays"))) {
+                        if (item.getString("days").toLowerCase().contains(dayFormat.format(trainTime.getTime()).toLowerCase())) {
                             continue;
                         } else if (trainTime.after(currentTime) && flag == 0) {
-                            nextTrainBus.setText("Next Train @ " + item.getString("dep"));
-                            flag = 1;
-                            Date startTime = currentTime.getTime();
-                            Date endTime = trainTime.getTime();
-                            long timediff = endTime.getTime() - startTime.getTime();
-                            countdown(timediff);
+                            calcTimeDiff(item.getString("dep"), currentTime, trainTime);
                         }
                     }
                     if (flag == 0) {
-                        nextTrainBus.setText("No Trains");
+                        nextTrainBus.setText(R.string.noTrainsText);
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -382,20 +371,14 @@ public class PublicTransportsActivity extends AppCompatActivity {
                                 "cbe",
                                 "train"
                         ));
-                        if ((dayFormat.format(trainTime.getTime()).equals("Sun") && item.getString("days").equals("All Days Except Sundays")) ||
-                                (dayFormat.format(trainTime.getTime()).equals("Thu") && item.getString("days").equals("All Days Except Thursdays"))) {
+                        if (item.getString("days").toLowerCase().contains(dayFormat.format(trainTime.getTime()).toLowerCase())) {
                             continue;
                         } else if (trainTime.after(currentTime) && flag == 0) {
-                            nextTrainBus.setText("Next Train @ " + item.getString("dep"));
-                            flag = 1;
-                            Date startTime = currentTime.getTime();
-                            Date endTime = trainTime.getTime();
-                            long timediff = endTime.getTime() - startTime.getTime();
-                            countdown(timediff);
+                            calcTimeDiff(item.getString("dep"), currentTime, trainTime);
                         }
                     }
                     if (flag == 0) {
-                        nextTrainBus.setText("No Trains");
+                        nextTrainBus.setText(R.string.noTrainsText);
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -430,20 +413,14 @@ public class PublicTransportsActivity extends AppCompatActivity {
                                 "pkd",
                                 "train"
                         ));
-                        if ((dayFormat.format(trainTime.getTime()).equals("Sun") && item.getString("days").equals("All Days Except Sundays")) ||
-                                (dayFormat.format(trainTime.getTime()).equals("Thu") && item.getString("days").equals("All Days Except Thursdays"))) {
+                        if (item.getString("days").toLowerCase().contains(dayFormat.format(trainTime.getTime()).toLowerCase())) {
                             continue;
                         } else if (trainTime.after(currentTime) && flag == 0) {
-                            nextTrainBus.setText("Next Train @ " + item.getString("dep"));
-                            flag = 1;
-                            Date startTime = currentTime.getTime();
-                            Date endTime = trainTime.getTime();
-                            long timediff = endTime.getTime() - startTime.getTime();
-                            countdown(timediff);
+                            calcTimeDiff(item.getString("dep"), currentTime, trainTime);
                         }
                     }
                     if (flag == 0) {
-                        nextTrainBus.setText("No Trains");
+                        nextTrainBus.setText(R.string.noTrainsText);
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -478,7 +455,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                                 "bus"
                         ));
                         if (busTime.after(currentTime) && flag == 0) {
-                            nextTrainBus.setText("Next Bus @ " + item.getString("dep"));
+                            nextTrainBus.setText(getString(R.string.nextBusText) + item.getString("dep"));
                             flag = 1;
                             Date startTime = currentTime.getTime();
                             Date endTime = busTime.getTime();
@@ -487,7 +464,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                         }
                     }
                     if (flag == 0) {
-                        nextTrainBus.setText("No Buses");
+                        nextTrainBus.setText(R.string.noBusText);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -522,7 +499,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                                 "bus"
                         ));
                         if (busTime.after(currentTime) && flag == 0) {
-                            nextTrainBus.setText("Next Bus @ " + item.getString("dep"));
+                            nextTrainBus.setText(getString(R.string.nextBusText) + item.getString("dep"));
                             flag = 1;
                             Date startTime = currentTime.getTime();
                             Date endTime = busTime.getTime();
@@ -531,7 +508,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                         }
                     }
                     if (flag == 0) {
-                        nextTrainBus.setText("No Buses");
+                        nextTrainBus.setText(R.string.noBusText);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -611,6 +588,14 @@ public class PublicTransportsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void calcTimeDiff(String time, Calendar currentTime, Calendar trainTime) {
+        nextTrainBus.setText(getString(R.string.nextTrainText) + time);
+        flag = 1;
+        Date startTime = currentTime.getTime();
+        Date endTime = trainTime.getTime();
+        long timediff = endTime.getTime() - startTime.getTime();
+        countdown(timediff);
+    }
     private void countdown(long timeDiff) {
         new CountDownTimer(timeDiff, 1000) {
 

@@ -51,5 +51,9 @@
 
     <string name="upi_id">7592903711@upi</string>
     <string name="central_library">https://www.amrita.edu/school/engineering/coimbatore/resources/library</string>
+    <string name="nextTrainText">Next Train @ </string>
+    <string name="noTrainsText">No Trains</string>
+    <string name="nextBusText">Next Bus @ </string>
+    <string name="noBusText">No Buses</string>
 
 </resources>

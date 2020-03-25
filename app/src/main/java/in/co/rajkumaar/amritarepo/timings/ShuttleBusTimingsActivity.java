@@ -189,7 +189,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                     ));
 
                     if (busTime.after(currentTime) && flag == 0) {
-                        nextBus.setText("Next Bus @ " + item);
+                        nextBus.setText(getString(R.string.nextBusText) + item);
                         flag = 1;
                         Date startTime = currentTime.getTime();
                         Date endTime = busTime.getTime();
@@ -198,7 +198,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                     }
                 }
                 if (flag == 0) {
-                    nextBus.setText("No Buses");
+                    nextBus.setText(R.string.noBusText);
                 }
 
             } catch (ParseException e) {
@@ -225,7 +225,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                             item, "ab3"
                     ));
                     if (busTime.after(currentTime) && flag == 0) {
-                        nextBus.setText("Next Bus @ " + item);
+                        nextBus.setText(getString(R.string.nextBusText) + item);
                         flag = 1;
                         Date startTime = currentTime.getTime();
                         Date endTime = busTime.getTime();
@@ -234,7 +234,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                     }
                 }
                 if (flag == 0) {
-                    nextBus.setText("No Buses");
+                    nextBus.setText(R.string.noBusText);
                 }
 
             } catch (ParseException e) {
