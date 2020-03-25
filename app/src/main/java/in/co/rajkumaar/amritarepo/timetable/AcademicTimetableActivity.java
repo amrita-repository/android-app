@@ -215,7 +215,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
             ArrayList<String> parsedbranch = gson.fromJson(json, listType);
-            branches.addAll(parsedbranch);
+            branches.addAll(gson.fromJson(json, listType));
             setBranchSpinner();
             needupdatebranch = false;
             getBranches(courseID, branchestemp);
@@ -359,4 +359,3 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
 }
-
