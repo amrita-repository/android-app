@@ -75,8 +75,6 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     List<String> batches = new ArrayList<>();
     SharedPreferences pref;
     SharedPreferences.Editor editor;
-    ArrayAdapter<String> courseAdapter;
-    ArrayAdapter<String> branchAdapter;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -104,7 +102,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
 
         loadLists();
-        loadFromPref();
+        //loadFromPref();
         course.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -206,8 +204,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         branchesTemp.add("[Choose branch]");
         boolean needUpdateBranch;
         if (!pref.contains(courses.get(courseID))) {
-            needUpdateBranch = true;
-            getBranches(courseID, branchesTemp, needUpdateBranch);
+            getBranches(courseID, branchesTemp, true);
         } else {
             branches = new ArrayList<>();
             Gson gson = new Gson();
@@ -216,8 +213,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
             }.getType();
             branches.addAll((Collection<? extends String>) gson.fromJson(json, listType));
             setBranchSpinner();
-            needUpdateBranch = false;
-            getBranches(courseID, branchesTemp, needUpdateBranch);
+            getBranches(courseID, branchesTemp, false);
         }
     }
 
@@ -227,8 +223,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         coursesTemp.add("[Choose course]");
         boolean needUpdateCourse;
         if (!pref.contains("courses")) {
-            needUpdateCourse = true;
-            getCourse(coursesTemp, needUpdateCourse);
+            getCourse(coursesTemp, true);
         } else {
             courses = new ArrayList<>();
             Gson gson = new Gson();
@@ -237,8 +232,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
             }.getType();
             courses.addAll((Collection<? extends String>) gson.fromJson(json, listType));
             setCourseSpinner();
-            needUpdateCourse = false;
-            getCourse(coursesTemp, needUpdateCourse);
+            getCourse(coursesTemp, false);
         }
 
 
@@ -271,13 +265,13 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
     private void setCourseSpinner() {
-        courseAdapter = new ArrayAdapter<>(AcademicTimetableActivity.this, R.layout.spinner_item1, courses);
+        ArrayAdapter<String> courseAdapter = new ArrayAdapter<>(AcademicTimetableActivity.this, R.layout.spinner_item1, courses);
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         course.setAdapter(courseAdapter);
     }
 
     private void setBranchSpinner() {
-        branchAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, branches);
+        ArrayAdapter<String> branchAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, branches);
         branchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         branch.setAdapter(branchAdapter);
         if (course.getSelectedItemPosition() == pref.getInt("course", 0)) {
