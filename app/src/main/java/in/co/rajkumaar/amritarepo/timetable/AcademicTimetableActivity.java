@@ -292,8 +292,8 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                     }
                 }
                 Gson gson = new Gson();
-                String coursesjson = gson.toJson(coursesTemp);
-                pref.edit().putString("courses", coursesjson).apply();
+                String coursesJson = gson.toJson(coursesTemp);
+                pref.edit().putString("courses", coursesJson).apply();
                 if (needUpdateCourse) {
                     courses = new ArrayList<>();
                     courses.addAll(coursesTemp);
