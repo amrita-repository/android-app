@@ -55,5 +55,6 @@
     <string name="noTrainsText">No Trains</string>
     <string name="nextBusText">Next Bus @ </string>
     <string name="noBusText">No Buses</string>
-
+    <string name="course_name_url">https://intranet.cb.amrita.edu/TimeTable/</string>
+    <string name="branch_name_url">"https://intranet.cb.amrita.edu/TimeTable/funcTimeTable.php?func=drop_1&amp;drop_var="</string>
 </resources>

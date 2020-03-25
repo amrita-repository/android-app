@@ -27,7 +27,7 @@ public class PaperAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String type;
     private customListener customListener;
-    private int[] mMaterialColors;
+    private int[] mMaterial_Colors;
 
     public PaperAdapter(Context context, List<String> settings, String type) {
         super(context, 0, settings);
@@ -52,13 +52,13 @@ public class PaperAdapter extends ArrayAdapter<String> {
         TextView name = listItemView.findViewById(R.id.title);
         name.setText(current);
 
-        mMaterialColors = getContext().getResources().getIntArray(R.array.colors);
+        mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
         if (type.equals("sem")) {
             listItemView.findViewById(R.id.image).setVisibility(View.GONE);
             listItemView.findViewById(R.id.icon).setVisibility(View.VISIBLE);
             MaterialLetterIcon icon = listItemView.findViewById(R.id.icon);
             icon.setLetter(current.substring(0, 1));
-            icon.setShapeColor(mMaterialColors[RANDOM.nextInt(mMaterialColors.length)]);
+            icon.setShapeColor(mMaterial_Colors[RANDOM.nextInt(mMaterial_Colors.length)]);
         } else {
             listItemView.findViewById(R.id.icon).setVisibility(View.GONE);
             listItemView.findViewById(R.id.image).setVisibility(View.VISIBLE);
@@ -66,7 +66,7 @@ public class PaperAdapter extends ArrayAdapter<String> {
             imageView.setImageDrawable(new IconDrawable(context,
                     (type.equals("assessments") || type.equals("examcategory") ? FontAwesomeIcons.fa_folder_open :
                             type.equals("subjects") ? FontAwesomeIcons.fa_file_pdf_o : FontAwesomeIcons.fa_file_o))
-                    .color(mMaterialColors[RANDOM.nextInt(mMaterialColors.length)]));
+                    .color(mMaterial_Colors[RANDOM.nextInt(mMaterial_Colors.length)]));
         }
         listItemView.setOnClickListener(new View.OnClickListener() {
             @Override

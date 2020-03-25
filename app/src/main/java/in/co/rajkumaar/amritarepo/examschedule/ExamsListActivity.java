@@ -55,11 +55,12 @@ import in.co.rajkumaar.amritarepo.papers.PaperAdapter;
 
 public class ExamsListActivity extends AppCompatActivity {
 
-    String url_exams;
+    private String url_exams;
 
-    ArrayList<String> texts, links;
-    int block;
-    PaperAdapter adapter;
+    private ArrayList<String> texts;
+    private ArrayList<String> links;
+    private int block;
+    private PaperAdapter adapter;
     private ListView listView;
 
     @Override
@@ -76,14 +77,14 @@ public class ExamsListActivity extends AppCompatActivity {
         texts = new ArrayList<>();
         links = new ArrayList<>();
 
-        new getExams().execute();
+        new GetExams().execute();
     }
 
 
     @SuppressLint("StaticFieldLeak")
-    class getExams extends AsyncTask<Void, Void, Void> {
-        Document document = null;
-        Elements ul_lists;
+    class GetExams extends AsyncTask<Void, Void, Void> {
+        private Document document = null;
+        private Elements ul_lists;
 
         @Override
         protected void onPreExecute() {

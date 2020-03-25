@@ -63,12 +63,11 @@ import static android.view.View.GONE;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TextView name, username, cgpa;
-    ImageView pic;
-    ListView list;
-    String semester;
-    AsyncHttpClient client;
-    ProgressBar image_progress;
+    private TextView name;
+    private TextView username;
+    private TextView cgpa;
+    private ImageView pic;
+    private ProgressBar imageProgress;
     boolean doubleBackToExitPressedOnce = false;
     private Map<String, String> semesterMapping;
 
@@ -92,10 +91,10 @@ public class HomeActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
         cgpa = findViewById(R.id.cgpa);
         pic = findViewById(R.id.userImage);
-        list = findViewById(R.id.list);
-        image_progress = findViewById(R.id.image_progress);
+        ListView list = findViewById(R.id.list);
+        imageProgress = findViewById(R.id.image_progress);
 
-        client = UserData.client;
+        AsyncHttpClient client = UserData.client;
         setData();
         ArrayList<HomeItem> items = new ArrayList<>();
 
@@ -138,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void getPhoto(final AsyncHttpClient client) {
+    private void getPhoto(final AsyncHttpClient client) {
 
         RequestParams params = new RequestParams();
         params.add("action", "UMS-SRMHR_SHOW_PERSON_PHOTO");
@@ -148,14 +147,14 @@ public class HomeActivity extends AppCompatActivity {
         client.get(UserData.domain + "/aums/FileUploadServlet", params, new FileAsyncHttpResponseHandler(HomeActivity.this) {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
-                image_progress.setVisibility(GONE);
+                imageProgress.setVisibility(GONE);
                 pic.setVisibility(View.VISIBLE);
                 pic.setImageResource(R.drawable.user);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, File file) {
-                image_progress.setVisibility(GONE);
+                imageProgress.setVisibility(GONE);
                 pic.setVisibility(View.VISIBLE);
                 Picasso.get().load(file).into(pic);
             }
@@ -170,7 +169,7 @@ public class HomeActivity extends AppCompatActivity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
-                semester = semesterMapping.get(items[pos]);
+               String semester = semesterMapping.get(items[pos]);
                 if (Utils.isConnected(HomeActivity.this)) {
                     switch (position) {
                         case 0:
@@ -193,7 +192,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    void setData() {
+    private void setData() {
         name.setText(UserData.name);
         username.setText(UserData.username);
         cgpa.setText("Current CGPA : " + UserData.CGPA);
