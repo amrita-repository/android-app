@@ -80,6 +80,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
     private TextView countdownTimer;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa");
     private int flag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,6 +194,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                 }
                 if (flag == 0) {
                     nextBus.setText(R.string.noBusText);
+                    countdownTimer.setVisibility(View.GONE);
                 }
 
             } catch (ParseException e) {
@@ -219,6 +221,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                 }
                 if (flag == 0) {
                     nextBus.setText(R.string.noBusText);
+                    countdownTimer.setVisibility(View.GONE);
                 }
 
             } catch (ParseException e) {
@@ -309,6 +312,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
         long timediff = endTime.getTime() - startTime.getTime();
         countdown(timediff);
     }
+
     private void countdown(long timeDiff) {
         new CountDownTimer(timeDiff, 1000) {
 

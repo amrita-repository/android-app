@@ -169,7 +169,7 @@ public class HomeActivity extends AppCompatActivity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int pos) {
-               String semester = semesterMapping.get(items[pos]);
+                String semester = semesterMapping.get(items[pos]);
                 if (Utils.isConnected(HomeActivity.this)) {
                     switch (position) {
                         case 0:

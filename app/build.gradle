@@ -66,7 +66,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0')
     androidTestImplementation 'androidx.test:rules:1.2.0'
-
+    implementation 'joda-time:joda-time:2.9.4'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation "com.google.firebase:firebase-iid:20.1.2"
     implementation 'com.google.firebase:firebase-messaging:20.1.3'
