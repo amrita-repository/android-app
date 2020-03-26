@@ -24,13 +24,19 @@
 
 package in.co.rajkumaar.amritarepo.timings;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.CountDownTimer;
+import android.os.Handler;
+
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -38,6 +44,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,34 +55,48 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class PublicTransportsActivity extends AppCompatActivity {
 
+    private String type;
+    private int flag;
     private ProgressDialog dialog;
     private ListView listView;
     private ArrayList<DataItem> items;
     private SharedPreferences preferences;
+    private TextView nextTrainBus;
+    private TextView countdownTimer;
+    private ImageView trainBusImage;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+    private SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_train_bus_timings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
+        countdownTimer = findViewById(R.id.countdownTime);
+        nextTrainBus = findViewById(R.id.nextBusTrainTime);
         listView = findViewById(R.id.timings_list);
         Bundle extras = getIntent().getExtras();
-        final String type = extras.getString("type");
-
+        type = extras.getString("type");
+        trainBusImage = findViewById(R.id.busTrainLogo);
         preferences = getSharedPreferences("public-transport", MODE_PRIVATE);
         getSupportActionBar().setTitle(type);
 
@@ -245,119 +266,236 @@ public class PublicTransportsActivity extends AppCompatActivity {
     }
 
     private void loadData(String type) throws JSONException {
+
         items = new ArrayList<>();
 
         if (type != null && type.equals("Trains from Coimbatore")) {
-
+            trainBusImage.setImageResource(R.drawable.trainimage);
+            flag = 0;
             String json = preferences.getString("trains-from-cbe", null);
             if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
-                for (int i = 0; i < timings.length(); ++i) {
-                    JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
-                            item.getString("name"),
-                            item.getString("days"),
-                            item.getString("dep"),
-                            "cbe",
-                            "etmd",
-                            "train"
-                    ));
+                try {
+                    Calendar currentTime = Calendar.getInstance();
+                    for (int i = 0; i < timings.length(); ++i) {
+                        JSONObject item = timings.getJSONObject(i);
+                        Date busTimeDate = dateFormat.parse(item.getString("dep"));
+                        Calendar trainTime = setTrainTime(busTimeDate);
+                        items.add(new DataItem(
+                                item.getString("name"),
+                                item.getString("days"),
+                                item.getString("dep"),
+                                "cbe",
+                                "etmd",
+                                "train"
+                        ));
+                        if (item.getString("days").toLowerCase().contains(dayFormat.format(trainTime.getTime()).toLowerCase())) {
+                            continue;
+                        } else if (trainTime.after(currentTime) && flag == 0) {
+                            calcTimeDiff(item.getString("dep"), currentTime, trainTime);
+                        }
+                    }
+                    if (flag == 0) {
+                        setNoTrain();
+                    }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }
 
         if (type != null && type.equals("Trains from Palghat")) {
+            flag = 0;
+            trainBusImage.setImageResource(R.drawable.trainimage);
             String json = preferences.getString("trains-from-pkd", null);
             if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
-                for (int i = 0; i < timings.length(); ++i) {
-                    JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
-                            item.getString("name"),
-                            item.getString("days"),
-                            item.getString("dep"),
-                            "pkd",
-                            "etmd",
-                            "train"
-                    ));
+                try {
+                    Calendar currentTime = Calendar.getInstance();
+                    for (int i = 0; i < timings.length(); ++i) {
+                        JSONObject item = timings.getJSONObject(i);
+                        Date busTimeDate = dateFormat.parse(item.getString("dep"));
+                        Calendar trainTime = setTrainTime(busTimeDate);
+                        items.add(new DataItem(
+                                item.getString("name"),
+                                item.getString("days"),
+                                item.getString("dep"),
+                                "pkd",
+                                "etmd",
+                                "train"
+                        ));
+                        if (item.getString("days").toLowerCase().contains(dayFormat.format(trainTime.getTime()).toLowerCase())) {
+                            continue;
+                        } else if (trainTime.after(currentTime) && flag == 0) {
+                            calcTimeDiff(item.getString("dep"), currentTime, trainTime);
+                        }
+                    }
+                    if (flag == 0) {
+                        setNoTrain();
+                    }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }
 
         if (type != null && type.equals("Trains to Coimbatore")) {
+            flag = 0;
+            trainBusImage.setImageResource(R.drawable.trainimage);
             String json = preferences.getString("trains-to-cbe", null);
             if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
-                for (int i = 0; i < timings.length(); ++i) {
-                    JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
-                            item.getString("name"),
-                            item.getString("days"),
-                            item.getString("dep"),
-                            "etmd",
-                            "cbe",
-                            "train"
-                    ));
+                try {
+                    Calendar currentTime = Calendar.getInstance();
+
+                    for (int i = 0; i < timings.length(); ++i) {
+                        JSONObject item = timings.getJSONObject(i);
+                        Date busTimeDate = dateFormat.parse(item.getString("dep"));
+                        Calendar trainTime = setTrainTime(busTimeDate);
+
+                        items.add(new DataItem(
+                                item.getString("name"),
+                                item.getString("days"),
+                                item.getString("dep"),
+                                "etmd",
+                                "cbe",
+                                "train"
+                        ));
+                        if (item.getString("days").toLowerCase().contains(dayFormat.format(trainTime.getTime()).toLowerCase())) {
+                            continue;
+                        } else if (trainTime.after(currentTime) && flag == 0) {
+                            calcTimeDiff(item.getString("dep"), currentTime, trainTime);
+                        }
+                    }
+                    if (flag == 0) {
+                        setNoTrain();
+                    }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }
 
         if (type != null && type.equals("Trains to Palghat")) {
+
+            trainBusImage.setImageResource(R.drawable.trainimage);
+            flag = 0;
             String json = preferences.getString("trains-to-pkd", null);
             if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
-                for (int i = 0; i < timings.length(); ++i) {
-                    JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
-                            item.getString("name"),
-                            item.getString("days"),
-                            item.getString("dep"),
-                            "etmd",
-                            "pkd",
-                            "train"
-                    ));
+                try {
+                    Calendar currentTime = Calendar.getInstance();
+
+                    for (int i = 0; i < timings.length(); ++i) {
+                        JSONObject item = timings.getJSONObject(i);
+                        Date busTimeDate = dateFormat.parse(item.getString("dep"));
+                        Calendar trainTime = setTrainTime(busTimeDate);
+
+                        items.add(new DataItem(
+                                item.getString("name"),
+                                item.getString("days"),
+                                item.getString("dep"),
+                                "etmd",
+                                "pkd",
+                                "train"
+                        ));
+                        if (item.getString("days").toLowerCase().contains(dayFormat.format(trainTime.getTime()).toLowerCase())) {
+                            continue;
+                        } else if (trainTime.after(currentTime) && flag == 0) {
+                            calcTimeDiff(item.getString("dep"), currentTime, trainTime);
+                        }
+                    }
+                    if (flag == 0) {
+                        setNoTrain();
+                    }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }
 
         if (type != null && type.equals("Buses from Coimbatore")) {
+            trainBusImage.setImageResource(R.drawable.busimage);
+            flag = 0;
             String json = preferences.getString("bus-from-cbe", null);
             if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
-                for (int i = 0; i < timings.length(); ++i) {
-                    JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
-                            item.getString("name"),
-                            item.getString("days"),
-                            item.getString("dep"),
-                            "cbe",
-                            "etmd",
-                            "bus"
-                    ));
+                try {
+                    Calendar currentTime = Calendar.getInstance();
+
+                    for (int i = 0; i < timings.length(); ++i) {
+                        JSONObject item = timings.getJSONObject(i);
+                        Date busTimeDate = dateFormat.parse(item.getString("dep"));
+                        Calendar busTime = setTrainTime(busTimeDate);
+                        items.add(new DataItem(
+                                item.getString("name"),
+                                item.getString("days"),
+                                item.getString("dep"),
+                                "cbe",
+                                "etmd",
+                                "bus"
+                        ));
+                        if (busTime.after(currentTime) && flag == 0) {
+                            nextTrainBus.setText(String.format("%s %s", getString(R.string.nextBusText), item.getString("dep")));
+                            flag = 1;
+                            Date startTime = currentTime.getTime();
+                            Date endTime = busTime.getTime();
+                            long timediff = endTime.getTime() - startTime.getTime();
+                            countdown(timediff);
+                        }
+                    }
+                    if (flag == 0) {
+                        nextTrainBus.setText(R.string.noBusText);
+                        countdownTimer.setVisibility(View.GONE);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }
 
         if (type != null && type.equals("Buses to Coimbatore")) {
+            trainBusImage.setImageResource(R.drawable.busimage);
+            flag = 0;
             String json = preferences.getString("bus-to-cbe", null);
             if (json != null) {
                 JSONArray timings = new JSONArray(json);
                 System.out.println(timings.toString());
-                for (int i = 0; i < timings.length(); ++i) {
-                    JSONObject item = timings.getJSONObject(i);
-                    items.add(new DataItem(
-                            item.getString("name"),
-                            item.getString("days"),
-                            item.getString("dep"),
-                            "etmd",
-                            "cbe",
-                            "bus"
-                    ));
+                try {
+                    Calendar currentTime = Calendar.getInstance();
+
+                    for (int i = 0; i < timings.length(); ++i) {
+                        JSONObject item = timings.getJSONObject(i);
+                        Date busTimeDate = dateFormat.parse(item.getString("dep"));
+                        Calendar busTime = setTrainTime(busTimeDate);
+                        items.add(new DataItem(
+                                item.getString("name"),
+                                item.getString("days"),
+                                item.getString("dep"),
+                                "etmd",
+                                "cbe",
+                                "bus"
+                        ));
+                        if (busTime.after(currentTime) && flag == 0) {
+                            nextTrainBus.setText(String.format("%s %s", getString(R.string.nextBusText), item.getString("dep")));
+                            flag = 1;
+                            Date startTime = currentTime.getTime();
+                            Date endTime = busTime.getTime();
+                            long timediff = endTime.getTime() - startTime.getTime();
+                            countdown(timediff);
+                        }
+                    }
+                    if (flag == 0) {
+                        nextTrainBus.setText(R.string.noBusText);
+                        countdownTimer.setVisibility(View.GONE);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -386,7 +524,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                     if (item.days.equals("All Days"))
                         ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days"));
                     else
-                        ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on All Days " + item.days));
+                        ((TextView) convertView.findViewById(R.id.days)).setText(Html.fromHtml("Runs on " + item.days));
 
                     return convertView;
                 }
@@ -428,10 +566,76 @@ public class PublicTransportsActivity extends AppCompatActivity {
                 }
             });
             alertDialog.show();
-        }else if(id == android.R.id.home) {
+        } else if (id == android.R.id.home) {
             this.finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setNoTrain() {
+        nextTrainBus.setText(R.string.noTrainsText);
+        countdownTimer.setVisibility(View.GONE);
+    }
+
+    private Calendar setTrainTime(Date time) {
+        DateTime dateTime = new DateTime(time);
+        Calendar trainTime = Calendar.getInstance();
+        trainTime.setTime(new Date());
+        trainTime.set(Calendar.HOUR_OF_DAY, dateTime.getHourOfDay());
+        trainTime.set(Calendar.MINUTE, dateTime.getMinuteOfHour());
+        return trainTime;
+    }
+    private void calcTimeDiff(String time, Calendar currentTime, Calendar trainTime) {
+        nextTrainBus.setText(String.format("%s %s", getString(R.string.nextTrainText), time));
+        flag = 1;
+        Date startTime = currentTime.getTime();
+        Date endTime = trainTime.getTime();
+        long timediff = endTime.getTime() - startTime.getTime();
+        countdown(timediff);
+    }
+    private void countdown(long timeDiff) {
+        new CountDownTimer(timeDiff, 1000) {
+
+            @SuppressLint("DefaultLocale")
+            public void onTick(long millisUntilFinished) {
+
+                if (TimeUnit.MILLISECONDS.toHours(millisUntilFinished) == 0 && (TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished))) == 0) {
+                    countdownTimer.setText(String.format(" %d Sec Left",
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                } else if (TimeUnit.MILLISECONDS.toHours(millisUntilFinished) == 0) {
+                    countdownTimer.setText(String.format(" %d Min : %d Sec Left",
+                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
+                                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                } else {
+                    countdownTimer.setText(String.format("%d Hr : %d Min : %d Sec Left",
+                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
+                                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                }
+            }
+
+            public void onFinish() {
+                countdownTimer.setText("Departed");
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            loadData(type);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 0);
+
+            }
+        }.start();
     }
 }
 

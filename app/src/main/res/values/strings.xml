@@ -55,6 +55,10 @@
 
     <string name="upi_id">7592903711@upi</string>
     <string name="central_library">https://www.amrita.edu/school/engineering/coimbatore/resources/library</string>
+    <string name="nextTrainText">Next Train @ </string>
+    <string name="noTrainsText">No Trains</string>
+    <string name="nextBusText">Next Bus @ </string>
+    <string name="noBusText">No Buses</string>
     <string name="course_name_url">https://intranet.cb.amrita.edu/TimeTable/</string>
     <string name="branch_name_url">"https://intranet.cb.amrita.edu/TimeTable/funcTimeTable.php?func=drop_1&amp;drop_var="</string>
     <string name="all_contributors_link">https://raw.githubusercontent.com/rajkumaar23/amrita-repository/master/.all-contributorsrc</string>

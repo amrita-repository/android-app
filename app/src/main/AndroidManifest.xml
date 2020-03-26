@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2020 RAJKUMAR S
   -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="in.co.rajkumaar.amritarepo">
@@ -98,7 +96,10 @@
             android:name=".aumsV2.activities.LoginActivity"
             android:label="AUMS - Login"
             android:parentActivityName=".activities.LaunchingActivity" />
-        <activity android:name=".timings.ShuttleBusTimingsActivity" />
+        <activity
+            android:name=".timings.ShuttleBusTimingsActivity"
+            android:label="Timings"
+            android:parentActivityName=".timings.TimingsHomeActivity" />
         <activity
             android:name=".faq.ExamsFAQActivity"
             android:parentActivityName=".activities.LaunchingActivity" />
@@ -153,7 +154,8 @@
         <activity
             android:name=".timetable.AcademicTimetableActivity"
             android:label="Academic Timetable"
-            android:parentActivityName=".activities.LaunchingActivity" />
+            android:parentActivityName=".activities.LaunchingActivity"
+            android:screenOrientation="fullSensor" />
 
         <provider
             android:name=".helpers.GenericFileProvider"
