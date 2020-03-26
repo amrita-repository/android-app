@@ -69,6 +69,7 @@ import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.helpers.clearCache;
 import in.co.rajkumaar.amritarepo.news.NewsActivity;
+import in.co.rajkumaar.amritarepo.notifications.NotificationsActivity;
 import in.co.rajkumaar.amritarepo.opac.OPACHomeActivity;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
 import in.co.rajkumaar.amritarepo.study_materials.StudyMaterialsActivity;
@@ -130,6 +131,12 @@ public class LaunchingActivity extends AppCompatActivity
             pref.edit().putBoolean("ftp-dialog", false).apply();
         } else if (pref.getInt("visit", 0) <= 7) {
             pref.edit().putInt("visit", pref.getInt("visit", 0) + 1).apply();
+        }
+
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Log.v("INTENT DATA DEBUG - " + key, getIntent().getExtras().get(key).toString());
+            }
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -534,6 +541,8 @@ public class LaunchingActivity extends AppCompatActivity
             startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.action_download) {
             startActivity(new Intent(this, DownloadsActivity.class));
+        } else if (id == R.id.notifications) {
+            startActivity(new Intent(this, NotificationsActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

@@ -62,4 +62,5 @@
     <string name="course_name_url">https://intranet.cb.amrita.edu/TimeTable/</string>
     <string name="branch_name_url">"https://intranet.cb.amrita.edu/TimeTable/funcTimeTable.php?func=drop_1&amp;drop_var="</string>
     <string name="all_contributors_link">https://raw.githubusercontent.com/rajkumaar23/amrita-repository/master/.all-contributorsrc</string>
+    <string name="no_notifications">You have no notifications ;)</string>
 </resources>

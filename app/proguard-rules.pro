@@ -26,6 +26,7 @@
 -dontwarn org.xmlpull.v1.**
 -keep class com.shockwave.**
 -keep class org.xmlpull.v1.** { *;}
+-keep class org.ocpsoft.prettytime.i18n.**
 
  # Add this global rule
 -keepattributes Signature
