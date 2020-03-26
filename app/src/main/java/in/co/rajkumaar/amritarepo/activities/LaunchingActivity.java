@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.activities;
@@ -59,7 +59,7 @@ import java.util.List;
 
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.about.AboutActivity;
+import in.co.rajkumaar.amritarepo.about.activities.AboutActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
 import in.co.rajkumaar.amritarepo.curriculum.CurriculumActivity;
 import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
@@ -245,7 +245,7 @@ public class LaunchingActivity extends AppCompatActivity
                     programs_builder.setCancelable(true);
                     programs_builder.setTitle("Choose your program");
                     final String[] categories = {"B.Tech", "BA Communication", "MA Communication", "Integrated MSc & MA", "MCA", "MSW", "M.Tech"};
-                    final ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(LaunchingActivity.this, android.R.layout.simple_list_item_1, categories);
+                    final ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(LaunchingActivity.this, android.R.layout.simple_list_item_1, categories);
                     programs_builder.setItems(categories, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -538,7 +538,6 @@ public class LaunchingActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.

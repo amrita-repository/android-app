@@ -2,7 +2,7 @@
  * Copyright (c) 2020 RAJKUMAR S
  */
 
-package in.co.rajkumaar.amritarepo.about;
+package in.co.rajkumaar.amritarepo.about.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -72,18 +72,17 @@ public class AboutActivity extends AppCompatActivity {
                 .addEmailLink("rajkumaar2304@icloud.com")
                 .addWebsiteLink("http://rajkumaar.co.in")
                 .setVersionNameAsAppSubTitle()
-                .addShareAction(R.string.app_name)
                 .setActionsColumnsCount(2)
+                .addAction(BitmapFactory.decodeResource(getResources(), R.drawable.github), "Contributors", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(AboutActivity.this, ContributorsActivity.class));
+                    }
+                })
                 .addAction(BitmapFactory.decodeResource(getResources(), R.drawable.disclaimer), "Disclaimer", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         showDisclaimer(AboutActivity.this);
-                    }
-                })
-                .addAction(BitmapFactory.decodeResource(getResources(), R.drawable.ic_github), "Contributors", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startActivity(new Intent(AboutActivity.this, ContributorsActivity.class));
                     }
                 })
                 .addAction(BitmapFactory.decodeResource(getResources(), R.drawable.donate), "Donate", new View.OnClickListener() {
@@ -92,6 +91,7 @@ public class AboutActivity extends AppCompatActivity {
                         donate();
                     }
                 })
+                .addShareAction(R.string.app_name)
                 .setWrapScrollView(true)
                 .setShowAsCard(true)
                 .build();

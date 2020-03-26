@@ -24,9 +24,9 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity
-            android:name=".about.ContributorsActivity"
+            android:name=".about.activities.ContributorsActivity"
             android:label="Open Source Contributors"
-            android:parentActivityName=".about.AboutActivity" />
+            android:parentActivityName=".about.activities.AboutActivity" />
         <activity
             android:name=".opac.OPACAccountActivity"
             android:label="My account"
@@ -143,7 +143,7 @@
             android:label="Downloads"
             android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".about.AboutActivity"
+            android:name=".about.activities.AboutActivity"
             android:label="About"
             android:parentActivityName=".activities.LaunchingActivity" />
         <activity
