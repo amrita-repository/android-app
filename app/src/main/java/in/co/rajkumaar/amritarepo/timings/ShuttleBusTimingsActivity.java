@@ -194,6 +194,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                 }
                 if (flag == 0) {
                     nextBus.setText(R.string.noBusText);
+                    countdownTimer.setVisibility(View.GONE);
                 }
 
             } catch (ParseException e) {
@@ -220,6 +221,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                 }
                 if (flag == 0) {
                     nextBus.setText(R.string.noBusText);
+                    countdownTimer.setVisibility(View.GONE);
                 }
 
             } catch (ParseException e) {
