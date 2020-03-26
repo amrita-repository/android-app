@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.about;
@@ -10,12 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.vansuita.materialabout.builder.AboutBuilder;
 import com.vansuita.materialabout.views.AboutView;
@@ -27,8 +27,7 @@ import in.co.rajkumaar.amritarepo.activities.SupportActivity;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
-public class AboutActivity extends AppCompatActivity{
-
+public class AboutActivity extends AppCompatActivity {
 
 
     public static void showDisclaimer(Context context) {
@@ -72,7 +71,6 @@ public class AboutActivity extends AppCompatActivity{
                 .addLinkedInLink("in/rajkumaar23")
                 .addEmailLink("rajkumaar2304@icloud.com")
                 .addWebsiteLink("http://rajkumaar.co.in")
-                .addFiveStarsAction()
                 .setVersionNameAsAppSubTitle()
                 .addShareAction(R.string.app_name)
                 .setActionsColumnsCount(2)
@@ -80,6 +78,12 @@ public class AboutActivity extends AppCompatActivity{
                     @Override
                     public void onClick(View view) {
                         showDisclaimer(AboutActivity.this);
+                    }
+                })
+                .addAction(BitmapFactory.decodeResource(getResources(), R.drawable.ic_github), "Contributors", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(AboutActivity.this, ContributorsActivity.class));
                     }
                 })
                 .addAction(BitmapFactory.decodeResource(getResources(), R.drawable.donate), "Donate", new View.OnClickListener() {
@@ -103,7 +107,7 @@ public class AboutActivity extends AppCompatActivity{
     }
 
     public void donate() {
-        startActivity (new Intent(this, SupportActivity.class));
+        startActivity(new Intent(this, SupportActivity.class));
     }
 
 }
