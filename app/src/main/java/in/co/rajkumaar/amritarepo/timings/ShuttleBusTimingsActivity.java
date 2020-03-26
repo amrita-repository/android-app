@@ -1,27 +1,3 @@
-/*
- * MIT License
- *
- * Copyright (c) 2018  RAJKUMAR S
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package in.co.rajkumaar.amritarepo.timings;
 
 import android.annotation.SuppressLint;
@@ -30,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -54,6 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.joda.time.DateTime;
+
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,13 +54,14 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private TextView nextBus;
     private TextView countdownTimer;
-
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa");
+    private int flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shuttle_bus_timings);
-        nextBus=findViewById(R.id.nextBusTime);
-        countdownTimer=findViewById(R.id.countdownTime);
+        nextBus = findViewById(R.id.nextBusTime);
+        countdownTimer = findViewById(R.id.countdownTime);
         preferences = getSharedPreferences("timings", MODE_PRIVATE);
         listView = findViewById(R.id.timings_list);
         Bundle extras = getIntent().getExtras();
@@ -163,43 +143,32 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             }
         });
     }
-    SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa");
+
     private void loadData(String type) {
         items = new ArrayList<>();
         Gson gson = new Gson();
+
         if (type != null && type.equals("Buses from AB1")) {
             String json = preferences.getString("ab1", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            int flag=0;
+            flag = 0;
             try {
                 Calendar currentTime = Calendar.getInstance();
-                Log.e("TAG", "loadData: "+currentTime.getTime() );
                 ArrayList<String> timings = gson.fromJson(json, listType);
                 for (String item : timings) {
-                    Date busTimeDate=dateFormat.parse(item);
-                    Calendar busTime =Calendar.getInstance();
-                    busTime.setTime(new Date());
-                    busTime.set(Calendar.HOUR_OF_DAY,busTimeDate.getHours());
-                    busTime.set(Calendar.MINUTE,busTimeDate.getMinutes());
-                    Log.e("TAG", "loadData: "+busTime.getTime() );
+                    Date busTimeDate = dateFormat.parse(item);
+                    Calendar busTime = setBusTime(busTimeDate);
                     items.add(new DataItem(
                             item, "ab1"
                     ));
 
-                    if(busTime.after(currentTime)&&flag==0)
-                    {
-                        nextBus.setText("Next Bus @ "+item);
-                        flag=1;
-                        Date startTime=currentTime.getTime();
-                        Date endTime=busTime.getTime();
-                        long timediff=endTime.getTime()-startTime.getTime();
-                        countdown(timediff);
+                    if (busTime.after(currentTime) && flag == 0) {
+                        calcTimeDiff(item, currentTime, busTime);
                     }
                 }
-                if(flag==0)
-                {
-                    nextBus.setText("No Buses");
+                if (flag == 0) {
+                    nextBus.setText(R.string.noBusText);
                 }
 
             } catch (ParseException e) {
@@ -210,35 +179,22 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             String json = preferences.getString("ab3", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            int flag=0;
+            flag = 0;
             try {
                 Calendar currentTime = Calendar.getInstance();
-                Log.e("TAG", "loadData: "+currentTime.getTime() );
                 ArrayList<String> timings = gson.fromJson(json, listType);
                 for (String item : timings) {
-                    Date busTimeDate=dateFormat.parse(item);
-                    Calendar busTime =Calendar.getInstance();
-                    busTime.setTime(new Date());
-                    busTime.set(Calendar.HOUR_OF_DAY,busTimeDate.getHours());
-                    busTime.set(Calendar.MINUTE,busTimeDate.getMinutes());
-                    Log.e("TAG", "loadData: "+busTime.getTime() );
-
+                    Date busTimeDate = dateFormat.parse(item);
+                    Calendar busTime = setBusTime(busTimeDate);
                     items.add(new DataItem(
                             item, "ab3"
                     ));
-                    if(busTime.after(currentTime)&&flag==0)
-                    {
-                        nextBus.setText("Next Bus @ "+item);
-                        flag=1;
-                        Date startTime=currentTime.getTime();
-                        Date endTime=busTime.getTime();
-                        long timediff=endTime.getTime()-startTime.getTime();
-                        countdown(timediff);
+                    if (busTime.after(currentTime) && flag == 0) {
+                        calcTimeDiff(item, currentTime, busTime);
                     }
                 }
-                if(flag==0)
-                {
-                    nextBus.setText("No Buses");
+                if (flag == 0) {
+                    nextBus.setText(R.string.noBusText);
                 }
 
             } catch (ParseException e) {
@@ -295,7 +251,7 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
                 }
             });
             alertDialog.show();
-        }else if(id == android.R.id.home) {
+        } else if (id == android.R.id.home) {
             this.finish();
         }
         return super.onOptionsItemSelected(item);
@@ -311,19 +267,35 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
             this.from = from;
         }
     }
-    private void countdown(long timeDiff)
-    {
+
+    private Calendar setBusTime(Date time) {
+        DateTime dateTime = new DateTime(time);
+        Calendar busTime = Calendar.getInstance();
+        busTime.setTime(new Date());
+        busTime.set(Calendar.HOUR_OF_DAY, dateTime.getHourOfDay());
+        busTime.set(Calendar.MINUTE, dateTime.getMinuteOfHour());
+        return busTime;
+    }
+
+    private void calcTimeDiff(String time, Calendar currentTime, Calendar busTime) {
+        nextBus.setText(String.format("%s %s", getString(R.string.nextBusText), time));
+        flag = 1;
+        Date startTime = currentTime.getTime();
+        Date endTime = busTime.getTime();
+        long timediff = endTime.getTime() - startTime.getTime();
+        countdown(timediff);
+    }
+
+    private void countdown(long timeDiff) {
         new CountDownTimer(timeDiff, 1000) {
 
             @SuppressLint("DefaultLocale")
             public void onTick(long millisUntilFinished) {
-                if(TimeUnit.MILLISECONDS.toMinutes( millisUntilFinished)==0)
-                {
+                if (TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) == 0) {
                     countdownTimer.setText(String.format(" %d Sec Left",
                             TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
-                }
-                else {
+                } else {
                     countdownTimer.setText(String.format(" %d Min : %d Sec Left",
                             TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
                             TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
@@ -347,4 +319,3 @@ public class ShuttleBusTimingsActivity extends AppCompatActivity {
 
 
 }
-

@@ -21,9 +21,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
-        <activity android:name=".opac.OPACAccountActivity"
+        <activity
+            android:name=".opac.OPACAccountActivity"
             android:label="My account"
-            android:parentActivityName=".opac.OPACHomeActivity"/>
+            android:parentActivityName=".opac.OPACHomeActivity" />
         <activity
             android:name=".opac.EResourcesActivity"
             android:label="E-Resources"
@@ -89,9 +90,10 @@
             android:name=".aumsV2.activities.LoginActivity"
             android:label="AUMS - Login"
             android:parentActivityName=".activities.LaunchingActivity" />
-        <activity android:name=".timings.ShuttleBusTimingsActivity"
+        <activity
+            android:name=".timings.ShuttleBusTimingsActivity"
             android:label="Timings"
-            android:parentActivityName=".timings.TimingsHomeActivity"/>
+            android:parentActivityName=".timings.TimingsHomeActivity" />
         <activity
             android:name=".faq.ExamsFAQActivity"
             android:parentActivityName=".activities.LaunchingActivity" />
