@@ -27,8 +27,6 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ContributorsActivity extends AppCompatActivity {
 
-    private ArrayList<Contributor> contributors = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +37,7 @@ public class ContributorsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
+                    ArrayList<Contributor> contributors;
                     JSONObject jsonObject = new JSONObject(new String(responseBody));
                     JSONArray contributorsArray = jsonObject.getJSONArray("contributors");
                     contributors = new ArrayList<>();
