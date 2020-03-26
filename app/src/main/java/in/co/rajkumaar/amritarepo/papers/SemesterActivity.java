@@ -51,12 +51,12 @@ import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
 public class SemesterActivity extends AppCompatActivity {
 
-    String semUrl;
-    String externLink;
-    int statusCode;
-    List<String> sems = new ArrayList<>();
-    List<String> links = new ArrayList<>();
-    PaperAdapter semsAdapter;
+    private String semUrl;
+    private String externLink;
+    private int statusCode;
+    private List<String> sems = new ArrayList<>();
+    private List<String> links = new ArrayList<>();
+    private PaperAdapter semsAdapter;
 
     @SuppressLint("PrivateResource")
     @Override
@@ -129,9 +129,9 @@ public class SemesterActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     private class Load extends AsyncTask<Void, Void, Void> {
-        String proxy = BuildConfig.PROXY_URL;
-        Document document = null;
-        Elements elements;
+        private String proxy = BuildConfig.PROXY_URL;
+        private Document document = null;
+        private Elements elements;
 
         @Override
         protected Void doInBackground(Void... voids) {

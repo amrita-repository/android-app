@@ -1,0 +1,277 @@
+{
+  "timings": {
+    "public": {
+      "bus": {
+        "from": {
+          "cbe": [
+            {
+              "days": "All Days",
+              "dep": "06:15",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "09:30",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "11:30",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "13:40",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "15:55",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "20:30",
+              "name": "Local Govt. Transport Bus A3"
+            }
+          ]
+        },
+        "to": {
+          "cbe": [
+            {
+              "days": "All Days",
+              "dep": "08:30",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "10:30",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "12:25",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "14:45",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "17:00",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "19:20",
+              "name": "Local Govt. Transport Bus A3"
+            },
+            {
+              "days": "All Days",
+              "dep": "21:40",
+              "name": "Local Govt. Transport Bus A3"
+            }
+          ]
+        }
+      },
+      "trains": {
+        "from": {
+          "cbe": [
+            {
+              "days": "All Days",
+              "dep": "07:30",
+              "name": "56323 Coimbatore - Mangalore Central"
+            },
+            {
+              "days": "All Days Except Sundays",
+              "dep": "10:00",
+              "name": "66605 Coimbatore - Shoranur"
+            },
+            {
+              "days": "All Days Except Thursdays",
+              "dep": "10:10",
+              "name": "66609 Erode - Palakkad Town"
+            },
+            {
+              "days": "All Days",
+              "dep": "14:15",
+              "name": "56651 Coimbatore - Kannur"
+            },
+            {
+              "days": "All Days",
+              "dep": "16:30",
+              "name": "56605 Coimbatore - Thrissur"
+            },
+            {
+              "days": "All Days Except Sundays",
+              "dep": "18:10",
+              "name": "66607 Coimbatore - Palakkad Town"
+            },
+            {
+              "days": "All Days",
+              "dep": "18:30",
+              "name": "56713 Trichirappally - Palakkad Town"
+            }
+          ],
+          "pkd": [
+            {
+              "days": "All Days",
+              "dep": "06:25",
+              "name": "56712 Palghat Town - Tiruchirapalli"
+            },
+            {
+              "days": "All Days Except Sundays",
+              "dep": "07:10",
+              "name": "66606 Palghat Town - Coimbatore"
+            },
+            {
+              "days": "All Days",
+              "dep": "09:05",
+              "name": "56604 Shoranur - Coimbatore"
+            },
+            {
+              "days": "All Days",
+              "dep": "11:45",
+              "name": "56650 Kannur - Coimbatore"
+            },
+            {
+              "days": "All Days Except Thursdays",
+              "dep": "14:30",
+              "name": "66608 Palakkad Town - Erode"
+            },
+            {
+              "days": "All Days Except Sundays",
+              "dep": "16:05",
+              "name": "66604 Shoranur - Coimbatore"
+            },
+            {
+              "days": "All Days",
+              "dep": "17:55",
+              "name": "56324 Mangalore Central - Coimbatore"
+            }
+          ]
+        },
+        "to": {
+          "cbe": [
+            {
+              "days": "All Days",
+              "dep": "07:25",
+              "name": "56712 Palghat Town - Tiruchirapalli"
+            },
+            {
+              "days": "All Days Except Sundays",
+              "dep": "08:07",
+              "name": "66606 Palghat Town - Coimbatore"
+            },
+            {
+              "days": "All Days",
+              "dep": "09:50",
+              "name": "56604 Shoranur - Coimbatore"
+            },
+            {
+              "days": "All Days",
+              "dep": "12:34",
+              "name": "56650 Kannur - Coimbatore"
+            },
+            {
+              "days": "All Days Except Thursdays",
+              "dep": "15:28",
+              "name": "66608 Palakkad Town - Erode"
+            },
+            {
+              "days": "All Days Except Sundays",
+              "dep": "16:47",
+              "name": "66604 Shoranur - Coimbatore"
+            },
+            {
+              "days": "All Days",
+              "dep": "18:47",
+              "name": "56324 Mangalore Central - Coimbatore"
+            }
+          ],
+          "pkd": [
+            {
+              "days": "All Days",
+              "dep": "08:00",
+              "name": "56323 Coimbatore - Mangalore Central"
+            },
+            {
+              "days": "All Days Except Sundays",
+              "dep": "10:30",
+              "name": "66605 Coimbatore - Shoranur"
+            },
+            {
+              "days": "All Days Except Thursdays",
+              "dep": "10:58",
+              "name": "66609 Erode - Palakkad Town"
+            },
+            {
+              "days": "All Days",
+              "dep": "14:40",
+              "name": "56651 Coimbatore - Kannur"
+            },
+            {
+              "days": "All Days",
+              "dep": "17:00",
+              "name": "56605 Coimbatore - Thrissur"
+            },
+            {
+              "days": "All Days Except Sundays",
+              "dep": "18:38",
+              "name": "66607 Coimbatore - Palakkad Town"
+            },
+            {
+              "days": "All Days",
+              "dep": "19:04",
+              "name": "56713 Trichirappally - Palakkad Town"
+            }
+          ]
+        }
+      },
+      "version": "1.0"
+    },
+    "shuttle": {
+      "ab1": [
+        "09:20 AM",
+        "09:40 AM",
+        "10:10 AM",
+        "10:30 AM",
+        "11:10 AM",
+        "11:20 AM",
+        "12:00 PM",
+        "12:20 PM",
+        "01:00 PM",
+        "01:10 PM",
+        "01:50 PM",
+        "02:10 PM",
+        "02:40 PM",
+        "03:00 PM",
+        "03:30 PM"
+      ],
+      "ab3": [
+        "09:20 AM",
+        "09:40 AM",
+        "10:10 AM",
+        "10:30 AM",
+        "11:10 AM",
+        "11:20 AM",
+        "12:00 PM",
+        "12:20 PM",
+        "01:00 PM",
+        "01:10 PM",
+        "01:50 PM",
+        "02:10 PM",
+        "02:40 PM",
+        "03:00 PM",
+        "03:30 PM"
+      ],
+      "version": "1.0"
+    }
+  },
+  "update": {
+    "version": 63,
+    "whatsnew": "Not all changes are visible, but we can still celebrate them."
+  }
+}

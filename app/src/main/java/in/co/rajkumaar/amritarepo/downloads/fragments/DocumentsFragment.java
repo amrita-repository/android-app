@@ -54,18 +54,15 @@ import in.co.rajkumaar.amritarepo.downloads.DeleteFilesActivity;
 public class DocumentsFragment extends Fragment {
 
 
-    String dirPath;
-    SwipeRefreshLayout swipeRefreshLayout;
-    File dir;
-    File[] files;
-    ListView listView;
-    ArrayAdapter<String> fileAdapter;
-    View rootView;
+    private String dirPath;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private File dir;
+    private ListView listView;
+    private ArrayAdapter<String> fileAdapter;
+    private View rootView;
     private List<String> fileList = new ArrayList<String>();
 
-    public DocumentsFragment() {
-        // Required empty public constructor
-    }
+
 
     public void reproduce(View rootView) {
         retrieveFiles();
@@ -108,7 +105,7 @@ public class DocumentsFragment extends Fragment {
     }
 
     public void retrieveFiles() {
-        files = dir.listFiles();
+        File[] files = dir.listFiles();
         fileList.clear();
         if (files != null) {
             for (File file : files) {
@@ -246,7 +243,7 @@ public class DocumentsFragment extends Fragment {
         super.onResume();
     }
 
-    String getMime(String url) {
+    private String getMime(String url) {
         if (url.contains(".doc") || url.contains(".docx")) {
             // Word document
             return "application/msword";

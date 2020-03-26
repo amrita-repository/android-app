@@ -33,13 +33,12 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class FTPActivity extends AppCompatActivity {
 
-    FtpServer ftpServer;
-    Button start;
-    RippleBackground rippleBackground;
-    TextView result;
+    private FtpServer ftpServer;
+    private Button start;
+    private RippleBackground rippleBackground;
+    private TextView result;
 
-    Button copy, share;
-    LinearLayout tools;
+    private LinearLayout tools;
     private BroadcastReceiver wifiStateReceiver = new BroadcastReceiver() {
         @SuppressLint("SetTextI18n")
         @Override
@@ -69,8 +68,8 @@ public class FTPActivity extends AppCompatActivity {
         result = findViewById(R.id.result);
         start = findViewById(R.id.start);
         rippleBackground = findViewById(R.id.content);
-        copy = findViewById(R.id.copy);
-        share = findViewById(R.id.share);
+        Button copy = findViewById(R.id.copy);
+        Button share = findViewById(R.id.share);
         tools = findViewById(R.id.tools);
 
 

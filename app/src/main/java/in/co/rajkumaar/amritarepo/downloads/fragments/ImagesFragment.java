@@ -59,17 +59,14 @@ import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
 
 public class ImagesFragment extends Fragment {
 
-    SwipeRefreshLayout swipeRefreshLayout;
-    ListView listView;
-    File[] files;
-    File dir;
-    String dirPath;
-    ArrayAdapter<String> fileAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ListView listView;
+    private File dir;
+    private String dirPath;
+    private ArrayAdapter<String> fileAdapter;
     private List<String> fileList = new ArrayList<String>();
 
-    public ImagesFragment() {
-        // Required empty public constructor
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -110,7 +107,7 @@ public class ImagesFragment extends Fragment {
     }
 
     public void retrieveFiles() {
-        files = dir.listFiles();
+        File[] files = dir.listFiles();
         fileList.clear();
         if (files != null) {
             for (File file : files) {

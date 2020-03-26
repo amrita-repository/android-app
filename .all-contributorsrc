@@ -24,6 +24,25 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "sanjailal",
+      "name": "Sanjai Lal T S",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/38038951?v=4",
+      "profile": "https://github.com/sanjailal",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ArunVigesh",
+      "name": "Arun Vigesh V G",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/36444828?v=4",
+      "profile": "https://github.com/ArunVigesh",
+      "contributions": [
+        "design",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

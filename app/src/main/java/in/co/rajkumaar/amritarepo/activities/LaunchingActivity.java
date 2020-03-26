@@ -299,11 +299,19 @@ public class LaunchingActivity extends AppCompatActivity
                 }
                 break;
             case "Academic Timetable":
-                startActivity(new Intent(LaunchingActivity.this, AcademicTimetableActivity.class));
+                if (Utils.isConnected(LaunchingActivity.this)) {
+                    startActivity(new Intent(LaunchingActivity.this, AcademicTimetableActivity.class));
+                } else {
+                    Utils.showInternetError(this);
+                }
                 break;
 
             case "Faculty Timetable":
-                startActivity(new Intent(LaunchingActivity.this, FacultyTimetableActivity.class));
+                if (Utils.isConnected(LaunchingActivity.this)) {
+                    startActivity(new Intent(LaunchingActivity.this, FacultyTimetableActivity.class));
+                } else {
+                    Utils.showInternetError(this);
+                }
                 break;
             case "Exam Schedule":
                 if (Utils.isConnected(LaunchingActivity.this))
@@ -716,8 +724,8 @@ public class LaunchingActivity extends AppCompatActivity
 
         private class Item {
 
-            final String color;
-            final String name;
+            private final String color;
+            private final String name;
             private FontAwesomeIcons image;
 
             Item(String color, String name, FontAwesomeIcons imageID) {
