@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="in.co.rajkumaar.amritarepo">
@@ -21,6 +23,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity
+            android:name=".about.activities.ContributorsActivity"
+            android:label="Open Source Contributors"
+            android:parentActivityName=".about.activities.AboutActivity" />
         <activity
             android:name=".opac.OPACAccountActivity"
             android:label="My account"
@@ -137,7 +143,7 @@
             android:label="Downloads"
             android:parentActivityName=".activities.LaunchingActivity" />
         <activity
-            android:name=".about.AboutActivity"
+            android:name=".about.activities.AboutActivity"
             android:label="About"
             android:parentActivityName=".activities.LaunchingActivity" />
         <activity
@@ -149,7 +155,7 @@
             android:name=".timetable.AcademicTimetableActivity"
             android:label="Academic Timetable"
             android:parentActivityName=".activities.LaunchingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
 
         <provider
             android:name=".helpers.GenericFileProvider"
@@ -176,7 +182,7 @@
             android:label="Faculty Timetable"
             android:launchMode="singleTop"
             android:parentActivityName=".activities.LaunchingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".activities.WebViewActivity"
             android:parentActivityName=".timetable.AcademicTimetableActivity" />
@@ -209,7 +215,7 @@
             android:name=".aums.activities.HomeActivity"
             android:label="AUMS Home"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".aums.activities.AttendanceActivity"
             android:label="Attendance Status"
