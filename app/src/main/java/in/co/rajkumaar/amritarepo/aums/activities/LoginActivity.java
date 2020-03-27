@@ -65,11 +65,11 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText username;
-    private EditText  password;
+    private EditText password;
     private Client mainClient;
 
     private String sessionAction;
-    private String  sessionID;
+    private String sessionID;
     private String domain;
 
     private String name;
