@@ -40,7 +40,7 @@
     <string name="add_widget">Add widget</string>
     <string name="made_love">Made with {fa-heart-o}</string>
     <string name="donation">This will be a donation for the effort of developing Amrita Repository which brings resources from different websites under a single roof right at your fingertips.
-        To develop a software like this takes technical knowledge, time, and effort. I would be very glad if you can appreciate my work with your kind donations.
+        To develop an open-source software like this takes technical knowledge, time, and effort. I would be very glad if you can appreciate my work with your kind donations.
         All the content brought to you in this app belongs to Amrita Vishwa Vidyapeetham and I don\'t own any of these.\n\nThank you in advance,\nRajkumar</string>
     <string name="ftp_steps">1) Turn on WiFi Hotspot on your computer (or) any other device, to which you want to share files of Amrita Repository.
     \n\n2) Connect your mobile device to that WiFi hotspot.
@@ -62,4 +62,7 @@
     <string name="course_name_url">https://intranet.cb.amrita.edu/TimeTable/</string>
     <string name="branch_name_url">"https://intranet.cb.amrita.edu/TimeTable/funcTimeTable.php?func=drop_1&amp;drop_var="</string>
     <string name="all_contributors_link">https://raw.githubusercontent.com/rajkumaar23/amrita-repository/master/.all-contributorsrc</string>
+    <string name="no_notifications">You have no notifications 😥</string>
+    <string name="subsribedToTopic">subscribedToTopic</string>
+    <string name="right_arrow">Right arrow</string>
 </resources>

@@ -1,25 +1,5 @@
 /*
- * MIT License
- *
- * Copyright (c) 2018  RAJKUMAR S
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.helpers;
@@ -34,7 +14,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -59,7 +38,8 @@ public class DownloadTask {
     private static final String TAG = "Download Task";
     private Context context;
 
-    private String downloadUrl, downloadFileName;
+    private String downloadUrl;
+    private String downloadFileName;
 
     private ProgressDialog progressDialog;
 
@@ -112,8 +92,8 @@ public class DownloadTask {
     @SuppressLint("StaticFieldLeak")
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
 
-        File outputFile = null;
-        File apkStorage = null;
+        private File outputFile = null;
+        private File apkStorage = null;
 
         @Override
         protected void onPreExecute() {
@@ -142,7 +122,7 @@ public class DownloadTask {
                     intent.setDataAndType(data, getMime(downloadFileName));
                     PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                    NotificationCompat.Builder notification = new NotificationCompat.Builder(context,CHANNEL_ID)
+                    NotificationCompat.Builder notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                             .setPriority(NotificationCompat.PRIORITY_MAX)
                             .setSmallIcon(R.drawable.notification)
                             .setContentTitle(downloadFileName.substring(1))
@@ -158,41 +138,22 @@ public class DownloadTask {
                         notificationChannel.setLightColor(Color.RED);
                         notificationChannel.enableVibration(true);
                         notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-                        notification.setChannelId(CHANNEL_ID);
                         notificationManager.createNotificationChannel(notificationChannel);
                     }
-                    notificationManager.notify(2,notification.build());
+                    notificationManager.notify(2, notification.build());
 
 
                 } else {
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    }, 3000);
                     Toast toast = Toast.makeText(context, "Error. Download Failed", Toast.LENGTH_SHORT);
-                    if (!toast.getView().isShown())     // true if visible
+                    if (!toast.getView().isShown())
                         toast.show();
-                    //Toast.makeText(context,"Error. Download Failed. ",Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Log.e(TAG, "Download Failed");
 
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-
-                //Change button text if exception occurs
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 3000);
                 Log.e(TAG, "Download Failed with Exception - " + e.getLocalizedMessage());
-
             }
 
 
@@ -266,7 +227,7 @@ public class DownloadTask {
                     InputStream is = c.getInputStream();//Get InputStream for connection
 
                     byte[] buffer = new byte[1024];//Set buffer type
-                    int len1 = 0;//init length
+                    int len1;//init length
                     long total = 0;
                     while ((len1 = is.read(buffer)) != -1) {
                         total += len1;
