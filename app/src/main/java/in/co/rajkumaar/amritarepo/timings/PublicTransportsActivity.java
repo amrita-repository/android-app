@@ -585,6 +585,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
         trainTime.set(Calendar.MINUTE, dateTime.getMinuteOfHour());
         return trainTime;
     }
+
     private void calcTimeDiff(String time, Calendar currentTime, Calendar trainTime) {
         nextTrainBus.setText(String.format("%s %s", getString(R.string.nextTrainText), time));
         flag = 1;
@@ -593,6 +594,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
         long timediff = endTime.getTime() - startTime.getTime();
         countdown(timediff);
     }
+
     private void countdown(long timeDiff) {
         new CountDownTimer(timeDiff, 1000) {
 
