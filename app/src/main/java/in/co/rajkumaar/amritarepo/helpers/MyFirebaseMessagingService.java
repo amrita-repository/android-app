@@ -32,7 +32,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static final String NOTIFICATION_CHANNEL_ID = "10001";
     private static final String TAG = "MyFirebaseMsgService";
-    String message, title;
+    private String message;
+    private String title;
     private Context mContext = this;
 
     /**

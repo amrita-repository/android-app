@@ -20,7 +20,7 @@ public class NotificationRepository {
         notifications = notificationDao.getAll();
     }
 
-    LiveData<List<Notification>> getNotifications() {
+    public LiveData<List<Notification>> getNotifications() {
         return notifications;
     }
 

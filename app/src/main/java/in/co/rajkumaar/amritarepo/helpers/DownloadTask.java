@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -39,7 +38,8 @@ public class DownloadTask {
     private static final String TAG = "Download Task";
     private Context context;
 
-    private String downloadUrl, downloadFileName;
+    private String downloadUrl;
+    private String downloadFileName;
 
     private ProgressDialog progressDialog;
 
@@ -92,8 +92,8 @@ public class DownloadTask {
     @SuppressLint("StaticFieldLeak")
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
 
-        File outputFile = null;
-        File apkStorage = null;
+        private File outputFile = null;
+        private File apkStorage = null;
 
         @Override
         protected void onPreExecute() {
@@ -153,17 +153,7 @@ public class DownloadTask {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-
-                //Change button text if exception occurs
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 3000);
                 Log.e(TAG, "Download Failed with Exception - " + e.getLocalizedMessage());
-
             }
 
 
@@ -237,7 +227,7 @@ public class DownloadTask {
                     InputStream is = c.getInputStream();//Get InputStream for connection
 
                     byte[] buffer = new byte[1024];//Set buffer type
-                    int len1 = 0;//init length
+                    int len1;//init length
                     long total = 0;
                     while ((len1 = is.read(buffer)) != -1) {
                         total += len1;

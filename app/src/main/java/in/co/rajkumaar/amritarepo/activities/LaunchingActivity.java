@@ -80,16 +80,12 @@ import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
 import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
 import in.co.rajkumaar.amritarepo.timings.TimingsHomeActivity;
 import in.co.rajkumaar.amritarepo.wifistatus.WifiStatusActivity;
-import nl.dionsegijn.konfetti.KonfettiView;
-import nl.dionsegijn.konfetti.ParticleSystem;
-import nl.dionsegijn.konfetti.models.Shape;
-import nl.dionsegijn.konfetti.models.Size;
 
 public class LaunchingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static boolean active = false;
-    boolean doubleBackToExitPressedOnce = false;
+    private static boolean active = false;
+    private boolean doubleBackToExitPressedOnce = false;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @SuppressLint("SetTextI18n")
@@ -176,74 +172,6 @@ public class LaunchingActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         initialize();
-        if (!getSharedPreferences("confetti", MODE_PRIVATE).getBoolean("shown", false)) {
-            showCelebs();
-            getSharedPreferences("confetti", MODE_PRIVATE).edit().putBoolean("shown", true).apply();
-        } else {
-            if (!pref.getBoolean("ftp-dialog", false) && !pref.getBoolean("first", true) && !pref.getBoolean("feedback-done", true)) {
-                String feedbackText = "Hello there, your opinion matters.<br>Could you please spend a minute to leave feedback on your experience? <br>I appreciate your help! &hearts;";
-                try {
-                    final AlertDialog.Builder feedbackDialog = new AlertDialog.Builder(LaunchingActivity.this);
-                    feedbackDialog.setMessage(Html.fromHtml(feedbackText));
-                    feedbackDialog.setPositiveButton("Sure", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse("https://rajkumaar.co.in/repo-feedback"));
-                            pref.edit().putBoolean("feedback-done", true).apply();
-                            if (intent.resolveActivity(getPackageManager()) != null)
-                                startActivity(intent);
-                        }
-                    });
-                    feedbackDialog.setNegativeButton("Never", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            pref.edit().putBoolean("feedback-done", true).apply();
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    feedbackDialog.setNeutralButton("Remind me later", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    feedbackDialog.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void showCelebs() {
-        ParticleSystem konfettiView = ((KonfettiView) findViewById(R.id.container)).build();
-        konfettiView.addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
-                .setDirection(359.0, 0.0)
-                .setSpeed(1f, 5f)
-                .setFadeOutEnabled(true)
-                .setTimeToLive(3000L)
-                .addShapes(Shape.RECT, Shape.CIRCLE)
-                .addSizes(new Size(8, 2f))
-                .setPosition(-50f, findViewById(R.id.container).getWidth() + 5000f, -50f, -50f)
-                .streamFor(400, 5000L);
-
-        final Dialog thanksGiving = new Dialog(LaunchingActivity.this);
-        thanksGiving.setContentView(R.layout.thanks_dialog);
-        thanksGiving.setCancelable(false);
-        TextView textView = thanksGiving.findViewById(R.id.update_text);
-        textView.setText(Html.fromHtml("Amrita Repository <br>celebrates 7000+ downloads in Play Store. <br>Thanks for being an active user. &hearts;<br><br>I’m convinced that the only thing that kept me going was that I loved what I did. You’ve got to find what you love.<br>- Steve Jobs"));
-        thanksGiving.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    thanksGiving.setCancelable(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 3000);
     }
 
     private void initialize() {
@@ -434,6 +362,8 @@ public class LaunchingActivity extends AppCompatActivity
                 break;
             case "Support":
                 startActivity(new Intent(getBaseContext(), SupportActivity.class));
+                break;
+            default:
                 break;
         }
     }
@@ -690,8 +620,6 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
             items.add(new Item("#03a9f4", "Study Materials", FontAwesomeIcons.fa_book));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
-//            items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
-//            items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
             items.add(new Item("#f13c20", "Support", FontAwesomeIcons.fa_dollar));
             items.add(new Item("#259b24", "About", FontAwesomeIcons.fa_info_circle));
         }
@@ -729,7 +657,6 @@ public class LaunchingActivity extends AppCompatActivity
             final Item item = (Item) getItem(i);
             picture.setImageDrawable(new IconDrawable(context, item.image).color(Color.parseColor(item.color)));
             name.setText(item.name);
-            //holder.setBackgroundColor(Color.parseColor(item.color));
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

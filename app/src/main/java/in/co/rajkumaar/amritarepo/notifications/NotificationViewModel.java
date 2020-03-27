@@ -22,7 +22,7 @@ public class NotificationViewModel extends AndroidViewModel {
         notifications = notificationRepository.getNotifications();
     }
 
-    LiveData<List<Notification>> getAllNotifications() {
+    public LiveData<List<Notification>> getAllNotifications() {
         return notifications;
     }
 
