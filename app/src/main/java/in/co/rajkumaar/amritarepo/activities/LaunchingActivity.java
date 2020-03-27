@@ -41,6 +41,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -49,6 +51,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
@@ -115,7 +118,6 @@ public class LaunchingActivity extends AppCompatActivity
                 editor.apply();
             }
         }
-        overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
 
         if (pref.getInt("visit", 0) >= 3 && pref.getBoolean("ftp-dialog", true)) {
             final Dialog dialog = new Dialog(this);
@@ -133,15 +135,22 @@ public class LaunchingActivity extends AppCompatActivity
             pref.edit().putInt("visit", pref.getInt("visit", 0) + 1).apply();
         }
 
-        if (getIntent().getExtras() != null) {
-            for (String key : getIntent().getExtras().keySet()) {
-                Log.v("INTENT DATA DEBUG - " + key, getIntent().getExtras().get(key).toString());
-            }
+
+        //Subscribing to a topic to receive FCM Topic messages
+        if (!pref.getBoolean(getString(R.string.subsribedToTopic), false)) {
+            FirebaseMessaging.getInstance().subscribeToTopic("general")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                pref.edit().putBoolean(getString(R.string.subsribedToTopic), true).apply();
+                            }
+                        }
+                    });
         }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        toolbar.setSubtitle(Html.fromHtml("Crafted with &hearts; by Rajkumar"));
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

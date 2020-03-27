@@ -7,6 +7,7 @@ package in.co.rajkumaar.amritarepo.helpers;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.LaunchingActivity;
 import in.co.rajkumaar.amritarepo.notifications.Notification;
 import in.co.rajkumaar.amritarepo.notifications.NotificationRepository;
 import in.co.rajkumaar.amritarepo.notifications.NotificationsActivity;
@@ -41,9 +43,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.v("FIREBASE", "ON MESSAGE RECEIVED");
-        if (remoteMessage.getNotification() != null) {
-            message = remoteMessage.getNotification().getBody();
-            title = remoteMessage.getNotification().getTitle();
+        if (remoteMessage.getData() != null) {
+            message = remoteMessage.getData().get("body");
+            title = remoteMessage.getData().get("title");
             addToDatabase();
             createNotification();
         }
@@ -65,11 +67,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager mNotificationManager;
         NotificationCompat.Builder mBuilder;
         Intent resultIntent = new Intent(this, NotificationsActivity.class);
-        resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(LaunchingActivity.class);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(this,
-                0 /* Request code */, resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID);
         mBuilder.setSmallIcon(R.drawable.notification);
