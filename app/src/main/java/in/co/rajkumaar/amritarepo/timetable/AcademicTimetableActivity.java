@@ -205,6 +205,9 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     private void buildBranchesSpinner(int courseID) {
         List<String> branchesTemp = new ArrayList<>();
         branchesTemp.add("[Choose branch]");
+        branches = new ArrayList<>();
+        branches.add("[Choose branch]");
+        setBranchSpinner();                                // when network connectivity is slow it will show [Choose branch] instead of empty spinner
         if (!pref.contains(courses.get(courseID))) {
             getBranches(courseID, branchesTemp, true);
         } else {
@@ -222,11 +225,12 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
     private void loadLists() {
         List<String> coursesTemp = new ArrayList<>();
-        coursesTemp.add("[Choose course]");
+        courses = new ArrayList<>();
+        courses.add("[Choose course]");
+        setCourseSpinner();
         if (!pref.contains("courses")) {
             getCourse(coursesTemp, true);
         } else {
-            courses = new ArrayList<>();
             Gson gson = new Gson();
             String json = pref.getString("courses", null);
             Type listType = new TypeToken<ArrayList<String>>() {
@@ -298,7 +302,6 @@ public class AcademicTimetableActivity extends AppCompatActivity {
                 String coursesJson = gson.toJson(coursesTemp);
                 pref.edit().putString("courses", coursesJson).apply();
                 if (needUpdateCourse) {
-                    courses = new ArrayList<>();
                     courses.addAll(coursesTemp);
                     setCourseSpinner();
                 }
