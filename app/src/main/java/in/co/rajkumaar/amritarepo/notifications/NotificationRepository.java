@@ -33,7 +33,7 @@ public class NotificationRepository {
         });
     }
 
-    void deleteAll() {
+    public void deleteAll() {
         NotificationDB.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
