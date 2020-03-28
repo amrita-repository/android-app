@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.activities;
@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -24,11 +23,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.solovyev.android.checkout.ActivityCheckout;
 import org.solovyev.android.checkout.Billing;
@@ -40,7 +35,6 @@ import org.solovyev.android.checkout.Purchase;
 
 import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.BillingItem;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
@@ -71,7 +65,7 @@ public class SupportActivity extends AppCompatActivity {
         donations.add("Rs 100");
         donations.add("Rs 200");
         donations.add("Rs 500");
-        ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item1, donations);
+        ArrayAdapter<String> optionsAdapter = new ArrayAdapter<>(this, R.layout.spinner_item1, donations);
         optionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         options.setAdapter(optionsAdapter);
         final Billing billing = BillingItem.get(this).getBilling();
@@ -159,34 +153,6 @@ public class SupportActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void updateDonatedDetails() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-        params.add("contactEmail", email.getText().toString());
-        params.add("contactName", email.getText().toString());
-        params.add("contactSubject", "Donation " + options.getSelectedItem().toString());
-        params.add("contactMessage", "Hey Rajkumar, Someone has made a donation of " + options.getSelectedItem().toString() + " to Amrita Repository!");
-        client.post(getString(R.string.dev_domain) + "/sendmail.php", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                try {
-                    Log.i("SUCCESS", new String(bytes));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                try {
-                    throwable.printStackTrace();
-                    Crashlytics.log(throwable.getLocalizedMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     private void showCelebs() {
         final Dialog thanksGiving = new Dialog(SupportActivity.this);
@@ -212,14 +178,12 @@ public class SupportActivity extends AppCompatActivity {
     private class PurchaseListener extends EmptyRequestListener<Purchase> {
         @Override
         public void onSuccess(@NonNull Purchase purchase) {
-            Log.e("RES", purchase.data);
             showCelebs();
             if (!anonymous.isChecked()) {
                 Bundle params = new Bundle();
                 params.putString("Email", email.getText().toString());
                 FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(SupportActivity.this);
                 mFirebaseAnalytics.logEvent("Donations", params);
-                updateDonatedDetails();
             }
         }
 
@@ -227,7 +191,7 @@ public class SupportActivity extends AppCompatActivity {
         @Override
         public void onError(int response, @NonNull Exception e) {
             Utils.showToast(getBaseContext(), e.getLocalizedMessage());
-            Log.e("ERROR", e.getLocalizedMessage());
+            e.printStackTrace();
             super.onError(response, e);
         }
     }
@@ -238,7 +202,7 @@ public class SupportActivity extends AppCompatActivity {
             final Inventory.Product product = products.get(ProductTypes.IN_APP);
             if (!product.supported) {
                 finish();
-                Utils.showToast(getBaseContext(), "Sorry. It is not supported for you yet.");
+                Utils.showToast(getBaseContext(), "Sorry. It is not supported for your device yet.");
             }
         }
     }

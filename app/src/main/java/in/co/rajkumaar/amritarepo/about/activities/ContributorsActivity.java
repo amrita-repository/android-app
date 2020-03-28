@@ -10,8 +10,12 @@ import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +23,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.adapters.ContributorsAdapter;
 import in.co.rajkumaar.amritarepo.about.models.Contributor;
@@ -32,33 +35,35 @@ public class ContributorsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contributors);
         final GridView contributorsGrid = findViewById(R.id.gridView);
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(getString(R.string.all_contributors_link), new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    ArrayList<Contributor> contributors;
-                    JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    JSONArray contributorsArray = jsonObject.getJSONArray("contributors");
-                    contributors = new ArrayList<>();
-                    for (int i = 0; i < contributorsArray.length(); ++i) {
-                        JSONObject item = contributorsArray.getJSONObject(i);
-                        contributors.add(new Contributor(item.getString("name"), item.getString("avatar_url"), item.getString("login"), item.getString("profile")));
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, getString(R.string.all_contributors_link), null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            ArrayList<Contributor> contributors;
+                            JSONArray contributorsArray = response.getJSONArray("contributors");
+                            contributors = new ArrayList<>();
+                            for (int i = 0; i < contributorsArray.length(); ++i) {
+                                JSONObject item = contributorsArray.getJSONObject(i);
+                                contributors.add(new Contributor(item.getString("name"), item.getString("avatar_url"), item.getString("login"), item.getString("profile")));
+                            }
+                            ContributorsAdapter contributorsAdapter = new ContributorsAdapter(ContributorsActivity.this, contributors);
+                            contributorsGrid.setAdapter(contributorsAdapter);
+                            findViewById(R.id.progressBar).setVisibility(View.GONE);
+                        } catch (JSONException e) {
+                            Utils.showUnexpectedError(ContributorsActivity.this);
+                            e.printStackTrace();
+                        }
                     }
-                    ContributorsAdapter contributorsAdapter = new ContributorsAdapter(ContributorsActivity.this, contributors);
-                    contributorsGrid.setAdapter(contributorsAdapter);
-                    findViewById(R.id.progressBar).setVisibility(View.GONE);
-                } catch (JSONException e) {
-                    Utils.showUnexpectedError(ContributorsActivity.this);
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Utils.showUnexpectedError(ContributorsActivity.this);
-                new Exception(error).printStackTrace();
-            }
-        });
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Utils.showUnexpectedError(ContributorsActivity.this);
+                        finish();
+                        new Exception(error).printStackTrace();
+                    }
+                });
+        requestQueue.add(jsonObjectRequest);
     }
 }

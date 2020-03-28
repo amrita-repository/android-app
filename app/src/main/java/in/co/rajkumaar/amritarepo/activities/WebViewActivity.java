@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.activities;
@@ -7,10 +7,11 @@ package in.co.rajkumaar.amritarepo.activities;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import in.co.rajkumaar.amritarepo.R;
 
@@ -27,25 +28,25 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_webview);
         try {
             Bundle b = getIntent().getExtras();
-            String webviewlink = b.getString("webview");
+            String webViewLink = b.getString("webview");
             this.setTitle(b.getString("title"));
-            WebView mywebview = findViewById(R.id.webView);
-            mywebview.getSettings().setJavaScriptEnabled(true);
+            WebView myWebView = findViewById(R.id.webView);
+            myWebView.getSettings().setJavaScriptEnabled(true);
             dialog = new ProgressDialog(WebViewActivity.this);
             if (b.getBoolean("zoom")) {
-                mywebview.getSettings().setSupportZoom(true);
-                mywebview.getSettings().setBuiltInZoomControls(true);
+                myWebView.getSettings().setSupportZoom(true);
+                myWebView.getSettings().setBuiltInZoomControls(true);
             }
-            mywebview.getSettings().setLoadWithOverviewMode(true);
-            mywebview.getSettings().setUseWideViewPort(true);
+            myWebView.getSettings().setLoadWithOverviewMode(true);
+            myWebView.getSettings().setUseWideViewPort(true);
             showProgressDialog();
-            mywebview.setWebViewClient(new WebViewClient() {
+            myWebView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     dismissProgressDialog();
                 }
             });
-            mywebview.setWebViewClient(new WebViewClient() {
+            myWebView.setWebViewClient(new WebViewClient() {
                 public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     return true;
                 }
@@ -55,7 +56,7 @@ public class WebViewActivity extends AppCompatActivity {
                     dismissProgressDialog();
                 }
             });
-            mywebview.loadUrl(webviewlink);
+            myWebView.loadUrl(webViewLink);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,7 +78,6 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog() {
-
         dialog.setMessage("Loading..");
         dialog.setCancelable(false);
         dialog.show();

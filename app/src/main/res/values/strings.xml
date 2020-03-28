@@ -65,4 +65,5 @@
     <string name="no_notifications">You have no notifications 😥</string>
     <string name="subsribedToTopic">subscribedToTopic</string>
     <string name="right_arrow">Right arrow</string>
+    <string name="departed">Departed</string>
 </resources>

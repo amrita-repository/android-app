@@ -1,25 +1,5 @@
 /*
- * MIT License
- *
- * Copyright (c) 2018  RAJKUMAR S
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.timetable;
@@ -42,11 +22,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -58,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.WebViewActivity;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
@@ -78,6 +61,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     private List<String> batches = new ArrayList<>();
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+    private RequestQueue requestQueue;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -102,7 +86,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         branch = findViewById(R.id.acad_branch);
         sem = findViewById(R.id.acad_sem);
         batch = findViewById(R.id.acad_batch);
-
+        requestQueue = Volley.newRequestQueue(this);
 
         loadLists();
         loadFromPref();
@@ -153,7 +137,6 @@ public class AcademicTimetableActivity extends AppCompatActivity {
         TIMETABLE_URL += course.getSelectedItem() + "/";
         TIMETABLE_URL += branch.getSelectedItem() + "/";
         TIMETABLE_URL += (String) course.getSelectedItem() + branch.getSelectedItem() + batch.getSelectedItem() + sem.getSelectedItem() + ".jpg";
-
     }
 
     public void viewTimetable(View view) {
@@ -285,66 +268,64 @@ public class AcademicTimetableActivity extends AppCompatActivity {
     }
 
     private void getCourse(final List<String> coursesTemp, final boolean needUpdateCourse) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(getString(R.string.course_name_url), new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                Document html = Jsoup.parse(new String(bytes));
-                Element row = html.getElementById("drop_1");
-                Elements columns = row.getElementsByTag("option");
-                if (columns.get(0).text().equals("Course")) {
-                    for (int j = 1; j < columns.size(); j++) {
-                        String parsedCourse = columns.get(j).attr("value");
-                        coursesTemp.add(parsedCourse);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, getString(R.string.course_name_url),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Document html = Jsoup.parse(response);
+                        Element row = html.getElementById("drop_1");
+                        Elements columns = row.getElementsByTag("option");
+                        if (columns.get(0).text().equals("Course")) {
+                            for (int j = 1; j < columns.size(); j++) {
+                                String parsedCourse = columns.get(j).attr("value");
+                                coursesTemp.add(parsedCourse);
+                            }
+                        }
+                        Gson gson = new Gson();
+                        String coursesJson = gson.toJson(coursesTemp);
+                        pref.edit().putString("courses", coursesJson).apply();
+                        if (needUpdateCourse) {
+                            courses.addAll(coursesTemp);
+                            setCourseSpinner();
+                        }
                     }
-                }
-                Gson gson = new Gson();
-                String coursesJson = gson.toJson(coursesTemp);
-                pref.edit().putString("courses", coursesJson).apply();
-                if (needUpdateCourse) {
-                    courses.addAll(coursesTemp);
-                    setCourseSpinner();
-                }
-            }
-
+                }, new Response.ErrorListener() {
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onErrorResponse(VolleyError error) {
                 Utils.showToast(AcademicTimetableActivity.this, "An unexpected error occurred. Please try again later");
-                finish();
             }
         });
+        requestQueue.add(stringRequest);
     }
 
     private void getBranches(final int position, final List<String> branchesTemp, final boolean needUpdateBranch) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        String html = getString(R.string.branch_name_url) + courses.get(position);
-        client.get(html, new AsyncHttpResponseHandler() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, getString(R.string.branch_name_url) + courses.get(position),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Document html = Jsoup.parse(response);
+                        Element row = html.getElementById("drop_2");
+                        Elements columns = row.getElementsByTag("option");
+                        for (int j = 1; j < columns.size(); j++) {
+                            String parsedCourse = columns.get(j).attr("value");
+                            branchesTemp.add(parsedCourse);
+                        }
+                        Gson gson = new Gson();
+                        String branchJson = gson.toJson(branchesTemp);
+                        pref.edit().putString(courses.get(position), branchJson).apply();
+                        if (needUpdateBranch) {
+                            branches = new ArrayList<>();
+                            branches.addAll(branchesTemp);
+                            setBranchSpinner();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                Document html = Jsoup.parse(new String(bytes));
-                Element row = html.getElementById("drop_2");
-                Elements columns = row.getElementsByTag("option");
-                for (int j = 1; j < columns.size(); j++) {
-                    String parsedCourse = columns.get(j).attr("value");
-                    branchesTemp.add(parsedCourse);
-                }
-                Gson gson = new Gson();
-                String branchJson = gson.toJson(branchesTemp);
-                pref.edit().putString(courses.get(position), branchJson).apply();
-                if (needUpdateBranch) {
-                    branches = new ArrayList<>();
-                    branches.addAll(branchesTemp);
-                    setBranchSpinner();
-                }
-            }
-
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onErrorResponse(VolleyError error) {
                 Utils.showToast(AcademicTimetableActivity.this, "An unexpected error occurred. Please try again later");
-                finish();
             }
         });
+        requestQueue.add(stringRequest);
     }
 
 }

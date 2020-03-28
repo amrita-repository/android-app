@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.opac;
@@ -8,9 +8,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,74 +22,70 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
 
 class OPACClient {
 
-    private String domain;
-    private AsyncHttpClient client;
-    private Context context1;
+    private String domain = BuildConfig.LIB_CATALOG;
     private SharedPreferences sharedPreferences;
+    private RequestQueue requestQueue;
 
     OPACClient(Context context) {
-        this.domain = BuildConfig.LIB_CATALOG;
-        this.client = new AsyncHttpClient();
-        this.context1 = context;
-        this.sharedPreferences = context.getSharedPreferences("library-catalog",Context.MODE_PRIVATE);
+        requestQueue = Volley.newRequestQueue(context);
+        sharedPreferences = context.getSharedPreferences("library-catalog", Context.MODE_PRIVATE);
     }
 
     void init(final InitResponse initResponse) throws JSONException {
-        if(sharedPreferences.contains("mappings")){
-            sendInitData(new JSONObject(sharedPreferences.getString("mappings","")),initResponse);
+        if (sharedPreferences.contains("mappings")) {
+            sendInitData(new JSONObject(sharedPreferences.getString("mappings", "")), initResponse);
         }
-        this.client.get(this.domain + "/mappings", new AsyncHttpResponseHandler() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, this.domain + "/mappings",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            sharedPreferences.edit().putString("mappings", jsonObject.toString()).apply();
+                            Log.i("LIBRARY-CATALOG", "MAPPINGS CACHED");
+                            sendInitData(jsonObject, initResponse);
+                        } catch (JSONException e) {
+                            initResponse.onFailure(e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    sharedPreferences.edit().putString("mappings",jsonObject.toString()).apply();
-                    Log.i("LIBRARY-CATALOG","MAPPINGS CACHED");
-                    sendInitData(jsonObject, initResponse);
-                } catch (JSONException e) {
-                    initResponse.onFailure(e);
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                initResponse.onFailure(new Exception(error));
+            public void onErrorResponse(VolleyError error) {
+                initResponse.onFailure(error);
             }
         });
+        requestQueue.add(stringRequest);
     }
 
-    void searchResults(int docType, int field, final String search, final SearchResponse searchResponse) {
-        RequestParams params = new RequestParams();
-        params.add("docType", String.valueOf(docType));
-        params.add("field", String.valueOf(field));
-        params.add("q", search);
-
-        this.client.get(this.domain + "/search", params, new AsyncHttpResponseHandler() {
+    public void searchResults(final int docType, final int field, final String search, final SearchResponse searchResponse) {
+        String uri = String.format(this.domain + "/search?docType=%s&field=%s&q=%s", docType, field, search);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            searchResponse.onSuccess(
+                                    jsonObject.getJSONArray("data"),
+                                    jsonObject.getString("action"),
+                                    jsonObject.getString("user_name")
+                            );
+                        } catch (JSONException e) {
+                            searchResponse.onFailure(e);
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    JSONObject jsonObject = new JSONObject(new String(responseBody));
-                    searchResponse.onSuccess(
-                            jsonObject.getJSONArray("data"),
-                            jsonObject.getString("action"),
-                            jsonObject.getString("user_name")
-                    );
-                } catch (JSONException e) {
-                    searchResponse.onFailure(e);
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                searchResponse.onFailure(new Exception(error));
+            public void onErrorResponse(VolleyError error) {
+                searchResponse.onFailure(error);
             }
         });
+        requestQueue.add(stringRequest);
     }
 
     private void sendInitData(JSONObject response, final InitResponse initResponse) throws JSONException {
@@ -106,50 +105,62 @@ class OPACClient {
         initResponse.onSuccess(docTypesMap, fieldsMap);
     }
 
-    public void getBookDetails(String action, String username, int id, final BookDetailResponse bookDetailResponse){
-        RequestParams params = new RequestParams();
-        params.add("action",action);
-        params.add("user_name",username);
-        params.add("id", String.valueOf(id));
-
-        this.client.post(this.domain + "/get-book-details", params,new AsyncHttpResponseHandler() {
+    public void getBookDetails(final String action, final String username, final int id, final BookDetailResponse bookDetailResponse) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, this.domain + "/get-book-details",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            bookDetailResponse.onSuccess(new JSONObject(response));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            bookDetailResponse.onFailure(e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    bookDetailResponse.onSuccess(new JSONObject(new String(responseBody)));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    bookDetailResponse.onFailure(e);
-                }
+            public void onErrorResponse(VolleyError error) {
+                bookDetailResponse.onFailure(error);
             }
-
+        }) {
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                bookDetailResponse.onFailure(new Exception(error));
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("action", action);
+                params.put("user_name", username);
+                params.put("id", String.valueOf(id));
+                return params;
             }
-        });
+        };
+        requestQueue.add(stringRequest);
     }
 
-    public void getProfile(String username,String password,final BookDetailResponse bookDetailResponse){
-        RequestParams params = new RequestParams();
-        params.add("memberid",username);
-        params.add("password",password);
-
-        this.client.post(this.domain + "/checkouts", params, new AsyncHttpResponseHandler() {
+    public void getProfile(final String username, final String password, final BookDetailResponse bookDetailResponse) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, this.domain + "/checkouts",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            bookDetailResponse.onSuccess(new JSONObject(response));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            bookDetailResponse.onFailure(e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    bookDetailResponse.onSuccess(new JSONObject(new String(responseBody)));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    bookDetailResponse.onFailure(e);
-                }
+            public void onErrorResponse(VolleyError error) {
+                bookDetailResponse.onFailure(error);
             }
-
+        }) {
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                bookDetailResponse.onFailure(new Exception(error));
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("memberid", username);
+                params.put("password", password);
+                return params;
             }
-        });
+        };
+        requestQueue.add(stringRequest);
     }
 }
