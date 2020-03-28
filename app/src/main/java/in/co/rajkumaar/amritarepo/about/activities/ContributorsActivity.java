@@ -30,14 +30,12 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ContributorsActivity extends AppCompatActivity {
 
-    private RequestQueue requestQueue;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contributors);
         final GridView contributorsGrid = findViewById(R.id.gridView);
-        requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, getString(R.string.all_contributors_link), null, new Response.Listener<JSONObject>() {
                     @Override

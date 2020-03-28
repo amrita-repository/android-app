@@ -61,7 +61,7 @@ class OPACClient {
         requestQueue.add(stringRequest);
     }
 
-    void searchResults(final int docType, final int field, final String search, final SearchResponse searchResponse) {
+    public void searchResults(final int docType, final int field, final String search, final SearchResponse searchResponse) {
         String uri = String.format(this.domain + "/search?docType=%s&field=%s&q=%s", docType, field, search);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, uri,
                 new Response.Listener<String>() {
