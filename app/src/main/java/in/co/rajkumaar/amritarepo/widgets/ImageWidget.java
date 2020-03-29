@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020 RAJKUMAR S
+ */
+
 package in.co.rajkumaar.amritarepo.widgets;
 
 import android.app.PendingIntent;
@@ -9,9 +13,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.widget.RemoteViews;
 
 import androidx.core.content.FileProvider;
-import android.widget.RemoteViews;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -28,7 +32,7 @@ import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
 public class ImageWidget extends AppWidgetProvider {
 
     private static final String MyOnClick = "openWidget";
-    static SharedPreferences preferences;
+    private static SharedPreferences preferences;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {

@@ -486,22 +486,21 @@ public class LaunchingActivity extends BaseActivity
             startActivity(new Intent(this, DownloadsActivity.class));
         } else if (id == R.id.nav_bot) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://t.me/amrepobot"));
+            intent.setData(Uri.parse(getString(R.string.telegram_bot_url)));
             if (intent.resolveActivity(getPackageManager()) != null)
                 startActivity(intent);
         } else if (id == R.id.nav_feedback) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://rajkumaar.co.in/repo-feedback"));
-            getSharedPreferences("user", MODE_PRIVATE).edit().putBoolean("feedback-done", true).apply();
-            if (intent.resolveActivity(getPackageManager()) != null)
-                startActivity(intent);
+            Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", getString(R.string.my_mail), null));
+            it.putExtra(Intent.EXTRA_SUBJECT, "Reg. Feedback for Amrita Repository");
+            it.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.my_mail)});
+            if (it.resolveActivity(getPackageManager()) != null)
+                startActivity(it);
         } else if (id == R.id.nav_share) {
             drawer.closeDrawer(GravityCompat.START);
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Find all features an Amritian needs under one roof. Download Amrita Repository, the must-have app!\n" +
-                            "https://bit.ly/amritarepo");
+                    "Find all features an Amritian needs under one roof. Download Amrita Repository, the must-have app!\n" + "https://bit.ly/amritarepo");
             sendIntent.setType("text/plain");
             if (sendIntent.resolveActivity(getPackageManager()) != null) {
                 startActivity(sendIntent);
@@ -530,12 +529,9 @@ public class LaunchingActivity extends BaseActivity
         } else if (id == R.id.nav_donate) {
             startActivity(new Intent(getBaseContext(), SupportActivity.class));
         } else if (id == R.id.nav_bugreport) {
-            Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                    "mailto", "rajkumaar2304@icloud.com", null));
-            it.putExtra(Intent.EXTRA_SUBJECT, "Regarding Bug in Amrita Repository App");
-            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"rajkumaar2304@icloud.com"});
-            if (it.resolveActivity(getPackageManager()) != null)
-                startActivity(it);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(getString(R.string.github_issues_url)));
+            startActivity(intent);
         }
         return true;
     }

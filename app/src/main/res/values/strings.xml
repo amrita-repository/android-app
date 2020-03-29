@@ -66,4 +66,7 @@
     <string name="subsribedToTopic">subscribedToTopic</string>
     <string name="right_arrow">Right arrow</string>
     <string name="departed">Departed</string>
+    <string name="my_mail">rajkumaar2304@icloud.com</string>
+    <string name="github_issues_url">https://github.com/rajkumaar23/amrita-repository/issues/new/choose</string>
+    <string name="telegram_bot_url">https://t.me/amrepobot</string>
 </resources>

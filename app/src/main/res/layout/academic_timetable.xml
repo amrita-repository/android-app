@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="?attr/primaryTextColor"
+        android:background="@color/white"
         android:gravity="center"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

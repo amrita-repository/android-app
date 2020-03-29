@@ -1,17 +1,18 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.papers;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.github.ivbaranov.mli.MaterialLetterIcon;
 import com.joanzapata.iconify.IconDrawable;
@@ -27,7 +28,6 @@ public class PaperAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String type;
     private customListener customListener;
-    private int[] mMaterial_Colors;
 
     public PaperAdapter(Context context, List<String> settings, String type) {
         super(context, 0, settings);
@@ -41,7 +41,7 @@ public class PaperAdapter extends ArrayAdapter<String> {
 
     @NonNull
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
@@ -52,7 +52,7 @@ public class PaperAdapter extends ArrayAdapter<String> {
         TextView name = listItemView.findViewById(R.id.title);
         name.setText(current);
 
-        mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
+        int[] mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
         if (type.equals("sem")) {
             listItemView.findViewById(R.id.image).setVisibility(View.GONE);
             listItemView.findViewById(R.id.icon).setVisibility(View.VISIBLE);
