@@ -22,7 +22,6 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 public class ExamsFAQActivity extends AppCompatActivity {
     private ProgressDialog dialog;
     private WebView mywebview;
-    private Document htmlDoc;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
