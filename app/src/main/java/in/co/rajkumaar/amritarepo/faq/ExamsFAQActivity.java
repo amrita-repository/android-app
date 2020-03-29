@@ -21,7 +21,6 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ExamsFAQActivity extends AppCompatActivity {
     private ProgressDialog dialog;
-    private String finalHtml;
     private WebView mywebview;
 
 
@@ -63,11 +62,12 @@ public class ExamsFAQActivity extends AppCompatActivity {
 
     private void getFAQ() {
         final Document[] htmlDoc = new Document[1];
+        final String[] finalHtml = new String[1];
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("https://intranet.cb.amrita.edu/?q=exam", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                finalHtml = "" +
+                finalHtml[0] = "" +
                         "<!DOCTYPE html>\n" +
                         "<html>\n" +
                         "<head>\n" +
@@ -87,9 +87,9 @@ public class ExamsFAQActivity extends AppCompatActivity {
                         "<body>";
                 htmlDoc[0] = Jsoup.parse(new String(bytes));
                 String content = htmlDoc[0].select("section#post-content").html();
-                finalHtml += content;
-                finalHtml += "</body></html>";
-                mywebview.loadData(finalHtml, "text/html; charset=utf-8", "UTF-8");
+                finalHtml[0] += content;
+                finalHtml[0] += "</body></html>";
+                mywebview.loadData(finalHtml[0], "text/html; charset=utf-8", "UTF-8");
                 dismissProgressDialog();
             }
 
