@@ -6,8 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/app/AmritaRepo-app.iml" filepath="$PROJECT_DIR$/app/AmritaRepo-app.iml" group="amrita-repository" />
       <module fileurl="file://$PROJECT_DIR$/amrita-repository.iml" filepath="$PROJECT_DIR$/amrita-repository.iml" group="amrita-repository" />
       <module fileurl="file://$PROJECT_DIR$/app/amrita-repository-app.iml" filepath="$PROJECT_DIR$/app/amrita-repository-app.iml" group="amrita-repository/app" />
-      <module fileurl="file://$PROJECT_DIR$/amrita-repository-new.iml" filepath="$PROJECT_DIR$/amrita-repository-new.iml" group="amrita-repository-new" />
-      <module fileurl="file://$PROJECT_DIR$/app/amrita-repository-new-app.iml" filepath="$PROJECT_DIR$/app/amrita-repository-new-app.iml" group="amrita-repository-new/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/projects-AmritaRepo.iml" filepath="$PROJECT_DIR$/projects-AmritaRepo.iml" group="AmritaRepo" />
     </modules>
