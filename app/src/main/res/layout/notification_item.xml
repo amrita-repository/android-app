@@ -49,7 +49,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="7"
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:textSize="19sp"
                     tools:text="Chemical" />
 
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textSize="15sp"
                 tools:text="Chemical" />
 

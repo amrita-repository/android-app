@@ -1,14 +1,11 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.opac;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Html;
-
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -19,9 +16,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class OPACAccountActivity extends AppCompatActivity {
+public class OPACAccountActivity extends BaseActivity {
 
     OPACClient client;
     @Override

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/image_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
-    android:background="@color/colorBackground">
+    android:background="?attr/colorBackground">
 
     <TextView
         android:id="@+id/section_header"
@@ -14,7 +18,7 @@
         android:gravity="center"
         android:padding="8dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/holo_orange_dark"
+        android:textColor="?attr/primaryTextColor"
         android:textStyle="bold"
         android:visibility="visible" />
 
@@ -43,19 +47,18 @@
             android:gravity="center"
             android:text="Details matter, it\'s worth waiting to get it right\n- Steve Jobs"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/primaryTextColor"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_below="@id/section_header"
-        android:divider="@android:color/white"
-        android:dividerHeight="0dp"
+        android:background="?attr/colorBackground"
+        android:divider="?attr/primaryTextColor"
+        android:dividerHeight="1dp"
         android:visibility="gone"
-        tools:context=".aums.activities.AttendanceActivity"></ListView>
+        tools:context=".aums.activities.AttendanceActivity" />
 </RelativeLayout>

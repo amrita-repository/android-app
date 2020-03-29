@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.opac;
@@ -7,10 +7,7 @@ package in.co.rajkumaar.amritarepo.opac;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.widget.ListView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,9 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class SearchResultsActivity extends AppCompatActivity implements ResultsAdapter.customListener {
+public class SearchResultsActivity extends BaseActivity implements ResultsAdapter.customListener {
 
     private JSONArray searchResults;
     private String action, username;

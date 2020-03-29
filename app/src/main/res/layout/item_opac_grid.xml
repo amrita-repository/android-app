@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2019 RAJKUMAR S
+  ~ Copyright (c) 2020 RAJKUMAR S
   -->
 
 <FrameLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/landing_item_holder"
-    android:background="@color/colorPrimaryDark"
+    android:background="?attr/colorBackground"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -49,7 +49,7 @@
                 android:paddingTop="20dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="5dp"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 tools:ignore="HardcodedText" />
 

@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,9 +24,10 @@ import java.util.ArrayList;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.about.adapters.ContributorsAdapter;
 import in.co.rajkumaar.amritarepo.about.models.Contributor;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class ContributorsActivity extends AppCompatActivity {
+public class ContributorsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

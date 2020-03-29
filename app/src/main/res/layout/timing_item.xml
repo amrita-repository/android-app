@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackground"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/colorBackground"
     android:padding="10dp">
 
     <TextView
@@ -13,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:text="56323 Coimbatore Mangalore Fast Passenger "
+        tools:text="56323 Coimbatore Mangalore Fast Passenger "
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/orange" />
@@ -24,9 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/name"
         android:layout_centerHorizontal="true"
-        android:text="Departs from Coimbatore at 16:00 hours"
+        android:textColor="?attr/primaryTextColor"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/white" />
+        tools:text="Departs from Coimbatore at 16:00 hours" />
 
     <TextView
         android:id="@+id/days"
@@ -34,8 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/departure"
         android:layout_centerHorizontal="true"
-        android:text="Runs on All Days"
+        android:textColor="@color/colorAccent"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/holo_orange_light" />
+        tools:text="Runs on All Days" />
 
 </RelativeLayout>

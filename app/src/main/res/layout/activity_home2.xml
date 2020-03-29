@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackground">
+    android:background="?attr/colorBackground">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:background="@color/colorBackground"
+        android:background="?attr/colorBackground"
         android:paddingTop="20dp">
 
         <RelativeLayout
@@ -35,7 +39,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:textAllCaps="true"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="RAJKUMAR S" />
@@ -48,7 +52,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:textAllCaps="true"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="CB.EN.U4CSE17651" />
@@ -60,7 +64,7 @@
             android:layout_below="@id/username"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="20sp"
             tools:text="rajkumaar2304@icloud.com" />
 
@@ -70,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/email"
             android:layout_marginTop="30dp"
-            android:divider="@android:color/white"
+            android:divider="?attr/primaryTextColor"
             android:dividerHeight="0dp" />
     </RelativeLayout>
 </RelativeLayout>

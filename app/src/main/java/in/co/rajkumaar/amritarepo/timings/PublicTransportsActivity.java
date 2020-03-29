@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -24,7 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,9 +46,10 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class PublicTransportsActivity extends AppCompatActivity {
+public class PublicTransportsActivity extends BaseActivity {
 
     private String type;
     private int flag;
@@ -486,7 +485,7 @@ public class PublicTransportsActivity extends AppCompatActivity {
                 @Override
                 public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                     if (convertView == null) {
-                        convertView = getLayoutInflater().inflate(R.layout.timing_item, null);
+                        convertView = getLayoutInflater().inflate(R.layout.timing_item, parent, false);
                     }
                     DataItem item = getItem(position);
                     ((TextView) convertView.findViewById(R.id.name)).setText(item.name);
@@ -570,8 +569,8 @@ public class PublicTransportsActivity extends AppCompatActivity {
         flag = 1;
         Date startTime = currentTime.getTime();
         Date endTime = trainTime.getTime();
-        long timediff = endTime.getTime() - startTime.getTime();
-        countdown(timediff);
+        long timeDiff = endTime.getTime() - startTime.getTime();
+        countdown(timeDiff);
     }
 
     private void countdown(long timeDiff) {
@@ -603,17 +602,11 @@ public class PublicTransportsActivity extends AppCompatActivity {
 
             public void onFinish() {
                 countdownTimer.setText(R.string.departed);
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            loadData(type);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 0);
+                try {
+                    loadData(type);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }.start();

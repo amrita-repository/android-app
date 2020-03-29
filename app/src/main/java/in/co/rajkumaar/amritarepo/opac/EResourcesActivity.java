@@ -12,8 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -31,9 +29,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class EResourcesActivity extends AppCompatActivity {
+public class EResourcesActivity extends BaseActivity {
 
     private Map<String, String> links = new HashMap<>();
     private ArrayList<String> items = new ArrayList<>();

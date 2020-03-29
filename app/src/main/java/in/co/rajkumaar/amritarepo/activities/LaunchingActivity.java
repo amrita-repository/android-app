@@ -33,7 +33,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -69,8 +68,8 @@ import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
 import in.co.rajkumaar.amritarepo.downloads.FTPActivity;
 import in.co.rajkumaar.amritarepo.examschedule.ExamCategoryActivity;
 import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
+import in.co.rajkumaar.amritarepo.helpers.ClearCache;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
-import in.co.rajkumaar.amritarepo.helpers.clearCache;
 import in.co.rajkumaar.amritarepo.news.NewsActivity;
 import in.co.rajkumaar.amritarepo.notifications.NotificationsActivity;
 import in.co.rajkumaar.amritarepo.opac.OPACHomeActivity;
@@ -81,7 +80,7 @@ import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
 import in.co.rajkumaar.amritarepo.timings.TimingsHomeActivity;
 import in.co.rajkumaar.amritarepo.wifistatus.WifiStatusActivity;
 
-public class LaunchingActivity extends AppCompatActivity
+public class LaunchingActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static boolean active = false;
@@ -106,7 +105,7 @@ public class LaunchingActivity extends AppCompatActivity
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         } else {
-            new clearCache().clear(this);
+            new ClearCache().clear(this);
             if (pref.getBoolean("first", true)) {
                 AboutActivity.showDisclaimer(this);
                 SharedPreferences.Editor editor = getSharedPreferences("user", MODE_PRIVATE).edit();
@@ -147,16 +146,6 @@ public class LaunchingActivity extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "http://rajkumaar.co.in";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
-            }
-        });
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -378,7 +367,7 @@ public class LaunchingActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        new clearCache().clear(this);
+        new ClearCache().clear(this);
         super.onDestroy();
     }
 
@@ -611,12 +600,12 @@ public class LaunchingActivity extends AppCompatActivity
             items.add(new Item("#FF201B", "Question Papers", FontAwesomeIcons.fa_paper_plane));
             items.add(new Item("#009688", "AUMS", FontAwesomeIcons.fa_graduation_cap));
             items.add(new Item("#a4123f", "CMS", FontAwesomeIcons.fa_university));
-            items.add(new Item("#ffc107", "Academic Timetable", FontAwesomeIcons.fa_calendar));
+            items.add(new Item("#9c27b0", "Academic Timetable", FontAwesomeIcons.fa_calendar));
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
             items.add(new Item("#03a9f4", "Central Library", FontAwesomeIcons.fa_laptop));
             items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
             items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
-            items.add(new Item("#ffffff", "Timings", FontAwesomeIcons.fa_clock_o));
+            items.add(new Item("#009688", "Timings", FontAwesomeIcons.fa_clock_o));
             items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
             items.add(new Item("#03a9f4", "Study Materials", FontAwesomeIcons.fa_book));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/colorBackground"
+    android:background="?attr/colorBackground"
     android:orientation="vertical">
 
     <TextView
@@ -32,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="@android:color/white" />
+            android:textColor="?attr/primaryTextColor" />
 
         <TextView
             android:id="@+id/text2"
@@ -59,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text2"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="@android:color/white" />
+            android:textColor="?attr/primaryTextColor" />
 
         <TextView
             android:id="@+id/text4"
@@ -86,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text4"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="@android:color/white" />
+            android:textColor="?attr/primaryTextColor" />
 
         <TextView
             android:id="@+id/text6"

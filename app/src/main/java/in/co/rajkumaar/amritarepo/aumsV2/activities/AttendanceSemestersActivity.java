@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) 2020 RAJKUMAR S
+ */
+
 package in.co.rajkumaar.amritarepo.aumsV2.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,11 +25,12 @@ import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.aumsV2.models.Semester;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class AttendanceSemestersActivity extends AppCompatActivity {
+public class AttendanceSemestersActivity extends BaseActivity {
 
     private ListView listView;
     private ArrayAdapter<String> semsAdapter;
@@ -41,7 +45,6 @@ public class AttendanceSemestersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_available_semesters);
 
         preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
-        getSupportActionBar().setSubtitle("Logged in as " + preferences.getString("name", ""));
         listView = findViewById(R.id.list);
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);

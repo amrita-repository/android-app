@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="?attr/colorBackground">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground"
+        android:background="?attr/colorBackground"
         android:clipToPadding="false"
         android:padding="16dp"
         android:scrollbarStyle="outsideOverlay">
@@ -32,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/donation"
-                android:textColor="@android:color/white" />
+                android:textColor="?attr/primaryTextColor" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -41,7 +45,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="Donate using"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/primaryTextColor"
                 tools:ignore="HardcodedText" />
 
             <ImageView
@@ -79,7 +83,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="UPI ID : "
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/primaryTextColor"
                     tools:ignore="HardcodedText" />
 
                 <Button
@@ -87,6 +91,7 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/button"
+                    android:textColor="?attr/colorBackground"
                     android:onClick="copyUPI"
                     android:text="Copy"
                     tools:ignore="HardcodedText" />
@@ -120,7 +125,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="15dp"
                 android:backgroundTint="@color/red"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/primaryTextColor"
                 tools:ignore="UnusedAttribute" />
 
             <CheckBox
@@ -129,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/red"
-                android:buttonTint="@android:color/white"
+                android:buttonTint="?attr/primaryTextColor"
                 android:text="Stay Anonymous"
                 android:textColor="@color/red"
                 tools:ignore="HardcodedText,UnusedAttribute" />
@@ -139,10 +144,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:mtf_backgroundColor="@android:color/white"
+                app:mtf_backgroundColor="?attr/primaryTextColor"
                 app:mtf_hasFocus="false"
                 app:mtf_image="@drawable/ic_user"
-                app:mtf_labelColor="@android:color/white"
+                app:mtf_labelColor="?attr/primaryTextColor"
                 app:mtf_openKeyboardOnFocus="false">
 
                 <EditText
@@ -153,7 +158,7 @@
                     android:hint="Enter your email here"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/colorPrimary"
-                    android:textColorHint="@android:color/white"
+                    android:textColorHint="?attr/primaryTextColor"
                     tools:ignore="HardcodedText"
                     tools:targetApi="lollipop" />
             </com.github.florent37.materialtextfield.MaterialTextField>
@@ -166,6 +171,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="50dp"
                 android:background="@drawable/button"
+                android:textColor="?attr/colorBackground"
                 android:gravity="center"
                 android:text="Donate"
                 tools:ignore="HardcodedText" />
