@@ -98,8 +98,6 @@ public class FTPActivity extends BaseActivity {
                                                 "You can access your files at <br><strong>ftp://" + IP + ":" + port + "</strong>"
                                         ));
                                         start.setText("Stop Server");
-                                        start.setBackground(getResources().getDrawable(R.drawable.red_button));
-                                        start.setTextColor(getResources().getColor(android.R.color.white));
                                         rippleBackground.setVisibility(View.VISIBLE);
                                         rippleBackground.startRippleAnimation();
                                         tools.setVisibility(View.VISIBLE);
@@ -122,8 +120,6 @@ public class FTPActivity extends BaseActivity {
                         ftpServer.suspend();
                         result.setText("");
                         start.setText("Start Server");
-                        start.setTextColor(getResources().getColor(android.R.color.black));
-                        start.setBackground(getResources().getDrawable(R.drawable.button));
                         rippleBackground.stopRippleAnimation();
                         rippleBackground.setVisibility(View.GONE);
                         tools.setVisibility(View.GONE);

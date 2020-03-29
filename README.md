@@ -43,7 +43,7 @@ Be up-to-date with what's happening at Amrita. Be notified of news articles pull
 - Copy `app/keys.properties.example` and paste as a new file named `app/keys.properties` ( Do not bother about the content)
 - Download [this](https://raw.githubusercontent.com/rajkumaar23/amrita-repository/master/timings.json) file and import it in your Firebase Realtime Database for the timings module to work properly.
 - Import the project into Android Studio and start working.
-- Make your awesome changes, push your changes into a *new branch*.
+- Make your awesome changes, push your changes into a **new branch**.
 - Send in a pull-request :)
 
 ## Misc. Info
