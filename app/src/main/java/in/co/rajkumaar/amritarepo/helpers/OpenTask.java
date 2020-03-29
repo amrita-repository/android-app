@@ -32,7 +32,8 @@ public class OpenTask {
 
     private static final String TAG = "Open Task";
     private Context context;
-    private String downloadUrl, downloadFileName;
+    private String downloadUrl;
+    private String downloadFileName;
 
     private ProgressDialog progressDialog;
 
@@ -84,8 +85,8 @@ public class OpenTask {
     @SuppressLint("StaticFieldLeak")
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
 
-        File outputFile = null;
-        File apkStorage = null;
+        private File outputFile = null;
+        private File apkStorage = null;
 
         @Override
         protected void onPreExecute() {
@@ -212,7 +213,6 @@ public class OpenTask {
                     }
 
                     outputFile = new File(apkStorage, downloadFileName);//Create Output file in Main File
-                    int fileLength = c.getContentLength();
                     //Create New File if not present
                     if (!outputFile.exists()) {
                         outputFile.createNewFile();
