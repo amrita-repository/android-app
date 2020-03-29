@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +13,7 @@
     android:paddingEnd="10dp"
     tools:ignore="RtlSymmetry,UnusedAttribute">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/landing_item_holder"
         android:layout_width="0dp"
         android:layout_height="80dp"
@@ -36,7 +40,7 @@
             android:paddingTop="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="10dp"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/primaryTextColor"
             android:textSize="20sp" />
     </RelativeLayout>
 

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="?attr/colorBackground"
     android:orientation="vertical"
     tools:context=".timetable.AcademicTimetableActivity"
     tools:ignore="HardcodedText,UnusedAttribute">
@@ -29,7 +33,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
         android:backgroundTint="@color/colorAccent"
-        android:textColor="@android:color/white" />
+        android:textColor="?attr/primaryTextColor" />
 
     <Spinner
         android:id="@+id/acad_course"
@@ -100,7 +104,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:onClick="viewTimetable"
             android:text="View"
-            android:textColor="@color/colorBackground"
+            android:textColor="?attr/colorBackground"
             tools:ignore="UnusedAttribute" />
 
         <Button
@@ -116,7 +120,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:onClick="downloadTimetable"
             android:text="Download"
-            android:textColor="@color/colorBackground"
+            android:textColor="?attr/colorBackground"
             tools:ignore="UnusedAttribute" />
 
     </LinearLayout>

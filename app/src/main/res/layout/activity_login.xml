@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:float="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="?attr/colorBackground"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -24,9 +28,9 @@
                 android:id="@+id/username_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mtf_backgroundColor="@android:color/white"
+                app:mtf_backgroundColor="?attr/primaryTextColor"
                 app:mtf_image="@drawable/ic_user"
-                app:mtf_labelColor="@android:color/white"
+                app:mtf_labelColor="?attr/primaryTextColor"
                 app:mtf_openKeyboardOnFocus="true">
 
                 <EditText
@@ -36,8 +40,8 @@
                     android:backgroundTint="@color/colorAccent"
                     android:hint="Username"
                     android:inputType="textCapCharacters"
-                    android:textColor="@color/colorPrimary"
-                    android:textColorHint="@android:color/white"
+                    android:textColor="?attr/colorBackground"
+                    android:textColorHint="?attr/colorBackground"
                     float:ignore="HardcodedText,UnusedAttribute"
                     float:inputType="textPassword|textVisiblePassword" />
             </com.github.florent37.materialtextfield.MaterialTextField>
@@ -47,9 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:mtf_backgroundColor="@android:color/white"
+                app:mtf_backgroundColor="?attr/primaryTextColor"
                 app:mtf_image="@drawable/ic_eye"
-                app:mtf_labelColor="@android:color/white"
+                app:mtf_labelColor="?attr/primaryTextColor"
                 app:mtf_openKeyboardOnFocus="true">
 
                 <EditText
@@ -59,8 +63,8 @@
                     android:backgroundTint="@color/colorAccent"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:textColor="@color/colorPrimary"
-                    android:textColorHint="@android:color/white"
+                    android:textColor="?attr/colorBackground"
+                    android:textColorHint="?attr/colorBackground"
                     float:ignore="HardcodedText,UnusedAttribute"
                     float:inputType="textPassword|textVisiblePassword" />
             </com.github.florent37.materialtextfield.MaterialTextField>
@@ -75,10 +79,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:layout_marginTop="10dp"
-                    android:backgroundTint="@android:color/white"
+                    android:backgroundTint="?attr/primaryTextColor"
                     android:buttonTint="@color/colorAccent"
                     android:text="Remember me"
-                    android:textColor="@android:color/white"
+                    android:textColor="?attr/primaryTextColor"
                     android:textSize="12sp"
                     float:ignore="HardcodedText,UnusedAttribute" />
             </RelativeLayout>
@@ -91,11 +95,12 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/button"
+                android:textColor="?attr/colorBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:text="Login"
-                float:ignore="HardcodedText,UnusedAttribute"></Button>
+                float:ignore="HardcodedText,UnusedAttribute" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

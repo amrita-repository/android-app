@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
-    android:backgroundTint="@color/colorPrimaryDark"
+    android:background="?attr/colorBackground"
     android:padding="15dp">
 
     <ImageView
@@ -19,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/image"
-        android:textColor="@android:color/white"
-        android:textSize="20dp"
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="20sp"
         android:textStyle="bold"
         tools:text="Hello Attendance" />
 

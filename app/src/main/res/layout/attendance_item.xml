@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="?attr/colorBackground"
     android:layout_height="wrap_content"
     android:padding="10dp">
 
@@ -25,7 +29,7 @@
                 android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:background="@color/colorPrimaryDark" />
+                android:background="?attr/colorBackground" />
 
             <TextView
                 android:id="@+id/percentage"
@@ -55,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/primaryTextColor"
                 android:textStyle="bold"
                 tools:text="Hello Attendance" />
 
@@ -64,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/holo_orange_light"
+                android:textColor="?attr/primaryTextColor"
                 tools:text="You attended 13 of 15 classes" />
 
         </LinearLayout>

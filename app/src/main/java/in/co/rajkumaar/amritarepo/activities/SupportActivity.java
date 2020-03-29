@@ -21,7 +21,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -41,7 +40,7 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 import static android.view.View.GONE;
 
-public class SupportActivity extends AppCompatActivity {
+public class SupportActivity extends BaseActivity {
 
     private static final String GOOGLE_TEZ_PACKAGE_NAME = "com.google.android.apps.nbu.paisa.user";
     Spinner options;

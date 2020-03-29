@@ -28,6 +28,9 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Utils {
+    public static String THEME_LIGHT = "light";
+    public static String THEME_DARK = "dark";
+
     public static boolean isConnected(Context context) {
         try {
             ConnectivityManager connectivityManager

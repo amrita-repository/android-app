@@ -18,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -43,12 +42,13 @@ import java.util.Collection;
 import java.util.List;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.activities.WebViewActivity;
+import in.co.rajkumaar.amritarepo.helpers.ClearCache;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
-import in.co.rajkumaar.amritarepo.helpers.clearCache;
 
-public class AcademicTimetableActivity extends AppCompatActivity {
+public class AcademicTimetableActivity extends BaseActivity {
 
     public String TIMETABLE_URL;
     public Spinner year;
@@ -80,7 +80,7 @@ public class AcademicTimetableActivity extends AppCompatActivity {
 
         pref = getSharedPreferences("student_timetable", MODE_PRIVATE);
         editor = pref.edit();
-        new clearCache().clear(this);
+        new ClearCache().clear(this);
         year = findViewById(R.id.acad_year);
         course = findViewById(R.id.acad_course);
         branch = findViewById(R.id.acad_branch);

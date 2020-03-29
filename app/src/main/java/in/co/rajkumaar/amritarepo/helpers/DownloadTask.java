@@ -65,7 +65,7 @@ public class DownloadTask {
         //Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
 
-        new clearCache().clear(context);
+        new ClearCache().clear(context);
         //Start Downloading Task
         new DownloadingTask().execute();
 

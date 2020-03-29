@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackground"
+    android:background="?attr/colorBackground"
     android:padding="10dp">
 
     <TextView
@@ -14,6 +18,6 @@
         android:layout_centerHorizontal="true"
         android:text="Departs from Coimbatore at 16:00 hours"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@android:color/white" />
+        android:textColor="?attr/primaryTextColor" />
 
 </RelativeLayout>

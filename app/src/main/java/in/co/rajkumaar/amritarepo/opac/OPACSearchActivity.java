@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.opac;
@@ -13,8 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -22,9 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class OPACSearchActivity extends AppCompatActivity {
+public class OPACSearchActivity extends BaseActivity {
 
     private OPACClient opacClient;
     private ProgressDialog dialog;

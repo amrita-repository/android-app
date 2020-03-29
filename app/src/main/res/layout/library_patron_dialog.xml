@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2019 RAJKUMAR S
+  ~ Copyright (c) 2020 RAJKUMAR S
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="?attr/colorBackground"
     tools:ignore="HardcodedText"
     android:padding="20dp"
     android:layout_height="match_parent">
     <TextView
         android:text="Usually, students have Member ID as CSEXXXXX and no password. Try it, else contact Library Dept for your credentials!"
         android:layout_width="match_parent"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/primaryTextColor"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
         tools:ignore="HardcodedText" />
     <EditText
         android:id="@+id/id"
-        android:textColorHint="@android:color/white"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/primaryTextColor"
+        android:textColorHint="?attr/primaryTextColor"
         android:backgroundTint="@color/color_4"
         android:layout_width="match_parent"
         android:hint="Enter your Member ID"
@@ -30,9 +30,9 @@
         tools:ignore="UnusedAttribute" />
     <EditText
         android:id="@+id/password"
-        android:textColorHint="@android:color/white"
+        android:textColor="?attr/primaryTextColor"
         android:backgroundTint="@color/color_4"
-        android:textColor="@android:color/white"
+        android:textColorHint="?attr/primaryTextColor"
         android:textSize="15sp"
         android:inputType="textPassword"
         android:hint="Enter your password(if exists)"
@@ -43,6 +43,7 @@
         android:id="@+id/submit"
         android:layout_marginTop="10dp"
         android:text="Submit"
+        android:textColor="?attr/colorBackground"
         android:background="@drawable/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2019 RAJKUMAR S
+  ~ Copyright (c) 2020 RAJKUMAR S
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimaryDark"
+    android:background="?attr/colorBackground"
     android:layout_height="match_parent"
     android:padding="10dp"
     tools:context=".opac.OPACAccountActivity">
@@ -25,7 +25,7 @@
         android:gravity="center_horizontal"
         tools:text="Henlo, Rajkumar"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/primaryTextColor"
         tools:ignore="HardcodedText" />
     <TextView
         android:id="@+id/noOfCheckouts"
@@ -35,7 +35,7 @@
         android:gravity="center_horizontal"
         tools:text="Henlo, Rajkumar"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/primaryTextColor"
         tools:ignore="HardcodedText" />
     <TextView
         android:id="@+id/lastChecked"
@@ -45,7 +45,7 @@
         android:gravity="center_horizontal"
         tools:text="Henlo, Rajkumar"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/primaryTextColor"
         tools:ignore="HardcodedText" />
     <TextView
         android:id="@+id/fine"
@@ -55,12 +55,12 @@
         android:gravity="center_horizontal"
         tools:text="Henlo, Rajkumar"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/primaryTextColor"
         tools:ignore="HardcodedText" />
     <WebView
         android:id="@+id/webView"
         android:layout_margin="15dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="?attr/colorBackground"
         android:layout_below="@id/fine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

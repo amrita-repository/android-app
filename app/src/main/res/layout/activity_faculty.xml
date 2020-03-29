@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/faculty_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="?attr/colorBackground">
 
     <LinearLayout
         android:id="@+id/faculty_container"
@@ -17,9 +21,9 @@
         <com.github.florent37.materialtextfield.MaterialTextField
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:mtf_backgroundColor="@android:color/white"
+            app:mtf_backgroundColor="?attr/primaryTextColor"
             app:mtf_image="@drawable/ic_user"
-            app:mtf_labelColor="@android:color/white"
+            app:mtf_labelColor="?attr/primaryTextColor"
             app:mtf_openKeyboardOnFocus="true">
 
             <AutoCompleteTextView
@@ -29,8 +33,8 @@
                 android:backgroundTint="@color/colorAccent"
                 android:hint="@string/facultyName"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/colorPrimary"
-                android:textColorHint="@android:color/white"
+                android:textColor="?attr/colorBackground"
+                android:textColorHint="?attr/colorBackground"
                 tools:ignore="HardcodedText"
                 tools:targetApi="lollipop" />
         </com.github.florent37.materialtextfield.MaterialTextField>
@@ -44,7 +48,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="5dp"
             android:backgroundTint="@color/colorAccent"
-            android:textColor="@android:color/white" />
+            android:textColor="?attr/primaryTextColor" />
 
         <Spinner
             android:id="@+id/faculty_sem"
@@ -55,7 +59,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="5dp"
             android:backgroundTint="@color/colorAccent"
-            android:textColor="@android:color/white" />
+            android:textColor="?attr/primaryTextColor" />
 
         <Button
             android:id="@+id/faculty_button"
@@ -68,7 +72,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:padding="12dp"
             android:text="View"
-            android:textColor="@color/colorBackground" />
+            android:textColor="?attr/colorBackground" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,7 +93,7 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="2dp"
                 android:text="Reset"
-                android:textColor="@color/colorBackground" />
+                android:textColor="?attr/colorBackground" />
 
             <Button
                 android:id="@+id/faculty_download"
@@ -103,7 +107,7 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:text="Download"
-                android:textColor="@color/colorBackground" />
+                android:textColor="?attr/colorBackground" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

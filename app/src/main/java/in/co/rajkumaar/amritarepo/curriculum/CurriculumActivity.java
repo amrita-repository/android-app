@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
@@ -21,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -29,10 +29,13 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.helpers.DownloadTask;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class CurriculumActivity extends AppCompatActivity {
+import static in.co.rajkumaar.amritarepo.helpers.Utils.THEME_LIGHT;
+
+public class CurriculumActivity extends BaseActivity {
 
     ProgressDialog dialog;
     WebView myWebView;
@@ -46,7 +49,8 @@ public class CurriculumActivity extends AppCompatActivity {
         setContentView(R.layout.activity_curriculum);
 
         try {
-            webViewLink = getString(R.string.dev_domain) + "/utils/curriculum.php";
+            webViewLink = getString(R.string.dev_domain) + "/utils/curriculum.php?theme=" + getSharedPreferences("theming", MODE_PRIVATE).getString("theme", THEME_LIGHT);
+            Log.e("LINK", webViewLink);
             if (webViewLink == null) {
                 Utils.showToast(CurriculumActivity.this, "Invalid URL");
                 finish();

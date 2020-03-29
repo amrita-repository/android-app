@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="?attr/colorBackground">
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:divider="@android:color/white"
+        android:divider="?attr/primaryTextColor"
         android:longClickable="true"
         android:orientation="vertical" />
 
@@ -23,7 +27,7 @@
         android:text="Connection not available! "
         android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-        android:textColor="@android:color/white"
+        android:textColor="?attr/primaryTextColor"
         tools:ignore="HardcodedText" />
 
     <TextView
@@ -38,7 +42,7 @@
         android:layout_marginBottom="15dp"
         android:text="@string/wifi_warning"
         android:textAlignment="center"
-        android:textColor="@android:color/white" />
+        android:textColor="?attr/primaryTextColor" />
 
     <LinearLayout
         android:id="@+id/loading_indicator"
@@ -65,7 +69,7 @@
             android:gravity="center"
             android:text="Details matter, it\'s worth waiting to get it right\n- Steve Jobs"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/primaryTextColor"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 

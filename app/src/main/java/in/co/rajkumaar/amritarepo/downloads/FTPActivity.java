@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020 RAJKUMAR S
+ */
+
 package in.co.rajkumaar.amritarepo.downloads;
 
 import android.annotation.SuppressLint;
@@ -10,15 +14,12 @@ import android.content.IntentFilter;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.text.format.Formatter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 
 import com.skyfishjy.library.RippleBackground;
 
@@ -29,9 +30,10 @@ import java.util.Objects;
 
 import am.util.ftpserver.FTPHelper;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class FTPActivity extends AppCompatActivity {
+public class FTPActivity extends BaseActivity {
 
     private FtpServer ftpServer;
     private Button start;

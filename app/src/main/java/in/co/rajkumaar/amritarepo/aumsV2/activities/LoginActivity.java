@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020 RAJKUMAR S
+ */
+
 package in.co.rajkumaar.amritarepo.aumsV2.activities;
 
 import android.annotation.SuppressLint;
@@ -9,7 +13,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -31,10 +34,11 @@ import java.util.Calendar;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     SharedPreferences pref;
     AsyncHttpClient client = GlobalData.getClient();

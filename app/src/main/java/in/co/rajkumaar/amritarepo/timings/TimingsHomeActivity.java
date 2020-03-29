@@ -1,22 +1,19 @@
 /*
- * Copyright (c) 2019 RAJKUMAR S
+ * Copyright (c) 2020 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.timings;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.viewpager.widget.ViewPager;
-
-
 import android.os.Bundle;
 
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 
-public class TimingsHomeActivity extends AppCompatActivity {
+public class TimingsHomeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

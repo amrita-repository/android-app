@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020 RAJKUMAR S
+  -->
+
 <resources>
     <color name="colorPrimary">#262f35</color>
     <color name="colorPrimaryDark">#1f262a</color>
     <color name="colorAccent">#FF201B</color>
     <color name="colorBackground">#1f262a</color>
     <color name="black_overlay">#66000000</color>
+    <color name="white">#ffffff</color>
 
     <color name="danger">#C41111</color>
     <color name="yellow">#827717</color>
@@ -14,7 +19,7 @@
     <color name="orange">#FF851B</color>
     <color name="blue">#75CAEB</color>
     <color name="dark_blue">#158CBA</color>
-    <color name="black">#a1887f</color>
+    <color name="black">#000000</color>
     <color name="purple">#7b1fa2</color>
     <color name="Salmon">#FA8072</color>
     <color name="LightSalmon">#FFA07A</color>

@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="?attr/colorBackground"
     android:padding="10dp"
     tools:context=".notifications.NotificationsActivity">
 
@@ -16,11 +16,11 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/no_notifications"
-        android:textColor="@android:color/white" />
+        android:textColor="?attr/primaryTextColor" />
 
     <ListView
         android:id="@+id/listView"
-        android:divider="@android:color/white"
+        android:divider="?attr/primaryTextColor"
         android:dividerHeight="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
