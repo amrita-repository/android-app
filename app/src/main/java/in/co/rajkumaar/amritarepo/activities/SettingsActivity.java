@@ -22,11 +22,11 @@ import static in.co.rajkumaar.amritarepo.helpers.Utils.THEME_LIGHT;
 
 public class SettingsActivity extends BaseActivity {
 
-    TextView currentProgram;
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
-    Button changeProgram;
-    Switch darkMode;
+    private TextView currentProgram;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private Button changeProgram;
+    private Switch darkMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
