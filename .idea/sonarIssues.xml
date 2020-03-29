@@ -3,7 +3,62 @@
   <component name="issues">
     <option name="index">
       <map>
+        <entry key="/Dummy.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/activities/WebViewActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/aums/helpers/UserData.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/aumsV2/helpers/GlobalData.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/downloads/fragments/ImagesFragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/faq/ExamsFAQActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/helpers/OpenTask.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/opac/OPACClient.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/opac/OPACSearchActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/papers/SemesterActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/timetable/AcademicTimetableActivity.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/in/co/rajkumaar/amritarepo/timings/ShuttleBusTimingsActivity.java">
           <value>
             <set />
           </value>
