@@ -35,7 +35,6 @@ public class SemesterActivity extends BaseActivity {
     private int statusCode;
     private List<String> sems = new ArrayList<>();
     private List<String> links = new ArrayList<>();
-    private PaperAdapter semsAdapter;
 
     @SuppressLint("PrivateResource")
     @Override
@@ -161,7 +160,7 @@ public class SemesterActivity extends BaseActivity {
                     TextView wifiwarning = findViewById(R.id.wifiwarning);
                     wifiwarning.setVisibility(View.GONE);
                     ListView listView = findViewById(R.id.list);
-                    semsAdapter = new PaperAdapter(SemesterActivity.this, sems, "sem");
+                    PaperAdapter semsAdapter = new PaperAdapter(SemesterActivity.this, sems, "sem");
                     semsAdapter.setCustomListener(new PaperAdapter.customListener() {
                         @Override
                         public void onItemClickListener(int i) {

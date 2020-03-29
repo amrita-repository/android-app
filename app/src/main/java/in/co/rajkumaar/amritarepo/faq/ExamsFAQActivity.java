@@ -20,10 +20,8 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class ExamsFAQActivity extends AppCompatActivity {
-    ProgressDialog dialog;
-    String finalHtml;
-    WebView mywebview;
-    private Document htmlDoc;
+    private ProgressDialog dialog;
+    private WebView mywebview;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -62,11 +60,14 @@ public class ExamsFAQActivity extends AppCompatActivity {
     }
 
     private void getFAQ() {
+
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("https://intranet.cb.amrita.edu/?q=exam", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                finalHtml = "" +
+                Document htmlDoc;
+                StringBuilder finalHtml = new StringBuilder();
+                finalHtml.append(
                         "<!DOCTYPE html>\n" +
                         "<html>\n" +
                         "<head>\n" +
@@ -83,12 +84,12 @@ public class ExamsFAQActivity extends AppCompatActivity {
                         "    \t}\n" +
                         "    </style>\n" +
                         "</head>\n" +
-                        "<body>";
+                                "<body>");
                 htmlDoc = Jsoup.parse(new String(bytes));
                 String content = htmlDoc.select("section#post-content").html();
-                finalHtml += content;
-                finalHtml += "</body></html>";
-                mywebview.loadData(finalHtml, "text/html; charset=utf-8", "UTF-8");
+                finalHtml.append(content);
+                finalHtml.append("</body></html>");
+                mywebview.loadData(finalHtml.toString(), "text/html; charset=utf-8", "UTF-8");
                 dismissProgressDialog();
             }
 
