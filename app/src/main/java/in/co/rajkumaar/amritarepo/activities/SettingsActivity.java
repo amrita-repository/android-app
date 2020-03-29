@@ -24,9 +24,7 @@ public class SettingsActivity extends BaseActivity {
 
     private TextView currentProgram;
     private SharedPreferences pref;
-    private SharedPreferences.Editor editor;
     private Button changeProgram;
-    private Switch darkMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +34,7 @@ public class SettingsActivity extends BaseActivity {
         currentProgram = findViewById(R.id.current_program);
         changeProgram = findViewById(R.id.change_program);
         pref = getSharedPreferences("user", MODE_PRIVATE);
-        darkMode = findViewById(R.id.changeTheme);
+        Switch darkMode = findViewById(R.id.changeTheme);
         darkMode.setChecked(themePrefs.getString("theme", THEME_LIGHT).equals(THEME_DARK));
         darkMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -58,7 +56,6 @@ public class SettingsActivity extends BaseActivity {
         changeProgram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final AlertDialog.Builder programs_builder = new AlertDialog.Builder(SettingsActivity.this);
                 programs_builder.setCancelable(true);
                 programs_builder.setTitle("Choose your program");
@@ -67,7 +64,7 @@ public class SettingsActivity extends BaseActivity {
                 programs_builder.setItems(categories, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        editor = pref.edit();
+                        SharedPreferences.Editor editor = pref.edit();
                         editor.putBoolean("remember_program", true);
                         editor.putInt("pos", which);
                         editor.putString("program", dataAdapter.getItem(which));
