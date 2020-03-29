@@ -22,7 +22,7 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 public class ExamsFAQActivity extends AppCompatActivity {
     private ProgressDialog dialog;
     private WebView mywebview;
-
+    private Document htmlDoc;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -61,13 +61,14 @@ public class ExamsFAQActivity extends AppCompatActivity {
     }
 
     private void getFAQ() {
-        final Document[] htmlDoc = new Document[1];
-        final String[] finalHtml = new String[1];
+
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("https://intranet.cb.amrita.edu/?q=exam", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                finalHtml[0] = "" +
+                Document htmlDoc;
+                StringBuilder finalHtml = new StringBuilder();
+                finalHtml.append(
                         "<!DOCTYPE html>\n" +
                         "<html>\n" +
                         "<head>\n" +
@@ -84,12 +85,12 @@ public class ExamsFAQActivity extends AppCompatActivity {
                         "    \t}\n" +
                         "    </style>\n" +
                         "</head>\n" +
-                        "<body>";
-                htmlDoc[0] = Jsoup.parse(new String(bytes));
-                String content = htmlDoc[0].select("section#post-content").html();
-                finalHtml[0] += content;
-                finalHtml[0] += "</body></html>";
-                mywebview.loadData(finalHtml[0], "text/html; charset=utf-8", "UTF-8");
+                                "<body>");
+                htmlDoc = Jsoup.parse(new String(bytes));
+                String content = htmlDoc.select("section#post-content").html();
+                finalHtml.append(content);
+                finalHtml.append("</body></html>");
+                mywebview.loadData(finalHtml.toString(), "text/html; charset=utf-8", "UTF-8");
                 dismissProgressDialog();
             }
 

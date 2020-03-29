@@ -61,7 +61,7 @@ public class ImagesFragment extends Fragment {
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                //used for fututre use
+                //written for fututre use
             }
 
             @Override
