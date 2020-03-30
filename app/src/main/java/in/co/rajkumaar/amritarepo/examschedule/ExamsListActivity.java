@@ -52,7 +52,7 @@ public class ExamsListActivity extends BaseActivity {
         populateExams();
     }
 
-    void populateExams() {
+    private void populateExams() {
 
         PaperAdapter adapter = new PaperAdapter(ExamsListActivity.this, texts, "examlist");
         adapter.setCustomListener(new PaperAdapter.customListener() {
