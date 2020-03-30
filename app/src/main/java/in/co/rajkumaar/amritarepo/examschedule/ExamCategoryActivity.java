@@ -56,7 +56,7 @@ public class ExamCategoryActivity extends BaseActivity {
 
     private void retrieveSchedules() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        final Type listOfTestObject = new TypeToken<ArrayList<ExamItem>>() {
+        final Type listOfExamItemType = new TypeToken<ArrayList<ExamItem>>() {
         }.getType();
         final Gson gson = new Gson();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlExams,
@@ -85,7 +85,7 @@ public class ExamCategoryActivity extends BaseActivity {
                                     }
                                 } else {
                                     examItems.put(countIndex, examItemArrayList);
-                                    examItemArrayList.clear();
+                                    examItemArrayList = new ArrayList<>();
                                     if (sibling.select("a>span").attr("style").equals("color:#D3D3D3")) {
                                         break;
                                     }
@@ -103,8 +103,7 @@ public class ExamCategoryActivity extends BaseActivity {
                                 public void onItemClickListener(int i) {
                                     if (Utils.isConnected(ExamCategoryActivity.this)) {
                                         startActivity(
-                                                new Intent(ExamCategoryActivity.this, ExamsListActivity.class)
-                                                        .putExtra("exams", gson.toJson(examItems.get(i), listOfTestObject)));
+                                                new Intent(ExamCategoryActivity.this, ExamsListActivity.class).putExtra("exams", gson.toJson(examItems.get(i), listOfExamItemType)));
                                     } else {
                                         Utils.showInternetError(ExamCategoryActivity.this);
                                     }

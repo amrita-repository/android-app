@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
@@ -41,10 +40,9 @@ public class ExamsListActivity extends BaseActivity {
         listView = findViewById(R.id.list);
         texts = new ArrayList<>();
         links = new ArrayList<>();
-        Gson gson = new Gson();
-        final Type listOfTestObject = new TypeToken<ArrayList<ExamCategoryActivity.ExamItem>>() {
-        }.getType();
-        ArrayList<ExamCategoryActivity.ExamItem> exams = gson.fromJson(getIntent().getStringExtra("exams"), listOfTestObject);
+        ArrayList<ExamCategoryActivity.ExamItem> exams = new Gson().fromJson(getIntent().getStringExtra("exams")
+                , new TypeToken<ArrayList<ExamCategoryActivity.ExamItem>>() {
+                }.getType());
         for (ExamCategoryActivity.ExamItem item : exams) {
             texts.add(item.getTitle().replace("Download »", ""));
             links.add(item.getLink());
