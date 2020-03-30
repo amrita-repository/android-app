@@ -12,11 +12,14 @@ import in.co.rajkumaar.amritarepo.aumsV2.models.Semester;
 public class GlobalData {
     final public static String auth = "Basic YWRtaW46YWRtaW5AQW5kQVBQ";
     final public static String loginToken = "logintoken";
-    private static String username, dob, name, email;
+    private static String username;
+    private static String dob;
+    private static String name;
+    private static String email;
     private static AsyncHttpClient client = new AsyncHttpClient();
     private static String token;
-    private static ArrayList<Semester> attendanceSemesters, gradeSemesters;
-
+    private static ArrayList<Semester> attendanceSemesters;
+    private static ArrayList<Semester> gradeSemesters;
 
     public static AsyncHttpClient getClient() {
         return client;

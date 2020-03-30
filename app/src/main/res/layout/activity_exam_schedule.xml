@@ -20,7 +20,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.github.ybq.android.spinkit.SpinKitView
             style="@style/SpinKitView.Circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +44,6 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:divider="?attr/primaryTextColor"
-        android:dividerHeight="0dp"></ListView>
+        android:dividerHeight="1dp" />
 </RelativeLayout>

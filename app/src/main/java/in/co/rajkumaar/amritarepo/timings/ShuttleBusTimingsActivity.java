@@ -52,7 +52,7 @@ public class ShuttleBusTimingsActivity extends BaseActivity {
     private String type;
     private ProgressDialog dialog;
     private GridView listView;
-    private ArrayList<DataItem> items;
+
     private SharedPreferences preferences;
     private TextView nextBus;
     private TextView countdownTimer;
@@ -148,6 +148,7 @@ public class ShuttleBusTimingsActivity extends BaseActivity {
     }
 
     private void loadData(String type) {
+        ArrayList<DataItem> items;
         items = new ArrayList<>();
         Gson gson = new Gson();
 
@@ -216,9 +217,9 @@ public class ShuttleBusTimingsActivity extends BaseActivity {
                         convertView = getLayoutInflater().inflate(R.layout.shuttle_timing_item, null);
                     }
                     DataItem item = getItem(position);
-                    if (item.from.equals("ab1"))
+                    if ("ab1".equals(item.from))
                         ((TextView) convertView.findViewById(R.id.departure)).setText(item.departure);
-                    if (item.from.equals("ab3"))
+                    if ("ab3".equals(item.from))
                         ((TextView) convertView.findViewById(R.id.departure)).setText(item.departure);
                     return convertView;
                 }

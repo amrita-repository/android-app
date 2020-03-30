@@ -30,7 +30,10 @@ import com.loopj.android.http.AsyncHttpClient;
 
 public class UserData {
     public static boolean loggedin = false;
-    public static String name, CGPA, username;
+    public static String name;
+    public static String CGPA;
+    public static String username;
+
     public static String uuid;
     public static int refIndex = 1;
 
