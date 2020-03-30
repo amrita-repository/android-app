@@ -4,49 +4,18 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorBackground"
     tools:context=".examschedule.ExamCategoryActivity">
 
-    <LinearLayout
-        android:id="@+id/loading_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-            style="@style/SpinKitView.Circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:SpinKit_Color="@color/colorAccent" />
-
-        <TextView
-            android:id="@+id/quote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="Details matter, it\'s worth waiting to get it right\n- Steve Jobs"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
-            android:textColor="?attr/primaryTextColor"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
-
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:divider="?attr/primaryTextColor"
-        android:dividerHeight="0dp">
+        android:dividerHeight="1dp">
 
     </ListView>
 </RelativeLayout>

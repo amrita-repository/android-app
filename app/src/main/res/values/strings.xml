@@ -28,6 +28,24 @@
     <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
     <string name="dev_domain">http://dev.rajkumaar.co.in</string>
 
+    <string name="upi_id">7592903711@upi</string>
+    <string name="central_library">https://www.amrita.edu/school/engineering/coimbatore/resources/library</string>
+    <string name="nextTrainText">Next Train @ </string>
+    <string name="noTrainsText">No Trains</string>
+    <string name="nextBusText">Next Bus @ </string>
+    <string name="noBusText">No Buses</string>
+    <string name="course_name_url">https://intranet.cb.amrita.edu/TimeTable/</string>
+    <string name="branch_name_url">"https://intranet.cb.amrita.edu/TimeTable/funcTimeTable.php?func=drop_1&amp;drop_var="</string>
+    <string name="all_contributors_link">https://raw.githubusercontent.com/rajkumaar23/amrita-repository/master/.all-contributorsrc</string>
+    <string name="no_notifications">You have no notifications 😥</string>
+    <string name="subsribedToTopic">subscribedToTopic</string>
+    <string name="right_arrow">Right arrow</string>
+    <string name="departed">Departed</string>
+    <string name="my_mail">rajkumaar2304@icloud.com</string>
+    <string name="github_issues_url">https://github.com/rajkumaar23/amrita-repository/issues/new/choose</string>
+    <string name="telegram_bot_url">https://t.me/amrepobot</string>
+    <string name="intranet_url">https://intranet.cb.amrita.edu</string>
+
 
     <string name="default_notification_channel_id" translatable="false">Alerts</string>
     <string name="disclaimer">
@@ -50,23 +68,5 @@
     <string name="study_materials_info">
         If you are a faculty and would like to add your site on behalf of your department in this application,
         please drop a mail to rajkumaar2304@icloud.com</string>
-
     <string name="donate">If you &#x2665; the app, consider donating here</string>
-
-    <string name="upi_id">7592903711@upi</string>
-    <string name="central_library">https://www.amrita.edu/school/engineering/coimbatore/resources/library</string>
-    <string name="nextTrainText">Next Train @ </string>
-    <string name="noTrainsText">No Trains</string>
-    <string name="nextBusText">Next Bus @ </string>
-    <string name="noBusText">No Buses</string>
-    <string name="course_name_url">https://intranet.cb.amrita.edu/TimeTable/</string>
-    <string name="branch_name_url">"https://intranet.cb.amrita.edu/TimeTable/funcTimeTable.php?func=drop_1&amp;drop_var="</string>
-    <string name="all_contributors_link">https://raw.githubusercontent.com/rajkumaar23/amrita-repository/master/.all-contributorsrc</string>
-    <string name="no_notifications">You have no notifications 😥</string>
-    <string name="subsribedToTopic">subscribedToTopic</string>
-    <string name="right_arrow">Right arrow</string>
-    <string name="departed">Departed</string>
-    <string name="my_mail">rajkumaar2304@icloud.com</string>
-    <string name="github_issues_url">https://github.com/rajkumaar23/amrita-repository/issues/new/choose</string>
-    <string name="telegram_bot_url">https://t.me/amrepobot</string>
 </resources>
