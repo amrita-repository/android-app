@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import in.co.rajkumaar.amritarepo.R;
@@ -60,8 +59,8 @@ public class PublicTransportsActivity extends BaseActivity {
     private TextView nextTrainBus;
     private TextView countdownTimer;
     private ImageView trainBusImage;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-    private SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+    private SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
 
 
     @Override

@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import in.co.rajkumaar.amritarepo.R;
@@ -57,7 +56,7 @@ public class ShuttleBusTimingsActivity extends BaseActivity {
     private SharedPreferences preferences;
     private TextView nextBus;
     private TextView countdownTimer;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa");
     private int flag;
 
     @Override
