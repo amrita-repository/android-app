@@ -109,11 +109,15 @@ public class AcademicTimetableActivity extends BaseActivity {
     }
 
     private void loadFromPref() {
-        buildBranchesSpinner(pref.getInt("course", 0));
-        year.setSelection(pref.getInt("year", 0));
-        course.setSelection(pref.getInt("course", 0));
-        sem.setSelection(pref.getInt("sem", 0));
-        batch.setSelection(pref.getInt("batch", 0));
+        try {
+            buildBranchesSpinner(pref.getInt("course", 0));
+            course.setSelection(pref.getInt("course", 0));
+            year.setSelection(pref.getInt("year", 0));
+            sem.setSelection(pref.getInt("sem", 0));
+            batch.setSelection(pref.getInt("batch", 0));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void savePref() {
