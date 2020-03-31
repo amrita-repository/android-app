@@ -78,7 +78,7 @@ public class AcademicTimetableActivity extends BaseActivity {
         }
         setContentView(R.layout.activity_timetable);
 
-        pref = getSharedPreferences("student_timetable", MODE_PRIVATE);
+        pref = getSharedPreferences("academic_timetable", MODE_PRIVATE);
         editor = pref.edit();
         new ClearCache().clear(this);
         year = findViewById(R.id.acad_year);
