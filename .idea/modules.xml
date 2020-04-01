@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AmritaRepo.iml" filepath="$PROJECT_DIR$/AmritaRepo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/AmritaRepo-app.iml" filepath="$PROJECT_DIR$/app/AmritaRepo-app.iml" group="amrita-repository" />
       <module fileurl="file://$PROJECT_DIR$/amrita-repository.iml" filepath="$PROJECT_DIR$/amrita-repository.iml" group="amrita-repository" />
-      <module fileurl="file://$PROJECT_DIR$/app/amrita-repository-app.iml" filepath="$PROJECT_DIR$/app/amrita-repository-app.iml" group="amrita-repository/app" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/projects-AmritaRepo.iml" filepath="$PROJECT_DIR$/projects-AmritaRepo.iml" group="AmritaRepo" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="amrita-repository/app" />
     </modules>
   </component>
 </project>
