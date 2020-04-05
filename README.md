@@ -1,4 +1,7 @@
-[![Inspiration](https://img.shields.io/badge/Inspired%20From-Amrita%20Info%20Desk-success)](https://github.com/niranjan94/amrita-info-desk) [![Build Status](https://travis-ci.com/rajkumaar23/amrita-repository.svg?branch=master)](https://travis-ci.com/rajkumaar23/amrita-repository) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6f10dfede144eebbafbacdcda684287)](https://www.codacy.com/manual/rajkumaar23/amrita-repository?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rajkumaar23/amrita-repository&amp;utm_campaign=Badge_Grade) [![Play Store Info](https://img.shields.io/badge/Play_Store-v4.2.2-36B0C1.svg?style=flat-square)](http://bit.ly/amritarepo) [![Play Store Downloads](https://img.shields.io/badge/Downloads-8.0k%20total-E04253.svg?style=flat-square)](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo) 
+[![Version Badge](https://img.shields.io/endpoint?url=https://api-playstore.herokuapp.com/version?id=in.co.rajkumaar.amritarepo&color=blue)](http://bit.ly/amritarepo) [![Downloads Badge](https://img.shields.io/endpoint?url=https://api-playstore.herokuapp.com/downloads?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) [![Rating Badge](https://img.shields.io/endpoint?url=https://api-playstore.herokuapp.com/rating?id=in.co.rajkumaar.amritarepo&color=blueviolet)](http://bit.ly/amritarepo) [![Size Badge](https://img.shields.io/endpoint?url=https://api-playstore.herokuapp.com/size?id=in.co.rajkumaar.amritarepo&color=informational)](http://bit.ly/amritarepo) [![Last Updated Badge](https://img.shields.io/endpoint?url=https://api-playstore.herokuapp.com/lastUpdated?id=in.co.rajkumaar.amritarepo&color=orange)](http://bit.ly/amritarepo)
+
+[![Build Status](https://travis-ci.com/rajkumaar23/amrita-repository.svg?branch=master)](https://travis-ci.com/rajkumaar23/amrita-repository) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6f10dfede144eebbafbacdcda684287)](https://www.codacy.com/manual/rajkumaar23/amrita-repository?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rajkumaar23/amrita-repository&amp;utm_campaign=Badge_Grade) 
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -9,6 +12,8 @@
 [<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" width="200"  alt="Get Amrita Repository on Google Play" />](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo "Get Amrita Repository on Google Play") [<img src="blue.svg" width="200" height=70 alt="PayPal Link" />](https://paypal.me/rajkumaar23)
 
 If you enjoyed this project — or just feeling generous, consider buying me a coffee. Cheers! :beers:
+
+[![Inspiration](https://img.shields.io/badge/Inspired%20From-Amrita%20Info%20Desk-success?style=for-the-badge)](https://github.com/niranjan94/amrita-info-desk) 
 
 ## Features
 
