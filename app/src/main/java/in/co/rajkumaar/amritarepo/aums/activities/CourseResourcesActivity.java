@@ -70,6 +70,12 @@ public class CourseResourcesActivity extends BaseActivity {
     private ArrayList<String> curFolder;
     private boolean firstEntry;
 
+    /**
+     * The courseResourceStack is used for cases when there are folders within the Resources uploaded by the teachers.
+     * It handles displaying the correct resource folder and helps in navigating.
+     * If the overall structure becomes too long, onKeyLongPress can be used to quickly get out of the Resources Activity.
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
