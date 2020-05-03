@@ -494,3 +494,4 @@ public class CourseResourcesActivity extends BaseActivity {
         }
     }
 }
+
