@@ -61,13 +61,14 @@ import static android.view.View.GONE;
 
 public class CourseResourcesActivity extends BaseActivity {
 
-    private String courseId, courseName;
+    private String courseId;
+    private String courseName;
     private ListView list;
     private ProgressDialog progressDialog;
 
     private ArrayList<ArrayList<CourseResource>> courseResourceStack;
     private ArrayList<String> curFolder;
-    boolean firstEntry;
+    private boolean firstEntry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +129,7 @@ public class CourseResourcesActivity extends BaseActivity {
     }
 
     private void getCourseResources(final AsyncHttpClient client, final String folder) {
+        final String notFolder = "";
         client.get(UserData.domain + "/access/content/group/" + courseId + "/" + folder, new AsyncHttpResponseHandler() {
 
             @Override
@@ -137,7 +139,7 @@ public class CourseResourcesActivity extends BaseActivity {
                 final ArrayList<CourseResource> courseResourceList = new ArrayList<>();
                 try {
                     if (tRows.isEmpty()) {
-                        if (folder.equals("")) {
+                        if (folder.equals(notFolder)) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -160,8 +162,8 @@ public class CourseResourcesActivity extends BaseActivity {
                             String resName = row.select("td:nth-child(1) > a").first().text().trim();
                             String resUrl = row.select("td:nth-child(1) > a").first().attr("href").trim();
                             String resType;
-
-                            if (!(resUrl.equals("../"))) {
+                            String oneUp = "../";
+                            if (!(resUrl.equals(oneUp))) {
                                 if (resUrl.substring(resUrl.length() - 1).equals("/")) {
                                     resType = "Folder";
                                 } else {
@@ -174,7 +176,7 @@ public class CourseResourcesActivity extends BaseActivity {
                                     CourseResAdapter courseResAdapter = new CourseResAdapter(CourseResourcesActivity.this, courseResourceList);
                                     list.setAdapter(courseResAdapter);
                                     if (firstEntry) {
-                                        findViewById(R.id.progressBar).setVisibility(View.GONE);
+                                        findViewById(R.id.progressBar).setVisibility(GONE);
                                         list.setVisibility(View.VISIBLE);
                                         firstEntry = false;
                                     } else {
@@ -240,6 +242,7 @@ public class CourseResourcesActivity extends BaseActivity {
     private void getResource(final AsyncHttpClient client, final String ResourceCode) {
         boolean alreadyExists = false;
         final String resourceFolderPath;
+        String notFolder = "";
         final File resourceFolders;
         File resourceFile = null;
 
@@ -249,7 +252,7 @@ public class CourseResourcesActivity extends BaseActivity {
             resourceFolderPath = ResourceCode.substring(0, ResourceCode.lastIndexOf("/"));
         }
 
-        if (resourceFolderPath.equals("")) {
+        if (resourceFolderPath.equals(notFolder)) {
             resourceFolders = new File(getExternalFilesDir(null), ".AmritaRepoCache/CourseResources/" + courseName);
         } else {
             resourceFolders = new File(getExternalFilesDir(null), ".AmritaRepoCache/CourseResources/" + courseName + "/" + resourceFolderPath);
@@ -292,7 +295,7 @@ public class CourseResourcesActivity extends BaseActivity {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    new saveCourseResource(resourceFolders, ResourceCode.substring(ResourceCode.lastIndexOf("/") + 1)).execute(responseBody);
+                    new SaveCourseResource(resourceFolders, ResourceCode.substring(ResourceCode.lastIndexOf("/") + 1)).execute(responseBody);
                 }
             });
         }
@@ -300,12 +303,12 @@ public class CourseResourcesActivity extends BaseActivity {
 
 
     @SuppressLint("StaticFieldLeak")
-    class saveCourseResource extends AsyncTask<byte[], String, String> {
+    class SaveCourseResource extends AsyncTask<byte[], String, String> {
 
         private File resourceFolders;
         private String ResourceName;
 
-        saveCourseResource(File resourceFolders, String ResName) {
+        SaveCourseResource(File resourceFolders, String ResName) {
             this.resourceFolders = resourceFolders;
             this.ResourceName = ResName;
         }
@@ -379,15 +382,15 @@ public class CourseResourcesActivity extends BaseActivity {
             this.type = type;
         }
 
-        String getResourceUrl() {
+        public String getResourceUrl() {
             return resourceUrl;
         }
 
-        String getResourceFileName() {
+        public String getResourceFileName() {
             return resourceFileName;
         }
 
-        String getType() {
+        public String getType() {
             return type;
         }
 
@@ -395,6 +398,7 @@ public class CourseResourcesActivity extends BaseActivity {
             this.type = type;
         }
     }
+
     public class CourseResAdapter extends ArrayAdapter<CourseResource> {
         private final Random random;
         private final Context context;
@@ -404,6 +408,7 @@ public class CourseResourcesActivity extends BaseActivity {
             this.context = context;
             random = new Random();
         }
+
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -415,6 +420,7 @@ public class CourseResourcesActivity extends BaseActivity {
             final CourseResource current = getItem(position);
             assert current != null;
             String resType = current.getType();
+            String folderCheck = "Folder";
             String[] web = {"html", "htm", "mhtml"};
             String[] computer = {"exe", "dmg", "iso", "msi"};
             String[] document = {"doc", "docx", "rtf", "odt"};
@@ -435,7 +441,7 @@ public class CourseResourcesActivity extends BaseActivity {
             if (isExtension(web, resType)) {
                 icon = FontAwesomeIcons.fa_file_code_o;
                 colorVal = 0;
-            } else if (resType.equals("Folder")) {
+            } else if (resType.equals(folderCheck)) {
                 icon = FontAwesomeIcons.fa_folder_open;
             } else if (isExtension(computer, resType)) {
                 icon = FontAwesomeIcons.fa_file_code_o;

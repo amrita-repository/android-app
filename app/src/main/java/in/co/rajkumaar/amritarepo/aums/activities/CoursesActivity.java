@@ -4,7 +4,6 @@
 
 package in.co.rajkumaar.amritarepo.aums.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,7 +43,6 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 public class CoursesActivity extends BaseActivity {
     private ListView list;
     private ArrayList<CourseData> courseList;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +50,6 @@ public class CoursesActivity extends BaseActivity {
         setContentView(R.layout.activity_courses);
         list = findViewById(R.id.courses_list);
         courseList = new ArrayList<>();
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait");
-        progressDialog.setCancelable(false);
-
 
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);
@@ -77,7 +70,8 @@ public class CoursesActivity extends BaseActivity {
             }
         });
     }
-    private void getCourses(final AsyncHttpClient client){
+
+    private void getCourses(final AsyncHttpClient client) {
         RequestParams params = new RequestParams();
         params.put("action", "UMS-EVAL_CLASSHEADER_SCREEN_INIT");
         client.get(UserData.domain + "/aums/Jsp/DefineComponent/ClassHeader.jsp?", params, new AsyncHttpResponseHandler() {
@@ -100,8 +94,8 @@ public class CoursesActivity extends BaseActivity {
                         courseData.setCourseCode(fullNameArray[fullNameArray.length - 1]);
                         courseData.setId(fullUrlArray[fullUrlArray.length - 1]);
 
-                        if(courseData.getCourseCode() != null) {
-                            if(courseData.getCourseCode().trim().length() > 3 ) {
+                        if (courseData.getCourseCode() != null) {
+                            if (courseData.getCourseCode().trim().length() > 3) {
                                 courseList.add(courseData);
                             }
                         }
@@ -115,16 +109,14 @@ public class CoursesActivity extends BaseActivity {
                             courseData.setCourseCode(fullNameArray[fullNameArray.length - 1]);
                             courseData.setId(option.attr("value").trim());
 
-                            if(courseData.getCourseCode() != null) {
-                                if(courseData.getCourseCode().trim().length() > 3 ) {
-                                    courseList.add(courseData);
-                                }
+                            if ((courseData.getCourseCode() != null) && (courseData.getCourseCode().trim().length() > 3)) {
+                                courseList.add(courseData);
                             }
                         }
                     }
-                    final int[] responded  = {0};
+                    final int[] responded = {0};
                     for (final CourseData courseData : courseList) {
-                        client.get(UserData.domain + "/access/site/"+ courseData.getId() +"/", new AsyncHttpResponseHandler(){
+                        client.get(UserData.domain + "/access/site/" + courseData.getId() + "/", new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 Document doc = Jsoup.parse(new String(responseBody));
@@ -148,7 +140,7 @@ public class CoursesActivity extends BaseActivity {
                             }
                         });
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(CoursesActivity.this, getString(R.string.site_change), Toast.LENGTH_LONG).show();
                     finish();
                 }
@@ -161,6 +153,7 @@ public class CoursesActivity extends BaseActivity {
             }
         });
     }
+
     public class CourseData {
 
         private String id;
@@ -178,22 +171,23 @@ public class CoursesActivity extends BaseActivity {
             this.id = id;
         }
 
-        String getCourseCode() {
+        public String getCourseCode() {
             return courseCode;
         }
 
-        void setCourseCode(String courseCode) {
+        public void setCourseCode(String courseCode) {
             this.courseCode = courseCode;
         }
 
-        String getCourseName() {
+        public String getCourseName() {
             return courseName;
         }
 
-        void setCourseName(String courseName) {
+        public void setCourseName(String courseName) {
             this.courseName = courseName;
         }
     }
+
     public class CourseDataAdapter extends ArrayAdapter<CourseData> {
         private final Random random;
         private final Context context;
@@ -203,6 +197,7 @@ public class CoursesActivity extends BaseActivity {
             this.context = context;
             random = new Random();
         }
+
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
