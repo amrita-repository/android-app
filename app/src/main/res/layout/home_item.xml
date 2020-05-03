@@ -24,12 +24,14 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/image"
+        android:layout_toStartOf="@id/right"
         android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
         android:textStyle="bold"
         tools:text="Hello Attendance" />
 
     <ImageView
+        android:id="@+id/right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
