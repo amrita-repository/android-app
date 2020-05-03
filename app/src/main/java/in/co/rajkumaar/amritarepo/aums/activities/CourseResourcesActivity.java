@@ -5,6 +5,7 @@
 package in.co.rajkumaar.amritarepo.aums.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -59,6 +60,7 @@ import in.co.rajkumaar.amritarepo.helpers.Utils;
 import static android.view.View.GONE;
 
 public class CourseResourcesActivity extends BaseActivity {
+
     private String courseId, courseName;
     private ListView list;
     private ProgressDialog progressDialog;
@@ -119,7 +121,6 @@ public class CourseResourcesActivity extends BaseActivity {
                 }
             }
         });
-
     }
 
     private void curTitle(String title) {
@@ -128,31 +129,32 @@ public class CourseResourcesActivity extends BaseActivity {
 
     private void getCourseResources(final AsyncHttpClient client, final String folder) {
         client.get(UserData.domain + "/access/content/group/" + courseId + "/" + folder, new AsyncHttpResponseHandler() {
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Document doc = Jsoup.parse(new String(responseBody));
                 Elements tRows = doc.select("body > div > table > tbody > tr");
                 final ArrayList<CourseResource> courseResourceList = new ArrayList<>();
-                if (tRows.isEmpty()) {
-                    if (folder.equals("")) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(CourseResourcesActivity.this, "No resources uploaded for this course!", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        });
+                try {
+                    if (tRows.isEmpty()) {
+                        if (folder.equals("")) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(CourseResourcesActivity.this, "No resources uploaded for this course!", Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+                            });
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(CourseResourcesActivity.this, "No resources uploaded in this folder!", Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+                            });
+                        }
                     } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(CourseResourcesActivity.this, "No resources uploaded in this folder!", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        });
-                    }
-                } else {
-                    try {
                         String lastRes = tRows.last().select("td:nth-child(1) > a").first().text().trim();
                         for (Element row : tRows) {
                             String resName = row.select("td:nth-child(1) > a").first().text().trim();
@@ -181,10 +183,10 @@ public class CourseResourcesActivity extends BaseActivity {
                                 }
                             }
                         }
-                    } catch (Exception e) {
-                        Toast.makeText(CourseResourcesActivity.this, getString(R.string.site_change), Toast.LENGTH_LONG).show();
-                        finish();
                     }
+                } catch (Exception e) {
+                    Toast.makeText(CourseResourcesActivity.this, getString(R.string.site_change), Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
 
@@ -225,7 +227,6 @@ public class CourseResourcesActivity extends BaseActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
@@ -297,6 +298,8 @@ public class CourseResourcesActivity extends BaseActivity {
         }
     }
 
+
+    @SuppressLint("StaticFieldLeak")
     class saveCourseResource extends AsyncTask<byte[], String, String> {
 
         private File resourceFolders;
@@ -318,7 +321,6 @@ public class CourseResourcesActivity extends BaseActivity {
                 });
             } else {
                 File resourceFile = new File(resourceFolders, ResourceName);
-
                 if (resourceFile.exists()) {
                     resourceFile.delete();
                 }
@@ -367,49 +369,37 @@ public class CourseResourcesActivity extends BaseActivity {
     }
 
     public class CourseResource {
-
         private String resourceUrl;
         private String resourceFileName;
         private String type;
 
-        public CourseResource(String resourceFileName, String resourceUrl, String type) {
+        CourseResource(String resourceFileName, String resourceUrl, String type) {
             this.resourceFileName = resourceFileName;
             this.resourceUrl = resourceUrl;
             this.type = type;
         }
 
-
-        public String getResourceUrl() {
+        String getResourceUrl() {
             return resourceUrl;
         }
 
-        public void setResourceUrl(String resourceUrl) {
-            this.resourceUrl = resourceUrl;
-        }
-
-        public String getResourceFileName() {
+        String getResourceFileName() {
             return resourceFileName;
         }
 
-        public void setResourceFileName(String resourceFileName) {
-            this.resourceFileName = resourceFileName;
-        }
-
-        public String getType() {
+        String getType() {
             return type;
         }
 
         public void setType(String type) {
             this.type = type;
         }
-
     }
-
     public class CourseResAdapter extends ArrayAdapter<CourseResource> {
         private final Random random;
         private final Context context;
 
-        public CourseResAdapter(Context context, ArrayList<CourseResource> Resources) {
+        CourseResAdapter(Context context, ArrayList<CourseResource> Resources) {
             super(context, 0, Resources);
             this.context = context;
             random = new Random();
@@ -422,9 +412,8 @@ public class CourseResourcesActivity extends BaseActivity {
                 listItemView = LayoutInflater.from(getContext()).inflate(
                         R.layout.home_item, parent, false);
             }
-
-
             final CourseResource current = getItem(position);
+            assert current != null;
             String resType = current.getType();
             String[] web = {"html", "htm", "mhtml"};
             String[] computer = {"exe", "dmg", "iso", "msi"};
@@ -435,7 +424,6 @@ public class CourseResourcesActivity extends BaseActivity {
             String[] image = {"png", "gif", "jpg", "jpeg", "bmp"};
             String[] video = {"mp4", "mp3", "avi", "mov", "mpg", "mkv", "wmv"};
             String[] compressed = {"rar", "zip", "zipx", "tar", "7z", "gz"};
-
 
             int[] mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
             TextView title = listItemView.findViewById(R.id.title);
@@ -494,4 +482,3 @@ public class CourseResourcesActivity extends BaseActivity {
         }
     }
 }
-

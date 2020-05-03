@@ -42,7 +42,6 @@ import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class CoursesActivity extends BaseActivity {
-
     private ListView list;
     private ArrayList<CourseData> courseList;
     private ProgressDialog progressDialog;
@@ -78,7 +77,6 @@ public class CoursesActivity extends BaseActivity {
             }
         });
     }
-
     private void getCourses(final AsyncHttpClient client){
         RequestParams params = new RequestParams();
         params.put("action", "UMS-EVAL_CLASSHEADER_SCREEN_INIT");
@@ -127,7 +125,6 @@ public class CoursesActivity extends BaseActivity {
                     final int[] responded  = {0};
                     for (final CourseData courseData : courseList) {
                         client.get(UserData.domain + "/access/site/"+ courseData.getId() +"/", new AsyncHttpResponseHandler(){
-
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 Document doc = Jsoup.parse(new String(responseBody));
@@ -164,14 +161,13 @@ public class CoursesActivity extends BaseActivity {
             }
         });
     }
-
     public class CourseData {
 
         private String id;
         private String courseCode;
         private String courseName;
 
-        public CourseData() {
+        CourseData() {
         }
 
         public String getId() {
@@ -182,28 +178,27 @@ public class CoursesActivity extends BaseActivity {
             this.id = id;
         }
 
-        public String getCourseCode() {
+        String getCourseCode() {
             return courseCode;
         }
 
-        public void setCourseCode(String courseCode) {
+        void setCourseCode(String courseCode) {
             this.courseCode = courseCode;
         }
 
-        public String getCourseName() {
+        String getCourseName() {
             return courseName;
         }
 
-        public void setCourseName(String courseName) {
+        void setCourseName(String courseName) {
             this.courseName = courseName;
         }
     }
-
     public class CourseDataAdapter extends ArrayAdapter<CourseData> {
         private final Random random;
         private final Context context;
 
-        public CourseDataAdapter(Context context, ArrayList<CourseData> Courses) {
+        CourseDataAdapter(Context context, ArrayList<CourseData> Courses) {
             super(context, 0, Courses);
             this.context = context;
             random = new Random();
@@ -225,7 +220,6 @@ public class CoursesActivity extends BaseActivity {
 
             courseName.setText(current.getCourseName());
             courseCode.setText(current.getCourseCode());
-
             imageView.setImageDrawable(new IconDrawable(context, FontAwesomeIcons.fa_folder_open)
                     .color(mMaterial_Colors[random.nextInt(mMaterial_Colors.length)]));
 
