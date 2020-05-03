@@ -94,10 +94,8 @@ public class CoursesActivity extends BaseActivity {
                         courseData.setCourseCode(fullNameArray[fullNameArray.length - 1]);
                         courseData.setId(fullUrlArray[fullUrlArray.length - 1]);
 
-                        if (courseData.getCourseCode() != null) {
-                            if (courseData.getCourseCode().trim().length() > 3) {
-                                courseList.add(courseData);
-                            }
+                        if ((courseData.getCourseCode() != null) && (courseData.getCourseCode().trim().length() > 3)){
+                            courseList.add(courseData);
                         }
                     }
 
