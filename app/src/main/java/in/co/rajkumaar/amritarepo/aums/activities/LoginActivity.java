@@ -77,7 +77,7 @@ public class LoginActivity extends BaseActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
-        UserData.domain = "https://amritavidya.amrita.edu:8444";
+        UserData.domain = "https://amritavidya2.amrita.edu:8444";
         domain = UserData.domain;
 
 

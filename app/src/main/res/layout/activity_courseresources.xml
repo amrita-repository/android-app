@@ -12,12 +12,6 @@
     android:background="?attr/colorBackground"
     android:id="@+id/res_holder"
     tools:context=".aums.activities.CourseResourcesActivity">
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
 
     <ListView
         android:id="@+id/resources_list"
@@ -26,6 +20,7 @@
         android:divider="?attr/primaryTextColor"
         android:visibility="gone"
         tools:context=".aums.activities.CourseResourcesActivity"/>
+
     <LinearLayout
         android:id="@+id/progressBar"
         android:layout_width="match_parent"

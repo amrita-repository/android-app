@@ -4,9 +4,6 @@
 
 package in.co.rajkumaar.amritarepo.aums.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +17,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.material.snackbar.Snackbar;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -52,7 +53,6 @@ public class CoursesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courses);
-        this.setTitle(""+ "Course Resources");
         list = findViewById(R.id.courses_list);
         courseList = new ArrayList<>();
 
@@ -201,9 +201,12 @@ public class CoursesActivity extends BaseActivity {
         }
     }
     public class courseDataAdapter extends ArrayAdapter<CourseData> {
-
+        private final Random random;
+        private final Context context;
         public courseDataAdapter(Context context, ArrayList<CourseData> Courses) {
             super(context, 0, Courses);
+            this.context = context;
+            random = new Random();
         }
         @NonNull
         @Override
@@ -211,19 +214,22 @@ public class CoursesActivity extends BaseActivity {
             View listItemView = convertView;
             if (listItemView == null) {
                 listItemView = LayoutInflater.from(getContext()).inflate(
-                        R.layout.home_item, parent, false);
+                        R.layout.course_item, parent, false);
             }
 
 
             final CourseData current = getItem(position);
 
-
-            TextView title = listItemView.findViewById(R.id.title);
+            int[] mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
+            TextView courseName = listItemView.findViewById(R.id.title);
+            TextView courseCode = listItemView.findViewById(R.id.code);
             ImageView imageView = listItemView.findViewById(R.id.image);
 
-            title.setText(current.getCourseName());
-            imageView.setImageResource(R.drawable.resfolder);
+            courseName.setText(current.getCourseName());
+            courseCode.setText(current.getCourseCode());
 
+            imageView.setImageDrawable(new IconDrawable(context, FontAwesomeIcons.fa_folder_open)
+                    .color(mMaterial_Colors[random.nextInt(mMaterial_Colors.length)]));
 
             return listItemView;
 
