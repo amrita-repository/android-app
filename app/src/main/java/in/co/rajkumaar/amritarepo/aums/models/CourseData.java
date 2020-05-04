@@ -10,9 +10,6 @@ public class CourseData {
     private String courseCode;
     private String courseName;
 
-    public CourseData() {
-    }
-
     public String getId() {
         return id;
     }
