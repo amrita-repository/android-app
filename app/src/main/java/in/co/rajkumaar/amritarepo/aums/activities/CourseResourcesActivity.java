@@ -45,6 +45,7 @@ import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aums.helpers.CourseResAdapter;
+import in.co.rajkumaar.amritarepo.aums.helpers.LogInResponse;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aums.models.CourseResource;
 import in.co.rajkumaar.amritarepo.helpers.CheckForSDCard;
@@ -54,11 +55,11 @@ import static android.view.View.GONE;
 
 public class CourseResourcesActivity extends BaseActivity {
 
+    private static boolean domainSet = false;
     private String courseId;
     private String courseName;
     private ListView list;
     private ProgressDialog progressDialog;
-
     private Stack<ArrayList<CourseResource>> courseResourceStack;
     private Stack<String> curFolder;
     private boolean firstEntry;
@@ -93,7 +94,16 @@ public class CourseResourcesActivity extends BaseActivity {
         curTitle(courseName);
         curFolder.push(courseName);
 
-        getCourseResources(UserData.client, "");
+        UserData.domains.clear();
+        UserData.domains.add("https://amritavidya2.amrita.edu:8444");
+        UserData.domains.add("https://amritavidya1.amrita.edu:8444");
+        UserData.domains.add("https://amritavidya.amrita.edu:8444");
+
+        if (domainSet) {
+            getCourseResources(UserData.client, "");
+        } else {
+            setDomain(UserData.client, 0, 0);
+        }
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -126,6 +136,76 @@ public class CourseResourcesActivity extends BaseActivity {
 
     private void curTitle(String title) {
         this.setTitle(title);
+    }
+
+    private void setDomain(final AsyncHttpClient client, final Integer domainNumber, final Integer retry) {
+        UserData.domain = UserData.domains.get(domainNumber);
+        client.get(UserData.domain + "/access/content/group/" + courseId + "/", new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Document doc = Jsoup.parse(new String(responseBody));
+                Element loginPage = doc.select("body.loginbody").first();
+                if (loginPage == null) {
+                    domainSet = true;
+                    getCourseResources(UserData.client, "");
+                } else {
+                    if (retry == 1) {
+                        if (domainNumber + 1 < UserData.domains.size()) {
+                            setDomain(client, domainNumber + 1, 0);
+                        } else {
+                            Utils.showUnexpectedError(CourseResourcesActivity.this);
+                            finish();
+                        }
+                    } else {
+                        UserData.getSession(new LogInResponse() {
+                            @Override
+                            public void onSuccess() {
+                                UserData.login(new LogInResponse() {
+                                    @Override
+                                    public void onSuccess() {
+                                        setDomain(client, domainNumber, retry + 1);
+                                        return;
+                                    }
+
+                                    @Override
+                                    public void onFailure() {
+                                        Utils.showToast(CourseResourcesActivity.this, "An error occurred while connecting to server");
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onException(Exception e) {
+                                        Utils.showToast(CourseResourcesActivity.this, getString(R.string.site_change));
+                                        e.printStackTrace();
+                                        finish();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                Utils.showToast(CourseResourcesActivity.this, "An error occurred while connecting to server");
+                                finish();
+                            }
+
+                            @Override
+                            public void onException(Exception e) {
+                                Utils.showToast(CourseResourcesActivity.this, getString(R.string.site_change));
+                                e.printStackTrace();
+                                finish();
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Utils.showUnexpectedError(CourseResourcesActivity.this);
+                finish();
+            }
+        });
     }
 
     private void getCourseResources(final AsyncHttpClient client, final String folder) {
@@ -202,7 +282,7 @@ public class CourseResourcesActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (courseResourceStack.size() == 1) {
+        if (courseResourceStack.size() <= 1) {
             finish();
         } else {
             courseResourceStack.pop();

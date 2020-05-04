@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +37,7 @@ import java.io.StringReader;
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
+import in.co.rajkumaar.amritarepo.aums.helpers.LogInResponse;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aums.models.Client;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
@@ -77,7 +77,7 @@ public class LoginActivity extends BaseActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
-        UserData.domain = "https://amritavidya2.amrita.edu:8444";
+        UserData.domain = "https://amritavidya.amrita.edu:8444";
         domain = UserData.domain;
 
 
@@ -132,7 +132,7 @@ public class LoginActivity extends BaseActivity {
                     if (Utils.isConnected(LoginActivity.this)) {
                         dialog.setMessage("Creating a session");
                         dialog.show();
-                        getSession(mainClient.getClient());
+                        getSession();
                     } else {
                         Toast.makeText(LoginActivity.this, "Please connect to internet", Toast.LENGTH_LONG).show();
                     }
@@ -183,71 +183,63 @@ public class LoginActivity extends BaseActivity {
             dialog.dismiss();
     }
 
-
-    private void getSession(final AsyncHttpClient client) {
-        RequestParams params = new RequestParams();
-        params.put("service", domain + "/aums/Jsp/Common/index.jsp");
-
-        client.get(domain + "/cas/login", params, new AsyncHttpResponseHandler() {
+    private void getSession() {
+        UserData.getSession(new LogInResponse() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Document doc = Jsoup.parse(new String(responseBody));
-                Element form = doc.select("#fm1").first();
-                Element hiddenInput = doc.select("input[name=lt]").first();
-                try {
-                    sessionAction = form.attr("action");
-                    sessionID = hiddenInput.attr("value");
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            dialog.setMessage("Logging in");
-                            login(client);
-                        }
-                    });
-                } catch (Exception e) {
-                    closeLoginDialog();
-                    Utils.showToast(LoginActivity.this, getString(R.string.site_change));
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
-                closeLoginDialog();
-            }
-        });
-    }
-
-    private void login(final AsyncHttpClient client) {
-        RequestParams params = new RequestParams();
-        params.put("username", username.getText().toString());
-        params.put("password", password.getText().toString());
-        params.put("_eventId", "submit");
-        params.put("lt", sessionID);
-        params.put("submit", "LOGIN");
-
-        Log.e("LOGIN", domain + sessionAction);
-        client.post(domain + sessionAction, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        getUserData(client);
+                        dialog.setMessage("Logging in");
+                        login();
                     }
                 });
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure() {
+                Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
+                closeLoginDialog();
+            }
+
+            @Override
+            public void onException(Exception e) {
+                closeLoginDialog();
+                Utils.showToast(LoginActivity.this, getString(R.string.site_change));
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void login() {
+        UserData.setUserName(username.getText().toString());
+        UserData.setPassword(password.getText().toString());
+        UserData.login(new LogInResponse() {
+            @Override
+            public void onSuccess() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getUserData(UserData.client);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure() {
                 closeLoginDialog();
                 Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
+            }
+
+            @Override
+            public void onException(Exception e) {
+                closeLoginDialog();
+                Utils.showToast(LoginActivity.this, getString(R.string.site_change));
+                e.printStackTrace();
             }
         });
 
     }
-
 
     private void getUserData(final AsyncHttpClient client) {
         client.get(domain + "/aums/Jsp/Core_Common/index.jsp?task=off", new AsyncHttpResponseHandler() {
@@ -304,7 +296,6 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-
     private void getCGPA(final AsyncHttpClient client) {
         RequestParams params = new RequestParams();
         params.put("action", "UMS-EVAL_STUDPERFORMSURVEY_INIT_SCREEN");
@@ -337,5 +328,4 @@ public class LoginActivity extends BaseActivity {
             }
         });
     }
-
 }
