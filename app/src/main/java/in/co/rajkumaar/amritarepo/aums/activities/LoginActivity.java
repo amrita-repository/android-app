@@ -46,10 +46,7 @@ public class LoginActivity extends BaseActivity {
 
     private EditText username;
     private EditText password;
-    private Client mainClient;
 
-    private String sessionAction;
-    private String sessionID;
     private String domain;
 
     private String name;
@@ -89,7 +86,7 @@ public class LoginActivity extends BaseActivity {
         password = findViewById(R.id.password);
         Button login = findViewById(R.id.login);
         remember = findViewById(R.id.remember_me);
-        mainClient = new Client(this);
+        Client mainClient = new Client(this);
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
         String rmusername = pref.getString("username", null);

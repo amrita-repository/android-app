@@ -165,7 +165,6 @@ public class CourseResourcesActivity extends BaseActivity {
                                     @Override
                                     public void onSuccess() {
                                         setDomain(client, domainNumber, retry + 1);
-                                        return;
                                     }
 
                                     @Override
