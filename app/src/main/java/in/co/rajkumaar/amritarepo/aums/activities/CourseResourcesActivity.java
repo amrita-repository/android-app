@@ -7,7 +7,6 @@ package in.co.rajkumaar.amritarepo.aums.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -15,27 +14,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.joanzapata.iconify.Icon;
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -48,12 +38,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
+import in.co.rajkumaar.amritarepo.aums.helpers.CourseResAdapter;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
+import in.co.rajkumaar.amritarepo.aums.models.CourseResource;
 import in.co.rajkumaar.amritarepo.helpers.CheckForSDCard;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
@@ -66,8 +59,8 @@ public class CourseResourcesActivity extends BaseActivity {
     private ListView list;
     private ProgressDialog progressDialog;
 
-    private ArrayList<ArrayList<CourseResource>> courseResourceStack;
-    private ArrayList<String> curFolder;
+    private Stack<ArrayList<CourseResource>> courseResourceStack;
+    private Stack<String> curFolder;
     private boolean firstEntry;
 
     /**
@@ -87,9 +80,8 @@ public class CourseResourcesActivity extends BaseActivity {
         progressDialog.setMessage("Please wait");
         progressDialog.setCancelable(false);
 
-        courseResourceStack = new ArrayList<>();
-        curFolder = new ArrayList<>();
-        curFolder.add("Course Resources");
+        courseResourceStack = new Stack<>();
+        curFolder = new Stack<>();
         firstEntry = true;
 
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
@@ -98,6 +90,8 @@ public class CourseResourcesActivity extends BaseActivity {
         Bundle bundle = getIntent().getExtras();
         courseId = bundle.get("courseID").toString();
         courseName = bundle.get("courseName").toString();
+        curTitle(courseName);
+        curFolder.push(courseName);
 
         getCourseResources(UserData.client, "");
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -116,7 +110,7 @@ public class CourseResourcesActivity extends BaseActivity {
                         if (courseRes.getType().equals("Folder")) {
                             progressDialog.show();
                             getCourseResources(UserData.client, courseRes.getResourceUrl());
-                            curFolder.add(courseRes.getResourceFileName());
+                            curFolder.push(courseRes.getResourceFileName());
                             curTitle(courseRes.getResourceFileName());
                         } else {
                             progressDialog.show();
@@ -178,7 +172,7 @@ public class CourseResourcesActivity extends BaseActivity {
                                 resUrl = folder + resUrl;
                                 courseResourceList.add(new CourseResource(resName, resUrl, resType));
                                 if (resName.equals(lastRes)) {
-                                    courseResourceStack.add(courseResourceList);
+                                    courseResourceStack.push(courseResourceList);
                                     CourseResAdapter courseResAdapter = new CourseResAdapter(CourseResourcesActivity.this, courseResourceList);
                                     list.setAdapter(courseResAdapter);
                                     if (firstEntry) {
@@ -211,13 +205,12 @@ public class CourseResourcesActivity extends BaseActivity {
         if (courseResourceStack.size() == 1) {
             finish();
         } else {
-            int index = courseResourceStack.size() - 1;
-            CourseResAdapter courseResAdapter = new CourseResAdapter(CourseResourcesActivity.this, courseResourceStack.get(index - 1));
+            courseResourceStack.pop();
+            CourseResAdapter courseResAdapter = new CourseResAdapter(CourseResourcesActivity.this, courseResourceStack.peek());
             list.setAdapter(courseResAdapter);
-            courseResourceStack.remove(index);
 
-            setTitle(curFolder.get(index - 1));
-            curFolder.remove(index);
+            curFolder.pop();
+            setTitle(curFolder.peek());
         }
     }
 
@@ -228,7 +221,7 @@ public class CourseResourcesActivity extends BaseActivity {
                 if (courseResourceStack.size() > 1) {
                     onBackPressed();
                 } else {
-                    NavUtils.navigateUpFromSameTask(this);
+                    finish();
                 }
                 return true;
             default:
@@ -245,17 +238,17 @@ public class CourseResourcesActivity extends BaseActivity {
         return super.onKeyLongPress(keyCode, event);
     }
 
-    private void getResource(final AsyncHttpClient client, final String ResourceCode) {
+    private void getResource(final AsyncHttpClient client, final String resourceCode) {
         boolean alreadyExists = false;
         final String resourceFolderPath;
         String notFolder = "";
         final File resourceFolders;
         File resourceFile = null;
 
-        if (ResourceCode.lastIndexOf("/") == -1) {
+        if (resourceCode.lastIndexOf("/") == -1) {
             resourceFolderPath = "";
         } else {
-            resourceFolderPath = ResourceCode.substring(0, ResourceCode.lastIndexOf("/"));
+            resourceFolderPath = resourceCode.substring(0, resourceCode.lastIndexOf("/"));
         }
 
         if (resourceFolderPath.equals(notFolder)) {
@@ -265,13 +258,13 @@ public class CourseResourcesActivity extends BaseActivity {
         }
 
         if (resourceFolders.exists()) {
-            resourceFile = new File(resourceFolders, ResourceCode.substring(ResourceCode.lastIndexOf("/") + 1));
+            resourceFile = new File(resourceFolders, resourceCode.substring(resourceCode.lastIndexOf("/") + 1));
             if (resourceFile.exists()) {
                 alreadyExists = true;
             }
         } else {
             resourceFolders.mkdirs();
-            Log.e("AUMS Course Resources/" + courseName + "/" + resourceFolderPath, "Directory Created.");
+            Log.v("AUMS Course Resources/" + courseName + "/" + resourceFolderPath, "Directory Created.");
         }
 
         if (alreadyExists) {
@@ -280,7 +273,7 @@ public class CourseResourcesActivity extends BaseActivity {
                 Uri data = FileProvider.getUriForFile(CourseResourcesActivity.this, BuildConfig.APPLICATION_ID + ".provider", resourceFile);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setData(data);
-                Intent fileChooserIntent = Intent.createChooser(intent, "Open " + ResourceCode.substring(ResourceCode.lastIndexOf("/") + 1) + " with:");
+                Intent fileChooserIntent = Intent.createChooser(intent, "Open " + resourceCode.substring(resourceCode.lastIndexOf("/") + 1) + " with:");
                 if (intent.resolveActivity(getPackageManager()) != null)
                     startActivity(fileChooserIntent);
                 else {
@@ -292,7 +285,7 @@ public class CourseResourcesActivity extends BaseActivity {
                 Utils.showUnexpectedError(CourseResourcesActivity.this);
             }
         } else {
-            client.get(UserData.domain + "/access/content/group/" + courseId + "/" + ResourceCode, new AsyncHttpResponseHandler() {
+            client.get(UserData.domain + "/access/content/group/" + courseId + "/" + resourceCode, new AsyncHttpResponseHandler() {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                     Utils.showUnexpectedError(CourseResourcesActivity.this);
@@ -301,7 +294,7 @@ public class CourseResourcesActivity extends BaseActivity {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    new SaveCourseResource(resourceFolders, ResourceCode.substring(ResourceCode.lastIndexOf("/") + 1)).execute(responseBody);
+                    new SaveCourseResource(resourceFolders, resourceCode.substring(resourceCode.lastIndexOf("/") + 1)).execute(responseBody);
                 }
             });
         }
@@ -312,11 +305,11 @@ public class CourseResourcesActivity extends BaseActivity {
     class SaveCourseResource extends AsyncTask<byte[], String, String> {
 
         private File resourceFolders;
-        private String ResourceName;
+        private String resourceName;
 
-        SaveCourseResource(File resourceFolders, String ResName) {
+        SaveCourseResource(File resourceFolders, String resName) {
             this.resourceFolders = resourceFolders;
-            this.ResourceName = ResName;
+            this.resourceName = resName;
         }
 
         @Override
@@ -329,7 +322,7 @@ public class CourseResourcesActivity extends BaseActivity {
                     }
                 });
             } else {
-                File resourceFile = new File(resourceFolders, ResourceName);
+                File resourceFile = new File(resourceFolders, resourceName);
                 if (resourceFile.exists()) {
                     resourceFile.delete();
                 }
@@ -337,14 +330,14 @@ public class CourseResourcesActivity extends BaseActivity {
                     FileOutputStream fos = new FileOutputStream(resourceFile.getPath());
                     fos.write(file[0]);
                     fos.close();
-                    Log.e("AUMS Course Resource: " + ResourceName, "Saved");
+                    Log.v("AUMS Course Resource: " + resourceName, "Saved");
 
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri data = FileProvider.getUriForFile(CourseResourcesActivity.this, BuildConfig.APPLICATION_ID + ".provider", resourceFile);
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.setData(data);
 
-                    Intent fileChooserIntent = Intent.createChooser(intent, "Open " + ResourceName + " with:");
+                    Intent fileChooserIntent = Intent.createChooser(intent, "Open " + resourceName + " with:");
 
                     if (intent.resolveActivity(getPackageManager()) != null)
                         startActivity(fileChooserIntent);
@@ -374,123 +367,6 @@ public class CourseResourcesActivity extends BaseActivity {
                 }
             }
             return (null);
-        }
-    }
-
-    public class CourseResource {
-        private String resourceUrl;
-        private String resourceFileName;
-        private String type;
-
-        CourseResource(String resourceFileName, String resourceUrl, String type) {
-            this.resourceFileName = resourceFileName;
-            this.resourceUrl = resourceUrl;
-            this.type = type;
-        }
-
-        public String getResourceUrl() {
-            return resourceUrl;
-        }
-
-        public String getResourceFileName() {
-            return resourceFileName;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-    }
-
-    public class CourseResAdapter extends ArrayAdapter<CourseResource> {
-        private final Random random;
-        private final Context context;
-
-        CourseResAdapter(Context context, ArrayList<CourseResource> Resources) {
-            super(context, 0, Resources);
-            this.context = context;
-            random = new Random();
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            View listItemView = convertView;
-            if (listItemView == null) {
-                listItemView = LayoutInflater.from(getContext()).inflate(
-                        R.layout.home_item, parent, false);
-            }
-            final CourseResource current = getItem(position);
-            assert current != null;
-            String resType = current.getType();
-            String folderCheck = "Folder";
-            String[] web = {"html", "htm", "mhtml"};
-            String[] computer = {"exe", "dmg", "iso", "msi"};
-            String[] document = {"doc", "docx", "rtf", "odt"};
-            String[] pdf = {"pdf"};
-            String[] powerpoint = {"ppt", "pps", "pptx"};
-            String[] excel = {"xls", "xlsx", "ods"};
-            String[] image = {"png", "gif", "jpg", "jpeg", "bmp"};
-            String[] video = {"mp4", "mp3", "avi", "mov", "mpg", "mkv", "wmv"};
-            String[] compressed = {"rar", "zip", "zipx", "tar", "7z", "gz"};
-
-            int[] mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
-            TextView title = listItemView.findViewById(R.id.title);
-            ImageView imageView = listItemView.findViewById(R.id.image);
-            ImageView toRight = listItemView.findViewById(R.id.right);
-            Icon icon;
-            int colorVal = random.nextInt(mMaterial_Colors.length);
-
-            if (isExtension(web, resType)) {
-                icon = FontAwesomeIcons.fa_file_code_o;
-                colorVal = 0;
-            } else if (resType.equals(folderCheck)) {
-                icon = FontAwesomeIcons.fa_folder_open;
-            } else if (isExtension(computer, resType)) {
-                icon = FontAwesomeIcons.fa_file_code_o;
-                colorVal = 7;
-            } else if (isExtension(document, resType)) {
-                icon = FontAwesomeIcons.fa_file_word_o;
-                colorVal = 6;
-            } else if (isExtension(pdf, resType)) {
-                icon = FontAwesomeIcons.fa_file_pdf_o;
-                colorVal = 1;
-            } else if (isExtension(powerpoint, resType)) {
-                icon = FontAwesomeIcons.fa_file_powerpoint_o;
-                colorVal = 2;
-            } else if (isExtension(excel, resType)) {
-                icon = FontAwesomeIcons.fa_file_excel_o;
-                colorVal = 4;
-            } else if (isExtension(image, resType)) {
-                icon = FontAwesomeIcons.fa_file_image_o;
-            } else if (isExtension(video, resType)) {
-                icon = FontAwesomeIcons.fa_file_video_o;
-            } else if (isExtension(compressed, resType)) {
-                icon = FontAwesomeIcons.fa_file_zip_o;
-                colorVal = 3;
-            } else {
-                icon = FontAwesomeIcons.fa_file_text;
-            }
-            title.setText(current.getResourceFileName());
-            title.setTextSize(18);
-            imageView.setImageDrawable(new IconDrawable(context, icon)
-                    .color(mMaterial_Colors[colorVal]));
-
-            if (!(current.getType().equals("Folder"))) {
-                toRight.setVisibility(GONE);
-            }
-            return listItemView;
-        }
-
-        private boolean isExtension(String[] arr, String targetValue) {
-            for (String s : arr) {
-                if (s.equals(targetValue))
-                    return true;
-            }
-            return false;
         }
     }
 }

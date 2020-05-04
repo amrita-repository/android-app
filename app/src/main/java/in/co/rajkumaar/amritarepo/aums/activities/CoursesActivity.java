@@ -4,24 +4,15 @@
 
 package in.co.rajkumaar.amritarepo.aums.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.material.snackbar.Snackbar;
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -37,7 +28,9 @@ import java.util.Random;
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
+import in.co.rajkumaar.amritarepo.aums.helpers.CourseDataAdapter;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
+import in.co.rajkumaar.amritarepo.aums.models.CourseData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class CoursesActivity extends BaseActivity {
@@ -94,7 +87,7 @@ public class CoursesActivity extends BaseActivity {
                         courseData.setCourseCode(fullNameArray[fullNameArray.length - 1]);
                         courseData.setId(fullUrlArray[fullUrlArray.length - 1]);
 
-                        if ((courseData.getCourseCode() != null) && (courseData.getCourseCode().trim().length() > 3)){
+                        if ((courseData.getCourseCode() != null) && (courseData.getCourseCode().trim().length() > 3)) {
                             courseList.add(courseData);
                         }
                     }
@@ -150,73 +143,5 @@ public class CoursesActivity extends BaseActivity {
                 finish();
             }
         });
-    }
-
-    public class CourseData {
-
-        private String id;
-        private String courseCode;
-        private String courseName;
-
-        CourseData() {
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getCourseCode() {
-            return courseCode;
-        }
-
-        public void setCourseCode(String courseCode) {
-            this.courseCode = courseCode;
-        }
-
-        public String getCourseName() {
-            return courseName;
-        }
-
-        public void setCourseName(String courseName) {
-            this.courseName = courseName;
-        }
-    }
-
-    public class CourseDataAdapter extends ArrayAdapter<CourseData> {
-        private final Random random;
-        private final Context context;
-
-        CourseDataAdapter(Context context, ArrayList<CourseData> Courses) {
-            super(context, 0, Courses);
-            this.context = context;
-            random = new Random();
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            View listItemView = convertView;
-            if (listItemView == null) {
-                listItemView = LayoutInflater.from(getContext()).inflate(
-                        R.layout.course_item, parent, false);
-            }
-            final CourseData current = getItem(position);
-
-            int[] mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
-            TextView courseName = listItemView.findViewById(R.id.title);
-            TextView courseCode = listItemView.findViewById(R.id.code);
-            ImageView imageView = listItemView.findViewById(R.id.image);
-
-            courseName.setText(current.getCourseName());
-            courseCode.setText(current.getCourseCode());
-            imageView.setImageDrawable(new IconDrawable(context, FontAwesomeIcons.fa_folder_open)
-                    .color(mMaterial_Colors[random.nextInt(mMaterial_Colors.length)]));
-
-            return listItemView;
-        }
     }
 }

@@ -26,7 +26,7 @@
         <activity
             android:name=".aums.activities.CoursesActivity"
             android:label="Your Courses"
-            android:parentActivityName=".aums.activities.HomeActivity"></activity>
+            android:parentActivityName=".aums.activities.HomeActivity" />
         <activity
             android:name=".aums.activities.CourseResourcesActivity"
             android:label="Course Resources"
