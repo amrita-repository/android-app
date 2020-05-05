@@ -26,7 +26,6 @@
     <string name="protocol">http://</string>
     <string name="wifi_warning">An error occurred while connecting to the server.</string>
     <string name="url_exams">https://intranet.cb.amrita.edu/?q=node/244</string>
-    <string name="dev_domain">http://dev.rajkumaar.co.in</string>
 
     <string name="upi_id">7592903711@upi</string>
     <string name="central_library">https://www.amrita.edu/school/engineering/coimbatore/resources/library</string>
@@ -45,6 +44,7 @@
     <string name="github_issues_url">https://github.com/rajkumaar23/amrita-repository/issues/new/choose</string>
     <string name="telegram_bot_url">https://t.me/amrepobot</string>
     <string name="intranet_url">https://intranet.cb.amrita.edu</string>
+    <string name="curriculum_url">https://www.amrita.edu/academics/curriculum</string>
 
 
     <string name="default_notification_channel_id" translatable="false">Alerts</string>
@@ -70,4 +70,5 @@
         please drop a mail to rajkumaar2304@icloud.com</string>
     <string name="donate">If you &#x2665; the app, consider donating here</string>
     <string name="server_error">An error occurred while connecting to server</string>
+    <string name="amrita_file_prefix">https://www.amrita.edu/file/</string>
 </resources>
