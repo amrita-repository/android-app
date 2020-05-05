@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.com/rajkumaar23/amrita-repository.svg?branch=master)](https://travis-ci.com/rajkumaar23/amrita-repository) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6f10dfede144eebbafbacdcda684287)](https://www.codacy.com/manual/rajkumaar23/amrita-repository?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rajkumaar23/amrita-repository&amp;utm_campaign=Badge_Grade) [![Version Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/version?id=in.co.rajkumaar.amritarepo&color=blue)](http://bit.ly/amritarepo) [![Downloads Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/downloads?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) [![Rating Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/rating?id=in.co.rajkumaar.amritarepo&color=blueviolet)](http://bit.ly/amritarepo) [![Size Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/size?id=in.co.rajkumaar.amritarepo&color=informational)](http://bit.ly/amritarepo) [![Last Updated Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/lastUpdated?id=in.co.rajkumaar.amritarepo&color=orange)](http://bit.ly/amritarepo)
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # Amrita Repository
@@ -75,6 +75,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/sa276"><img src="https://avatars0.githubusercontent.com/u/62176377?v=4" width="100px;" alt=""/><br /><sub><b>Sriraam Ashok</b></sub></a><br /><a href="https://github.com/rajkumaar23/amrita-repository/commits?author=sa276" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/sanjailal"><img src="https://avatars1.githubusercontent.com/u/38038951?v=4" width="100px;" alt=""/><br /><sub><b>Sanjai Lal T S</b></sub></a><br /><a href="https://github.com/rajkumaar23/amrita-repository/commits?author=sanjailal" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ArunVigesh"><img src="https://avatars2.githubusercontent.com/u/36444828?v=4" width="100px;" alt=""/><br /><sub><b>Arun Vigesh V G</b></sub></a><br /><a href="#design-ArunVigesh" title="Design">🎨</a> <a href="https://github.com/rajkumaar23/amrita-repository/commits?author=ArunVigesh" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/ColdCoffee21"><img src="https://avatars0.githubusercontent.com/u/45462088?v=4" width="100px;" alt=""/><br /><sub><b>Dheeraj</b></sub></a><br /><a href="https://github.com/rajkumaar23/amrita-repository/commits?author=ColdCoffee21" title="Code">💻</a> <a href="#design-ColdCoffee21" title="Design">🎨</a></td>
   </tr>
 </table>
 
