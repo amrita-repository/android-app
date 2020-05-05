@@ -55,7 +55,6 @@ import static android.view.View.GONE;
 
 public class CourseResourcesActivity extends BaseActivity {
 
-    private static boolean domainSet = false;
     private String courseId;
     private String courseName;
     private ListView list;
@@ -94,16 +93,7 @@ public class CourseResourcesActivity extends BaseActivity {
         curTitle(courseName);
         curFolder.push(courseName);
 
-        UserData.domains.clear();
-        UserData.domains.add("https://amritavidya2.amrita.edu:8444");
-        UserData.domains.add("https://amritavidya1.amrita.edu:8444");
-        UserData.domains.add("https://amritavidya.amrita.edu:8444");
-
-        if (domainSet) {
-            getCourseResources(UserData.client, "");
-        } else {
-            setDomain(UserData.client, 0, 0);
-        }
+        setDomain(UserData.client);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -138,8 +128,8 @@ public class CourseResourcesActivity extends BaseActivity {
         this.setTitle(title);
     }
 
-    private void setDomain(final AsyncHttpClient client, final Integer domainNumber, final Integer retry) {
-        UserData.domain = UserData.domains.get(domainNumber);
+    private void setDomain(final AsyncHttpClient client) {
+        System.out.println("Trying " + UserData.domain);
         client.get(UserData.domain + "/access/content/group/" + courseId + "/", new AsyncHttpResponseHandler() {
 
             @Override
@@ -147,29 +137,24 @@ public class CourseResourcesActivity extends BaseActivity {
                 Document doc = Jsoup.parse(new String(responseBody));
                 Element loginPage = doc.select("body.loginbody").first();
                 if (loginPage == null) {
-                    domainSet = true;
-                    getCourseResources(UserData.client, "");
+                    System.out.println("Domain Set " + UserData.domain);
+                    getCourseResources(new String(responseBody));
                 } else {
-                    if (retry == 1) {
-                        if (domainNumber + 1 < UserData.domains.size()) {
-                            setDomain(client, domainNumber + 1, 0);
-                        } else {
-                            Utils.showUnexpectedError(CourseResourcesActivity.this);
-                            finish();
-                        }
-                    } else {
+                    if (UserData.domainIndex + 1 < UserData.domains.size()) {
+                        UserData.domain = UserData.domains.get(++UserData.domainIndex);
+                        System.out.println("Logging in " + UserData.domain);
                         UserData.getSession(new LogInResponse() {
                             @Override
                             public void onSuccess() {
                                 UserData.login(new LogInResponse() {
                                     @Override
                                     public void onSuccess() {
-                                        setDomain(client, domainNumber, retry + 1);
+                                        setDomain(client);
                                     }
 
                                     @Override
                                     public void onFailure() {
-                                        Utils.showToast(CourseResourcesActivity.this, "An error occurred while connecting to server");
+                                        Utils.showToast(CourseResourcesActivity.this, getString(R.string.server_error));
                                         finish();
                                     }
 
@@ -184,7 +169,7 @@ public class CourseResourcesActivity extends BaseActivity {
 
                             @Override
                             public void onFailure() {
-                                Utils.showToast(CourseResourcesActivity.this, "An error occurred while connecting to server");
+                                Utils.showToast(CourseResourcesActivity.this, getString(R.string.server_error));
                                 finish();
                             }
 
@@ -195,6 +180,9 @@ public class CourseResourcesActivity extends BaseActivity {
                                 finish();
                             }
                         });
+                    } else {
+                        Utils.showUnexpectedError(CourseResourcesActivity.this);
+                        finish();
                     }
                 }
             }
@@ -207,68 +195,16 @@ public class CourseResourcesActivity extends BaseActivity {
         });
     }
 
+    private void getCourseResources(final String responseBody) {
+        parseResources("", responseBody);
+    }
+
     private void getCourseResources(final AsyncHttpClient client, final String folder) {
-        final String notFolder = "";
         client.get(UserData.domain + "/access/content/group/" + courseId + "/" + folder, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Document doc = Jsoup.parse(new String(responseBody));
-                Elements tRows = doc.select("body > div > table > tbody > tr");
-                final ArrayList<CourseResource> courseResourceList = new ArrayList<>();
-                try {
-                    if (tRows.isEmpty()) {
-                        if (folder.equals(notFolder)) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(CourseResourcesActivity.this, "No resources uploaded for this course!", Toast.LENGTH_LONG).show();
-                                    finish();
-                                }
-                            });
-                        } else {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(CourseResourcesActivity.this, "No resources uploaded in this folder!", Toast.LENGTH_LONG).show();
-                                    finish();
-                                }
-                            });
-                        }
-                    } else {
-                        String lastRes = tRows.last().select("td:nth-child(1) > a").first().text().trim();
-                        for (Element row : tRows) {
-                            String resName = row.select("td:nth-child(1) > a").first().text().trim();
-                            String resUrl = row.select("td:nth-child(1) > a").first().attr("href").trim();
-                            String resType;
-                            String oneUp = "../";
-                            if (!(resUrl.equals(oneUp))) {
-                                if (resUrl.substring(resUrl.length() - 1).equals("/")) {
-                                    resType = "Folder";
-                                } else {
-                                    resType = resUrl.substring(resUrl.lastIndexOf('.') + 1);
-                                }
-                                resUrl = folder + resUrl;
-                                courseResourceList.add(new CourseResource(resName, resUrl, resType));
-                                if (resName.equals(lastRes)) {
-                                    courseResourceStack.push(courseResourceList);
-                                    CourseResAdapter courseResAdapter = new CourseResAdapter(CourseResourcesActivity.this, courseResourceList);
-                                    list.setAdapter(courseResAdapter);
-                                    if (firstEntry) {
-                                        findViewById(R.id.progressBar).setVisibility(GONE);
-                                        list.setVisibility(View.VISIBLE);
-                                        firstEntry = false;
-                                    } else {
-                                        progressDialog.dismiss();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(CourseResourcesActivity.this, getString(R.string.site_change), Toast.LENGTH_LONG).show();
-                    finish();
-                }
+                parseResources(folder, new String(responseBody));
             }
 
             @Override
@@ -277,6 +213,66 @@ public class CourseResourcesActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    private void parseResources(String folder, String responseBody) {
+        final String notFolder = "";
+        Document doc = Jsoup.parse(responseBody);
+        Elements tRows = doc.select("body > div > table > tbody > tr");
+        final ArrayList<CourseResource> courseResourceList = new ArrayList<>();
+        try {
+            if (tRows.isEmpty()) {
+                if (folder.equals(notFolder)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(CourseResourcesActivity.this, "No resources uploaded for this course!", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    });
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(CourseResourcesActivity.this, "No resources uploaded in this folder!", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    });
+                }
+            } else {
+                String lastRes = tRows.last().select("td:nth-child(1) > a").first().text().trim();
+                for (Element row : tRows) {
+                    String resName = row.select("td:nth-child(1) > a").first().text().trim();
+                    String resUrl = row.select("td:nth-child(1) > a").first().attr("href").trim();
+                    String resType;
+                    String oneUp = "../";
+                    if (!(resUrl.equals(oneUp))) {
+                        if (resUrl.substring(resUrl.length() - 1).equals("/")) {
+                            resType = "Folder";
+                        } else {
+                            resType = resUrl.substring(resUrl.lastIndexOf('.') + 1);
+                        }
+                        resUrl = folder + resUrl;
+                        courseResourceList.add(new CourseResource(resName, resUrl, resType));
+                        if (resName.equals(lastRes)) {
+                            courseResourceStack.push(courseResourceList);
+                            CourseResAdapter courseResAdapter = new CourseResAdapter(CourseResourcesActivity.this, courseResourceList);
+                            list.setAdapter(courseResAdapter);
+                            if (firstEntry) {
+                                findViewById(R.id.progressBar).setVisibility(GONE);
+                                list.setVisibility(View.VISIBLE);
+                                firstEntry = false;
+                            } else {
+                                progressDialog.dismiss();
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Toast.makeText(CourseResourcesActivity.this, getString(R.string.site_change), Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     @Override

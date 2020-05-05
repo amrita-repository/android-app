@@ -140,7 +140,7 @@ public class MarksActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Toast.makeText(MarksActivity.this, "An error occurred while connecting to server", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MarksActivity.this, getString(R.string.server_error), Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -148,7 +148,7 @@ public class MarksActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(MarksActivity.this, "An error occurred while connecting to server", Toast.LENGTH_LONG).show();
+                Toast.makeText(MarksActivity.this, getString(R.string.server_error), Toast.LENGTH_LONG).show();
                 finish();
             }
         });

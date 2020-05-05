@@ -73,8 +73,8 @@ public class LoginActivity extends BaseActivity {
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-
-        UserData.domain = "https://amritavidya.amrita.edu:8444";
+        UserData.initDomains();
+        UserData.domain = UserData.domains.get(UserData.domainIndex);
         domain = UserData.domain;
 
 
@@ -195,7 +195,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure() {
-                Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
+                Utils.showToast(LoginActivity.this, getString(R.string.server_error));
                 closeLoginDialog();
             }
 
@@ -225,7 +225,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onFailure() {
                 closeLoginDialog();
-                Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
+                Utils.showToast(LoginActivity.this, getString(R.string.server_error));
             }
 
             @Override
@@ -313,14 +313,14 @@ public class LoginActivity extends BaseActivity {
                     finish();
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                 } catch (Exception e) {
-                    Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
+                    Utils.showToast(LoginActivity.this, getString(R.string.server_error));
                     closeLoginDialog();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Utils.showToast(LoginActivity.this, "An error occurred while connecting to server");
+                Utils.showToast(LoginActivity.this, getString(R.string.server_error));
                 closeLoginDialog();
             }
         });
