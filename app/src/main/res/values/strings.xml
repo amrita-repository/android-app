@@ -69,4 +69,5 @@
         If you are a faculty and would like to add your site on behalf of your department in this application,
         please drop a mail to rajkumaar2304@icloud.com</string>
     <string name="donate">If you &#x2665; the app, consider donating here</string>
+    <string name="server_error">An error occurred while connecting to server</string>
 </resources>

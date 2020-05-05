@@ -72,7 +72,7 @@ public class HomeActivity extends BaseActivity {
         username = findViewById(R.id.username);
         cgpa = findViewById(R.id.cgpa);
         pic = findViewById(R.id.userImage);
-        ListView list = findViewById(R.id.list);
+        final ListView list = findViewById(R.id.list);
         imageProgress = findViewById(R.id.image_progress);
 
         AsyncHttpClient client = UserData.client;
@@ -82,6 +82,7 @@ public class HomeActivity extends BaseActivity {
         items.add(new HomeItem("Attendance Status", R.drawable.attendance));
         items.add(new HomeItem("Grades", R.drawable.grades));
         items.add(new HomeItem("Marks", R.drawable.marks));
+        items.add(new HomeItem("Course Resources", R.drawable.coursebooks));
 
         loadSemesterMapping();
 
@@ -92,8 +93,20 @@ public class HomeActivity extends BaseActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                semesterPicker(position);
-
+                HomeItem item = (HomeItem) list.getItemAtPosition(position);
+                switch (item.getName()){
+                    case "Course Resources":
+                        if(Utils.isConnected(HomeActivity.this)){
+                            startActivity(new Intent(HomeActivity.this, CoursesActivity.class));
+                        }
+                        else{
+                            Toast.makeText(HomeActivity.this, "Please connect to internet", Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                    default:
+                        semesterPicker(position);
+                        break;
+                }
             }
         });
         getPhoto(client);
@@ -119,11 +132,9 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void getPhoto(final AsyncHttpClient client) {
-
         RequestParams params = new RequestParams();
         params.add("action", "UMS-SRMHR_SHOW_PERSON_PHOTO");
         params.add("personId", UserData.uuid);
-
         client.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
         client.get(UserData.domain + "/aums/FileUploadServlet", params, new FileAsyncHttpResponseHandler(HomeActivity.this) {
             @Override

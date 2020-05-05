@@ -274,7 +274,7 @@ public class AttendanceActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Toast.makeText(AttendanceActivity.this, "An error occurred while connecting to server", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AttendanceActivity.this, getString(R.string.server_error), Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -282,7 +282,7 @@ public class AttendanceActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(AttendanceActivity.this, "An error occurred while connecting to server", Toast.LENGTH_LONG).show();
+                Toast.makeText(AttendanceActivity.this, getString(R.string.server_error), Toast.LENGTH_LONG).show();
                 finish();
             }
         });

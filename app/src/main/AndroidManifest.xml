@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2020 RAJKUMAR S
   -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="in.co.rajkumaar.amritarepo">
@@ -25,6 +23,14 @@
         android:theme="@style/Theme.App.Dark"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+        <activity
+            android:name=".aums.activities.CoursesActivity"
+            android:label="Your Courses"
+            android:parentActivityName=".aums.activities.HomeActivity" />
+        <activity
+            android:name=".aums.activities.CourseResourcesActivity"
+            android:label="Course Resources"
+            android:parentActivityName=".aums.activities.CoursesActivity" />
         <activity
             android:name=".notifications.NotificationsActivity"
             android:label="Notifications"
