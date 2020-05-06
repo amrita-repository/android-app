@@ -153,8 +153,8 @@ public class Encryption {
     public byte[] decrypt(byte[] encryptedBytes) throws Exception {
         Cipher c = Cipher.getInstance(AES_MODE, "BC");
         c.init(Cipher.DECRYPT_MODE, getSecretKey());
-        encryptedBytes = Base64.decode(encryptedBytes, Base64.DEFAULT);
-        byte[] decodedBytes = c.doFinal(encryptedBytes);
+        byte[] encrypted = Base64.decode(encryptedBytes, Base64.DEFAULT);
+        byte[] decodedBytes = c.doFinal(encrypted);
         return decodedBytes;
     }
 }
