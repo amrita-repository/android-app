@@ -5,7 +5,6 @@
 package in.co.rajkumaar.amritarepo.aums.activities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +19,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
+
 import com.github.florent37.materialtextfield.MaterialTextField;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
@@ -32,7 +34,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
+import java.security.GeneralSecurityException;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
@@ -81,7 +85,20 @@ public class LoginActivity extends BaseActivity {
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
 
-        SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences pref = null;
+        try {
+            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+            pref = EncryptedSharedPreferences.create(
+                    "user",
+                    masterKeyAlias,
+                    LoginActivity.this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
+
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         Button login = findViewById(R.id.login);
@@ -110,12 +127,12 @@ public class LoginActivity extends BaseActivity {
 
         actionDoneCloseInput();
 
+        final SharedPreferences finalPref = pref;
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Utils.hideKeyboard(LoginActivity.this);
-                SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
-                SharedPreferences.Editor ed = pref.edit();
+                SharedPreferences.Editor ed = finalPref.edit();
                 if (remember.isChecked()) {
                     ed.putString("username", username.getText().toString());
                     ed.putString("password", password.getText().toString());
