@@ -56,13 +56,13 @@ public class HomeActivity extends BaseActivity {
             enc = new Encryption(HomeActivity.this, "aums-lite");
             enc.generateSecretKey();
 
-            if (!(rmUsername == "N/A")) {
+            if (!(rmUsername.equals("N/A"))) {
                 rmUsername = new String(enc.decrypt(rmUsername.getBytes(StandardCharsets.UTF_8)));
             }
-            if (!(rmEmail == "N/A")) {
+            if (!(rmEmail.equals("N/A"))) {
                 rmEmail = new String(enc.decrypt(rmEmail.getBytes(StandardCharsets.UTF_8)));
             }
-            if (!(rmName == "N/A")) {
+            if (!(rmName.equals("N/A"))) {
                 rmName = new String(enc.decrypt(rmName.getBytes(StandardCharsets.UTF_8)));
             }
 

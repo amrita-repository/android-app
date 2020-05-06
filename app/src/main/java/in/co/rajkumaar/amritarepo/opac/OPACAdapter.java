@@ -88,10 +88,10 @@ class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
                             enc = new Encryption(context, "user");
                             enc.generateSecretKey();
 
-                            if (!(rmusername == null)) {
+                            if (rmusername != null) {
                                 rmusername = new String(enc.decrypt(rmusername.getBytes(StandardCharsets.UTF_8)));
                             }
-                            if (!(rmpassword == null)) {
+                            if (rmpassword != null) {
                                 rmpassword = new String(enc.decrypt(rmpassword.getBytes(StandardCharsets.UTF_8)));
                             }
 
