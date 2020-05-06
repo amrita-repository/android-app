@@ -83,7 +83,7 @@ public class LoginActivity extends BaseActivity {
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
 
-        SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
+        final SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
         Encryption enc = null;
         String rmusername = null;
         String rmpassword = null;
@@ -126,16 +126,14 @@ public class LoginActivity extends BaseActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
         actionDoneCloseInput();
 
-        final SharedPreferences finalPref = pref;
         final Encryption finalEnc = enc;
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Utils.hideKeyboard(LoginActivity.this);
-                SharedPreferences.Editor ed = finalPref.edit();
+                SharedPreferences.Editor ed = pref.edit();
                 if (remember.isChecked()) {
                     try {
                         String encName = finalEnc.encrypt(username.getText().toString().getBytes(StandardCharsets.UTF_8));
@@ -162,8 +160,6 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
-
-
     }
 
     private boolean validate() {

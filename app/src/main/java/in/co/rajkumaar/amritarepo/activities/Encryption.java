@@ -76,15 +76,11 @@ public class Encryption {
         }
     }
 
-    private Cipher getCipher() {
-        try {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { // below android m
-                return Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL"); // error in android 6: InvalidKeyException: Need RSA private or public key
-            } else { // android m and above
-                return Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidKeyStoreBCWorkaround"); // error in android 5: NoSuchProviderException: Provider not available: AndroidKeyStoreBCWorkaround
-            }
-        } catch (Exception exception) {
-            throw new RuntimeException("getCipher: Failed to get an instance of Cipher", exception);
+    private Cipher getCipher() throws Exception {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) { // below android m
+            return Cipher.getInstance(RSA_MODE, "AndroidOpenSSL"); // error in android 6: InvalidKeyException: Need RSA private or public key
+        } else { // android m and above
+            return Cipher.getInstance(RSA_MODE, "AndroidKeyStoreBCWorkaround"); // error in android 5: NoSuchProviderException: Provider not available: AndroidKeyStoreBCWorkaround
         }
     }
 
@@ -154,11 +150,11 @@ public class Encryption {
     }
 
 
-    public byte[] decrypt(byte[] encrypted) throws Exception {
+    public byte[] decrypt(byte[] encryptedBytes) throws Exception {
         Cipher c = Cipher.getInstance(AES_MODE, "BC");
         c.init(Cipher.DECRYPT_MODE, getSecretKey());
-        encrypted = Base64.decode(encrypted, Base64.DEFAULT);
-        byte[] decodedBytes = c.doFinal(encrypted);
+        encryptedBytes = Base64.decode(encryptedBytes, Base64.DEFAULT);
+        byte[] decodedBytes = c.doFinal(encryptedBytes);
         return decodedBytes;
     }
 }
