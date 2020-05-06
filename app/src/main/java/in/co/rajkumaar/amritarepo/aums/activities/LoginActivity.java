@@ -5,6 +5,7 @@
 package in.co.rajkumaar.amritarepo.aums.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,9 +20,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
-
 import com.github.florent37.materialtextfield.MaterialTextField;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.loopj.android.http.AsyncHttpClient;
@@ -34,13 +32,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.StringReader;
-import java.security.GeneralSecurityException;
+import java.nio.charset.StandardCharsets;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
+import in.co.rajkumaar.amritarepo.activities.Encryption;
 import in.co.rajkumaar.amritarepo.aums.helpers.LogInResponse;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aums.models.Client;
@@ -85,17 +83,23 @@ public class LoginActivity extends BaseActivity {
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
 
-        SharedPreferences pref = null;
+        SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
+        Encryption enc = null;
+        String rmusername = null;
+        String rmpassword = null;
         try {
-            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            pref = EncryptedSharedPreferences.create(
-                    "user",
-                    masterKeyAlias,
-                    LoginActivity.this,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (GeneralSecurityException | IOException e) {
+            enc = new Encryption(LoginActivity.this, "user");
+            enc.generateSecretKey();
+
+            rmusername = pref.getString("username", null);
+            rmpassword = pref.getString("password", null);
+
+            if (!(rmusername == null || rmpassword == null)) {
+                rmusername = new String(enc.decrypt(rmusername.getBytes(StandardCharsets.UTF_8)));
+                rmpassword = new String(enc.decrypt(rmpassword.getBytes(StandardCharsets.UTF_8)));
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -106,8 +110,6 @@ public class LoginActivity extends BaseActivity {
         Client mainClient = new Client(this);
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
-        String rmusername = pref.getString("username", null);
-        String rmpassword = pref.getString("password", null);
 
         username.setText(rmusername);
         password.setText(rmpassword);
@@ -128,15 +130,22 @@ public class LoginActivity extends BaseActivity {
         actionDoneCloseInput();
 
         final SharedPreferences finalPref = pref;
+        final Encryption finalEnc = enc;
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Utils.hideKeyboard(LoginActivity.this);
                 SharedPreferences.Editor ed = finalPref.edit();
                 if (remember.isChecked()) {
-                    ed.putString("username", username.getText().toString());
-                    ed.putString("password", password.getText().toString());
-                    ed.apply();
+                    try {
+                        String encName = finalEnc.encrypt(username.getText().toString().getBytes(StandardCharsets.UTF_8));
+                        String encPass = finalEnc.encrypt(password.getText().toString().getBytes(StandardCharsets.UTF_8));
+                        ed.putString("username", encName);
+                        ed.putString("password", encPass);
+                        ed.apply();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     ed.putString("username", null);
                     ed.putString("password", null);
