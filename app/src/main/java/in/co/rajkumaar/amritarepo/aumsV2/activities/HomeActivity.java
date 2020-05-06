@@ -15,10 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
+import in.co.rajkumaar.amritarepo.activities.Encryption;
 import in.co.rajkumaar.amritarepo.aums.helpers.HomeItemAdapter;
 import in.co.rajkumaar.amritarepo.aums.models.HomeItem;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
@@ -42,9 +44,35 @@ public class HomeActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        name.setText(preferences.getString("name", "N/A"));
-        user_name.setText(preferences.getString("username", "N/A"));
-        e_mail.setText(preferences.getString("email", "N/A"));
+        Encryption enc = null;
+        String rmName = null;
+        String rmEmail = null;
+        String rmUsername = null;
+        try {
+            rmName = preferences.getString("name", "N/A");
+            rmEmail = preferences.getString("email", "N/A");
+            rmUsername = preferences.getString("username", "N/A");
+
+            enc = new Encryption(HomeActivity.this, "aums-lite");
+            enc.generateSecretKey();
+
+            if (!(rmUsername == "N/A")) {
+                rmUsername = new String(enc.decrypt(rmUsername.getBytes(StandardCharsets.UTF_8)));
+            }
+            if (!(rmEmail == "N/A")) {
+                rmEmail = new String(enc.decrypt(rmEmail.getBytes(StandardCharsets.UTF_8)));
+            }
+            if (!(rmName == "N/A")) {
+                rmName = new String(enc.decrypt(rmName.getBytes(StandardCharsets.UTF_8)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        name.setText(rmName);
+        user_name.setText(rmUsername);
+        e_mail.setText(rmEmail);
 
         final ArrayList<HomeItem> items = new ArrayList<>();
         items.add(new HomeItem("Attendance Status", R.drawable.attendance));

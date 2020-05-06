@@ -29,12 +29,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.RoundingMode;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
+import in.co.rajkumaar.amritarepo.activities.Encryption;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
@@ -47,6 +49,7 @@ public class LoginActivity extends BaseActivity {
     private Calendar dobDate = Calendar.getInstance();
     private ProgressDialog progressDialog;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Encryption enc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +64,25 @@ public class LoginActivity extends BaseActivity {
         progressDialog.setMessage("Logging in..");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
+        enc = null;
+        String rmUsername = null;
+        String rmDob = null;
+        try {
+            enc = new Encryption(LoginActivity.this, "aums-lite");
+            enc.generateSecretKey();
 
-        String rmUsername = pref.getString("username", null);
-        String rmDob = pref.getString("dob", null);
+            rmUsername = pref.getString("username", null);
+            rmDob = pref.getString("dob", null);
+
+            if (!(rmUsername == null || rmDob == null)) {
+                rmUsername = new String(enc.decrypt(rmUsername.getBytes(StandardCharsets.UTF_8)));
+                rmDob = new String(enc.decrypt(rmDob.getBytes(StandardCharsets.UTF_8)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         username.setText(rmUsername);
         dob.setText(rmDob);
         if (!username.getText().toString().isEmpty()) {
@@ -175,11 +194,11 @@ public class LoginActivity extends BaseActivity {
                                 GlobalData.setToken(jsonObject.getString("Token"));
                                 SharedPreferences.Editor editor = pref.edit();
                                 editor.putBoolean("logged-in", true);
-                                editor.putString("username", GlobalData.getUsername());
-                                editor.putString("email", GlobalData.getEmail());
-                                editor.putString("dob", GlobalData.getDob());
-                                editor.putString("name", GlobalData.getName());
-                                editor.putString("token", GlobalData.getToken());
+                                editor.putString("username", enc.encrypt(GlobalData.getUsername().getBytes(StandardCharsets.UTF_8)));
+                                editor.putString("email", enc.encrypt(GlobalData.getEmail().getBytes(StandardCharsets.UTF_8)));
+                                editor.putString("dob", enc.encrypt(GlobalData.getDob().getBytes(StandardCharsets.UTF_8)));
+                                editor.putString("name", enc.encrypt(GlobalData.getName().getBytes(StandardCharsets.UTF_8)));
+                                editor.putString("token", enc.encrypt(GlobalData.getToken().getBytes(StandardCharsets.UTF_8)));
                                 editor.apply();
                                 Bundle params = new Bundle();
                                 params.putString("User", GlobalData.getName() + "[" + GlobalData.getUsername() + "]");
@@ -189,7 +208,7 @@ public class LoginActivity extends BaseActivity {
                             } else {
                                 Utils.showSnackBar(LoginActivity.this, "Invalid OTP");
                             }
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             Utils.showUnexpectedError(LoginActivity.this);
                             e.printStackTrace();
                         }

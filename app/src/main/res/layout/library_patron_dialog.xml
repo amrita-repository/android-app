@@ -1,50 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2020 RAJKUMAR S
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:float="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="?attr/colorBackground"
-    tools:ignore="HardcodedText"
+    android:orientation="vertical"
     android:padding="20dp"
-    android:layout_height="match_parent">
+    tools:ignore="HardcodedText">
+
     <TextView
-        android:text="Usually, students have Member ID as CSEXXXXX and no password. Try it, else contact Library Dept for your credentials!"
         android:layout_width="match_parent"
-        android:textColor="?attr/primaryTextColor"
-        android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Usually, students have Member ID as CSEXXXXX and no password. Try it, else contact Library Dept for your credentials!"
+        android:textColor="?attr/primaryTextColor"
         tools:ignore="HardcodedText" />
+
     <EditText
         android:id="@+id/id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/color_4"
+        android:hint="Enter your Member ID"
         android:textColor="?attr/primaryTextColor"
         android:textColorHint="?attr/primaryTextColor"
-        android:backgroundTint="@color/color_4"
-        android:layout_width="match_parent"
-        android:hint="Enter your Member ID"
         android:textSize="15sp"
-        android:layout_height="wrap_content"
         tools:ignore="UnusedAttribute" />
+
     <EditText
         android:id="@+id/password"
-        android:textColor="?attr/primaryTextColor"
-        android:backgroundTint="@color/color_4"
-        android:textColorHint="?attr/primaryTextColor"
-        android:textSize="15sp"
-        android:inputType="textPassword"
-        android:hint="Enter your password(if exists)"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/color_4"
+        android:hint="Enter your password(if exists)"
+        android:inputType="textPassword"
+        android:textColor="?attr/primaryTextColor"
+        android:textColorHint="?attr/primaryTextColor"
+        android:textSize="15sp"
         tools:ignore="UnusedAttribute" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/remember_me"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="?attr/primaryTextColor"
+            android:buttonTint="@color/colorAccent"
+            android:text="Remember me"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="12sp"
+            float:ignore="HardcodedText,UnusedAttribute" />
+    </RelativeLayout>
+
     <Button
         android:id="@+id/submit"
-        android:layout_marginTop="10dp"
-        android:text="Submit"
-        android:textColor="?attr/colorBackground"
-        android:background="@drawable/button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button"
+        android:text="Submit"
+        android:textColor="?attr/colorBackground" />
 </LinearLayout>
