@@ -34,7 +34,7 @@ import in.co.rajkumaar.amritarepo.activities.Encryption;
 class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
 
     private Context context;
-    Encryption enc;
+    private Encryption enc;
 
     public OPACAdapter(Context context, ArrayList<OPACHomeItem> items) {
         super(context, 0, items);
