@@ -64,17 +64,15 @@ public class LoginActivity extends BaseActivity {
         progressDialog.setMessage("Logging in..");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        enc = null;
         String rmUsername = null;
         String rmDob = null;
         try {
+            rmUsername = pref.getString("username", "");
+            rmDob = pref.getString("dob", "");
+
             enc = new Encryption(LoginActivity.this, "aums-lite");
-            enc.generateSecretKey();
 
-            rmUsername = pref.getString("username", null);
-            rmDob = pref.getString("dob", null);
-
-            if (!(rmUsername == null || rmDob == null)) {
+            if (!("".equals(rmUsername) || "".equals(rmDob))) {
                 rmUsername = new String(enc.decrypt(rmUsername.getBytes(StandardCharsets.UTF_8)));
                 rmDob = new String(enc.decrypt(rmDob.getBytes(StandardCharsets.UTF_8)));
             }

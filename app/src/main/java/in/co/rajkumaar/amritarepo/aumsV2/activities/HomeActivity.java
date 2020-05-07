@@ -44,28 +44,25 @@ public class HomeActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Encryption enc = null;
         String rmName = null;
         String rmEmail = null;
         String rmUsername = null;
         try {
-            rmName = preferences.getString("name", "N/A");
-            rmEmail = preferences.getString("email", "N/A");
-            rmUsername = preferences.getString("username", "N/A");
+            rmName = preferences.getString("name", "");
+            rmEmail = preferences.getString("email", "");
+            rmUsername = preferences.getString("username", "");
 
-            enc = new Encryption(HomeActivity.this, "aums-lite");
-            enc.generateSecretKey();
+            Encryption enc = new Encryption(HomeActivity.this, "aums-lite");
 
-            if (!("N/A".equals(rmUsername))) {
+            if (!("".equals(rmUsername))) {
                 rmUsername = new String(enc.decrypt(rmUsername.getBytes(StandardCharsets.UTF_8)));
             }
-            if (!("N/A".equals(rmEmail))) {
+            if (!("".equals(rmEmail))) {
                 rmEmail = new String(enc.decrypt(rmEmail.getBytes(StandardCharsets.UTF_8)));
             }
-            if (!("N/A".equals(rmName))) {
+            if (!("".equals(rmName))) {
                 rmName = new String(enc.decrypt(rmName.getBytes(StandardCharsets.UTF_8)));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

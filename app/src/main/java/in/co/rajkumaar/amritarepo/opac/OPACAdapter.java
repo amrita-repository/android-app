@@ -34,6 +34,7 @@ import in.co.rajkumaar.amritarepo.activities.Encryption;
 class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
 
     private Context context;
+    Encryption enc;
 
     public OPACAdapter(Context context, ArrayList<OPACHomeItem> items) {
         super(context, 0, items);
@@ -78,7 +79,6 @@ class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
                         final CheckBox remember = dj.findViewById(R.id.remember_me);
 
                         final SharedPreferences pref = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-                        Encryption enc = null;
                         String rmusername = null;
                         String rmpassword = null;
                         try {
@@ -86,7 +86,6 @@ class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
                             rmpassword = pref.getString("OPAC_password", null);
 
                             enc = new Encryption(context, "user");
-                            enc.generateSecretKey();
 
                             if (rmusername != null) {
                                 rmusername = new String(enc.decrypt(rmusername.getBytes(StandardCharsets.UTF_8)));
@@ -101,7 +100,6 @@ class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
 
                         username.setText(rmusername);
                         password.setText(rmpassword);
-                        final Encryption finalEnc = enc;
                         Button bt = dj.findViewById(R.id.submit);
                         bt.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -109,8 +107,8 @@ class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
                                 SharedPreferences.Editor ed = pref.edit();
                                 if (remember.isChecked()) {
                                     try {
-                                        String encName = finalEnc.encrypt(username.getText().toString().getBytes(StandardCharsets.UTF_8));
-                                        String encPass = finalEnc.encrypt(password.getText().toString().getBytes(StandardCharsets.UTF_8));
+                                        String encName = enc.encrypt(username.getText().toString().getBytes(StandardCharsets.UTF_8));
+                                        String encPass = enc.encrypt(password.getText().toString().getBytes(StandardCharsets.UTF_8));
                                         ed.putString("OPAC_username", encName);
                                         ed.putString("OPAC_password", encPass);
                                         ed.apply();
@@ -130,7 +128,6 @@ class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
                         });
                         dj.show();
                         break;
-
                 }
             }
         });

@@ -58,6 +58,7 @@ public class LoginActivity extends BaseActivity {
     private CheckBox remember;
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Encryption enc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +85,13 @@ public class LoginActivity extends BaseActivity {
         dialog.setCancelable(false);
 
         final SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
-        Encryption enc = null;
         String rmusername = null;
         String rmpassword = null;
         try {
-            enc = new Encryption(LoginActivity.this, "user");
-            enc.generateSecretKey();
-
             rmusername = pref.getString("username", null);
             rmpassword = pref.getString("password", null);
+
+            enc = new Encryption(LoginActivity.this, "user");
 
             if (!(rmusername == null || rmpassword == null)) {
                 rmusername = new String(enc.decrypt(rmusername.getBytes(StandardCharsets.UTF_8)));
@@ -128,7 +127,6 @@ public class LoginActivity extends BaseActivity {
         }
         actionDoneCloseInput();
 
-        final Encryption finalEnc = enc;
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,8 +134,8 @@ public class LoginActivity extends BaseActivity {
                 SharedPreferences.Editor ed = pref.edit();
                 if (remember.isChecked()) {
                     try {
-                        String encName = finalEnc.encrypt(username.getText().toString().getBytes(StandardCharsets.UTF_8));
-                        String encPass = finalEnc.encrypt(password.getText().toString().getBytes(StandardCharsets.UTF_8));
+                        String encName = enc.encrypt(username.getText().toString().getBytes(StandardCharsets.UTF_8));
+                        String encPass = enc.encrypt(password.getText().toString().getBytes(StandardCharsets.UTF_8));
                         ed.putString("username", encName);
                         ed.putString("password", encPass);
                         ed.apply();

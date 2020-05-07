@@ -47,11 +47,12 @@ public class Encryption {
     private String sPrefName;
     private KeyStore keyStore;
 
-    public Encryption(Context context, String sPrefName) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, NoSuchProviderException, InvalidAlgorithmParameterException, IOException {
+    public Encryption(Context context, String sPrefName) throws Exception {
         this.context = context;
         this.sPrefName = sPrefName;
         encryptKey = "encrypted_prefs_value";
         generate();
+        generateSecretKey();
     }
 
     private void generate() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, KeyStoreException, CertificateException, IOException {
