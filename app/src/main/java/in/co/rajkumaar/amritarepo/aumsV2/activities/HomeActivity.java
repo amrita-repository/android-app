@@ -15,10 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
+import in.co.rajkumaar.amritarepo.activities.Encryption;
 import in.co.rajkumaar.amritarepo.aums.helpers.HomeItemAdapter;
 import in.co.rajkumaar.amritarepo.aums.models.HomeItem;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
@@ -42,9 +44,32 @@ public class HomeActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        name.setText(preferences.getString("name", "N/A"));
-        user_name.setText(preferences.getString("username", "N/A"));
-        e_mail.setText(preferences.getString("email", "N/A"));
+        String rmName = null;
+        String rmEmail = null;
+        String rmUsername = null;
+        try {
+            rmName = preferences.getString("name", "");
+            rmEmail = preferences.getString("email", "");
+            rmUsername = preferences.getString("username", "");
+
+            Encryption enc = new Encryption(HomeActivity.this, "aums-lite");
+
+            if (!("".equals(rmUsername))) {
+                rmUsername = new String(enc.decrypt(rmUsername.getBytes(StandardCharsets.UTF_8)));
+            }
+            if (!("".equals(rmEmail))) {
+                rmEmail = new String(enc.decrypt(rmEmail.getBytes(StandardCharsets.UTF_8)));
+            }
+            if (!("".equals(rmName))) {
+                rmName = new String(enc.decrypt(rmName.getBytes(StandardCharsets.UTF_8)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        name.setText(rmName);
+        user_name.setText(rmUsername);
+        e_mail.setText(rmEmail);
 
         final ArrayList<HomeItem> items = new ArrayList<>();
         items.add(new HomeItem("Attendance Status", R.drawable.attendance));

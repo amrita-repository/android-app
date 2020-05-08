@@ -33,10 +33,12 @@ import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
+import in.co.rajkumaar.amritarepo.activities.Encryption;
 import in.co.rajkumaar.amritarepo.aums.helpers.LogInResponse;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aums.models.Client;
@@ -56,6 +58,7 @@ public class LoginActivity extends BaseActivity {
     private CheckBox remember;
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Encryption enc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +84,24 @@ public class LoginActivity extends BaseActivity {
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
 
-        SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
+        final SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
+        String rmusername = null;
+        String rmpassword = null;
+        try {
+            rmusername = pref.getString("username", null);
+            rmpassword = pref.getString("password", null);
+
+            enc = new Encryption(LoginActivity.this, "user");
+
+            if (!(rmusername == null || rmpassword == null)) {
+                rmusername = new String(enc.decrypt(rmusername.getBytes(StandardCharsets.UTF_8)));
+                rmpassword = new String(enc.decrypt(rmpassword.getBytes(StandardCharsets.UTF_8)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         Button login = findViewById(R.id.login);
@@ -89,8 +109,6 @@ public class LoginActivity extends BaseActivity {
         Client mainClient = new Client(this);
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
-        String rmusername = pref.getString("username", null);
-        String rmpassword = pref.getString("password", null);
 
         username.setText(rmusername);
         password.setText(rmpassword);
@@ -107,19 +125,23 @@ public class LoginActivity extends BaseActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
         actionDoneCloseInput();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Utils.hideKeyboard(LoginActivity.this);
-                SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
                 SharedPreferences.Editor ed = pref.edit();
                 if (remember.isChecked()) {
-                    ed.putString("username", username.getText().toString());
-                    ed.putString("password", password.getText().toString());
-                    ed.apply();
+                    try {
+                        String encName = enc.encrypt(username.getText().toString().getBytes(StandardCharsets.UTF_8));
+                        String encPass = enc.encrypt(password.getText().toString().getBytes(StandardCharsets.UTF_8));
+                        ed.putString("username", encName);
+                        ed.putString("password", encPass);
+                        ed.apply();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     ed.putString("username", null);
                     ed.putString("password", null);
@@ -136,8 +158,6 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
-
-
     }
 
     private boolean validate() {
