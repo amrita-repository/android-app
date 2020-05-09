@@ -135,17 +135,17 @@ public class DownloadsActivity extends BaseActivity {
                                 switch (which) {
                                     case 0:
                                         String dirPath = getExternalFilesDir(null) + "/AmritaRepo";
-                                        File dir = new File(dirPath);
-                                        File[] files;
-                                        files = dir.listFiles();
+                                        final File direc = new File(dirPath);
+                                        String[] files;
+                                        files = direc.list();
                                         if (files != null && files.length > 0) {
                                             startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
                                         }
                                         break;
                                     case 1: {
                                         dirPath = getExternalFilesDir(null) + "/AmritaRepo";
-                                        dir = new File(dirPath);
-                                        final File[] filesList = dir.listFiles();
+                                        final File dir = new File(dirPath);
+                                        final String[] filesList = dir.list();
                                         if (filesList != null && filesList.length > 0) {
                                             final ArrayList<String> qPaperOptions = new ArrayList<>();
                                             qPaperOptions.add("Documents");
@@ -164,19 +164,10 @@ public class DownloadsActivity extends BaseActivity {
                                                             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                                                    boolean flag = false;
-                                                                    for (File file : filesList) {
-                                                                        String name = file.getName();
-                                                                        if (name.contains(".pdf") || name.contains(".xls") || name.contains(".xlsx")) {
-                                                                            flag = true;
-                                                                            file.delete();
-                                                                        }
-                                                                    }
-                                                                    if (flag) {
-                                                                       Utils.showToast(DownloadsActivity.this, "All documents deleted");
-                                                                        finish();
-                                                                        startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
-                                                                    }
+                                                                    deleteRecursiveDocuments(dir);
+                                                                    Utils.showToast(DownloadsActivity.this, "All documents deleted");
+                                                                    finish();
+                                                                    startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
                                                                 }
                                                             });
                                                             break;
@@ -186,19 +177,10 @@ public class DownloadsActivity extends BaseActivity {
                                                             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                                                    boolean flag = false;
-                                                                    for (File file : filesList) {
-                                                                        String name = file.getName();
-                                                                        if (name.contains(".jpg")) {
-                                                                            file.delete();
-                                                                            flag = true;
-                                                                        }
-                                                                    }
-                                                                    if (flag) {
-                                                                        Toast.makeText(DownloadsActivity.this, "All images deleted", Toast.LENGTH_SHORT).show();
-                                                                        finish();
-                                                                        startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
-                                                                    }
+                                                                    deleteRecursiveImages(dir);
+                                                                    Toast.makeText(DownloadsActivity.this, "All images deleted", Toast.LENGTH_SHORT).show();
+                                                                    finish();
+                                                                    startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
                                                                 }
                                                             });
                                                             break;
@@ -208,16 +190,10 @@ public class DownloadsActivity extends BaseActivity {
                                                             alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                                                    boolean flag = false;
-                                                                    for (File file : filesList) {
-                                                                        flag = true;
-                                                                        file.delete();
-                                                                    }
-                                                                    if (flag) {
-                                                                        Toast.makeText(DownloadsActivity.this, "All files deleted", Toast.LENGTH_SHORT).show();
-                                                                        finish();
-                                                                        startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
-                                                                    }
+                                                                    deleteRecursiveFiles(dir);
+                                                                    Toast.makeText(DownloadsActivity.this, "All files deleted", Toast.LENGTH_SHORT).show();
+                                                                    finish();
+                                                                    startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
                                                                 }
                                                             });
                                                         }
@@ -249,5 +225,37 @@ public class DownloadsActivity extends BaseActivity {
     public void onBackPressed() {
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         super.onBackPressed();
+    }
+
+    private void deleteRecursiveDocuments(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+            for (String child : fileOrDirectory.list())
+                deleteRecursiveDocuments(new File(fileOrDirectory, child));
+        }
+        String doc = fileOrDirectory.getName().toLowerCase();
+        if (!(doc.contains(".jpg") || doc.contains(".jpeg") || doc.contains(".png") || doc.equalsIgnoreCase("AmritaRepo"))) {
+            fileOrDirectory.delete();
+        }
+    }
+
+    private void deleteRecursiveImages(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+            for (String child : fileOrDirectory.list())
+                deleteRecursiveImages(new File(fileOrDirectory, child));
+        }
+        String doc = fileOrDirectory.getName().toLowerCase();
+        if (doc.contains(".jpg") || doc.contains(".jpeg") || doc.contains(".png")) {
+            fileOrDirectory.delete();
+        }
+    }
+
+    private void deleteRecursiveFiles(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+            for (String child : fileOrDirectory.list())
+                deleteRecursiveFiles(new File(fileOrDirectory, child));
+        }
+        if (!fileOrDirectory.getName().equalsIgnoreCase("AmritaRepo")) {
+            fileOrDirectory.delete();
+        }
     }
 }

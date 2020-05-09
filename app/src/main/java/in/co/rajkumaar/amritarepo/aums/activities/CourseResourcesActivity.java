@@ -6,7 +6,9 @@ package in.co.rajkumaar.amritarepo.aums.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +52,7 @@ import in.co.rajkumaar.amritarepo.aums.helpers.LogInResponse;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aums.models.CourseResource;
 import in.co.rajkumaar.amritarepo.helpers.CheckForSDCard;
+import in.co.rajkumaar.amritarepo.helpers.ClearCache;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 import static android.view.View.GONE;
@@ -106,15 +110,33 @@ public class CourseResourcesActivity extends BaseActivity {
                             1);
                 } else {
                     if (Utils.isConnected(CourseResourcesActivity.this)) {
-                        CourseResource courseRes = (CourseResource) list.getItemAtPosition(position);
+                        final CourseResource courseRes = (CourseResource) list.getItemAtPosition(position);
                         if (courseRes.getType().equals("Folder")) {
                             progressDialog.show();
                             getCourseResources(UserData.client, courseRes.getResourceUrl());
                             curFolder.push(courseRes.getResourceFileName());
                             curTitle(courseRes.getResourceFileName());
                         } else {
-                            progressDialog.show();
-                            getResource(UserData.client, courseRes.getResourceUrl());
+                            final ArrayList<String> resourceOptions = new ArrayList<>();
+                            resourceOptions.add("Open");
+                            resourceOptions.add("Download");
+                            AlertDialog.Builder qPaperBuilder = new AlertDialog.Builder(CourseResourcesActivity.this);
+                            ArrayAdapter<String> optionsAdapter = new ArrayAdapter<String>(CourseResourcesActivity.this, android.R.layout.simple_list_item_1, resourceOptions);
+                            qPaperBuilder.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int pos) {
+                                    if (pos == 0) {
+                                        new ClearCache().clear(CourseResourcesActivity.this);
+                                        progressDialog.show();
+                                        getResource(UserData.client, courseRes.getResourceUrl(), 0);
+                                    } else if (pos == 1) {
+                                        new ClearCache().clear(CourseResourcesActivity.this);
+                                        progressDialog.show();
+                                        getResource(UserData.client, courseRes.getResourceUrl(), 1);
+                                    }
+                                }
+                            });
+                            qPaperBuilder.show();
                         }
                     } else {
                         Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
@@ -313,12 +335,18 @@ public class CourseResourcesActivity extends BaseActivity {
         return super.onKeyLongPress(keyCode, event);
     }
 
-    private void getResource(final AsyncHttpClient client, final String resourceCode) {
+    private void getResource(final AsyncHttpClient client, final String resourceCode, int saveType) {
         boolean alreadyExists = false;
         final String resourceFolderPath;
         String notFolder = "";
         final File resourceFolders;
+        String root = "";
         File resourceFile = null;
+        if (saveType == 0) {
+            root = ".AmritaRepoCache";
+        } else {
+            root = "AmritaRepo";
+        }
 
         if (resourceCode.lastIndexOf("/") == -1) {
             resourceFolderPath = "";
@@ -327,9 +355,9 @@ public class CourseResourcesActivity extends BaseActivity {
         }
 
         if (resourceFolderPath.equals(notFolder)) {
-            resourceFolders = new File(getExternalFilesDir(null), ".AmritaRepoCache/CourseResources/" + courseName);
+            resourceFolders = new File(getExternalFilesDir(null), root + "/Course Resources/" + courseName);
         } else {
-            resourceFolders = new File(getExternalFilesDir(null), ".AmritaRepoCache/CourseResources/" + courseName + "/" + resourceFolderPath);
+            resourceFolders = new File(getExternalFilesDir(null), root + "/Course Resources/" + courseName + "/" + resourceFolderPath);
         }
 
         if (resourceFolders.exists()) {

@@ -18,15 +18,19 @@ public class ClearCache {
             if (dirOld.exists())
                 dirOld.delete();
 
-            File[] files = dir.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    file.delete();
-                }
-            }
+            deleteRecursiveFolders(dir);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void deleteRecursiveFolders(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+            for (String child : fileOrDirectory.list())
+                deleteRecursiveFolders(new File(fileOrDirectory, child));
+        }
+        if (!(fileOrDirectory.getName().equals(".AmritaRepoCache")))
+            fileOrDirectory.delete();
     }
 }

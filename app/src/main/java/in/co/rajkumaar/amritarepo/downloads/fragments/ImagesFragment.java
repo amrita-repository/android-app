@@ -31,11 +31,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.downloads.DeleteFilesActivity;
+import in.co.rajkumaar.amritarepo.downloads.adapters.DocumentsItemAdapter;
 import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
 
 public class ImagesFragment extends Fragment {
@@ -44,8 +44,8 @@ public class ImagesFragment extends Fragment {
     private ListView listView;
     private File dir;
     private String dirPath;
-    private ArrayAdapter<String> fileAdapter;
-    private List<String> fileList = new ArrayList<>();
+    private DocumentsItemAdapter fileAdapter;
+    private ArrayList<String> fileList = new ArrayList<>();
 
 
     @Override
@@ -92,7 +92,7 @@ public class ImagesFragment extends Fragment {
         if (files != null) {
             for (File file : files) {
                 String name = file.getName();
-                if (name.toLowerCase().contains(".jpg"))
+                if (name.toLowerCase().contains(".jpg") || name.toLowerCase().contains(".jpeg") || name.toLowerCase().contains(".png"))
                     fileList.add(file.getName());
             }
         }
@@ -103,7 +103,7 @@ public class ImagesFragment extends Fragment {
         if (!fileList.isEmpty()) {
             LinearLayout empty = rootView.findViewById(R.id.dempty_view);
             empty.setVisibility(View.GONE);
-            fileAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_list_item, fileList);
+            fileAdapter = new DocumentsItemAdapter(getActivity(), fileList);
             final ListView downloads = listView;
 
             downloads.setAdapter(fileAdapter);

@@ -25,16 +25,17 @@
 package in.co.rajkumaar.amritarepo.downloads.adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -70,7 +71,7 @@ public class DownloadsItemAdapter extends ArrayAdapter<DownloadsItem> {
         size.setText(filesize);
         checkBox.setChecked(checkbox);
 
-        LinearLayout container = listItemView.findViewById(R.id.container);
+        RelativeLayout container = listItemView.findViewById(R.id.container);
         container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
