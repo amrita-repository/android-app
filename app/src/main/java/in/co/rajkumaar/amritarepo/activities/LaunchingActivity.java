@@ -487,10 +487,21 @@ public class LaunchingActivity extends BaseActivity
             drawer.closeDrawer(GravityCompat.START);
             startActivity(new Intent(this, DownloadsActivity.class));
         } else if (id == R.id.nav_bot) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(getString(R.string.telegram_bot_url)));
-            if (intent.resolveActivity(getPackageManager()) != null)
-                startActivity(intent);
+            drawer.closeDrawer(GravityCompat.START);
+            AlertDialog.Builder builder = new AlertDialog.Builder(LaunchingActivity.this);
+            builder.setMessage(R.string.telegram_bot_warning);
+            builder.setPositiveButton("Okay, I understood", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(getString(R.string.telegram_bot_url)));
+                    if (intent.resolveActivity(getPackageManager()) != null)
+                        startActivity(intent);
+                }
+            });
+            builder.setCancelable(false);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         } else if (id == R.id.nav_feedback) {
             Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", getString(R.string.my_mail), null));
             it.putExtra(Intent.EXTRA_SUBJECT, "Reg. Feedback for Amrita Repository");
