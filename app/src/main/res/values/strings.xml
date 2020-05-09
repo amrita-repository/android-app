@@ -71,4 +71,5 @@
     <string name="donate">If you &#x2665; the app, consider donating here</string>
     <string name="server_error">An error occurred while connecting to server</string>
     <string name="amrita_file_prefix">https://www.amrita.edu/file/</string>
+    <string name="telegram_bot_warning">Telegram is being blocked by few internet providers. If opening this link doesn\'t work for you, kindly install Telegram from PlayStore and search for <b>@amrepobot</b>.</string>
 </resources>
