@@ -12,7 +12,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.aumsV2.models.Semester;
-import in.co.rajkumaar.amritarepo.helpers.Encryption;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
 
 public class GlobalData {
     final public static String auth = "Basic YWRtaW46YWRtaW5AQW5kQVBQ";
@@ -71,7 +71,7 @@ public class GlobalData {
     }
 
     public static void resetUser(Context context) {
-        SharedPreferences preferences = Encryption.getEncPrefs(context, "aums_v2");
+        SharedPreferences preferences = EncryptedSharedPrefs.get(context, "aums_v2");
         preferences.edit().putBoolean("logged-in", false).apply();
         attendanceSemesters = gradeSemesters = null;
     }

@@ -29,7 +29,7 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.aumsV2.models.Semester;
-import in.co.rajkumaar.amritarepo.helpers.Encryption;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class GradesSemestersActivity extends BaseActivity {
@@ -48,7 +48,7 @@ public class GradesSemestersActivity extends BaseActivity {
 
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);
-        preferences = Encryption.getEncPrefs(this, "aums_v2");
+        preferences = EncryptedSharedPrefs.get(this, "aums_v2");
         listView = findViewById(R.id.list);
 
         if (GlobalData.getGradeSemesters() == null) {

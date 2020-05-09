@@ -38,7 +38,7 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
-import in.co.rajkumaar.amritarepo.helpers.Encryption;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class AttendanceActivity extends BaseActivity {
@@ -46,14 +46,14 @@ public class AttendanceActivity extends BaseActivity {
     ListView list;
     String sem;
     private AsyncHttpClient client = GlobalData.getClient();
-    private SharedPreferences preferences;
+    private SharedPreferences prefs;
     private ArrayList<CourseData> attendanceData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
-        preferences = Encryption.getEncPrefs(this, "aums_v2");
+        prefs = EncryptedSharedPrefs.get(this, "aums_v2");
         list = findViewById(R.id.list);
 
         sem = getIntent().getStringExtra("sem");
@@ -63,9 +63,9 @@ public class AttendanceActivity extends BaseActivity {
     void getAttendance(final String sem) {
         attendanceData = new ArrayList<>();
         client.addHeader("Authorization", GlobalData.auth);
-        client.addHeader("token", new String(Base64.decode(preferences.getString("token", ""), Base64.DEFAULT)));
+        client.addHeader("token", new String(Base64.decode(prefs.getString("token", ""), Base64.DEFAULT)));
         client.setTimeout(5000);
-        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/attRes?rollno=" + new String(Base64.decode(preferences.getString("username", ""), Base64.DEFAULT)) + "&sem=" + sem, new AsyncHttpResponseHandler() {
+        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/attRes?rollno=" + new String(Base64.decode(prefs.getString("username", ""), Base64.DEFAULT)) + "&sem=" + sem, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {
@@ -81,7 +81,7 @@ public class AttendanceActivity extends BaseActivity {
                         courseData.setPercentage(current.getString("TotalPercentage"));
                         attendanceData.add(courseData);
                     }
-                    preferences.edit().putString("token", Base64.encodeToString(jsonObject.getString("Token").getBytes(), Base64.DEFAULT)).apply();
+                    prefs.edit().putString("token", Base64.encodeToString(jsonObject.getString("Token").getBytes(), Base64.DEFAULT)).apply();
                     AttendanceAdapter attendanceAdapter = new AttendanceAdapter(AttendanceActivity.this, attendanceData);
                     list.setAdapter(attendanceAdapter);
                     findViewById(R.id.progressBar).setVisibility(View.GONE);
@@ -89,7 +89,6 @@ public class AttendanceActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            final SharedPreferences prefs = Encryption.getEncPrefs(AttendanceActivity.this, "aums_v2");
                             if (prefs.getBoolean("disclaimer", true)) {
                                 new AlertDialog.Builder(AttendanceActivity.this)
                                         .setTitle("Disclaimer")

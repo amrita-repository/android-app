@@ -29,12 +29,12 @@ import com.joanzapata.iconify.IconDrawable;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.helpers.Encryption;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
 
 class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
 
     private Context context;
-    private Encryption enc;
+    private EncryptedSharedPrefs enc;
 
     public OPACAdapter(Context context, ArrayList<OPACHomeItem> items) {
         super(context, 0, items);
@@ -77,7 +77,7 @@ class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
                             final EditText password = dj.findViewById(R.id.password);
                             final CheckBox remember = dj.findViewById(R.id.remember_me);
 
-                            final SharedPreferences pref = Encryption.getEncPrefs(context, "opac_account");
+                            final SharedPreferences pref = EncryptedSharedPrefs.get(context, "opac_account");
                             String rmUsername = pref.getString("OPAC_username", null);
                             String rmPassword = pref.getString("OPAC_password", null);
 

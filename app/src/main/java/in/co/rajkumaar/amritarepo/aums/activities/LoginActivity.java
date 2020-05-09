@@ -40,7 +40,7 @@ import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aums.helpers.LogInResponse;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aums.models.Client;
-import in.co.rajkumaar.amritarepo.helpers.Encryption;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class LoginActivity extends BaseActivity {
@@ -91,14 +91,16 @@ public class LoginActivity extends BaseActivity {
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
 
-        final SharedPreferences pref = Encryption.getEncPrefs(this, "aums_v1");
+        final SharedPreferences pref = EncryptedSharedPrefs.get(this, "aums_v1");
         String rmUsername = pref.getString("username", null);
         String rmPassword = pref.getString("password", null);
         if (rmUsername != null && rmPassword != null) {
             rmUsername = new String(Base64.decode(rmUsername, Base64.DEFAULT));
             username.setText(rmUsername);
+            username.setSelection(rmUsername.length());
             rmPassword = new String(Base64.decode(rmPassword, Base64.DEFAULT));
             password.setText(rmPassword);
+            password.setSelection(rmPassword.length());
         }
 
         if (!TextUtils.isEmpty(username.getText().toString())) {
@@ -108,8 +110,6 @@ public class LoginActivity extends BaseActivity {
         if (!password.getText().toString().isEmpty()) {
             ((MaterialTextField) findViewById(R.id.password_container)).setHasFocus(true);
         }
-        if (rmUsername != null) username.setSelection(rmUsername.length());
-        if (rmPassword != null) password.setSelection(rmPassword.length());
 
         actionDoneCloseInput();
         login.setOnClickListener(new View.OnClickListener() {

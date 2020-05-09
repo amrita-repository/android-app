@@ -58,7 +58,7 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.helpers.CheckForSDCard;
-import in.co.rajkumaar.amritarepo.helpers.Encryption;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 
@@ -244,7 +244,7 @@ public class AttendanceActivity extends BaseActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        final SharedPreferences prefs = Encryption.getEncPrefs(AttendanceActivity.this, "aums_v1");
+                                        final SharedPreferences prefs = EncryptedSharedPrefs.get(AttendanceActivity.this, "aums_v1");
                                         if (prefs.getBoolean("disclaimer", true)) {
                                             new AlertDialog.Builder(AttendanceActivity.this)
                                                     .setTitle("Disclaimer")

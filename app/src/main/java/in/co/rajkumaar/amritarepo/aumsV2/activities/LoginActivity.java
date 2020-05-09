@@ -36,7 +36,7 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
-import in.co.rajkumaar.amritarepo.helpers.Encryption;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class LoginActivity extends BaseActivity {
@@ -62,24 +62,17 @@ public class LoginActivity extends BaseActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
-        pref = Encryption.getEncPrefs(this, "aums_v2");
+        pref = EncryptedSharedPrefs.get(this, "aums_v2");
         String rmUsername = pref.getString("username", null);
         String rmDob = pref.getString("dob", null);
         if (rmUsername != null && rmDob != null) {
             rmUsername = new String(Base64.decode(rmUsername, Base64.DEFAULT));
             username.setText(rmUsername);
+            username.setSelection(rmUsername.length());
+            ((MaterialTextField) findViewById(R.id.username_container)).setHasFocus(true);
             rmDob = new String(Base64.decode(rmDob, Base64.DEFAULT));
             dob.setText(rmDob);
-        }
-
-        if (!username.getText().toString().isEmpty()) {
-            ((MaterialTextField) findViewById(R.id.username_container)).setHasFocus(true);
-        }
-        if (!dob.getText().toString().isEmpty()) {
             ((MaterialTextField) findViewById(R.id.dob_container)).setHasFocus(true);
-        }
-        if (rmUsername != null) {
-            username.setSelection(rmUsername.length());
         }
     }
 
