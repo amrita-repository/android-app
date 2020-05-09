@@ -69,7 +69,7 @@ import in.co.rajkumaar.amritarepo.downloads.FTPActivity;
 import in.co.rajkumaar.amritarepo.examschedule.ExamCategoryActivity;
 import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
 import in.co.rajkumaar.amritarepo.helpers.ClearCache;
-import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.news.NewsActivity;
 import in.co.rajkumaar.amritarepo.notifications.NotificationsActivity;
@@ -267,7 +267,7 @@ public class LaunchingActivity extends BaseActivity
                                             startActivity(new Intent(LaunchingActivity.this, LoginActivity.class));
                                             break;
                                         case 1:
-                                            SharedPreferences pref = EncryptedSharedPrefs.get(LaunchingActivity.this, "aums_v2");
+                                            SharedPreferences pref = EncryptedPrefsUtils.get(LaunchingActivity.this, "aums_v2");
                                             if (pref.getBoolean("logged-in", false)) {
                                                 startActivity(new Intent(LaunchingActivity.this, in.co.rajkumaar.amritarepo.aumsV2.activities.HomeActivity.class));
                                             } else {

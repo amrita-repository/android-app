@@ -36,7 +36,7 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
-import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class LoginActivity extends BaseActivity {
@@ -62,7 +62,7 @@ public class LoginActivity extends BaseActivity {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 
-        pref = EncryptedSharedPrefs.get(this, "aums_v2");
+        pref = EncryptedPrefsUtils.get(this, "aums_v2");
         String rmUsername = pref.getString("username", null);
         String rmDob = pref.getString("dob", null);
         if (rmUsername != null && rmDob != null) {

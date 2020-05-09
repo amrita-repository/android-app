@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 
-public class EncryptedSharedPrefs {
+public class EncryptedPrefsUtils {
     public static SharedPreferences get(Context context, String prefName) {
         SharedPreferences pref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

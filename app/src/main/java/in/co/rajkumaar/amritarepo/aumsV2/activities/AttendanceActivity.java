@@ -38,7 +38,7 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
-import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class AttendanceActivity extends BaseActivity {
@@ -53,7 +53,7 @@ public class AttendanceActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
-        prefs = EncryptedSharedPrefs.get(this, "aums_v2");
+        prefs = EncryptedPrefsUtils.get(this, "aums_v2");
         list = findViewById(R.id.list);
 
         sem = getIntent().getStringExtra("sem");

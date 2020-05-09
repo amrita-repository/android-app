@@ -40,7 +40,7 @@ import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aums.helpers.LogInResponse;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aums.models.Client;
-import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class LoginActivity extends BaseActivity {
@@ -91,7 +91,7 @@ public class LoginActivity extends BaseActivity {
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
 
-        final SharedPreferences pref = EncryptedSharedPrefs.get(this, "aums_v1");
+        final SharedPreferences pref = EncryptedPrefsUtils.get(this, "aums_v1");
         String rmUsername = pref.getString("username", null);
         String rmPassword = pref.getString("password", null);
         if (rmUsername != null && rmPassword != null) {

@@ -24,7 +24,7 @@ import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aums.helpers.HomeItemAdapter;
 import in.co.rajkumaar.amritarepo.aums.models.HomeItem;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
-import in.co.rajkumaar.amritarepo.helpers.EncryptedSharedPrefs;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class HomeActivity extends BaseActivity {
@@ -44,7 +44,7 @@ public class HomeActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        SharedPreferences preferences = EncryptedSharedPrefs.get(this, "aums_v2");
+        SharedPreferences preferences = EncryptedPrefsUtils.get(this, "aums_v2");
         String rmName = preferences.getString("name", null);
         String rmEmail = preferences.getString("email", null);
         String rmUsername = preferences.getString("username", null);
