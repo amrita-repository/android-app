@@ -88,6 +88,7 @@ public class CourseResourcesActivity extends BaseActivity {
         curFolder = new Stack<>();
         firstEntry = true;
 
+        new ClearCache().clear(CourseResourcesActivity.this);
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);
 
@@ -126,11 +127,9 @@ public class CourseResourcesActivity extends BaseActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int pos) {
                                     if (pos == 0) {
-                                        new ClearCache().clear(CourseResourcesActivity.this);
                                         progressDialog.show();
                                         getResource(UserData.client, courseRes.getResourceUrl(), 0);
                                     } else if (pos == 1) {
-                                        new ClearCache().clear(CourseResourcesActivity.this);
                                         progressDialog.show();
                                         getResource(UserData.client, courseRes.getResourceUrl(), 1);
                                     }
