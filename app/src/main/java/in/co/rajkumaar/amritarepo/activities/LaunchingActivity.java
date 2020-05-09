@@ -69,6 +69,7 @@ import in.co.rajkumaar.amritarepo.downloads.FTPActivity;
 import in.co.rajkumaar.amritarepo.examschedule.ExamCategoryActivity;
 import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
 import in.co.rajkumaar.amritarepo.helpers.ClearCache;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.news.NewsActivity;
 import in.co.rajkumaar.amritarepo.notifications.NotificationsActivity;
@@ -95,8 +96,9 @@ public class LaunchingActivity extends BaseActivity
         setContentView(R.layout.activity_launching);
         FirebaseApp.initializeApp(this);
         Iconify.with(new FontAwesomeModule());
+        Utils.clearUnsafeCredentials(this);
 
-        final SharedPreferences pref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+        final SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
         if (ContextCompat.checkSelfPermission(LaunchingActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -265,7 +267,7 @@ public class LaunchingActivity extends BaseActivity
                                             startActivity(new Intent(LaunchingActivity.this, LoginActivity.class));
                                             break;
                                         case 1:
-                                            SharedPreferences pref = getSharedPreferences("aums-lite", Context.MODE_PRIVATE);
+                                            SharedPreferences pref = EncryptedPrefsUtils.get(LaunchingActivity.this, "aums_v2");
                                             if (pref.getBoolean("logged-in", false)) {
                                                 startActivity(new Intent(LaunchingActivity.this, in.co.rajkumaar.amritarepo.aumsV2.activities.HomeActivity.class));
                                             } else {

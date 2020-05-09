@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,15 +16,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
-import in.co.rajkumaar.amritarepo.activities.Encryption;
 import in.co.rajkumaar.amritarepo.aums.helpers.HomeItemAdapter;
 import in.co.rajkumaar.amritarepo.aums.models.HomeItem;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class HomeActivity extends BaseActivity {
@@ -35,8 +36,7 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home2);
 
-        getSupportActionBar().setSubtitle("Lite Version");
-        SharedPreferences preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
+        Objects.requireNonNull(getSupportActionBar()).setSubtitle("Lite Version");
         TextView name = findViewById(R.id.name);
         TextView user_name = findViewById(R.id.username);
         TextView e_mail = findViewById(R.id.email);
@@ -44,32 +44,24 @@ public class HomeActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String rmName = null;
-        String rmEmail = null;
-        String rmUsername = null;
-        try {
-            rmName = preferences.getString("name", "");
-            rmEmail = preferences.getString("email", "");
-            rmUsername = preferences.getString("username", "");
+        SharedPreferences preferences = EncryptedPrefsUtils.get(this, "aums_v2");
+        String rmName = preferences.getString("name", null);
+        String rmEmail = preferences.getString("email", null);
+        String rmUsername = preferences.getString("username", null);
 
-            Encryption enc = new Encryption(HomeActivity.this, "aums-lite");
-
-            if (!("".equals(rmUsername))) {
-                rmUsername = new String(enc.decrypt(rmUsername.getBytes(StandardCharsets.UTF_8)));
-            }
-            if (!("".equals(rmEmail))) {
-                rmEmail = new String(enc.decrypt(rmEmail.getBytes(StandardCharsets.UTF_8)));
-            }
-            if (!("".equals(rmName))) {
-                rmName = new String(enc.decrypt(rmName.getBytes(StandardCharsets.UTF_8)));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (rmUsername != null) {
+            rmUsername = new String(Base64.decode(rmUsername, Base64.DEFAULT));
+            user_name.setText(rmUsername);
+        }
+        if (rmEmail != null) {
+            rmEmail = new String(Base64.decode(rmEmail, Base64.DEFAULT));
+            e_mail.setText(rmEmail);
+        }
+        if (rmName != null) {
+            rmName = new String(Base64.decode(rmName, Base64.DEFAULT));
+            name.setText(rmName);
         }
 
-        name.setText(rmName);
-        user_name.setText(rmUsername);
-        e_mail.setText(rmEmail);
 
         final ArrayList<HomeItem> items = new ArrayList<>();
         items.add(new HomeItem("Attendance Status", R.drawable.attendance));

@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -57,6 +58,7 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.helpers.CheckForSDCard;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 
@@ -99,10 +101,10 @@ public class AttendanceActivity extends BaseActivity {
                 } else {
                     if (Utils.isConnected(AttendanceActivity.this)) {
                         progressDialog.show();
-                        if(courses.size() > 0)
-                            getSubjectAttendance(UserData.client,attendanceData.get(position).getCode());
+                        if (courses.size() > 0)
+                            getSubjectAttendance(UserData.client, attendanceData.get(position).getCode());
                         else
-                            loadCourseMapping(UserData.client,sem,true,attendanceData.get(position).getCode());
+                            loadCourseMapping(UserData.client, sem, true, attendanceData.get(position).getCode());
                     } else {
                         Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
                     }
@@ -169,10 +171,10 @@ public class AttendanceActivity extends BaseActivity {
                     for (Element item : items) {
                         courses.put(item.text().split(":")[0].trim(), item.attr("value"));
                     }
-                    if(courses.size() > 0 && download){
-                        getSubjectAttendance(client,code);
+                    if (courses.size() > 0 && download) {
+                        getSubjectAttendance(client, code);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -186,7 +188,7 @@ public class AttendanceActivity extends BaseActivity {
     }
 
     private void getAttendance(final AsyncHttpClient client, final String sem) {
-        loadCourseMapping(client,sem,false,null);
+        loadCourseMapping(client, sem, false, null);
         RequestParams params = new RequestParams();
         params.put("action", "UMS-ATD_INIT_ATDREPORTSTUD_SCREEN");
         params.put("isMenu", "true");
@@ -242,7 +244,8 @@ public class AttendanceActivity extends BaseActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (getSharedPreferences("aums", MODE_PRIVATE).getBoolean("disclaimer", true)) {
+                                        final SharedPreferences prefs = EncryptedPrefsUtils.get(AttendanceActivity.this, "aums_v1");
+                                        if (prefs.getBoolean("disclaimer", true)) {
                                             new AlertDialog.Builder(AttendanceActivity.this)
                                                     .setTitle("Disclaimer")
                                                     .setCancelable(false)
@@ -256,7 +259,7 @@ public class AttendanceActivity extends BaseActivity {
                                                     .setNegativeButton("Don\'t show again", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int which) {
-                                                            getSharedPreferences("aums", MODE_PRIVATE).edit().putBoolean("disclaimer", false).apply();
+                                                            prefs.edit().putBoolean("disclaimer", false).apply();
                                                         }
                                                     })
                                                     .create()
@@ -329,7 +332,7 @@ public class AttendanceActivity extends BaseActivity {
                         Toast.makeText(AttendanceActivity.this, "Oops!! There is no storage.", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }else {
+            } else {
                 File report = new File(getExternalFilesDir(null), ".AmritaRepoCache");
 
                 if (!report.exists()) {
@@ -337,7 +340,7 @@ public class AttendanceActivity extends BaseActivity {
                     Log.e("AUMS Report", "Directory Created.");
                 }
 
-                report = new File(report,"AUMSReport.pdf");
+                report = new File(report, "AUMSReport.pdf");
 
                 if (report.exists()) {
                     report.delete();
@@ -353,7 +356,7 @@ public class AttendanceActivity extends BaseActivity {
                     intent.setDataAndType(data, "application/pdf");
                     if (intent.resolveActivity(getPackageManager()) != null)
                         startActivity(intent);
-                    else{
+                    else {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

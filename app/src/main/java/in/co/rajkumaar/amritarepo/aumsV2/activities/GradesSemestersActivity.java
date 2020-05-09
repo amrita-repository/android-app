@@ -7,7 +7,7 @@ package in.co.rajkumaar.amritarepo.aumsV2.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,6 +29,7 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
 import in.co.rajkumaar.amritarepo.aumsV2.models.Semester;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class GradesSemestersActivity extends BaseActivity {
@@ -47,7 +48,7 @@ public class GradesSemestersActivity extends BaseActivity {
 
         String quote = getResources().getStringArray(R.array.quotes)[new Random().nextInt(getResources().getStringArray(R.array.quotes).length)];
         ((TextView) findViewById(R.id.quote)).setText(quote);
-        preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
+        preferences = EncryptedPrefsUtils.get(this, "aums_v2");
         listView = findViewById(R.id.list);
 
         if (GlobalData.getGradeSemesters() == null) {
@@ -83,9 +84,9 @@ public class GradesSemestersActivity extends BaseActivity {
         semesterObjects = new ArrayList<>();
         sems = new ArrayList<>();
         client.addHeader("Authorization", GlobalData.auth);
-        client.addHeader("token", preferences.getString("token", ""));
+        client.addHeader("token", new String(Base64.decode(preferences.getString("token", ""), Base64.DEFAULT)));
         client.setTimeout(3000000);
-        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/semRes?rollno=" + preferences.getString("username", ""), new AsyncHttpResponseHandler() {
+        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/semRes?rollno=" + new String(Base64.decode(preferences.getString("username", ""), Base64.DEFAULT)), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {
@@ -96,7 +97,7 @@ public class GradesSemestersActivity extends BaseActivity {
                         semesterObjects.add(new Semester(current.getInt("Id"), current.getString("Semester"), current.getString("Period")));
                         sems.add("Semester " + current.getString("Semester") + " (" + current.getString("Period") + ")");
                     }
-                    preferences.edit().putString("token", jsonObject.getString("Token")).apply();
+                    preferences.edit().putString("token", Base64.encodeToString(jsonObject.getString("Token").getBytes(), Base64.DEFAULT)).apply();
                     semsAdapter = new ArrayAdapter<>(GradesSemestersActivity.this, R.layout.white_textview, sems);
                     GlobalData.setGradeSemesters(semesterObjects);
                     listView.setAdapter(semsAdapter);
@@ -111,8 +112,7 @@ public class GradesSemestersActivity extends BaseActivity {
 
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                Log.e("ERROR", throwable.getLocalizedMessage());
-                GlobalData.resetUser(GradesSemestersActivity.this);
+                new Exception(throwable).printStackTrace();
                 Utils.showUnexpectedError(GradesSemestersActivity.this);
                 finish();
             }

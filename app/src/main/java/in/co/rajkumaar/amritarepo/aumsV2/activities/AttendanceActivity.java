@@ -10,7 +10,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +38,7 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
+import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class AttendanceActivity extends BaseActivity {
@@ -45,14 +46,14 @@ public class AttendanceActivity extends BaseActivity {
     ListView list;
     String sem;
     private AsyncHttpClient client = GlobalData.getClient();
-    private SharedPreferences preferences;
+    private SharedPreferences prefs;
     private ArrayList<CourseData> attendanceData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
-        preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
+        prefs = EncryptedPrefsUtils.get(this, "aums_v2");
         list = findViewById(R.id.list);
 
         sem = getIntent().getStringExtra("sem");
@@ -62,16 +63,14 @@ public class AttendanceActivity extends BaseActivity {
     void getAttendance(final String sem) {
         attendanceData = new ArrayList<>();
         client.addHeader("Authorization", GlobalData.auth);
-        client.addHeader("token", preferences.getString("token", ""));
+        client.addHeader("token", new String(Base64.decode(prefs.getString("token", ""), Base64.DEFAULT)));
         client.setTimeout(5000);
-        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/attRes?rollno=" + preferences.getString("username", "") + "&sem=" + sem, new AsyncHttpResponseHandler() {
+        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/attRes?rollno=" + new String(Base64.decode(prefs.getString("username", ""), Base64.DEFAULT)) + "&sem=" + sem, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(bytes));
                     JSONArray subjects = jsonObject.getJSONArray("Values");
-                    Log.e("SEM", sem);
-                    Log.e("SUBS", jsonObject.toString());
                     for (int j = 0; j < subjects.length(); ++j) {
                         JSONObject current = subjects.getJSONObject(j);
                         CourseData courseData = new CourseData();
@@ -82,7 +81,7 @@ public class AttendanceActivity extends BaseActivity {
                         courseData.setPercentage(current.getString("TotalPercentage"));
                         attendanceData.add(courseData);
                     }
-                    preferences.edit().putString("token", jsonObject.getString("Token")).apply();
+                    prefs.edit().putString("token", Base64.encodeToString(jsonObject.getString("Token").getBytes(), Base64.DEFAULT)).apply();
                     AttendanceAdapter attendanceAdapter = new AttendanceAdapter(AttendanceActivity.this, attendanceData);
                     list.setAdapter(attendanceAdapter);
                     findViewById(R.id.progressBar).setVisibility(View.GONE);
@@ -90,7 +89,7 @@ public class AttendanceActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (getSharedPreferences("aums", MODE_PRIVATE).getBoolean("disclaimer", true)) {
+                            if (prefs.getBoolean("disclaimer", true)) {
                                 new AlertDialog.Builder(AttendanceActivity.this)
                                         .setTitle("Disclaimer")
                                         .setCancelable(false)
@@ -104,7 +103,7 @@ public class AttendanceActivity extends BaseActivity {
                                         .setNegativeButton("Don\'t show again", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                getSharedPreferences("aums", MODE_PRIVATE).edit().putBoolean("disclaimer", false).apply();
+                                                prefs.edit().putBoolean("disclaimer", false).apply();
                                             }
                                         })
                                         .create()
@@ -113,18 +112,17 @@ public class AttendanceActivity extends BaseActivity {
                         }
                     });
                 } catch (JSONException e) {
-                    Utils.showUnexpectedError(AttendanceActivity.this);
-                    GlobalData.resetUser(AttendanceActivity.this);
-                    finish();
                     e.printStackTrace();
+                    Utils.showUnexpectedError(AttendanceActivity.this);
+                    finish();
                 }
 
             }
 
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                new Exception(throwable).printStackTrace();
                 Utils.showUnexpectedError(AttendanceActivity.this);
-                GlobalData.resetUser(AttendanceActivity.this);
                 finish();
             }
         });
@@ -139,12 +137,8 @@ public class AttendanceActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.info) {
             final android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(AttendanceActivity.this);
             alertDialog.setMessage(Html.fromHtml("Amrita Repository is not responsible if your attendance is not updated.<br><br>Follow the instructions given here <strong><font color=#AA0000>at your own risk.</font></strong>"));
@@ -159,7 +153,7 @@ public class AttendanceActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class CourseData {
+    static class CourseData {
         private String code, title, total, attended, percentage;
 
         public String getAttended() {
@@ -218,7 +212,7 @@ public class AttendanceActivity extends BaseActivity {
         @SuppressLint("SetTextI18n")
         @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             View listItemView = convertView;
             if (listItemView == null) {
                 listItemView = LayoutInflater.from(getContext()).inflate(
@@ -251,7 +245,7 @@ public class AttendanceActivity extends BaseActivity {
             int percent = (int) Math.round(Double.parseDouble(current.getPercentage()));
             if (percent <= 75)
                 color.setBackgroundColor(getResources().getColor(R.color.danger));
-            else if (percent > 75 && percent < 85)
+            else if (percent < 85)
                 color.setBackgroundColor(getResources().getColor(R.color.orange));
             else
                 color.setBackgroundColor(getResources().getColor(R.color.green));
@@ -262,7 +256,7 @@ public class AttendanceActivity extends BaseActivity {
             comments.setVisibility(View.VISIBLE);
             if (percent > 94) {
                 comments.setVisibility(View.GONE);
-            } else if (percent < 95 && percent > 75 && current.getBunkingCount() > 0) {
+            } else if (percent > 75 && current.getBunkingCount() > 0) {
                 comments.setText(
                         (current.getBunkingCount() > 1)
                                 ? "You miss " + current.getBunkingCount() + " more classes and " + idioms[new Random().nextInt((idioms.length))]

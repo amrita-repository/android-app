@@ -6,6 +6,7 @@ package in.co.rajkumaar.amritarepo.helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.View;
@@ -106,5 +107,19 @@ public class Utils {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
         return sortedMap;
+    }
+
+    public static void clearUnsafeCredentials(Context context) {
+        SharedPreferences userPrefs = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        if (!userPrefs.getBoolean("old_credentials_cleared", false)) {
+            context.getSharedPreferences("aums-lite", Context.MODE_PRIVATE).edit().clear().apply();
+            SharedPreferences.Editor oldCredsEditor = userPrefs.edit();
+            String[] oldCredKeys = {"username", "password", "OPAC_username", "OPAC_password", "encrypted_prefs_value"};
+            for (String item : oldCredKeys) {
+                oldCredsEditor.remove(item);
+            }
+            oldCredsEditor.putBoolean("old_credentials_cleared", true);
+            oldCredsEditor.apply();
+        }
     }
 }
