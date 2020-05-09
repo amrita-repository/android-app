@@ -8,7 +8,7 @@ package in.co.rajkumaar.amritarepo.aumsV2.activities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +31,7 @@ import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
+import in.co.rajkumaar.amritarepo.helpers.Encryption;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class GradesActivity extends BaseActivity {
@@ -45,7 +46,7 @@ public class GradesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grades);
-        preferences = getSharedPreferences("aums-lite", MODE_PRIVATE);
+        preferences = Encryption.getEncPrefs(this, "aums_v2");
         list = findViewById(R.id.list);
 
         sem = getIntent().getStringExtra("sem");
@@ -57,15 +58,13 @@ public class GradesActivity extends BaseActivity {
     void getGrades(final String sem) {
         gradesData = new ArrayList<>();
         client.addHeader("Authorization", GlobalData.auth);
-        client.addHeader("token", preferences.getString("token", ""));
-        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/andRes?rollno=" + preferences.getString("username", "") + "&sem=" + sem, new AsyncHttpResponseHandler() {
+        client.addHeader("token", new String(Base64.decode(preferences.getString("token", ""), Base64.DEFAULT)));
+        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/andRes?rollno=" + new String(Base64.decode(preferences.getString("username", ""), Base64.DEFAULT)) + "&sem=" + sem, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {
                     JSONObject jsonObject = new JSONObject(new String(bytes));
                     JSONArray subjects = jsonObject.getJSONArray("Subject");
-                    Log.e("SEM", sem);
-                    Log.e("SUBS", jsonObject.toString());
                     for (int j = 0; j < subjects.length(); ++j) {
                         JSONObject current = subjects.getJSONObject(j);
                         CourseData courseData = new CourseData();
@@ -80,7 +79,6 @@ public class GradesActivity extends BaseActivity {
                     findViewById(R.id.progressBar).setVisibility(View.GONE);
                 } catch (Exception e) {
                     Utils.showUnexpectedError(GradesActivity.this);
-                    GlobalData.resetUser(GradesActivity.this);
                     finish();
                     e.printStackTrace();
                 }
@@ -89,14 +87,13 @@ public class GradesActivity extends BaseActivity {
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
                 Utils.showUnexpectedError(GradesActivity.this);
-                GlobalData.resetUser(GradesActivity.this);
                 finish();
             }
         });
     }
 
 
-    class CourseData {
+    static class CourseData {
         private String code, title, type, grade;
 
         public String getTitle() {

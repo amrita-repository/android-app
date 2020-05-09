@@ -8,13 +8,12 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
+import android.util.Base64;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -29,15 +28,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.RoundingMode;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
-import in.co.rajkumaar.amritarepo.activities.Encryption;
 import in.co.rajkumaar.amritarepo.aumsV2.helpers.GlobalData;
+import in.co.rajkumaar.amritarepo.helpers.Encryption;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class LoginActivity extends BaseActivity {
@@ -49,14 +48,12 @@ public class LoginActivity extends BaseActivity {
     private Calendar dobDate = Calendar.getInstance();
     private ProgressDialog progressDialog;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private Encryption enc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
-        getSupportActionBar().setSubtitle("Lite Version");
-        pref = getSharedPreferences("aums-lite", Context.MODE_PRIVATE);
+        Objects.requireNonNull(getSupportActionBar()).setSubtitle("Lite Version");
         username = findViewById(R.id.username);
         dob = findViewById(R.id.dob);
         progressDialog = new ProgressDialog(this);
@@ -64,37 +61,26 @@ public class LoginActivity extends BaseActivity {
         progressDialog.setMessage("Logging in..");
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        String rmUsername = null;
-        String rmDob = null;
-        try {
-            rmUsername = pref.getString("username", "");
-            rmDob = pref.getString("dob", "");
 
-            enc = new Encryption(LoginActivity.this, "aums-lite");
-
-            if (!("".equals(rmUsername) || "".equals(rmDob))) {
-                rmUsername = new String(enc.decrypt(rmUsername.getBytes(StandardCharsets.UTF_8)));
-                rmDob = new String(enc.decrypt(rmDob.getBytes(StandardCharsets.UTF_8)));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        pref = Encryption.getEncPrefs(this, "aums_v2");
+        String rmUsername = pref.getString("username", null);
+        String rmDob = pref.getString("dob", null);
+        if (rmUsername != null && rmDob != null) {
+            rmUsername = new String(Base64.decode(rmUsername, Base64.DEFAULT));
+            username.setText(rmUsername);
+            rmDob = new String(Base64.decode(rmDob, Base64.DEFAULT));
+            dob.setText(rmDob);
         }
 
-        username.setText(rmUsername);
-        dob.setText(rmDob);
         if (!username.getText().toString().isEmpty()) {
             ((MaterialTextField) findViewById(R.id.username_container)).setHasFocus(true);
         }
         if (!dob.getText().toString().isEmpty()) {
             ((MaterialTextField) findViewById(R.id.dob_container)).setHasFocus(true);
         }
-        try {
+        if (rmUsername != null) {
             username.setSelection(rmUsername.length());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
-
     }
 
     public void selectDOB(View view) {
@@ -135,7 +121,6 @@ public class LoginActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(new String(bytes));
                     if (jsonObject.has("Status")) {
                         if (jsonObject.getString("Status").equals("OK")) {
-                            Log.v("DATA", jsonObject.toString());
                             GlobalData.setUsername(username.getText().toString());
                             GlobalData.setDob(dob.getText().toString());
                             GlobalData.setEmail(jsonObject.getString("Email"));
@@ -169,9 +154,9 @@ public class LoginActivity extends BaseActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(40, 0, 50, 0);
-        final EditText otpEdittext = new EditText(LoginActivity.this);
-        otpEdittext.setInputType(InputType.TYPE_CLASS_NUMBER);
-        layout.addView(otpEdittext, params);
+        final EditText otpEditText = new EditText(LoginActivity.this);
+        otpEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        layout.addView(otpEditText, params);
         alertDialog.setView(layout);
         alertDialog.setCancelable(false);
 
@@ -183,7 +168,7 @@ public class LoginActivity extends BaseActivity {
                 client.addHeader("Authorization", GlobalData.auth);
                 client.addHeader("token", GlobalData.loginToken);
                 client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/authRes/register?rollno=" +
-                        username.getText().toString() + "&otp=" + otpEdittext.getText().toString(), new AsyncHttpResponseHandler() {
+                        username.getText().toString() + "&otp=" + otpEditText.getText().toString(), new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int i, Header[] headers, byte[] bytes) {
                         try {
@@ -192,11 +177,11 @@ public class LoginActivity extends BaseActivity {
                                 GlobalData.setToken(jsonObject.getString("Token"));
                                 SharedPreferences.Editor editor = pref.edit();
                                 editor.putBoolean("logged-in", true);
-                                editor.putString("username", enc.encrypt(GlobalData.getUsername().getBytes(StandardCharsets.UTF_8)));
-                                editor.putString("email", enc.encrypt(GlobalData.getEmail().getBytes(StandardCharsets.UTF_8)));
-                                editor.putString("dob", enc.encrypt(GlobalData.getDob().getBytes(StandardCharsets.UTF_8)));
-                                editor.putString("name", enc.encrypt(GlobalData.getName().getBytes(StandardCharsets.UTF_8)));
-                                editor.putString("token", enc.encrypt(GlobalData.getToken().getBytes(StandardCharsets.UTF_8)));
+                                editor.putString("username", Base64.encodeToString(GlobalData.getUsername().getBytes(), Base64.DEFAULT));
+                                editor.putString("email", Base64.encodeToString(GlobalData.getEmail().getBytes(), Base64.DEFAULT));
+                                editor.putString("dob", Base64.encodeToString(GlobalData.getDob().getBytes(), Base64.DEFAULT));
+                                editor.putString("name", Base64.encodeToString(GlobalData.getName().getBytes(), Base64.DEFAULT));
+                                editor.putString("token", Base64.encodeToString(GlobalData.getToken().getBytes(), Base64.DEFAULT));
                                 editor.apply();
                                 Bundle params = new Bundle();
                                 params.putString("User", GlobalData.getName() + "[" + GlobalData.getUsername() + "]");

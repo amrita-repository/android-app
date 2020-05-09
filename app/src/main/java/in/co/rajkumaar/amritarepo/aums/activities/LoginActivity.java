@@ -5,11 +5,11 @@
 package in.co.rajkumaar.amritarepo.aums.activities;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,15 +33,14 @@ import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
-import in.co.rajkumaar.amritarepo.activities.Encryption;
 import in.co.rajkumaar.amritarepo.aums.helpers.LogInResponse;
 import in.co.rajkumaar.amritarepo.aums.helpers.UserData;
 import in.co.rajkumaar.amritarepo.aums.models.Client;
+import in.co.rajkumaar.amritarepo.helpers.Encryption;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class LoginActivity extends BaseActivity {
@@ -58,7 +57,6 @@ public class LoginActivity extends BaseActivity {
     private CheckBox remember;
 
     private FirebaseAnalytics mFirebaseAnalytics;
-    private Encryption enc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,23 +82,6 @@ public class LoginActivity extends BaseActivity {
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
 
-        final SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
-        String rmusername = null;
-        String rmpassword = null;
-        try {
-            rmusername = pref.getString("username", null);
-            rmpassword = pref.getString("password", null);
-
-            enc = new Encryption(LoginActivity.this, "user");
-
-            if (!(rmusername == null || rmpassword == null)) {
-                rmusername = new String(enc.decrypt(rmusername.getBytes(StandardCharsets.UTF_8)));
-                rmpassword = new String(enc.decrypt(rmpassword.getBytes(StandardCharsets.UTF_8)));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
@@ -110,8 +91,16 @@ public class LoginActivity extends BaseActivity {
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
 
-        username.setText(rmusername);
-        password.setText(rmpassword);
+        final SharedPreferences pref = Encryption.getEncPrefs(this, "aums_v1");
+        String rmUsername = pref.getString("username", null);
+        String rmPassword = pref.getString("password", null);
+        if (rmUsername != null && rmPassword != null) {
+            rmUsername = new String(Base64.decode(rmUsername, Base64.DEFAULT));
+            username.setText(rmUsername);
+            rmPassword = new String(Base64.decode(rmPassword, Base64.DEFAULT));
+            password.setText(rmPassword);
+        }
+
         if (!TextUtils.isEmpty(username.getText().toString())) {
             remember.setChecked(true);
             ((MaterialTextField) findViewById(R.id.username_container)).setHasFocus(true);
@@ -119,14 +108,10 @@ public class LoginActivity extends BaseActivity {
         if (!password.getText().toString().isEmpty()) {
             ((MaterialTextField) findViewById(R.id.password_container)).setHasFocus(true);
         }
-        try {
-            username.setSelection(rmusername.length());
-            password.setSelection(rmpassword.length());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        actionDoneCloseInput();
+        if (rmUsername != null) username.setSelection(rmUsername.length());
+        if (rmPassword != null) password.setSelection(rmPassword.length());
 
+        actionDoneCloseInput();
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,8 +119,8 @@ public class LoginActivity extends BaseActivity {
                 SharedPreferences.Editor ed = pref.edit();
                 if (remember.isChecked()) {
                     try {
-                        String encName = enc.encrypt(username.getText().toString().getBytes(StandardCharsets.UTF_8));
-                        String encPass = enc.encrypt(password.getText().toString().getBytes(StandardCharsets.UTF_8));
+                        String encName = Base64.encodeToString(username.getText().toString().getBytes(), Base64.DEFAULT);
+                        String encPass = Base64.encodeToString(password.getText().toString().getBytes(), Base64.DEFAULT);
                         ed.putString("username", encName);
                         ed.putString("password", encPass);
                         ed.apply();

@@ -99,7 +99,7 @@ public class SupportActivity extends BaseActivity {
                                     .authority("pay")
                                     .appendQueryParameter("pa", getString(R.string.upi_id))
                                     .appendQueryParameter("pn", "Rajkumar S")
-                                    .appendQueryParameter("tn", "Donation to Amrita Repository")
+                                    .appendQueryParameter("tn", "Amrita Repository")
                                     .appendQueryParameter("cu", "INR")
                                     .build();
                     Intent intent = new Intent(Intent.ACTION_VIEW);
