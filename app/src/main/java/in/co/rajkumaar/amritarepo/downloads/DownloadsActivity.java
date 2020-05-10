@@ -14,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +28,6 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.io.File;
@@ -37,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Stack;
 
-import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.downloads.adapters.DocumentsItemAdapter;
@@ -212,15 +209,7 @@ public class DownloadsActivity extends BaseActivity {
                 displayList();
             }
         } else {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri data = FileProvider.getUriForFile(DownloadsActivity.this, BuildConfig.APPLICATION_ID + ".provider", file);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setData(data);
-            Intent fileChooserIntent = Intent.createChooser(intent, "Open " + file.getName() + " with:");
-            if (intent.resolveActivity(getPackageManager()) != null)
-                startActivity(fileChooserIntent);
-            else
-                Utils.showToast(DownloadsActivity.this, "Sorry, there's no appropriate app in the device to open this file.");
+            Utils.openFileIntent(DownloadsActivity.this, file);
         }
     }
 
@@ -349,6 +338,8 @@ public class DownloadsActivity extends BaseActivity {
                         case "Delete multiple files":
                             startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
                             break;
+                        default:
+                            Utils.showUnexpectedError(DownloadsActivity.this);
                     }
                 }
 
