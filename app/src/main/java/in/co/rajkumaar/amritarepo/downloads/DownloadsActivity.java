@@ -84,6 +84,7 @@ public class DownloadsActivity extends BaseActivity {
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
+                //Method must be implemented, intentional empty body
             }
 
             @Override
