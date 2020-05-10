@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import in.co.rajkumaar.amritarepo.R;
@@ -74,7 +76,12 @@ public class ExamsListActivity extends BaseActivity {
                                         1);
                             } else {
                                 if (Utils.isConnected(ExamsListActivity.this)) {
-                                    new OpenTask(ExamsListActivity.this, getString(R.string.intranet_url) + links.get(i), 2);
+                                    try {
+                                        new OpenTask(ExamsListActivity.this, getString(R.string.intranet_url) + links.get(i));
+                                    } catch (UnsupportedEncodingException | URISyntaxException e) {
+                                        e.printStackTrace();
+                                        Utils.showUnexpectedError(ExamsListActivity.this);
+                                    }
                                 } else {
                                     Utils.showInternetError(ExamsListActivity.this);
                                 }
@@ -91,7 +98,12 @@ public class ExamsListActivity extends BaseActivity {
                                         1);
                             } else {
                                 if (Utils.isConnected(ExamsListActivity.this)) {
-                                    new DownloadTask(ExamsListActivity.this, getString(R.string.intranet_url) + links.get(i), 2);
+                                    try {
+                                        new DownloadTask(ExamsListActivity.this, getString(R.string.intranet_url) + links.get(i));
+                                    } catch (UnsupportedEncodingException | URISyntaxException e) {
+                                        e.printStackTrace();
+                                        Utils.showUnexpectedError(ExamsListActivity.this);
+                                    }
                                 } else {
                                     Utils.showInternetError(ExamsListActivity.this);
                                 }

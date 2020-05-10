@@ -15,19 +15,21 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Stack;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.downloads.adapters.DownloadsItemAdapter;
 import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 
-public class DeleteFilesActivity extends BaseActivity {
+public class DeleteFilesActivity extends BaseActivity implements FolderHelper {
 
     private File dir;
     private ListView listView;
-    private ArrayAdapter<DownloadsItem> fileAdapter;
     private int count;
     private ArrayList<DownloadsItem> fileList;
+    private Stack<String> curFolder = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,9 @@ public class DeleteFilesActivity extends BaseActivity {
         setContentView(R.layout.activity_delete_files);
         String dirPath = getExternalFilesDir(null) + "/AmritaRepo";
         dir = new File(dirPath);
-        fileList = new ArrayList<DownloadsItem>();
+        curFolder.push(dirPath);
+
+        fileList = new ArrayList<>();
         listView = findViewById(R.id.list);
         retrieveFiles();
         listFiles();
@@ -59,7 +63,8 @@ public class DeleteFilesActivity extends BaseActivity {
                             if (!fileList.isEmpty()) {
                                 for (int i = 0; i < fileList.size(); ++i) {
                                     if (fileList.get(i).getCheckBox()) {
-                                        fileList.get(i).getTitle().delete();
+                                        File file = new File(fileList.get(i).getFilePath());
+                                        deleteRecursive(file);
                                     }
                                 }
                                 Toast.makeText(DeleteFilesActivity.this, count + " files deleted", Toast.LENGTH_SHORT).show();
@@ -87,25 +92,46 @@ public class DeleteFilesActivity extends BaseActivity {
     private void retrieveFiles() {
         File[] files = dir.listFiles();
         fileList.clear();
+        if (curFolder.size() > 1) {
+            fileList.add(new DownloadsItem(getString(R.string.go_back), "", false));
+        }
         if (files != null) {
             for (File file : files) {
-                fileList.add(new DownloadsItem(file, (file.length() / 1024) + " kb", false));
+                fileList.add(new DownloadsItem(file.getAbsolutePath(), file.isDirectory() ? "Click to go inside the folder" : (file.length() / 1024) + " kb", false));
             }
         }
     }
 
     private void listFiles() {
         if (!fileList.isEmpty()) {
-            fileAdapter = new DownloadsItemAdapter(this, fileList);
+            ArrayAdapter<DownloadsItem> fileAdapter = new DownloadsItemAdapter(this, fileList, this);
             final ListView downloads = listView;
             downloads.setAdapter(fileAdapter);
-        } else {
-            finish();
         }
+    }
+
+    private void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+            for (String child : Objects.requireNonNull(fileOrDirectory.list()))
+                deleteRecursive(new File(fileOrDirectory, child));
+        }
+        fileOrDirectory.delete();
     }
 
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    public void loadFilesFromDir(String dir) {
+        if (getString(R.string.go_back).equalsIgnoreCase(dir)) {
+            curFolder.pop();
+        } else {
+            curFolder.push(dir);
+        }
+        this.dir = new File(curFolder.peek());
+        retrieveFiles();
+        listFiles();
     }
 }

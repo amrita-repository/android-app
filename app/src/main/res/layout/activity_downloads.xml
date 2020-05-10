@@ -4,26 +4,61 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorBackground">
+    android:background="?attr/colorBackground"
+    android:layout_centerHorizontal="true"
+    tools:context=".downloads.DownloadsActivity">
 
-    <LinearLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_downloads"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/colorBackground"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            style="@style/CategoryTab"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary" />
+            android:layout_height="match_parent"
+            android:background="?attr/colorBackground">
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+
+            <ListView
+                android:id="@+id/dlist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:dividerHeight="0dp"
+                android:drawSelectorOnTop="true"
+                android:longClickable="true"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:id="@+id/dempty_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/img_no_feed" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No downloads yet!"
+                    android:textAlignment="center"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="#FF201B" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </RelativeLayout>

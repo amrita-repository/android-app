@@ -36,7 +36,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -179,7 +181,12 @@ public class AcademicTimetableActivity extends BaseActivity {
                     String timetable = getString(R.string.timetable);
                     TIMETABLE_URL = protocol + intranet + timetable;
                     buildTimetableUrl();
-                    new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL, 0);
+                    try {
+                        new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL);
+                    } catch (UnsupportedEncodingException | URISyntaxException e) {
+                        Utils.showUnexpectedError(this);
+                        e.printStackTrace();
+                    }
                 } else {
                     Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
                 }

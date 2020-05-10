@@ -46,6 +46,10 @@ public class ImageWidget extends AppWidgetProvider {
             try {
                 path = "/AmritaRepo/" + path;
                 File file = new File(context.getExternalFilesDir(null) + path);
+                if (!file.exists()) {
+                    preferences.edit().remove("path").apply();
+                    return;
+                }
                 Bitmap bmp = BitmapFactory.decodeFile(file.toString());
                 int nh = (int) (bmp.getHeight() * (512.0 / bmp.getWidth()));
                 Bitmap scaled = Bitmap.createScaledBitmap(bmp, 512, nh, true);
@@ -96,12 +100,16 @@ public class ImageWidget extends AppWidgetProvider {
                 try {
                     path = "/AmritaRepo/" + path;
                     File file = new File(context.getExternalFilesDir(null) + path);
-                    Intent intentToOpen = new Intent(Intent.ACTION_VIEW);
-                    Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
-                    intentToOpen.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intentToOpen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intentToOpen.setDataAndType(data, "image/*");
-                    context.startActivity(intentToOpen);
+                    if (!file.exists()) {
+                        preferences.edit().remove("path").apply();
+                    } else {
+                        Intent intentToOpen = new Intent(Intent.ACTION_VIEW);
+                        Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+                        intentToOpen.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intentToOpen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intentToOpen.setDataAndType(data, "image/*");
+                        context.startActivity(intentToOpen);
+                    }
                 } catch (Exception e) {
                     Crashlytics.log(e.getMessage());
                     e.printStackTrace();

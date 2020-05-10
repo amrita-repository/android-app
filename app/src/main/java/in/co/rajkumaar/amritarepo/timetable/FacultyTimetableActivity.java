@@ -260,11 +260,11 @@ public class FacultyTimetableActivity extends BaseActivity {
                     else
                         showSnackbar("The requested timetable has not yet been uploaded. Please check back later.");
                 } else if (choice == 2) {
-                    new DownloadTask(FacultyTimetableActivity.this, getString(R.string.facultyURL) + url, 0);
+                    new DownloadTask(FacultyTimetableActivity.this, getString(R.string.facultyURL) + url);
                 }
-            } catch (NullPointerException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-                showSnackbar("Some error occurred.");
+                Utils.showUnexpectedError(FacultyTimetableActivity.this);
             }
         }
 

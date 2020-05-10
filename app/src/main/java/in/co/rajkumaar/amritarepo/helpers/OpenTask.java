@@ -7,22 +7,20 @@ package in.co.rajkumaar.amritarepo.helpers;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
 import android.widget.Toast;
-
-import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import in.co.rajkumaar.amritarepo.BuildConfig;
@@ -37,49 +35,16 @@ public class OpenTask {
 
     private ProgressDialog progressDialog;
 
-    public OpenTask(Context context, String downloadUrl, int act) {
+    public OpenTask(Context context, String downloadUrl) throws UnsupportedEncodingException, URISyntaxException {
         this.context = context;
 
-        this.downloadUrl = downloadUrl;
+        downloadFileName = new File(new URI(downloadUrl).getPath()).getName();
+        this.downloadUrl = URLDecoder.decode(downloadUrl, "UTF-8");
 
-        if (act == 0) {
-            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'));
-
-        } else if (act == 1) {
-            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'));
-//            downloadFileName = downloadFileName.substring(0, downloadFileName.indexOf("?"));
-//            downloadFileName = downloadFileName.replaceAll("%20", "_");
-        } else if (act == 2) {
-            downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'));
-            downloadFileName = downloadFileName.replaceAll("%20", "_");
-            downloadFileName = downloadFileName.replaceAll("%26", "&");
-            downloadFileName = downloadFileName.replaceAll("%28", "(");
-            downloadFileName = downloadFileName.replaceAll("%29", ")");
-        }
-        //Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
         new ClearCache().clear(context);
-        //Start Downloading Task
         new DownloadingTask().execute();
 
-    }
-
-    private String getMime(String url) {
-        if (url.contains(".doc") || url.contains(".docx")) {
-            // Word document
-            return "application/msword";
-        } else if (url.contains(".pdf")) {
-            // PDF file
-            return "application/pdf";
-        } else if (url.contains(".xls") || url.contains(".xlsx")) {
-            // Excel file
-            return "application/vnd.ms-excel";
-        } else if (url.contains(".jpg") || url.contains(".jpeg") || url.contains(".png")) {
-            // JPG file
-            return "image/jpeg";
-        } else {
-            return "application/pdf";
-        }
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -93,9 +58,6 @@ public class OpenTask {
             super.onPreExecute();
             progressDialog = new ProgressDialog(context);
             progressDialog.setMessage("Loading");
-            //progressDialog.setIndeterminate(false);
-            //progressDialog.setMax(100);
-            //progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -107,34 +69,10 @@ public class OpenTask {
                     progressDialog.dismiss();
                     File file = new File(context.getExternalFilesDir(null) + "/"
                             + ".AmritaRepoCache/" + downloadFileName);
-                    MimeTypeMap map = MimeTypeMap.getSingleton();
-                    String ext = MimeTypeMap.getFileExtensionFromUrl(file.getName());
-                    String type = map.getMimeTypeFromExtension(ext);
-
-                    if (type == null)
-                        type = "*/*";
-
-                    Log.e("FILE NAME", file.toString());
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intent.setDataAndType(data, getMime(downloadFileName));
-                    if (intent.resolveActivity(context.getPackageManager()) != null)
-                        context.startActivity(intent);
-                    else
-                        Utils.showToast(context, "Sorry, there's no appropriate app in the device to open this file.");
-
-
+                    Utils.openFileIntent(context, file);
                 } else {
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    }, 3000);
                     Toast toast = Toast.makeText(context, "Error. Opening Failed", Toast.LENGTH_SHORT);
-                    if (!toast.getView().isShown())     // true if visible
+                    if (!toast.getView().isShown())
                         toast.show();
                     progressDialog.dismiss();
                     Log.e(TAG, "Download Failed");
@@ -142,20 +80,8 @@ public class OpenTask {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-
-                //Change button text if exception occurs
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 3000);
                 Log.e(TAG, "Download Failed with Exception - " + e.getLocalizedMessage());
-
             }
-
-
         }
 
         @Override

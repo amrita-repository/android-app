@@ -2,7 +2,7 @@
  * Copyright (c) 2020 RAJKUMAR S
  */
 
-package in.co.rajkumaar.amritarepo.aums.helpers;
+package in.co.rajkumaar.amritarepo.downloads.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,31 +18,22 @@ import com.joanzapata.iconify.Icon;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 import in.co.rajkumaar.amritarepo.R;
-import in.co.rajkumaar.amritarepo.aums.models.CourseResource;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-import static android.view.View.GONE;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.compressed;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.computer;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.document;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.excel;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.folderCheck;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.image;
 import static in.co.rajkumaar.amritarepo.helpers.Utils.isExtension;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.pdf;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.powerpoint;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.video;
-import static in.co.rajkumaar.amritarepo.helpers.Utils.web;
 
-public class CourseResAdapter extends ArrayAdapter<CourseResource> {
+public class DocumentsItemAdapter extends ArrayAdapter<String> {
     private final Random random;
     private final Context context;
 
-    public CourseResAdapter(Context context, ArrayList<CourseResource> Resources) {
-        super(context, 0, Resources);
+    public DocumentsItemAdapter(Context context, ArrayList<String> Documents) {
+        super(context, 0, Documents);
         this.context = context;
         random = new Random();
     }
@@ -55,9 +46,15 @@ public class CourseResAdapter extends ArrayAdapter<CourseResource> {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.home_item, parent, false);
         }
-        final CourseResource current = getItem(position);
-        assert current != null;
-        String resType = current.getType();
+
+        final File Element = new File(Objects.requireNonNull(getItem(position)));
+        final String current = Element.getName();
+        String currentType;
+        if (Objects.requireNonNull(current).lastIndexOf('.') == -1) {
+            currentType = "Folder";
+        } else {
+            currentType = current.substring(current.lastIndexOf('.') + 1);
+        }
 
         int[] mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
         TextView title = listItemView.findViewById(R.id.title);
@@ -66,44 +63,49 @@ public class CourseResAdapter extends ArrayAdapter<CourseResource> {
         Icon icon;
         int colorVal = random.nextInt(mMaterial_Colors.length);
 
-        if (isExtension(web, resType)) {
+        if (isExtension(Utils.web, currentType)) {
             icon = FontAwesomeIcons.fa_file_code_o;
             colorVal = 0;
-        } else if (resType.equals(folderCheck)) {
+        } else if (currentType.equals(Utils.folderCheck)) {
             icon = FontAwesomeIcons.fa_folder_open;
-        } else if (isExtension(computer, resType)) {
+        } else if (isExtension(Utils.computer, currentType)) {
             icon = FontAwesomeIcons.fa_file_code_o;
             colorVal = 7;
-        } else if (isExtension(document, resType)) {
+        } else if (isExtension(Utils.document, currentType)) {
             icon = FontAwesomeIcons.fa_file_word_o;
             colorVal = 6;
-        } else if (isExtension(pdf, resType)) {
+        } else if (isExtension(Utils.pdf, currentType)) {
             icon = FontAwesomeIcons.fa_file_pdf_o;
             colorVal = 1;
-        } else if (isExtension(powerpoint, resType)) {
+        } else if (isExtension(Utils.powerpoint, currentType)) {
             icon = FontAwesomeIcons.fa_file_powerpoint_o;
             colorVal = 2;
-        } else if (isExtension(excel, resType)) {
+        } else if (isExtension(Utils.excel, currentType)) {
             icon = FontAwesomeIcons.fa_file_excel_o;
             colorVal = 4;
-        } else if (isExtension(image, resType)) {
+        } else if (isExtension(Utils.image, currentType)) {
             icon = FontAwesomeIcons.fa_file_image_o;
-        } else if (isExtension(video, resType)) {
+        } else if (isExtension(Utils.video, currentType)) {
             icon = FontAwesomeIcons.fa_file_video_o;
-        } else if (isExtension(compressed, resType)) {
+        } else if (isExtension(Utils.compressed, currentType)) {
             icon = FontAwesomeIcons.fa_file_zip_o;
             colorVal = 3;
         } else {
             icon = FontAwesomeIcons.fa_file_text;
         }
-        title.setText(current.getResourceFileName());
+        if (!(currentType.equals(Utils.folderCheck))) {
+            toRight.setVisibility(View.INVISIBLE);
+        }
+        if ("Go Back".equalsIgnoreCase(current)) {
+            toRight.setVisibility(View.INVISIBLE);
+            colorVal = 5;
+            icon = FontAwesomeIcons.fa_caret_left;
+        }
+        title.setText(current);
         title.setTextSize(18);
         imageView.setImageDrawable(new IconDrawable(context, icon)
                 .color(mMaterial_Colors[colorVal]));
 
-        if (!(current.getType().equals("Folder"))) {
-            toRight.setVisibility(GONE);
-        }
         return listItemView;
     }
 }
