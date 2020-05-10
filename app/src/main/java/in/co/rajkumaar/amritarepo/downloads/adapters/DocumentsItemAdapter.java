@@ -18,6 +18,7 @@ import com.joanzapata.iconify.Icon;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -45,7 +46,9 @@ public class DocumentsItemAdapter extends ArrayAdapter<String> {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.home_item, parent, false);
         }
-        final String current = getItem(position);
+
+        final File Element = new File(Objects.requireNonNull(getItem(position)));
+        final String current = Element.getName();
         String currentType;
         if (Objects.requireNonNull(current).lastIndexOf('.') == -1) {
             currentType = "Folder";

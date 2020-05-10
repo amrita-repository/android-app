@@ -34,7 +34,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Stack;
 
@@ -50,15 +49,13 @@ import static in.co.rajkumaar.amritarepo.helpers.Utils.isExtension;
 
 public class DownloadsActivity extends BaseActivity {
 
-    private String dirPath;
     private SwipeRefreshLayout swipeRefreshLayout;
     private File dir;
     private ListView listView;
     private DocumentsItemAdapter fileAdapter;
 
-    private Stack<ArrayList<String>> fileListStack;
+    private ArrayList<String> fileList;
     private Stack<String> curFolder;
-    private File current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +72,12 @@ public class DownloadsActivity extends BaseActivity {
             this.recreate();
         }
 
-        dirPath = getExternalFilesDir(null) + "/AmritaRepo";
+        String dirPath = getExternalFilesDir(null) + "/AmritaRepo";
         dir = new File(dirPath);
 
-        fileListStack = new Stack<>();
+        fileList = new ArrayList<>();
         curFolder = new Stack<>();
-        curFolder.add("");
-        current = dir;
+        curFolder.push(dirPath);
 
         swipeRefreshLayout = findViewById(R.id.swipe_downloads);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
@@ -98,7 +94,8 @@ public class DownloadsActivity extends BaseActivity {
                 swipeRefreshLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
             }
         });
-        retrieveFiles(dir);
+        retrieveFiles();
+        displayList();
         swipeRefreshLayout.setRefreshing(false);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -138,70 +135,56 @@ public class DownloadsActivity extends BaseActivity {
     }
 
     private void reproduce() {
-        fileListStack.pop();
-        retrieveFiles(current);
+        retrieveFiles();
+        displayList();
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    private void retrieveFiles(File dir) {
-        current = dir;
-        String[] dirElements = dir.list();
-        ArrayList<String> fileList = new ArrayList<>();
-        if (fileListStack.size() >= 1) {
+    private void retrieveFiles() {
+        File[] files = dir.listFiles();
+        fileList.clear();
+        if (curFolder.size() > 1) {
             fileList.add("Go Back");
         }
-        if (dirElements != null) {
-            fileList.addAll(Arrays.asList(dirElements));
+        if (files != null) {
+            for (File file : files) {
+                fileList.add(file.getAbsolutePath());
+            }
         }
-        fileListStack.add(fileList);
-        displayList();
     }
 
     private void displayList() {
-        if (!fileListStack.isEmpty()) {
-            final ArrayList<String> fileList = fileListStack.peek();
-            if (fileList.isEmpty()) {
-                if (fileAdapter != null)
-                    fileAdapter.clear();
-                LinearLayout empty = findViewById(R.id.dempty_view);
-                empty.setVisibility(View.VISIBLE);
-            } else {
-                LinearLayout empty = findViewById(R.id.dempty_view);
-                empty.setVisibility(View.GONE);
-                fileAdapter = new DocumentsItemAdapter(DownloadsActivity.this, fileList);
-                final ListView downloads = listView;
+        if (!fileList.isEmpty()) {
+            LinearLayout empty = findViewById(R.id.dempty_view);
+            empty.setVisibility(View.GONE);
+            fileAdapter = new DocumentsItemAdapter(DownloadsActivity.this, fileList);
+            final ListView downloads = listView;
 
-                downloads.setAdapter(fileAdapter);
-
-                downloads.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (fileList.get(i).equalsIgnoreCase("Go Back")) {
-                            fileListStack.pop();
-                            curFolder.pop();
-                            if (curFolder.peek().equals("")) {
-                                current = dir;
-                            } else {
-                                current = new File(dirPath + "/" + curFolder.peek());
-                            }
-                            displayList();
-                            return;
-                        }
-                        final File Element = new File(dirPath + "/" + curFolder.peek() + fileList.get(i));
-                        if (Element.exists()) {
-                            openFile(Element);
-                        }
+            downloads.setAdapter(fileAdapter);
+            downloads.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    if (fileList.get(i).equalsIgnoreCase("Go Back")) {
+                        curFolder.pop();
+                        dir = new File(curFolder.peek());
+                        retrieveFiles();
+                        displayList();
+                        return;
                     }
-                });
-
-                downloads.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        activateLongClick(i);
-                        return true;
+                    final File Element = new File(fileList.get(i));
+                    if (Element.exists()) {
+                        openFile(Element);
                     }
-                });
-            }
+                }
+            });
+
+            downloads.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    activateLongClick(i);
+                    return true;
+                }
+            });
         } else {
             if (fileAdapter != null)
                 fileAdapter.clear();
@@ -223,8 +206,10 @@ public class DownloadsActivity extends BaseActivity {
             if (Objects.requireNonNull(file.list()).length == 0) {
                 Utils.showToast(DownloadsActivity.this, "This directory is empty!");
             } else {
-                curFolder.push(curFolder.peek() + file.getName() + "/");
-                retrieveFiles(file);
+                curFolder.push(file.getAbsolutePath());
+                this.dir = new File(curFolder.peek());
+                retrieveFiles();
+                displayList();
             }
         } else {
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -283,10 +268,10 @@ public class DownloadsActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (file.isDirectory()) {
-                    file.renameTo(new File(dirPath + "/" + curFolder.peek() + textBox.getText()));
+                    file.renameTo(new File(file.getParent() + "/" + textBox.getText()));
                 } else {
                     String extension = renamingFileName.substring(renamingFileName.lastIndexOf('.'));
-                    file.renameTo(new File(dirPath + "/" + curFolder.peek() + textBox.getText() + extension));
+                    file.renameTo(new File(file.getParent() + "/" + textBox.getText() + extension));
                 }
                 reproduce();
             }
@@ -300,22 +285,48 @@ public class DownloadsActivity extends BaseActivity {
         alertDialog.show();
     }
 
+    private void setWidget(String renamingFileName) {
+        try {
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
+            SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+            String path = preferences.getString("path", null);
+            alertDialog.setMessage(
+                    (path == null)
+                            ? renamingFileName + " has been set as your widget image. Go to your homescreen and long press to add widgets and choose Amrita Repository widget!"
+                            : renamingFileName + " has been set as your widget image.");
+            preferences.edit().putString("path", renamingFileName).apply();
+            alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialog.show();
+            Intent intentWidget = new Intent(DownloadsActivity.this, ImageWidget.class);
+            intentWidget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            int[] ids = AppWidgetManager.getInstance(DownloadsActivity.this).getAppWidgetIds(new ComponentName(DownloadsActivity.this, ImageWidget.class));
+            intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+            sendBroadcast(intentWidget);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void activateLongClick(int i) {
-        final ArrayList<String> fileList = fileListStack.peek();
-        final File file = new File(dirPath + "/" + curFolder.peek() + fileList.get(i));
-        final String renamingFileName = fileList.get(i);
+        final File file = new File(fileList.get(i));
+        final String renamingFileName = file.getName();
         if (file.exists()) {
             final ArrayList<String> fileOptions = new ArrayList<>();
             fileOptions.add("Open");
             fileOptions.add("Delete");
             fileOptions.add("Rename");
+            fileOptions.add("Delete multiple files");
 
             String currentType = file.getName().substring(file.getName().lastIndexOf('.') + 1);
             if (isExtension(Utils.image, currentType)) {
                 fileOptions.add("Set as widget");
             }
 
-            fileOptions.add("Delete multiple files");
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this); //Read Update
             ArrayAdapter<String> optionsAdapter = new ArrayAdapter<>(DownloadsActivity.this, android.R.layout.simple_list_item_1, fileOptions);
             alertDialog.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
@@ -332,33 +343,10 @@ public class DownloadsActivity extends BaseActivity {
                             renameFile(file, renamingFileName);
                             break;
                         case 3:
-                            try {
-                                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
-                                SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-                                String path = preferences.getString("path", null);
-                                alertDialog.setMessage(
-                                        (path == null)
-                                                ? renamingFileName + " has been set as your widget image. Go to your homescreen and long press to add widgets and choose Amrita Repository widget!"
-                                                : renamingFileName + " has been set as your widget image.");
-                                preferences.edit().putString("path", renamingFileName).apply();
-                                alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                });
-                                alertDialog.show();
-                                Intent intentWidget = new Intent(DownloadsActivity.this, ImageWidget.class);
-                                intentWidget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-                                int[] ids = AppWidgetManager.getInstance(DownloadsActivity.this).getAppWidgetIds(new ComponentName(DownloadsActivity.this, ImageWidget.class));
-                                intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-                                sendBroadcast(intentWidget);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
                             break;
                         case 4:
-                            startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
+                            setWidget(renamingFileName);
                             break;
                     }
                 }
