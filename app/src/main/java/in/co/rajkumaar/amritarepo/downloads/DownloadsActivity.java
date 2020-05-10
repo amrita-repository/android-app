@@ -476,7 +476,7 @@ public class DownloadsActivity extends BaseActivity {
                 deleteRecursiveDocuments(new File(fileOrDirectory, child));
         }
         String doc = fileOrDirectory.getName().toLowerCase();
-        if (!(doc.contains(".jpg") || doc.contains(".jpeg") || doc.contains(".png") || doc.equalsIgnoreCase("AmritaRepo"))) {
+        if (!(isExtension(Utils.image, doc.substring(doc.lastIndexOf('.') + 1)) || doc.equalsIgnoreCase("AmritaRepo"))) {
             fileOrDirectory.delete();
         }
     }
@@ -487,7 +487,7 @@ public class DownloadsActivity extends BaseActivity {
                 deleteRecursiveImages(new File(fileOrDirectory, child));
         }
         String doc = fileOrDirectory.getName().toLowerCase();
-        if (doc.contains(".jpg") || doc.contains(".jpeg") || doc.contains(".png")) {
+        if (isExtension(Utils.image, doc.substring(doc.lastIndexOf('.') + 1))) {
             fileOrDirectory.delete();
         }
     }
