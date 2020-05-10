@@ -30,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -137,8 +138,9 @@ public class CurriculumActivity extends BaseActivity {
                     } else {
                         if (Utils.isConnected(CurriculumActivity.this)) {
                             try {
-                                new DownloadTask(CurriculumActivity.this, Utils.getUrlWithoutParameters(url), 0);
-                            } catch (URISyntaxException e) {
+                                new DownloadTask(CurriculumActivity.this, Utils.getUrlWithoutParameters(url));
+                            } catch (URISyntaxException | UnsupportedEncodingException e) {
+                                Utils.showUnexpectedError(CurriculumActivity.this);
                                 e.printStackTrace();
                             }
                         } else {

@@ -25,6 +25,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -174,7 +176,12 @@ public class SubjectsActivity extends BaseActivity {
                             public void onClick(DialogInterface dialogInterface, int pos) {
                                 if (pos == 0) {
                                     String link = links.get(p).substring(0, links.get(p).indexOf("?"));
-                                    new OpenTask(SubjectsActivity.this, externLink + link, 1);
+                                    try {
+                                        new OpenTask(SubjectsActivity.this, externLink + link);
+                                    } catch (UnsupportedEncodingException | URISyntaxException e) {
+                                        e.printStackTrace();
+                                        Utils.showUnexpectedError(SubjectsActivity.this);
+                                    }
                                 } else if (pos == 1) {
                                     if (ContextCompat.checkSelfPermission(SubjectsActivity.this,
                                             Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -185,7 +192,12 @@ public class SubjectsActivity extends BaseActivity {
                                                 1);
                                     } else {
                                         if (Utils.isConnected(SubjectsActivity.this)) {
-                                            new DownloadTask(SubjectsActivity.this, externLink + links.get(p), 1);
+                                            try {
+                                                new DownloadTask(SubjectsActivity.this, externLink + links.get(p));
+                                            } catch (UnsupportedEncodingException | URISyntaxException e) {
+                                                e.printStackTrace();
+                                                Utils.showUnexpectedError(SubjectsActivity.this);
+                                            }
                                         } else {
                                             Utils.showToast(SubjectsActivity.this, "Device not connected to Internet.");
                                         }

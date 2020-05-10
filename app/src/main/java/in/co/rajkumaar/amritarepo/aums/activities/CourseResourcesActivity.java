@@ -9,9 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +24,6 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.AsyncHttpClient;
@@ -44,7 +41,6 @@ import java.util.Random;
 import java.util.Stack;
 
 import cz.msebera.android.httpclient.Header;
-import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.aums.helpers.CourseResAdapter;
@@ -128,10 +124,10 @@ public class CourseResourcesActivity extends BaseActivity {
                                 public void onClick(DialogInterface dialogInterface, int pos) {
                                     if (pos == 0) {
                                         progressDialog.show();
-                                        getResource(UserData.client, courseRes.getResourceUrl(), 0);
+                                        getResource(UserData.client, courseRes.getResourceUrl(), SAVE_TYPES.OPEN);
                                     } else if (pos == 1) {
                                         progressDialog.show();
-                                        getResource(UserData.client, courseRes.getResourceUrl(), 1);
+                                        getResource(UserData.client, courseRes.getResourceUrl(), SAVE_TYPES.DOWNLOAD);
                                     }
                                 }
                             });
@@ -143,6 +139,19 @@ public class CourseResourcesActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (courseResourceStack.size() > 1) {
+                onBackPressed();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void curTitle(String title) {
@@ -310,42 +319,14 @@ public class CourseResourcesActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                if (courseResourceStack.size() > 1) {
-                    onBackPressed();
-                } else {
-                    finish();
-                }
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            return true;
-        }
-        return super.onKeyLongPress(keyCode, event);
-    }
-
-    private void getResource(final AsyncHttpClient client, final String resourceCode, int saveType) {
+    private void getResource(final AsyncHttpClient client, final String resourceCode, final SAVE_TYPES saveType) {
         boolean alreadyExists = false;
         final String resourceFolderPath;
         String notFolder = "";
         final File resourceFolders;
         String root = "";
         File resourceFile = null;
-        if (saveType == 0) {
-            root = ".AmritaRepoCache";
-        } else {
-            root = "AmritaRepo";
-        }
+        root = saveType == SAVE_TYPES.OPEN ? ".AmritaRepoCache" : "AmritaRepo";
 
         if (resourceCode.lastIndexOf("/") == -1) {
             resourceFolderPath = "";
@@ -371,15 +352,10 @@ public class CourseResourcesActivity extends BaseActivity {
 
         if (alreadyExists) {
             try {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                Uri data = FileProvider.getUriForFile(CourseResourcesActivity.this, BuildConfig.APPLICATION_ID + ".provider", resourceFile);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setData(data);
-                Intent fileChooserIntent = Intent.createChooser(intent, "Open " + resourceCode.substring(resourceCode.lastIndexOf("/") + 1) + " with:");
-                if (intent.resolveActivity(getPackageManager()) != null)
-                    startActivity(fileChooserIntent);
-                else {
-                    Utils.showToast(CourseResourcesActivity.this, "Sorry, there's no appropriate app in the device to open this file.");
+                if (saveType == SAVE_TYPES.OPEN) {
+                    Utils.openFileIntent(CourseResourcesActivity.this, resourceFile);
+                } else {
+                    Utils.showDownloadedNotification(CourseResourcesActivity.this, resourceFile);
                 }
                 progressDialog.dismiss();
             } catch (Exception e) {
@@ -396,26 +372,42 @@ public class CourseResourcesActivity extends BaseActivity {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    new SaveCourseResource(resourceFolders, resourceCode.substring(resourceCode.lastIndexOf("/") + 1)).execute(responseBody);
+                    new SaveCourseResource(saveType, resourceFolders, resourceCode.substring(resourceCode.lastIndexOf("/") + 1)).execute(responseBody);
                 }
             });
         }
     }
 
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+            return true;
+        }
+        return super.onKeyLongPress(keyCode, event);
+    }
+
+    private enum SAVE_TYPES {
+        OPEN, DOWNLOAD
+    }
 
     @SuppressLint("StaticFieldLeak")
     class SaveCourseResource extends AsyncTask<byte[], String, String> {
 
+        private SAVE_TYPES saveType;
         private File resourceFolders;
         private String resourceName;
+        private boolean isSuccess = false;
 
-        SaveCourseResource(File resourceFolders, String resName) {
+        SaveCourseResource(SAVE_TYPES saveType, File resourceFolders, String resName) {
+            this.saveType = saveType;
             this.resourceFolders = resourceFolders;
             this.resourceName = resName;
         }
 
         @Override
         protected String doInBackground(byte[]... file) {
+            final File resourceFile = new File(resourceFolders, resourceName);
             if (!new CheckForSDCard().isSDCardPresent()) {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -424,7 +416,6 @@ public class CourseResourcesActivity extends BaseActivity {
                     }
                 });
             } else {
-                File resourceFile = new File(resourceFolders, resourceName);
                 if (resourceFile.exists()) {
                     resourceFile.delete();
                 }
@@ -433,30 +424,7 @@ public class CourseResourcesActivity extends BaseActivity {
                     fos.write(file[0]);
                     fos.close();
                     Log.v("AUMS Course Resource: " + resourceName, "Saved");
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    Uri data = FileProvider.getUriForFile(CourseResourcesActivity.this, BuildConfig.APPLICATION_ID + ".provider", resourceFile);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    intent.setData(data);
-
-                    Intent fileChooserIntent = Intent.createChooser(intent, "Open " + resourceName + " with:");
-
-                    if (intent.resolveActivity(getPackageManager()) != null)
-                        startActivity(fileChooserIntent);
-                    else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Utils.showToast(CourseResourcesActivity.this, "Sorry, there's no appropriate app in the device to open this file.");
-                            }
-                        });
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.dismiss();
-                        }
-                    });
+                    isSuccess = true;
                 } catch (java.io.IOException e) {
                     Log.e("AUMS", "Exception in AUMS Course Resources", e);
                     runOnUiThread(new Runnable() {
@@ -468,7 +436,21 @@ public class CourseResourcesActivity extends BaseActivity {
                     Utils.showUnexpectedError(CourseResourcesActivity.this);
                 }
             }
-            return (null);
+            return resourceFile.getAbsolutePath();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            File resourceFile = new File(s);
+            progressDialog.dismiss();
+            if (isSuccess) {
+                if (saveType == SAVE_TYPES.OPEN) {
+                    Utils.openFileIntent(CourseResourcesActivity.this, resourceFile);
+                } else {
+                    Utils.showDownloadedNotification(CourseResourcesActivity.this, resourceFile);
+                }
+            }
+            super.onPostExecute(s);
         }
     }
 }

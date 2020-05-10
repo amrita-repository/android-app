@@ -8,8 +8,9 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
     android:clickable="true"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:focusable="true"
     android:padding="@dimen/activity_vertical_margin">
 
     <androidx.appcompat.widget.LinearLayoutCompat

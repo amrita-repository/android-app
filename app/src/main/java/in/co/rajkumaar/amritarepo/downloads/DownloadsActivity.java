@@ -7,8 +7,12 @@ package in.co.rajkumaar.amritarepo.downloads;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +34,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Stack;
 
 import in.co.rajkumaar.amritarepo.BuildConfig;
@@ -38,6 +44,7 @@ import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.downloads.adapters.DocumentsItemAdapter;
 import in.co.rajkumaar.amritarepo.helpers.ClearCache;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
+import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
 
 public class DownloadsActivity extends BaseActivity {
 
@@ -54,11 +61,7 @@ public class DownloadsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_downloads);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (ContextCompat.checkSelfPermission(DownloadsActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -146,9 +149,7 @@ public class DownloadsActivity extends BaseActivity {
             fileList.add("Go Back");
         }
         if (dirElements != null) {
-            for (String Element : dirElements) {
-                fileList.add(Element);
-            }
+            fileList.addAll(Arrays.asList(dirElements));
         }
         fileListStack.add(fileList);
         displayList();
@@ -182,6 +183,7 @@ public class DownloadsActivity extends BaseActivity {
                                 current = new File(dirPath + "/" + curFolder.peek());
                             }
                             displayList();
+                            return;
                         }
                         final File Element = new File(dirPath + "/" + curFolder.peek() + fileList.get(i));
                         if (Element.exists()) {
@@ -208,7 +210,7 @@ public class DownloadsActivity extends BaseActivity {
 
     private void deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory()) {
-            for (String child : fileOrDirectory.list())
+            for (String child : Objects.requireNonNull(fileOrDirectory.list()))
                 deleteRecursive(new File(fileOrDirectory, child));
         }
         fileOrDirectory.delete();
@@ -216,7 +218,7 @@ public class DownloadsActivity extends BaseActivity {
 
     private void openFile(File file) {
         if (file.isDirectory()) {
-            if (file.list().length == 0) {
+            if (Objects.requireNonNull(file.list()).length == 0) {
                 Utils.showToast(DownloadsActivity.this, "This directory is empty!");
             } else {
                 curFolder.push(curFolder.peek() + file.getName() + "/");
@@ -305,21 +307,57 @@ public class DownloadsActivity extends BaseActivity {
             fileOptions.add("Open");
             fileOptions.add("Delete");
             fileOptions.add("Rename");
+
+            String currentType = file.getName().substring(file.getName().lastIndexOf('.') + 1);
+            if (DocumentsItemAdapter.isExtension(Utils.image, currentType)) {
+                fileOptions.add("Set as widget");
+            }
+
             fileOptions.add("Delete multiple files");
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this); //Read Update
             ArrayAdapter<String> optionsAdapter = new ArrayAdapter<>(DownloadsActivity.this, android.R.layout.simple_list_item_1, fileOptions);
             alertDialog.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int pos) {
-                    if (pos == 0) {
-                        openFile(file);
-                    } else if (pos == 1) {
-                        deleteFileOption(file);
-
-                    } else if (pos == 2) {
-                        renameFile(file, renamingFileName);
-                    } else if (pos == 3) {
-                        startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
+                    switch (pos) {
+                        case 0:
+                            openFile(file);
+                            break;
+                        case 1:
+                            deleteFileOption(file);
+                            break;
+                        case 2:
+                            renameFile(file, renamingFileName);
+                            break;
+                        case 3:
+                            try {
+                                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
+                                SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+                                String path = preferences.getString("path", null);
+                                alertDialog.setMessage(
+                                        (path == null)
+                                                ? renamingFileName + " has been set as your widget image. Go to your homescreen and long press to add widgets and choose Amrita Repository widget!"
+                                                : renamingFileName + " has been set as your widget image.");
+                                preferences.edit().putString("path", renamingFileName).apply();
+                                alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                });
+                                alertDialog.show();
+                                Intent intentWidget = new Intent(DownloadsActivity.this, ImageWidget.class);
+                                intentWidget.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                                int[] ids = AppWidgetManager.getInstance(DownloadsActivity.this).getAppWidgetIds(new ComponentName(DownloadsActivity.this, ImageWidget.class));
+                                intentWidget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                                sendBroadcast(intentWidget);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case 4:
+                            startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
+                            break;
                     }
                 }
 
@@ -392,8 +430,7 @@ public class DownloadsActivity extends BaseActivity {
                                                                 public void onClick(DialogInterface dialogInterface, int i) {
                                                                     deleteRecursiveDocuments(dir);
                                                                     Utils.showToast(DownloadsActivity.this, "All documents deleted");
-                                                                    finish();
-                                                                    startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
+                                                                    recreate();
                                                                 }
                                                             });
                                                             break;
@@ -405,8 +442,7 @@ public class DownloadsActivity extends BaseActivity {
                                                                 public void onClick(DialogInterface dialogInterface, int i) {
                                                                     deleteRecursiveImages(dir);
                                                                     Toast.makeText(DownloadsActivity.this, "All images deleted", Toast.LENGTH_SHORT).show();
-                                                                    finish();
-                                                                    startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
+                                                                    recreate();
                                                                 }
                                                             });
                                                             break;
@@ -418,8 +454,7 @@ public class DownloadsActivity extends BaseActivity {
                                                                 public void onClick(DialogInterface dialogInterface, int i) {
                                                                     deleteRecursiveFiles(dir);
                                                                     Toast.makeText(DownloadsActivity.this, "All files deleted", Toast.LENGTH_SHORT).show();
-                                                                    finish();
-                                                                    startActivity(new Intent(DownloadsActivity.this, DownloadsActivity.class));
+                                                                    recreate();
                                                                 }
                                                             });
                                                         }

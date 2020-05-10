@@ -19,11 +19,11 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 import in.co.rajkumaar.amritarepo.R;
-
-import static android.view.View.GONE;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class DocumentsItemAdapter extends ArrayAdapter<String> {
     private final Random random;
@@ -33,6 +33,14 @@ public class DocumentsItemAdapter extends ArrayAdapter<String> {
         super(context, 0, Documents);
         this.context = context;
         random = new Random();
+    }
+
+    public static boolean isExtension(String[] arr, String targetValue) {
+        for (String s : arr) {
+            if (s.equals(targetValue))
+                return true;
+        }
+        return false;
     }
 
     @NonNull
@@ -45,21 +53,11 @@ public class DocumentsItemAdapter extends ArrayAdapter<String> {
         }
         final String current = getItem(position);
         String currentType;
-        if (current.lastIndexOf('.') == -1) {
+        if (Objects.requireNonNull(current).lastIndexOf('.') == -1) {
             currentType = "Folder";
         } else {
             currentType = current.substring(current.lastIndexOf('.') + 1);
         }
-        String folderCheck = "Folder";
-        String[] web = {"html", "htm", "mhtml"};
-        String[] computer = {"exe", "dmg", "iso", "msi"};
-        String[] document = {"doc", "docx", "rtf", "odt"};
-        String[] pdf = {"pdf"};
-        String[] powerpoint = {"ppt", "pps", "pptx"};
-        String[] excel = {"xls", "xlsx", "ods"};
-        String[] image = {"png", "gif", "jpg", "jpeg", "bmp"};
-        String[] video = {"mp4", "mp3", "avi", "mov", "mpg", "mkv", "wmv"};
-        String[] compressed = {"rar", "zip", "zipx", "tar", "7z", "gz"};
 
         int[] mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
         TextView title = listItemView.findViewById(R.id.title);
@@ -68,41 +66,41 @@ public class DocumentsItemAdapter extends ArrayAdapter<String> {
         Icon icon;
         int colorVal = random.nextInt(mMaterial_Colors.length);
 
-        if (isExtension(web, currentType)) {
+        if (isExtension(Utils.web, currentType)) {
             icon = FontAwesomeIcons.fa_file_code_o;
             colorVal = 0;
-        } else if (currentType.equals(folderCheck)) {
+        } else if (currentType.equals(Utils.folderCheck)) {
             icon = FontAwesomeIcons.fa_folder_open;
-        } else if (isExtension(computer, currentType)) {
+        } else if (isExtension(Utils.computer, currentType)) {
             icon = FontAwesomeIcons.fa_file_code_o;
             colorVal = 7;
-        } else if (isExtension(document, currentType)) {
+        } else if (isExtension(Utils.document, currentType)) {
             icon = FontAwesomeIcons.fa_file_word_o;
             colorVal = 6;
-        } else if (isExtension(pdf, currentType)) {
+        } else if (isExtension(Utils.pdf, currentType)) {
             icon = FontAwesomeIcons.fa_file_pdf_o;
             colorVal = 1;
-        } else if (isExtension(powerpoint, currentType)) {
+        } else if (isExtension(Utils.powerpoint, currentType)) {
             icon = FontAwesomeIcons.fa_file_powerpoint_o;
             colorVal = 2;
-        } else if (isExtension(excel, currentType)) {
+        } else if (isExtension(Utils.excel, currentType)) {
             icon = FontAwesomeIcons.fa_file_excel_o;
             colorVal = 4;
-        } else if (isExtension(image, currentType)) {
+        } else if (isExtension(Utils.image, currentType)) {
             icon = FontAwesomeIcons.fa_file_image_o;
-        } else if (isExtension(video, currentType)) {
+        } else if (isExtension(Utils.video, currentType)) {
             icon = FontAwesomeIcons.fa_file_video_o;
-        } else if (isExtension(compressed, currentType)) {
+        } else if (isExtension(Utils.compressed, currentType)) {
             icon = FontAwesomeIcons.fa_file_zip_o;
             colorVal = 3;
         } else {
             icon = FontAwesomeIcons.fa_file_text;
         }
-        if (!(currentType.equals(folderCheck))) {
-            toRight.setVisibility(GONE);
+        if (!(currentType.equals(Utils.folderCheck))) {
+            toRight.setVisibility(View.INVISIBLE);
         }
         if ("Go Back".equalsIgnoreCase(current)) {
-            toRight.setVisibility(GONE);
+            toRight.setVisibility(View.INVISIBLE);
             colorVal = 5;
             icon = FontAwesomeIcons.fa_caret_left;
         }
@@ -112,13 +110,5 @@ public class DocumentsItemAdapter extends ArrayAdapter<String> {
                 .color(mMaterial_Colors[colorVal]));
 
         return listItemView;
-    }
-
-    private boolean isExtension(String[] arr, String targetValue) {
-        for (String s : arr) {
-            if (s.equals(targetValue))
-                return true;
-        }
-        return false;
     }
 }

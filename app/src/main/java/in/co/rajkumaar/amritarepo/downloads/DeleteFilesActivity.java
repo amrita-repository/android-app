@@ -21,11 +21,10 @@ import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.downloads.adapters.DownloadsItemAdapter;
 import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
 
-public class DeleteFilesActivity extends BaseActivity {
+public class DeleteFilesActivity extends BaseActivity implements FolderHelper {
 
     private File dir;
     private ListView listView;
-    private ArrayAdapter<DownloadsItem> fileAdapter;
     private int count;
     private ArrayList<DownloadsItem> fileList;
 
@@ -35,7 +34,7 @@ public class DeleteFilesActivity extends BaseActivity {
         setContentView(R.layout.activity_delete_files);
         String dirPath = getExternalFilesDir(null) + "/AmritaRepo";
         dir = new File(dirPath);
-        fileList = new ArrayList<DownloadsItem>();
+        fileList = new ArrayList<>();
         listView = findViewById(R.id.list);
         retrieveFiles();
         listFiles();
@@ -89,23 +88,28 @@ public class DeleteFilesActivity extends BaseActivity {
         fileList.clear();
         if (files != null) {
             for (File file : files) {
-                fileList.add(new DownloadsItem(file, (file.length() / 1024) + " kb", false));
+                fileList.add(new DownloadsItem(file, file.isDirectory() ? "Click to go inside the folder" : (file.length() / 1024) + " kb", false));
             }
         }
     }
 
     private void listFiles() {
         if (!fileList.isEmpty()) {
-            fileAdapter = new DownloadsItemAdapter(this, fileList);
+            ArrayAdapter<DownloadsItem> fileAdapter = new DownloadsItemAdapter(this, fileList, this);
             final ListView downloads = listView;
             downloads.setAdapter(fileAdapter);
-        } else {
-            finish();
         }
     }
 
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    public void loadFilesFromDir(File dir) {
+        this.dir = dir;
+        retrieveFiles();
+        listFiles();
     }
 }
