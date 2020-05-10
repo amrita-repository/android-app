@@ -75,6 +75,7 @@ public class OPACAccountActivity extends BaseActivity {
 
             @Override
             public void onFailure(Exception exception) {
+                exception.printStackTrace();
                 Utils.showUnexpectedError(OPACAccountActivity.this);
                 finish();
             }

@@ -39,6 +39,8 @@ Find downloaded question papers and timetables in the downloads section within t
 #### Amrita News:
 Be up-to-date with what's happening at Amrita. Be notified of news articles pulled directly from the Amrita Website.
 
+.... and much more
+
 ## Contributing
 - Fork this repository
 - Clone the repo locally
