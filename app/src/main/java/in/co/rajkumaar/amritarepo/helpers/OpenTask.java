@@ -39,8 +39,7 @@ public class OpenTask {
         this.context = context;
 
         downloadFileName = new File(new URI(downloadUrl).getPath()).getName();
-        downloadUrl = URLDecoder.decode(downloadUrl, "UTF-8");
-        this.downloadUrl = downloadUrl;
+        this.downloadUrl = URLDecoder.decode(downloadUrl, "UTF-8");
 
         Log.e(TAG, downloadFileName);
         new ClearCache().clear(context);

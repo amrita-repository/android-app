@@ -124,10 +124,10 @@ public class CourseResourcesActivity extends BaseActivity {
                                 public void onClick(DialogInterface dialogInterface, int pos) {
                                     if (pos == 0) {
                                         progressDialog.show();
-                                        getResource(UserData.client, courseRes.getResourceUrl(), SAVE_TYPES.OPEN);
+                                        getResource(UserData.client, courseRes.getResourceUrl(), SaveTypes.OPEN);
                                     } else if (pos == 1) {
                                         progressDialog.show();
-                                        getResource(UserData.client, courseRes.getResourceUrl(), SAVE_TYPES.DOWNLOAD);
+                                        getResource(UserData.client, courseRes.getResourceUrl(), SaveTypes.DOWNLOAD);
                                     }
                                 }
                             });
@@ -319,14 +319,14 @@ public class CourseResourcesActivity extends BaseActivity {
         }
     }
 
-    private void getResource(final AsyncHttpClient client, final String resourceCode, final SAVE_TYPES saveType) {
+    private void getResource(final AsyncHttpClient client, final String resourceCode, final SaveTypes saveType) {
         boolean alreadyExists = false;
         final String resourceFolderPath;
         String notFolder = "";
         final File resourceFolders;
         String root = "";
         File resourceFile = null;
-        root = saveType == SAVE_TYPES.OPEN ? ".AmritaRepoCache" : "AmritaRepo";
+        root = saveType == SaveTypes.OPEN ? ".AmritaRepoCache" : "AmritaRepo";
 
         if (resourceCode.lastIndexOf("/") == -1) {
             resourceFolderPath = "";
@@ -352,7 +352,7 @@ public class CourseResourcesActivity extends BaseActivity {
 
         if (alreadyExists) {
             try {
-                if (saveType == SAVE_TYPES.OPEN) {
+                if (saveType == SaveTypes.OPEN) {
                     Utils.openFileIntent(CourseResourcesActivity.this, resourceFile);
                 } else {
                     Utils.showDownloadedNotification(CourseResourcesActivity.this, resourceFile);
@@ -387,19 +387,19 @@ public class CourseResourcesActivity extends BaseActivity {
         return super.onKeyLongPress(keyCode, event);
     }
 
-    private enum SAVE_TYPES {
+    private enum SaveTypes {
         OPEN, DOWNLOAD
     }
 
     @SuppressLint("StaticFieldLeak")
     class SaveCourseResource extends AsyncTask<byte[], String, String> {
 
-        private SAVE_TYPES saveType;
+        private SaveTypes saveType;
         private File resourceFolders;
         private String resourceName;
         private boolean isSuccess = false;
 
-        SaveCourseResource(SAVE_TYPES saveType, File resourceFolders, String resName) {
+        SaveCourseResource(SaveTypes saveType, File resourceFolders, String resName) {
             this.saveType = saveType;
             this.resourceFolders = resourceFolders;
             this.resourceName = resName;
@@ -444,7 +444,7 @@ public class CourseResourcesActivity extends BaseActivity {
             File resourceFile = new File(s);
             progressDialog.dismiss();
             if (isSuccess) {
-                if (saveType == SAVE_TYPES.OPEN) {
+                if (saveType == SaveTypes.OPEN) {
                     Utils.openFileIntent(CourseResourcesActivity.this, resourceFile);
                 } else {
                     Utils.showDownloadedNotification(CourseResourcesActivity.this, resourceFile);
