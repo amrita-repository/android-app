@@ -36,6 +36,8 @@ import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
@@ -59,6 +61,7 @@ public class CourseResourcesActivity extends BaseActivity {
     private String courseName;
     private ListView list;
     private ProgressDialog progressDialog;
+    private ProgressDialog downloadDialog;
     private Stack<ArrayList<CourseResource>> courseResourceStack;
     private Stack<String> curFolder;
     private boolean firstEntry;
@@ -79,6 +82,13 @@ public class CourseResourcesActivity extends BaseActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait");
         progressDialog.setCancelable(false);
+
+        downloadDialog = new ProgressDialog(this);
+        downloadDialog.setMessage("Please wait");
+        downloadDialog.setIndeterminate(false);
+        downloadDialog.setMax(100);
+        downloadDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        downloadDialog.setCancelable(false);
 
         courseResourceStack = new Stack<>();
         curFolder = new Stack<>();
@@ -122,11 +132,10 @@ public class CourseResourcesActivity extends BaseActivity {
                             qPaperBuilder.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int pos) {
+                                    downloadDialog.show();
                                     if (pos == 0) {
-                                        progressDialog.show();
                                         getResource(UserData.client, courseRes.getResourceUrl(), SaveTypes.OPEN);
                                     } else if (pos == 1) {
-                                        progressDialog.show();
                                         getResource(UserData.client, courseRes.getResourceUrl(), SaveTypes.DOWNLOAD);
                                     }
                                 }
@@ -320,13 +329,10 @@ public class CourseResourcesActivity extends BaseActivity {
     }
 
     private void getResource(final AsyncHttpClient client, final String resourceCode, final SaveTypes saveType) {
-        boolean alreadyExists = false;
         final String resourceFolderPath;
         String notFolder = "";
         final File resourceFolders;
-        String root = "";
-        File resourceFile = null;
-        root = saveType == SaveTypes.OPEN ? ".AmritaRepoCache" : "AmritaRepo";
+        String root = saveType == SaveTypes.OPEN ? ".AmritaRepoCache" : "AmritaRepo";
 
         if (resourceCode.lastIndexOf("/") == -1) {
             resourceFolderPath = "";
@@ -340,42 +346,37 @@ public class CourseResourcesActivity extends BaseActivity {
             resourceFolders = new File(getExternalFilesDir(null), root + "/Course Resources/" + courseName + "/" + resourceFolderPath);
         }
 
-        if (resourceFolders.exists()) {
-            resourceFile = new File(resourceFolders, resourceCode.substring(resourceCode.lastIndexOf("/") + 1));
-            if (resourceFile.exists()) {
-                alreadyExists = true;
-            }
-        } else {
+        if (!resourceFolders.exists()) {
             resourceFolders.mkdirs();
             Log.v("AUMS Course Resources/" + courseName + "/" + resourceFolderPath, "Directory Created.");
         }
 
-        if (alreadyExists) {
-            try {
-                if (saveType == SaveTypes.OPEN) {
-                    Utils.openFileIntent(CourseResourcesActivity.this, resourceFile);
-                } else {
-                    Utils.showDownloadedNotification(CourseResourcesActivity.this, resourceFile);
-                }
-                progressDialog.dismiss();
-            } catch (Exception e) {
-                Log.e("AUMS", "Exception in AUMS Course Resources", e);
-                Utils.showUnexpectedError(CourseResourcesActivity.this);
+        client.get(UserData.domain + "/access/content/group/" + courseId + "/" + resourceCode, new AsyncHttpResponseHandler() {
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                downloadDialog.setProgress((int) (bytesWritten * 100 / totalSize));
+                super.onProgress(bytesWritten, totalSize);
             }
-        } else {
-            client.get(UserData.domain + "/access/content/group/" + courseId + "/" + resourceCode, new AsyncHttpResponseHandler() {
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Utils.showUnexpectedError(CourseResourcesActivity.this);
-                    progressDialog.dismiss();
-                }
 
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    new SaveCourseResource(saveType, resourceFolders, resourceCode.substring(resourceCode.lastIndexOf("/") + 1)).execute(responseBody);
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Utils.showUnexpectedError(CourseResourcesActivity.this);
+                downloadDialog.dismiss();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    String tempFileName = resourceCode;
+                    tempFileName = new File(new URI(tempFileName).getPath()).getName();
+                    new SaveCourseResource(saveType, resourceFolders, tempFileName).execute(responseBody);
+                } catch (URISyntaxException e) {
+                    Utils.showUnexpectedError(CourseResourcesActivity.this);
+                    downloadDialog.dismiss();
+                    e.printStackTrace();
                 }
-            });
-        }
+            }
+        });
     }
 
     @Override
@@ -430,7 +431,7 @@ public class CourseResourcesActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            progressDialog.dismiss();
+                            downloadDialog.dismiss();
                         }
                     });
                     Utils.showUnexpectedError(CourseResourcesActivity.this);
@@ -442,7 +443,7 @@ public class CourseResourcesActivity extends BaseActivity {
         @Override
         protected void onPostExecute(String s) {
             File resourceFile = new File(s);
-            progressDialog.dismiss();
+            downloadDialog.dismiss();
             if (isSuccess) {
                 if (saveType == SaveTypes.OPEN) {
                     Utils.openFileIntent(CourseResourcesActivity.this, resourceFile);

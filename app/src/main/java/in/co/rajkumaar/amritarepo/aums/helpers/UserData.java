@@ -48,9 +48,9 @@ public class UserData {
     public static void initDomains() {
         domainIndex = 0;
         UserData.domains.clear();
-        UserData.domains.add("https://amritavidya2.amrita.edu:8444");
-        UserData.domains.add("https://amritavidya1.amrita.edu:8444");
         UserData.domains.add("https://amritavidya.amrita.edu:8444");
+        UserData.domains.add("https://amritavidya1.amrita.edu:8444");
+        UserData.domains.add("https://amritavidya2.amrita.edu:8444");
     }
 
     public static void getSession(final LogInResponse logInResponse) {
