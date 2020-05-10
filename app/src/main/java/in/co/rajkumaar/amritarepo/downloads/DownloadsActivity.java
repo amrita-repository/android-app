@@ -340,6 +340,7 @@ public class DownloadsActivity extends BaseActivity {
                             break;
                         default:
                             Utils.showUnexpectedError(DownloadsActivity.this);
+                            break;
                     }
                 }
 
