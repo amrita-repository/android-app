@@ -320,33 +320,34 @@ public class DownloadsActivity extends BaseActivity {
             fileOptions.add("Open");
             fileOptions.add("Delete");
             fileOptions.add("Rename");
-            fileOptions.add("Delete multiple files");
 
             String currentType = file.getName().substring(file.getName().lastIndexOf('.') + 1);
             if (isExtension(Utils.image, currentType)) {
                 fileOptions.add("Set as widget");
             }
 
+            fileOptions.add("Delete multiple files");
+
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this); //Read Update
             ArrayAdapter<String> optionsAdapter = new ArrayAdapter<>(DownloadsActivity.this, android.R.layout.simple_list_item_1, fileOptions);
             alertDialog.setAdapter(optionsAdapter, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int pos) {
-                    switch (pos) {
-                        case 0:
+                    switch (fileOptions.get(pos)) {
+                        case "Open":
                             openFile(file);
                             break;
-                        case 1:
+                        case "Delete":
                             deleteFileOption(file);
                             break;
-                        case 2:
+                        case "Rename":
                             renameFile(file, renamingFileName);
                             break;
-                        case 3:
-                            startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
-                            break;
-                        case 4:
+                        case "Set as widget":
                             setWidget(renamingFileName);
+                            break;
+                        case "Delete multiple files":
+                            startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
                             break;
                     }
                 }
