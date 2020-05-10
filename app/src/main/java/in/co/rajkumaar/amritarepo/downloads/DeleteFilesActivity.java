@@ -103,10 +103,13 @@ public class DeleteFilesActivity extends BaseActivity implements FolderHelper {
     }
 
     private void listFiles() {
-        if (!fileList.isEmpty()) {
+        if (fileList.isEmpty() && curFolder.size() <= 1) {
+            listView.setEmptyView(findViewById(R.id.dempty_view));
+            findViewById(R.id.delete).setVisibility(View.GONE);
+        } else {
             ArrayAdapter<DownloadsItem> fileAdapter = new DownloadsItemAdapter(this, fileList, this);
-            final ListView downloads = listView;
-            downloads.setAdapter(fileAdapter);
+            listView.setAdapter(fileAdapter);
+            findViewById(R.id.delete).setVisibility(View.VISIBLE);
         }
     }
 

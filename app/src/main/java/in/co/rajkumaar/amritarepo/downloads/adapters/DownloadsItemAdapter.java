@@ -57,13 +57,14 @@ public class DownloadsItemAdapter extends ArrayAdapter<DownloadsItem> {
             if (getContext().getString(R.string.go_back).equalsIgnoreCase(current.getFilePath())) {
                 checkBox.setVisibility(View.INVISIBLE);
                 size.setVisibility(View.GONE);
+                title.setText(Html.fromHtml(current.getFilePath()));
             } else {
                 currentFile = new File(current.getFilePath());
+                title.setText(currentFile.getName());
                 checkBox.setVisibility(View.VISIBLE);
                 size.setVisibility(View.VISIBLE);
             }
 
-            title.setText(currentFile != null ? currentFile.getName() : Html.fromHtml(current.getFilePath()));
             size.setText(fileSize);
             checkBox.setChecked(checkbox);
 
