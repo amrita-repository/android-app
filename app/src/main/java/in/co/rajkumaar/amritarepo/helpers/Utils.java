@@ -181,6 +181,14 @@ public class Utils {
         }
     }
 
+    public static boolean isExtension(String[] arr, String targetValue) {
+        for (String s : arr) {
+            if (s.equals(targetValue))
+                return true;
+        }
+        return false;
+    }
+
     public static void clearUnsafeCredentials(Context context) {
         SharedPreferences userPrefs = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         if (!userPrefs.getBoolean("old_credentials_cleared", false)) {

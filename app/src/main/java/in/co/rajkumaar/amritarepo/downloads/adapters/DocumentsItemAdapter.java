@@ -25,6 +25,8 @@ import java.util.Random;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
+import static in.co.rajkumaar.amritarepo.helpers.Utils.isExtension;
+
 public class DocumentsItemAdapter extends ArrayAdapter<String> {
     private final Random random;
     private final Context context;
@@ -33,14 +35,6 @@ public class DocumentsItemAdapter extends ArrayAdapter<String> {
         super(context, 0, Documents);
         this.context = context;
         random = new Random();
-    }
-
-    public static boolean isExtension(String[] arr, String targetValue) {
-        for (String s : arr) {
-            if (s.equals(targetValue))
-                return true;
-        }
-        return false;
     }
 
     @NonNull

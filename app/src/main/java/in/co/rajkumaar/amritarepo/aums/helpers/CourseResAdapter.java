@@ -25,6 +25,17 @@ import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.aums.models.CourseResource;
 
 import static android.view.View.GONE;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.compressed;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.computer;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.document;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.excel;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.folderCheck;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.image;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.isExtension;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.pdf;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.powerpoint;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.video;
+import static in.co.rajkumaar.amritarepo.helpers.Utils.web;
 
 public class CourseResAdapter extends ArrayAdapter<CourseResource> {
     private final Random random;
@@ -47,16 +58,6 @@ public class CourseResAdapter extends ArrayAdapter<CourseResource> {
         final CourseResource current = getItem(position);
         assert current != null;
         String resType = current.getType();
-        String folderCheck = "Folder";
-        String[] web = {"html", "htm", "mhtml"};
-        String[] computer = {"exe", "dmg", "iso", "msi"};
-        String[] document = {"doc", "docx", "rtf", "odt"};
-        String[] pdf = {"pdf"};
-        String[] powerpoint = {"ppt", "pps", "pptx"};
-        String[] excel = {"xls", "xlsx", "ods"};
-        String[] image = {"png", "gif", "jpg", "jpeg", "bmp"};
-        String[] video = {"mp4", "mp3", "avi", "mov", "mpg", "mkv", "wmv"};
-        String[] compressed = {"rar", "zip", "zipx", "tar", "7z", "gz"};
 
         int[] mMaterial_Colors = getContext().getResources().getIntArray(R.array.colors);
         TextView title = listItemView.findViewById(R.id.title);
@@ -104,13 +105,5 @@ public class CourseResAdapter extends ArrayAdapter<CourseResource> {
             toRight.setVisibility(GONE);
         }
         return listItemView;
-    }
-
-    private boolean isExtension(String[] arr, String targetValue) {
-        for (String s : arr) {
-            if (s.equals(targetValue))
-                return true;
-        }
-        return false;
     }
 }

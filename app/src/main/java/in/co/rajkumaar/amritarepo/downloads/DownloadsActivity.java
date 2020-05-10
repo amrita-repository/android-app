@@ -46,6 +46,8 @@ import in.co.rajkumaar.amritarepo.helpers.ClearCache;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
 
+import static in.co.rajkumaar.amritarepo.helpers.Utils.isExtension;
+
 public class DownloadsActivity extends BaseActivity {
 
     private String dirPath;
@@ -309,7 +311,7 @@ public class DownloadsActivity extends BaseActivity {
             fileOptions.add("Rename");
 
             String currentType = file.getName().substring(file.getName().lastIndexOf('.') + 1);
-            if (DocumentsItemAdapter.isExtension(Utils.image, currentType)) {
+            if (isExtension(Utils.image, currentType)) {
                 fileOptions.add("Set as widget");
             }
 
