@@ -98,10 +98,10 @@ public class DocumentsItemAdapter extends ArrayAdapter<String> {
         } else {
             icon = FontAwesomeIcons.fa_file_text;
         }
-        if (!(currentType.equals("Folder"))) {
+        if (!(currentType.equals(folderCheck))) {
             toRight.setVisibility(GONE);
         }
-        if (current.equalsIgnoreCase("Go Back")) {
+        if ("Go Back".equalsIgnoreCase(current)) {
             toRight.setVisibility(GONE);
             colorVal = 5;
             icon = FontAwesomeIcons.fa_caret_left;

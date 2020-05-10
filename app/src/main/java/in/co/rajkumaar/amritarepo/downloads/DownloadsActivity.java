@@ -50,6 +50,7 @@ public class DownloadsActivity extends BaseActivity {
     private Stack<ArrayList<String>> fileListStack;
     private Stack<String> curFolder;
     private File current;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +84,6 @@ public class DownloadsActivity extends BaseActivity {
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-
             }
 
             @Override
@@ -184,24 +184,7 @@ public class DownloadsActivity extends BaseActivity {
                         }
                         final File Element = new File(dirPath + "/" + curFolder.peek() + fileList.get(i));
                         if (Element.exists()) {
-                            if (Element.isDirectory()) {
-                                if (Element.list().length == 0) {
-                                    Utils.showToast(DownloadsActivity.this, "This directory is empty!");
-                                } else {
-                                    curFolder.push(curFolder.peek() + fileList.get(i) + "/");
-                                    retrieveFiles(Element);
-                                }
-                            } else {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                Uri data = FileProvider.getUriForFile(DownloadsActivity.this, BuildConfig.APPLICATION_ID + ".provider", Element);
-                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                intent.setData(data);
-                                Intent fileChooserIntent = Intent.createChooser(intent, "Open " + Element.getName() + " with:");
-                                if (intent.resolveActivity(getPackageManager()) != null)
-                                    startActivity(fileChooserIntent);
-                                else
-                                    Utils.showToast(DownloadsActivity.this, "Sorry, there's no appropriate app in the device to open this file.");
-                            }
+                            openFile(Element);
                         }
                     }
                 });
@@ -230,6 +213,88 @@ public class DownloadsActivity extends BaseActivity {
         fileOrDirectory.delete();
     }
 
+    private void openFile(File file) {
+        if (file.isDirectory()) {
+            if (file.list().length == 0) {
+                Utils.showToast(DownloadsActivity.this, "This directory is empty!");
+            } else {
+                curFolder.push(curFolder.peek() + file.getName() + "/");
+                retrieveFiles(file);
+            }
+        } else {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri data = FileProvider.getUriForFile(DownloadsActivity.this, BuildConfig.APPLICATION_ID + ".provider", file);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setData(data);
+            Intent fileChooserIntent = Intent.createChooser(intent, "Open " + file.getName() + " with:");
+            if (intent.resolveActivity(getPackageManager()) != null)
+                startActivity(fileChooserIntent);
+            else
+                Utils.showToast(DownloadsActivity.this, "Sorry, there's no appropriate app in the device to open this file.");
+        }
+    }
+
+    private void deleteFileOption(final File file) {
+        String deleteMsg = "Are you sure you want to delete the file? ";
+        if (file.isDirectory()) {
+            deleteMsg = "Are you sure you want to delete the folder? ";
+        }
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
+        alertDialog.setMessage(deleteMsg);
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deleteRecursive(file);
+                Toast.makeText(DownloadsActivity.this, file.getName() + " Deleted", Toast.LENGTH_SHORT).show();
+                reproduce();
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void renameFile(final File file, final String renamingFileName) {
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
+        if (file.isDirectory()) {
+            alertDialog.setMessage("Rename folder : \n" + renamingFileName);
+        } else {
+            alertDialog.setMessage("Rename file : \n" + renamingFileName.substring(0, renamingFileName.lastIndexOf('.')));
+        }
+        LinearLayout layout = new LinearLayout(DownloadsActivity.this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(40, 0, 50, 0);
+        final EditText textBox = new EditText(DownloadsActivity.this);
+        layout.addView(textBox, params);
+        alertDialog.setView(layout);
+
+        alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (file.isDirectory()) {
+                    file.renameTo(new File(dirPath + "/" + curFolder.peek() + textBox.getText()));
+                } else {
+                    String extension = renamingFileName.substring(renamingFileName.lastIndexOf('.'));
+                    file.renameTo(new File(dirPath + "/" + curFolder.peek() + textBox.getText() + extension));
+                }
+                reproduce();
+            }
+        });
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        alertDialog.show();
+    }
+
     private void activateLongClick(int i) {
         final ArrayList<String> fileList = fileListStack.peek();
         final File file = new File(dirPath + "/" + curFolder.peek() + fileList.get(i));
@@ -246,82 +311,12 @@ public class DownloadsActivity extends BaseActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int pos) {
                     if (pos == 0) {
-                        if (file.isDirectory()) {
-                            if (file.list().length == 0) {
-                                Utils.showToast(DownloadsActivity.this, "This directory is empty!");
-                            } else {
-                                curFolder.push(curFolder.peek() + renamingFileName + "/");
-                                retrieveFiles(file);
-                            }
-                        } else {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            Uri data = FileProvider.getUriForFile(DownloadsActivity.this, BuildConfig.APPLICATION_ID + ".provider", file);
-                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            intent.setData(data);
-                            Intent fileChooserIntent = Intent.createChooser(intent, "Open " + file.getName() + " with:");
-                            if (intent.resolveActivity(getPackageManager()) != null)
-                                startActivity(fileChooserIntent);
-                            else
-                                Utils.showToast(DownloadsActivity.this, "Sorry, there's no appropriate app in the device to open this file.");
-                        }
+                        openFile(file);
                     } else if (pos == 1) {
-                        String deleteMsg = "Are you sure you want to delete the file? ";
-                        if (file.isDirectory()) {
-                            deleteMsg = "Are you sure you want to delete the folder? ";
-                        }
-                        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
-                        alertDialog.setMessage(deleteMsg);
-                        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                deleteRecursive(file);
-                                Toast.makeText(DownloadsActivity.this, renamingFileName + " Deleted", Toast.LENGTH_SHORT).show();
-                                reproduce();
-                            }
-                        });
-                        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        });
-                        alertDialog.show();
+                        deleteFileOption(file);
 
                     } else if (pos == 2) {
-                        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(DownloadsActivity.this);
-                        if (file.isDirectory()) {
-                            alertDialog.setMessage("Rename folder : \n" + renamingFileName);
-                        } else {
-                            alertDialog.setMessage("Rename file : \n" + renamingFileName.substring(0, renamingFileName.lastIndexOf('.')));
-                        }
-                        LinearLayout layout = new LinearLayout(DownloadsActivity.this);
-                        layout.setOrientation(LinearLayout.VERTICAL);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        params.setMargins(40, 0, 50, 0);
-                        final EditText textBox = new EditText(DownloadsActivity.this);
-                        layout.addView(textBox, params);
-                        alertDialog.setView(layout);
-
-                        alertDialog.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (file.isDirectory()) {
-                                    file.renameTo(new File(dirPath + "/" + curFolder.peek() + textBox.getText()));
-                                } else {
-                                    String extension = renamingFileName.substring(renamingFileName.lastIndexOf('.'));
-                                    file.renameTo(new File(dirPath + "/" + curFolder.peek() + textBox.getText() + extension));
-                                }
-                                reproduce();
-                            }
-                        });
-                        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        });
-                        alertDialog.show();
+                        renameFile(file, renamingFileName);
                     } else if (pos == 3) {
                         startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
                     }
@@ -334,6 +329,7 @@ public class DownloadsActivity extends BaseActivity {
             Toast.makeText(DownloadsActivity.this, "Error Opening File", Toast.LENGTH_SHORT).show();
         }
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
