@@ -12,16 +12,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.widget.RemoteViews;
+
+import androidx.core.content.FileProvider;
 
 import com.crashlytics.android.Crashlytics;
 
 import java.io.File;
 import java.util.Objects;
 
+import in.co.rajkumaar.amritarepo.BuildConfig;
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
-import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 /**
  * Implementation of App Widget functionality.
@@ -100,7 +103,12 @@ public class ImageWidget extends AppWidgetProvider {
                     if (!file.exists()) {
                         preferences.edit().remove("path").apply();
                     } else {
-                        Utils.openFileIntent(context, file);
+                        Intent intentToOpen = new Intent(Intent.ACTION_VIEW);
+                        Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+                        intentToOpen.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intentToOpen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intentToOpen.setDataAndType(data, "image/*");
+                        context.startActivity(intentToOpen);
                     }
                 } catch (Exception e) {
                     Crashlytics.log(e.getMessage());
