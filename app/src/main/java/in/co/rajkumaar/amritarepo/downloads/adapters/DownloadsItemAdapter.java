@@ -20,10 +20,12 @@ import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.downloads.FolderHelper;
 import in.co.rajkumaar.amritarepo.downloads.models.DownloadsItem;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class DownloadsItemAdapter extends ArrayAdapter<DownloadsItem> {
 
@@ -72,8 +74,14 @@ public class DownloadsItemAdapter extends ArrayAdapter<DownloadsItem> {
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (getContext().getString(R.string.go_back).equalsIgnoreCase(current.getFilePath()) || new File(current.getFilePath()).isDirectory()) {
+                    if (getContext().getString(R.string.go_back).equalsIgnoreCase(current.getFilePath())) {
                         folderHelper.loadFilesFromDir(current.getFilePath());
+                    } else if (new File(current.getFilePath()).isDirectory()) {
+                        if (Objects.requireNonNull(new File(current.getFilePath()).list()).length == 0) {
+                            Utils.showToast(getContext(), "This directory is empty!");
+                        } else {
+                            folderHelper.loadFilesFromDir(current.getFilePath());
+                        }
                     } else {
                         checkBox.setChecked(!checkBox.isChecked());
                         current.setCheckBox(checkBox.isChecked());
