@@ -8,8 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKeys;
+import at.favre.lib.armadillo.Armadillo;
 
 
 public class EncryptedPrefsUtils {
@@ -17,14 +16,10 @@ public class EncryptedPrefsUtils {
         SharedPreferences pref = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
-                String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-                pref = EncryptedSharedPreferences.create(
-                        prefName,
-                        masterKeyAlias,
-                        context,
-                        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-                );
+                Armadillo.create(context, prefName)
+                        .encryptionFingerprint(context)
+                        .enableKitKatSupport(true)
+                        .build();
             } catch (Exception e) {
                 e.printStackTrace();
             }
