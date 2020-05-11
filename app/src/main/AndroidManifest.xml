@@ -13,8 +13,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
-    <uses-sdk tools:overrideLibrary="androidx.security" />
-
     <application
         android:name=".helpers.BillingItem"
         android:allowBackup="true"
