@@ -33,7 +33,7 @@
             android:id="@+id/filesize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/holo_orange_light"
+            android:textColor="@android:color/holo_orange_dark"
             tools:text="file size will come here" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -41,7 +41,7 @@
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/holo_orange_light"
+        android:backgroundTint="@android:color/holo_orange_dark"
         android:buttonTint="@color/colorAccent"
         tools:ignore="UnusedAttribute"
         android:layout_alignParentEnd="true"
