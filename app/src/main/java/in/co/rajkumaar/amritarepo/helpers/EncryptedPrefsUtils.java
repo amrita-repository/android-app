@@ -11,9 +11,6 @@ import android.os.Build;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
 
 public class EncryptedPrefsUtils {
     public static SharedPreferences get(Context context, String prefName) {
@@ -28,7 +25,7 @@ public class EncryptedPrefsUtils {
                         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
                 );
-            } catch (GeneralSecurityException | IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
