@@ -18,7 +18,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,7 +92,6 @@ public class LaunchingActivity extends BaseActivity
     private Task<AppUpdateInfo> appUpdateInfoTask;
     private InstallStateUpdatedListener listener;
     private int APP_UPDATE_REQUEST_CODE = 100;
-    private int DAYS_FOR_IMMEDIATE_UPDATE = 1;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -513,7 +511,6 @@ public class LaunchingActivity extends BaseActivity
     private void intentSemActivity(int position, String title) {
         Bundle params = new Bundle();
         params.putString("Department", title);
-        Log.e("Dept", title);
         mFirebaseAnalytics.logEvent("EventDept", params);
 
         if (Utils.isConnected(this)) {
@@ -559,7 +556,7 @@ public class LaunchingActivity extends BaseActivity
                 .addOnSuccessListener(appUpdateInfo -> {
                     // If the update is downloaded but not installed,
                     // notify the user to complete the update.
-                    if (appUpdateInfo.clientVersionStalenessDays() != null && appUpdateInfo.clientVersionStalenessDays() > DAYS_FOR_IMMEDIATE_UPDATE) {
+                    if (shouldImmediatelyUpdate(appUpdateInfo)) {
                         if (appUpdateInfo.updateAvailability()
                                 == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                             // If an in-app update is already running, resume the update.
@@ -698,37 +695,25 @@ public class LaunchingActivity extends BaseActivity
     private void startUpdate() {
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                if (appUpdateInfo.clientVersionStalenessDays() != null && appUpdateInfo.clientVersionStalenessDays() > DAYS_FOR_IMMEDIATE_UPDATE) {
-                    try {
-                        appUpdateManager.startUpdateFlowForResult(
-                                // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                                appUpdateInfo,
-                                // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
-                                AppUpdateType.IMMEDIATE,
-                                // The current activity making the update request.
-                                this,
-                                // Include a request code to later monitor this update request.
-                                APP_UPDATE_REQUEST_CODE);
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    try {
-                        appUpdateManager.startUpdateFlowForResult(
-                                // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                                appUpdateInfo,
-                                // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
-                                AppUpdateType.FLEXIBLE,
-                                // The current activity making the update request.
-                                this,
-                                // Include a request code to later monitor this update request.
-                                APP_UPDATE_REQUEST_CODE);
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                            appUpdateInfo,
+                            shouldImmediatelyUpdate(appUpdateInfo) ? AppUpdateType.IMMEDIATE : AppUpdateType.FLEXIBLE,
+                            // The current activity making the update request.
+                            this,
+                            // Include a request code to later monitor this update request.
+                            APP_UPDATE_REQUEST_CODE);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
                 }
             }
         });
+    }
+
+    private boolean shouldImmediatelyUpdate(AppUpdateInfo appUpdateInfo) {
+        int DAYS_FOR_IMMEDIATE_UPDATE = 1;
+        return appUpdateInfo.clientVersionStalenessDays() != null && appUpdateInfo.clientVersionStalenessDays() > DAYS_FOR_IMMEDIATE_UPDATE;
     }
 }
 
