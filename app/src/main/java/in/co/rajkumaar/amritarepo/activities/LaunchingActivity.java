@@ -40,7 +40,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
@@ -564,6 +563,25 @@ public class LaunchingActivity extends BaseActivity
         startActivity(new Intent(this, SupportActivity.class));
     }
 
+    private void startUpdate() {
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                            appUpdateInfo,
+                            AppUpdateType.IMMEDIATE,
+                            // The current activity making the update request.
+                            this,
+                            // Include a request code to later monitor this update request.
+                            APP_UPDATE_REQUEST_CODE);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     class HomeItemAdapter extends BaseAdapter {
 
         private List<Item> items = new ArrayList<>();
@@ -649,37 +667,6 @@ public class LaunchingActivity extends BaseActivity
                 return name;
             }
         }
-    }
-
-    private void popupSnackbarForCompleteUpdate() {
-        Snackbar snackbar =
-                Snackbar.make(
-                        findViewById(R.id.drawer_layout),
-                        getString(R.string.update_downloaded),
-                        Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction(getString(R.string.restart), view -> appUpdateManager.completeUpdate());
-        snackbar.setActionTextColor(
-                getResources().getColor(R.color.white));
-        snackbar.show();
-    }
-
-    private void startUpdate() {
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
-                try {
-                    appUpdateManager.startUpdateFlowForResult(
-                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                            appUpdateInfo,
-                            AppUpdateType.IMMEDIATE,
-                            // The current activity making the update request.
-                            this,
-                            // Include a request code to later monitor this update request.
-                            APP_UPDATE_REQUEST_CODE);
-                } catch (IntentSender.SendIntentException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 }
 
