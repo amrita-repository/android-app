@@ -38,6 +38,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -91,7 +92,8 @@ public class LaunchingActivity extends BaseActivity
     private AppUpdateManager appUpdateManager;
     private Task<AppUpdateInfo> appUpdateInfoTask;
     private InstallStateUpdatedListener listener;
-    private int request_code = 100;
+    private int APP_UPDATE_REQUEST_CODE = 100;
+    private int DAYS_FOR_IMMEDIATE_UPDATE = 1;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -531,88 +533,21 @@ public class LaunchingActivity extends BaseActivity
         super.onStart();
         // Create a listener to track request state updates.
         listener = state -> {
-            // (Optional) Provide a download progress bar.
             if (state.installStatus() == InstallStatus.DOWNLOADED) {
                 popupSnackbarForCompleteUpdate();
             }
         };
         // Before starting an update, register a listener for updates.
         appUpdateManager.registerListener(listener);
-        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE){
-                if(appUpdateInfo.updatePriority() > 3){
-                    try {
-                        appUpdateManager.startUpdateFlowForResult(
-                                // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                                appUpdateInfo,
-                                // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
-                                AppUpdateType.IMMEDIATE,
-                                // The current activity making the update request.
-                                this,
-                                // Include a request code to later monitor this update request.
-                                request_code);
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else{
-                    try {
-                        appUpdateManager.startUpdateFlowForResult(
-                                // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                                appUpdateInfo,
-                                // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
-                                AppUpdateType.FLEXIBLE,
-                                // The current activity making the update request.
-                                this,
-                                // Include a request code to later monitor this update request.
-                                request_code);
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        startUpdate();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == request_code && resultCode == ActivityResult.RESULT_IN_APP_UPDATE_FAILED) {
-                Utils.showToast(this,getString(R.string.update_failed));
-                appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-                    if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE){
-                        if(appUpdateInfo.updatePriority() > 3){
-                            try {
-                                appUpdateManager.startUpdateFlowForResult(
-                                        // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                                        appUpdateInfo,
-                                        // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
-                                        AppUpdateType.IMMEDIATE,
-                                        // The current activity making the update request.
-                                        this,
-                                        // Include a request code to later monitor this update request.
-                                        request_code);
-                            } catch (IntentSender.SendIntentException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else{
-                            try {
-                                appUpdateManager.startUpdateFlowForResult(
-                                        // Pass the intent that is returned by 'getAppUpdateInfo()'.
-                                        appUpdateInfo,
-                                        // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
-                                        AppUpdateType.FLEXIBLE,
-                                        // The current activity making the update request.
-                                        this,
-                                        // Include a request code to later monitor this update request.
-                                        request_code);
-                            } catch (IntentSender.SendIntentException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
+        if (requestCode == APP_UPDATE_REQUEST_CODE && resultCode == ActivityResult.RESULT_IN_APP_UPDATE_FAILED) {
+            Utils.showToast(this, getString(R.string.update_failed));
+            startUpdate();
         }
     }
 
@@ -624,7 +559,7 @@ public class LaunchingActivity extends BaseActivity
                 .addOnSuccessListener(appUpdateInfo -> {
                     // If the update is downloaded but not installed,
                     // notify the user to complete the update.
-                    if(appUpdateInfo.updatePriority()>3){
+                    if (appUpdateInfo.clientVersionStalenessDays() > DAYS_FOR_IMMEDIATE_UPDATE) {
                         if (appUpdateInfo.updateAvailability()
                                 == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                             // If an in-app update is already running, resume the update.
@@ -633,13 +568,12 @@ public class LaunchingActivity extends BaseActivity
                                         appUpdateInfo,
                                         AppUpdateType.IMMEDIATE,
                                         this,
-                                        request_code);
+                                        APP_UPDATE_REQUEST_CODE);
                             } catch (IntentSender.SendIntentException e) {
                                 e.printStackTrace();
                             }
                         }
-                    }
-                    else{
+                    } else {
                         if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
                             popupSnackbarForCompleteUpdate();
                         }
@@ -748,6 +682,7 @@ public class LaunchingActivity extends BaseActivity
             }
         }
     }
+
     private void popupSnackbarForCompleteUpdate() {
         Snackbar snackbar =
                 Snackbar.make(
@@ -758,6 +693,42 @@ public class LaunchingActivity extends BaseActivity
         snackbar.setActionTextColor(
                 getResources().getColor(R.color.white));
         snackbar.show();
+    }
+
+    private void startUpdate() {
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && appUpdateInfo.clientVersionStalenessDays() != null) {
+                if (appUpdateInfo.clientVersionStalenessDays() > DAYS_FOR_IMMEDIATE_UPDATE) {
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(
+                                // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                                appUpdateInfo,
+                                // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                                AppUpdateType.IMMEDIATE,
+                                // The current activity making the update request.
+                                this,
+                                // Include a request code to later monitor this update request.
+                                APP_UPDATE_REQUEST_CODE);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(
+                                // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                                appUpdateInfo,
+                                // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                                AppUpdateType.FLEXIBLE,
+                                // The current activity making the update request.
+                                this,
+                                // Include a request code to later monitor this update request.
+                                APP_UPDATE_REQUEST_CODE);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }
 
