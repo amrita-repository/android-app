@@ -30,7 +30,7 @@ android {
     }
     defaultConfig {
         applicationId "in.co.rajkumaar.amritarepo"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 68
         versionName "4.3.1"
