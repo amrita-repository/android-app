@@ -559,7 +559,7 @@ public class LaunchingActivity extends BaseActivity
                 .addOnSuccessListener(appUpdateInfo -> {
                     // If the update is downloaded but not installed,
                     // notify the user to complete the update.
-                    if (appUpdateInfo.clientVersionStalenessDays() > DAYS_FOR_IMMEDIATE_UPDATE) {
+                    if (appUpdateInfo.clientVersionStalenessDays() > DAYS_FOR_IMMEDIATE_UPDATE || appUpdateInfo.clientVersionStalenessDays() != null) {
                         if (appUpdateInfo.updateAvailability()
                                 == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
                             // If an in-app update is already running, resume the update.
@@ -697,8 +697,8 @@ public class LaunchingActivity extends BaseActivity
 
     private void startUpdate() {
         appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && appUpdateInfo.clientVersionStalenessDays() != null) {
-                if (appUpdateInfo.clientVersionStalenessDays() > DAYS_FOR_IMMEDIATE_UPDATE) {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                if (appUpdateInfo.clientVersionStalenessDays() > DAYS_FOR_IMMEDIATE_UPDATE || appUpdateInfo.clientVersionStalenessDays() != null) {
                     try {
                         appUpdateManager.startUpdateFlowForResult(
                                 // Pass the intent that is returned by 'getAppUpdateInfo()'.
