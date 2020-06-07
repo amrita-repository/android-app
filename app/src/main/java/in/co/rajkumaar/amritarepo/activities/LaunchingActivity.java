@@ -11,14 +11,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,17 +38,17 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.ActivityResult;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
@@ -84,9 +83,11 @@ import in.co.rajkumaar.amritarepo.wifistatus.WifiStatusActivity;
 public class LaunchingActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static boolean active = false;
     private boolean doubleBackToExitPressedOnce = false;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private AppUpdateManager appUpdateManager;
+    private Task<AppUpdateInfo> appUpdateInfoTask;
+    private int APP_UPDATE_REQUEST_CODE = 100;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -95,9 +96,10 @@ public class LaunchingActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launching);
         FirebaseApp.initializeApp(this);
+        appUpdateManager = AppUpdateManagerFactory.create(this);
+        appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
         Iconify.with(new FontAwesomeModule());
         Utils.clearUnsafeCredentials(this);
-
         final SharedPreferences pref = getSharedPreferences("user", Context.MODE_PRIVATE);
         if (ContextCompat.checkSelfPermission(LaunchingActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -138,7 +140,7 @@ public class LaunchingActivity extends BaseActivity
             FirebaseMessaging.getInstance().subscribeToTopic("general")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull com.google.android.gms.tasks.Task<Void> task) {
                             if (task.isSuccessful()) {
                                 pref.edit().putBoolean(getString(R.string.subsribedToTopic), true).apply();
                             }
@@ -361,9 +363,6 @@ public class LaunchingActivity extends BaseActivity
 
     @Override
     protected void onPostResume() {
-        if (Utils.isConnected(LaunchingActivity.this) && !BuildConfig.DEBUG) {
-            checkUpdate();
-        }
         super.onPostResume();
     }
 
@@ -371,57 +370,6 @@ public class LaunchingActivity extends BaseActivity
     protected void onDestroy() {
         new ClearCache().clear(this);
         super.onDestroy();
-    }
-
-    /**
-     * Compares existing version with latest and prompts for update
-     */
-    public void checkUpdate() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference versionInDB = firebaseDatabase.getReference("update");
-        versionInDB.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Long latestVersion = dataSnapshot.child("version").getValue(Long.class);
-                String whatsNewText = dataSnapshot.child("whatsnew").getValue(String.class);
-                if (latestVersion > BuildConfig.VERSION_CODE) {
-                    final AlertDialog.Builder alertDialog = new AlertDialog.Builder(LaunchingActivity.this);
-                    alertDialog.setMessage(Html.fromHtml(
-                            "An update is available for Amrita Repository.<br><br><strong><font color='#AA0000'>What's New ?</font></strong><br>"
-                                    + whatsNewText));
-                    alertDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName()));
-                            if (intent.resolveActivity(getPackageManager()) != null)
-                                startActivity(intent);
-                        }
-                    });
-                    alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    try {
-                        if (active)
-                            alertDialog.show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                try {
-                    Crashlytics.log(databaseError.getMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     @Override
@@ -558,7 +506,6 @@ public class LaunchingActivity extends BaseActivity
     private void intentSemActivity(int position, String title) {
         Bundle params = new Bundle();
         params.putString("Department", title);
-        Log.e("Dept", title);
         mFirebaseAnalytics.logEvent("EventDept", params);
 
         if (Utils.isConnected(this)) {
@@ -576,23 +523,63 @@ public class LaunchingActivity extends BaseActivity
     @Override
     public void onStart() {
         super.onStart();
-        active = true;
+        startUpdate();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        active = false;
+    protected void onResume() {
+        super.onResume();
+        appUpdateManager
+                .getAppUpdateInfo()
+                .addOnSuccessListener(
+                        appUpdateInfo -> {
+                            if (appUpdateInfo.updateAvailability()
+                                    == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                                // If an in-app update is already running, resume the update.
+                                try {
+                                    appUpdateManager.startUpdateFlowForResult(
+                                            appUpdateInfo,
+                                            AppUpdateType.IMMEDIATE,
+                                            this,
+                                            APP_UPDATE_REQUEST_CODE);
+                                } catch (IntentSender.SendIntentException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        active = false;
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == APP_UPDATE_REQUEST_CODE && resultCode == ActivityResult.RESULT_IN_APP_UPDATE_FAILED) {
+            Utils.showToast(this, getString(R.string.update_failed));
+            startUpdate();
+        }
     }
 
     public void openSupport(View view) {
         startActivity(new Intent(this, SupportActivity.class));
+    }
+
+    private void startUpdate() {
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                            appUpdateInfo,
+                            AppUpdateType.IMMEDIATE,
+                            // The current activity making the update request.
+                            this,
+                            // Include a request code to later monitor this update request.
+                            APP_UPDATE_REQUEST_CODE);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     class HomeItemAdapter extends BaseAdapter {
