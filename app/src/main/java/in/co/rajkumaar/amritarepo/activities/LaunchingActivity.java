@@ -577,8 +577,7 @@ public class LaunchingActivity extends BaseActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == request_code) {
-            if (resultCode == ActivityResult.RESULT_IN_APP_UPDATE_FAILED) {
+        if (requestCode == request_code && resultCode == ActivityResult.RESULT_IN_APP_UPDATE_FAILED) {
                 Utils.showToast(this,getString(R.string.update_failed));
                 appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
                     if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE){
@@ -614,7 +613,6 @@ public class LaunchingActivity extends BaseActivity
                         }
                     }
                 });
-            }
         }
     }
 
