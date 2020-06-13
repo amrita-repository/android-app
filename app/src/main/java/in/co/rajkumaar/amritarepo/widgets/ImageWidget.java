@@ -17,8 +17,6 @@ import android.widget.RemoteViews;
 
 import androidx.core.content.FileProvider;
 
-import com.crashlytics.android.Crashlytics;
-
 import java.io.File;
 import java.util.Objects;
 
@@ -33,6 +31,7 @@ public class ImageWidget extends AppWidgetProvider {
 
     private static final String MyOnClick = "openWidget";
     private static SharedPreferences preferences;
+
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -56,7 +55,6 @@ public class ImageWidget extends AppWidgetProvider {
                 views.setImageViewBitmap(R.id.image_widget, scaled);
                 views.setTextViewText(R.id.class_name, (path.split("\\.")[0]).split("/")[2]);
             } catch (Exception e) {
-                Crashlytics.log(e.getMessage());
                 e.printStackTrace();
             }
         } else {
@@ -111,7 +109,6 @@ public class ImageWidget extends AppWidgetProvider {
                         context.startActivity(intentToOpen);
                     }
                 } catch (Exception e) {
-                    Crashlytics.log(e.getMessage());
                     e.printStackTrace();
                 }
             } else {
