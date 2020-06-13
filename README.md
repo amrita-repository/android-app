@@ -1,17 +1,27 @@
-[![Build Status](https://travis-ci.com/rajkumaar23/amrita-repository.svg?branch=master)](https://travis-ci.com/rajkumaar23/amrita-repository) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6f10dfede144eebbafbacdcda684287)](https://www.codacy.com/manual/rajkumaar23/amrita-repository?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rajkumaar23/amrita-repository&amp;utm_campaign=Badge_Grade) [![Version Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/version?id=in.co.rajkumaar.amritarepo&color=blue)](http://bit.ly/amritarepo) [![Downloads Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/downloads?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) [![Rating Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/rating?id=in.co.rajkumaar.amritarepo&color=blueviolet)](http://bit.ly/amritarepo) [![Size Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/size?id=in.co.rajkumaar.amritarepo&color=informational)](http://bit.ly/amritarepo) [![Last Updated Badge](https://img.shields.io/endpoint?url=https://api-playstore.rajkumaar.co.in/lastUpdated?id=in.co.rajkumaar.amritarepo&color=orange)](http://bit.ly/amritarepo)
+<div align="center">
+  <p><img src="banner.jpg?raw=true"/></p>
+  <h1>Amrita Repository</h1>
+</div>
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+<div align="center">
 
-# Amrita Repository
-![Amrita Repository](banner.jpg?raw=true)
+[![Build Status](https://travis-ci.com/rajkumaar23/amrita-repository.svg?branch=master)](https://travis-ci.com/rajkumaar23/amrita-repository) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c6f10dfede144eebbafbacdcda684287)](https://www.codacy.com/manual/rajkumaar23/amrita-repository?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rajkumaar23/amrita-repository&amp;utm_campaign=Badge_Grade) [![Version Badge](https://img.shields.io/endpoint?logo=google-play&url=https://api-playstore.rajkumaar.co.in/version?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) [![Downloads Badge](https://img.shields.io/endpoint?logo=android&url=https://api-playstore.rajkumaar.co.in/downloads?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) [![Rating Badge](https://img.shields.io/endpoint?logo=google-play&url=https://api-playstore.rajkumaar.co.in/rating?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) 
+</div>
+<div align="center">
 
-[<img src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge-border.png" width="200"  alt="Get Amrita Repository on Google Play" />](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo "Get Amrita Repository on Google Play") [<img src="blue.svg" width="200" height=70 alt="PayPal Link" />](https://paypal.me/rajkumaar23)
+[![Inspiration](https://img.shields.io/badge/Inspired%20From-Amrita%20Info%20Desk-success?style=for-the-badge&color=blue)](https://github.com/niranjan94/amrita-info-desk)
+
+</div>
+
+<div align="center">
+
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge-border.png" height="60" alt="Get Amrita Repository on Google Play" />](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo "Get Amrita Repository on Google Play")
 
 If you enjoyed this project — or just feeling generous, consider buying me a coffee. Cheers! :beers:
 
-[![Inspiration](https://img.shields.io/badge/Inspired%20From-Amrita%20Info%20Desk-success?style=for-the-badge)](https://github.com/niranjan94/amrita-info-desk) 
+[<img src="blue.svg" height="40" alt="PayPal Link" />](https://paypal.me/rajkumaar23)
+
+</div>
 
 ## Features
 
@@ -28,13 +38,13 @@ View the timetable of all the faculties at Amrita Vishwa Vidyapeetham, Coimbator
 Examination schedules for all the courses provided in the campus.
 
 #### Curriculum Info:
-All new updated curriculum for all B.Tech courses in Amrita Vishwa Vidyapeetham.
+All new updated curriculum for all courses in Amrita Vishwa Vidyapeetham.
 
 #### Downloads section:
-Find downloaded question papers and timetables in the downloads section within the app.
+Access downloaded resources in the downloads section within the app.
 
 #### AUMS:
-`Amrita University Management System (AUMS)` now much easier to access in Amrita Repository. Check your grades, marks and attendance levels
+`Amrita University Management System (AUMS)` now much easier to access in Amrita Repository. Check your grades, marks, attendance levels, and course resources.
 
 #### Amrita News:
 Be up-to-date with what's happening at Amrita. Be notified of news articles pulled directly from the Amrita Website.
