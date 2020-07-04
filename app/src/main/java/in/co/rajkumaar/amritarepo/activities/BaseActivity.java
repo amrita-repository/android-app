@@ -17,7 +17,7 @@ import static in.co.rajkumaar.amritarepo.helpers.Utils.THEME_LIGHT;
 
 public class BaseActivity extends AppCompatActivity {
     public SharedPreferences themePrefs;
-    private String currentTheme;
+    public String currentTheme;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

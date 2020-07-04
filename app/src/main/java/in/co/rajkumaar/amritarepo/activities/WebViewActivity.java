@@ -5,13 +5,18 @@
 package in.co.rajkumaar.amritarepo.activities;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.helpers.Utils;
 
 public class WebViewActivity extends BaseActivity {
 
@@ -53,13 +58,37 @@ public class WebViewActivity extends BaseActivity {
                 public void onPageFinished(WebView view, String url) {
                     dismissProgressDialog();
                 }
+
+                @Override
+                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                        receivedError();
+                    }
+                }
+
+                @TargetApi(23)
+                @Override
+                public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+                    receivedError();
+                }
+
+                @TargetApi(23)
+                @Override
+                public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                    receivedError();
+                }
+
+                private void receivedError() {
+                    Utils.showToast(WebViewActivity.this, getString(R.string.not_uploaded_yet));
+                    finish();
+                }
             });
             myWebView.loadUrl(webViewLink);
 
         } catch (Exception e) {
+            Utils.showUnexpectedError(WebViewActivity.this);
             e.printStackTrace();
             finish();
-            Toast.makeText(WebViewActivity.this, "Unexpected error. Please try again later", Toast.LENGTH_SHORT).show();
         }
     }
 
