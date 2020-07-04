@@ -3,75 +3,93 @@ name: Build
 on:
   push:
     branches:
-      - 'master'
+      - master
 
 jobs:
-  apk:
+  build:
     name: Generate APK
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.1
-
       - name: Setup Java JDK
         uses: actions/setup-java@v1.3.0
         with:
-          java-version: '11.0.7'
+          java-version: 11.0.7
           java-package: jdk
-
       - name: Assemble release APK
         run: |
           echo "$GOOGLE_SERVICES" >> app/google-services.json
           echo "$KEYS_PROPERTIES" >> app/keys.properties
           echo "$KEY_JKS" >> key.jks.enc
           openssl base64 -d -in key.jks.enc -out key.jks
-          bash ./gradlew assembleRelease --stacktrace
+          bash ./gradlew assembleRelease
+          bash ./gradlew bundleRelease
         env:
-          KEYS_PROPERTIES: ${{ secrets.KEYS_PROPERTIES }}
-          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
-          KEY_JKS: ${{ secrets.KEY_JKS }}
-
-      - name: Upload artifact
+          KEYS_PROPERTIES: '${{ secrets.KEYS_PROPERTIES }}'
+          GOOGLE_SERVICES: '${{ secrets.GOOGLE_SERVICES }}'
+          KEY_JKS: '${{ secrets.KEY_JKS }}'
+      - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
           name: app-release
           path: app/build/outputs/apk/release/app-release.apk
-
+      - name: Upload Bundle
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-bundle
+          path: app/build/outputs/bundle/release/app-release.aab
+  
   github-release:
     name: GitHub release
-    needs: apk
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifact
+      - name: Download APK
         uses: actions/download-artifact@v2
         with:
           name: app-release
           path: app-release
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: marvinpinto/action-automatic-releases@latest
         name: Uploading to GitHub
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          automatic_release_tag: latest
           prerelease: false
           files: |
-              app-release/app-release.apk
-
+            app-release/app-release.apk
+  
   playstore-release:
     name: PlayStore Release
-    needs: apk
+    needs: build
     runs-on: ubuntu-latest
     steps:
-        - name: Download artifact
-          uses: actions/download-artifact@v2
-          with:
-            name: app-release
-            path: app-release
-        - uses: r0adkll/upload-google-play@v1
-          name: Upload to PlayStore
-          with:
-            serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-            packageName: in.co.rajkumaar.amritarepo
-            releaseFile: app-release/app-release.apk
-            track: production
-            whatsNewDirectory: /whatsnew
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+      
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1.3.0
+        with:
+          java-version: 11.0.7
+          java-package: jdk
+      
+      - name: Retrieve serviceAccountJson
+        run: |
+          echo "$SERVICE_ACCOUNT_JSON" >> api-service-account.json
+        env:
+          SERVICE_ACCOUNT_JSON: '${{ secrets.SERVICE_ACCOUNT_JSON }}'
+
+      - name: Download bundle
+        uses: actions/download-artifact@v2
+        with:
+          name: app-bundle
+          path: app-bundle
+      
+      - uses: r0adkll/upload-google-play@v1
+        name: Upload to PlayStore
+        with:
+          serviceAccountJson: api-service-account.json
+          packageName: in.co.rajkumaar.amritarepo
+          releaseFile: app-bundle/app-release.aab
+          track: production
+          whatsNewDirectory: distribution/
