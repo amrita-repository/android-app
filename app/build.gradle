@@ -42,10 +42,22 @@ android {
         buildConfigField "String", "LIB_CATALOG", "\"http://117.240.224.26:4310/app/library-catalog\""
 
     }
+    signingConfigs {
+        release {
+            storeFile file("../key.jks")
+            storePassword = "${props.getProperty("storePassword")}"
+            keyAlias = "key0"
+            keyPassword = "${props.getProperty("keyPassword")}"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     packagingOptions {
