@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="?attr/primaryTextColor"
+            android:textColor="@android:color/holo_orange_dark"
             tools:text="15CSE201 - Regular" />
 
     </LinearLayout>

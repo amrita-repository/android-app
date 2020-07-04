@@ -49,8 +49,8 @@
 
         <ImageView
             android:id="@+id/image1"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:layout_below="@id/text1"
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
@@ -76,8 +76,8 @@
 
         <ImageView
             android:id="@+id/image2"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:layout_below="@id/text3"
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"
@@ -102,8 +102,8 @@
 
         <ImageView
             android:id="@+id/image3"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:layout_below="@id/text5"
             android:layout_centerVertical="true"
             android:layout_marginStart="5dp"

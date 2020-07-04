@@ -255,6 +255,7 @@
             android:name=".downloads.FTPActivity"
             android:label="Share files"
             android:parentActivityName=".downloads.DownloadsActivity" />
+        <activity android:name=".activities.BaseActivity" />
     </application>
 
 </manifest>
