@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:mtf_backgroundColor="?attr/primaryTextColor"
-                app:mtf_image="@drawable/ic_eye"
+                app:mtf_image="@drawable/ic_key"
                 app:mtf_labelColor="?attr/primaryTextColor"
                 app:mtf_openKeyboardOnFocus="true">
 

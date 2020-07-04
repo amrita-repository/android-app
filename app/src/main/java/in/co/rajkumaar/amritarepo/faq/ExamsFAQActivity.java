@@ -1,13 +1,14 @@
+/*
+ * Copyright (c) 2020 RAJKUMAR S
+ */
+
 package in.co.rajkumaar.amritarepo.faq;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -17,13 +18,13 @@ import org.jsoup.nodes.Document;
 
 import cz.msebera.android.httpclient.Header;
 import in.co.rajkumaar.amritarepo.R;
+import in.co.rajkumaar.amritarepo.activities.BaseActivity;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 
-public class ExamsFAQActivity extends AppCompatActivity {
+public class ExamsFAQActivity extends BaseActivity {
     private ProgressDialog dialog;
-    private WebView mywebview;
+    private WebView faqWebView;
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -33,19 +34,12 @@ public class ExamsFAQActivity extends AppCompatActivity {
         try {
             this.setTitle("Frequently Asked Questions");
             dialog = new ProgressDialog(ExamsFAQActivity.this);
-            mywebview = findViewById(R.id.webView);
+            faqWebView = findViewById(R.id.webView);
             getFAQ();
-            mywebview.getSettings().setJavaScriptEnabled(true);
-            mywebview.setDrawingCacheBackgroundColor(getResources().getColor(R.color.colorBackground));
-            mywebview.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-            mywebview.getSettings().setLoadWithOverviewMode(true);
-            mywebview.getSettings().setUseWideViewPort(true);
+            faqWebView.getSettings().setLoadWithOverviewMode(true);
+            faqWebView.getSettings().setUseWideViewPort(true);
             showProgressDialog();
-            mywebview.setWebViewClient(new WebViewClient() {
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    return true;
-                }
-
+            faqWebView.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     dismissProgressDialog();
@@ -60,36 +54,36 @@ public class ExamsFAQActivity extends AppCompatActivity {
     }
 
     private void getFAQ() {
-
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://intranet.cb.amrita.edu/?q=exam", new AsyncHttpResponseHandler() {
+        client.get(getString(R.string.faq_exams_url), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 Document htmlDoc;
                 StringBuilder finalHtml = new StringBuilder();
                 finalHtml.append(
                         "<!DOCTYPE html>\n" +
-                        "<html>\n" +
-                        "<head>\n" +
-                        "\t<title>\n" +
-                        "\t\tExams FAQ from Intranet\n" +
-                        "\t</title>\n" +
-                        "\t <meta charset=\"utf-8\">\n" +
-                        "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
-                        "    <link href=\"https://fonts.googleapis.com/css?family=Lato\" rel=\"stylesheet\">\n" +
-                        "    <style type=\"text/css\">\n" +
-                        "    \tbody{\n" +
-                        "    \t\tbackground: #1f262a;\n" +
-                        "\t\tfont-family: 'Lato', sans-serif;color:#fff;\n" +
-                        "    \t}\n" +
-                        "    </style>\n" +
-                        "</head>\n" +
-                                "<body>");
+                                "<html>\n" +
+                                "<head>\n" +
+                                "\t<title>\n" +
+                                "\t\tExams FAQ from Intranet\n" +
+                                "\t</title>\n" +
+                                "\t <meta charset=\"utf-8\">\n" +
+                                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+                                "    <link href=\"https://fonts.googleapis.com/css?family=Lato\" rel=\"stylesheet\">\n" +
+                                "    <style type=\"text/css\">\n" +
+                                "    \tbody{\n" +
+                                "    \t\tbackground: ")
+                        .append(currentTheme.equals(Utils.THEME_DARK) ? "#1f262a" : "#ffffff")
+                        .append(";\n\t\tfont-family: 'Lato', sans-serif;color:")
+                        .append(currentTheme.equals(Utils.THEME_DARK) ? "#ffffff" : "#1f262a")
+                        .append(";\n" + " \t}\n" +
+                                "    </style>\n" +
+                                "</head>\n" + "<body>");
                 htmlDoc = Jsoup.parse(new String(bytes));
-                String content = htmlDoc.select("section#post-content").html();
+                String content = htmlDoc.select("#node-607").outerHtml();
                 finalHtml.append(content);
                 finalHtml.append("</body></html>");
-                mywebview.loadData(finalHtml.toString(), "text/html; charset=utf-8", "UTF-8");
+                faqWebView.loadDataWithBaseURL(getString(R.string.intranet_url), finalHtml.toString(), "text/html", "UTF-8", "");
                 dismissProgressDialog();
             }
 
