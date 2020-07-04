@@ -1,4 +1,4 @@
-name: Build APK
+name: Build
 
 on:
   push:
@@ -32,18 +32,18 @@ jobs:
           GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
           KEY_JKS: ${{ secrets.KEY_JKS }}
 
-      - name: Upload app APK as artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: app-release
           path: app/build/outputs/apk/release/app-release.apk
 
-  release:
-    name: Make release
+  github-release:
+    name: GitHub release
     needs: apk
     runs-on: ubuntu-latest
     steps:
-      - name: Download APK artifact
+      - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: app-release
@@ -56,3 +56,22 @@ jobs:
           prerelease: false
           files: |
               app-release/app-release.apk
+
+  playstore-release:
+    name: PlayStore Release
+    needs: apk
+    runs-on: ubuntu-latest
+    steps:
+        - name: Download artifact
+          uses: actions/download-artifact@v2
+          with:
+            name: app-release
+            path: app-release
+        - uses: r0adkll/upload-google-play@v1
+          name: Upload to PlayStore
+          with:
+            serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+            packageName: in.co.rajkumaar.amritarepo
+            releaseFile: app-release/app-release.apk
+            track: production
+            whatsNewDirectory: whatsnew
