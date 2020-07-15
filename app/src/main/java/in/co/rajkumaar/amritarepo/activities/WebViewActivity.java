@@ -22,6 +22,7 @@ public class WebViewActivity extends BaseActivity {
 
 
     ProgressDialog dialog;
+    String webViewLink;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -31,7 +32,7 @@ public class WebViewActivity extends BaseActivity {
         setContentView(R.layout.activity_webview);
         try {
             Bundle b = getIntent().getExtras();
-            String webViewLink = b.getString("webview");
+            webViewLink = b.getString("webview");
             this.setTitle(b.getString("title"));
             WebView myWebView = findViewById(R.id.webView);
             myWebView.getSettings().setJavaScriptEnabled(true);
@@ -62,25 +63,27 @@ public class WebViewActivity extends BaseActivity {
                 @Override
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                        receivedError();
+                        receivedError(failingUrl);
                     }
                 }
 
                 @TargetApi(23)
                 @Override
                 public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                    receivedError();
+                    receivedError(request.getUrl().toString());
                 }
 
                 @TargetApi(23)
                 @Override
                 public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                    receivedError();
+                    receivedError(request.getUrl().toString());
                 }
 
-                private void receivedError() {
-                    Utils.showToast(WebViewActivity.this, getString(R.string.not_uploaded_yet));
-                    finish();
+                private void receivedError(String url) {
+                    if (url.equals(webViewLink)) {
+                        Utils.showToast(WebViewActivity.this, getString(R.string.not_uploaded_yet));
+                        finish();
+                    }
                 }
             });
             myWebView.loadUrl(webViewLink);
