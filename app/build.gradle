@@ -31,8 +31,8 @@ android {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 72
-        versionName "4.3.5"
+        versionCode 73
+        versionName "4.3.6"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
