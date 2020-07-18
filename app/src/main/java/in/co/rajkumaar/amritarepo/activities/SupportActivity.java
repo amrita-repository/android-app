@@ -5,8 +5,6 @@
 package in.co.rajkumaar.amritarepo.activities;
 
 import android.app.Dialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -46,7 +44,6 @@ public class SupportActivity extends BaseActivity {
     Spinner options;
     CheckBox anonymous;
     EditText email;
-    TextView upi_id;
     private ActivityCheckout mCheckout;
 
     @Override
@@ -57,7 +54,6 @@ public class SupportActivity extends BaseActivity {
         options = findViewById(R.id.options);
         email = findViewById(R.id.email);
         anonymous = findViewById(R.id.anonymous);
-        upi_id = findViewById(R.id.upi_id);
         ArrayList<String> donations = new ArrayList<>();
         donations.add("Rs 10");
         donations.add("Rs 50");
@@ -78,7 +74,6 @@ public class SupportActivity extends BaseActivity {
             }
         });
 
-        upi_id.setText(String.format("UPI ID : %s", getString(R.string.upi_id)));
         anonymous.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -165,13 +160,6 @@ public class SupportActivity extends BaseActivity {
                 finish();
             }
         });
-    }
-
-    public void copyUPI(View view) {
-        final ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText("Source Text", "rajkumaar2304@oksbi");
-        clipboardManager.setPrimaryClip(clipData);
-        Utils.showToast(this, "UPI ID copied to clipboard");
     }
 
     private class PurchaseListener extends EmptyRequestListener<Purchase> {
