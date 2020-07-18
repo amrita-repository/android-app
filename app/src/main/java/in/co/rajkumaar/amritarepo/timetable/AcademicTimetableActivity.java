@@ -6,12 +6,10 @@ package in.co.rajkumaar.amritarepo.timetable;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,7 +38,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import in.co.rajkumaar.amritarepo.R;
@@ -131,26 +128,24 @@ public class AcademicTimetableActivity extends BaseActivity {
         editor.apply();
     }
 
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    private void buildTimetableUrl() {
+    private void buildTimetableUrl(boolean isImage) {
         TIMETABLE_URL += year.getSelectedItem() + "/";
         TIMETABLE_URL += course.getSelectedItem() + "/";
         TIMETABLE_URL += branch.getSelectedItem() + "/";
-        TIMETABLE_URL += (String) course.getSelectedItem() + branch.getSelectedItem() + batch.getSelectedItem() + sem.getSelectedItem() + ".jpg";
+        TIMETABLE_URL += (String)
+                course.getSelectedItem() +
+                branch.getSelectedItem() +
+                batch.getSelectedItem() +
+                sem.getSelectedItem() +
+                (isImage ? ".jpg" : ".pdf");
     }
 
     public void viewTimetable(View view) {
         if (batch.getSelectedItemPosition() > 0 && branch.getSelectedItemPosition() > 0 && course.getSelectedItemPosition() > 0 && sem.getSelectedItemPosition() > 0 && year.getSelectedItemPosition() > 0) {
             savePref();
-            if (isNetworkAvailable()) {
+            if (Utils.isConnected(this)) {
                 TIMETABLE_URL = "https://intranet.cb.amrita.edu/TimeTable/PDF/";
-                buildTimetableUrl();
+                buildTimetableUrl(true);
                 Intent intent = new Intent(AcademicTimetableActivity.this, WebViewActivity.class);
                 intent.putExtra("webview", TIMETABLE_URL);
                 intent.putExtra("zoom", true);
@@ -175,18 +170,26 @@ public class AcademicTimetableActivity extends BaseActivity {
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         1);
             } else {
-                if (isNetworkAvailable()) {
+                if (Utils.isConnected(this)) {
                     String protocol = "https://";
                     String intranet = getString(R.string.intranet);
                     String timetable = getString(R.string.timetable);
                     TIMETABLE_URL = protocol + intranet + timetable;
-                    buildTimetableUrl();
-                    try {
-                        new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL);
-                    } catch (UnsupportedEncodingException | URISyntaxException e) {
-                        Utils.showUnexpectedError(this);
-                        e.printStackTrace();
-                    }
+                    CharSequence[] items = {"Image", "PDF"};
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    dialogBuilder.setTitle("Download as");
+                    dialogBuilder.setItems(items, (dialog, which) -> {
+                                try {
+                                    buildTimetableUrl(items[which].equals("Image"));
+                                    new DownloadTask(AcademicTimetableActivity.this, TIMETABLE_URL);
+                                } catch (UnsupportedEncodingException | URISyntaxException e) {
+                                    Utils.showUnexpectedError(AcademicTimetableActivity.this);
+                                    e.printStackTrace();
+                                }
+                            }
+                    );
+                    dialogBuilder.create().show();
+
                 } else {
                     Snackbar.make(view, "Device not connected to Internet.", Snackbar.LENGTH_SHORT).show();
                 }
@@ -201,7 +204,7 @@ public class AcademicTimetableActivity extends BaseActivity {
         branchesTemp.add("[Choose branch]");
         branches = new ArrayList<>();
         branches.add("[Choose branch]");
-        setBranchSpinner();                                // when network connectivity is slow it will show [Choose branch] instead of empty spinner
+        setBranchSpinner();
         if (!pref.contains(courses.get(courseID))) {
             getBranches(courseID, branchesTemp, true);
         } else {
@@ -210,7 +213,7 @@ public class AcademicTimetableActivity extends BaseActivity {
             String json = pref.getString(courses.get(courseID), null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            branches.addAll(gson.<Collection<? extends String>>fromJson(json, listType));
+            branches.addAll(gson.fromJson(json, listType));
             setBranchSpinner();
             getBranches(courseID, branchesTemp, false);
         }
@@ -229,7 +232,7 @@ public class AcademicTimetableActivity extends BaseActivity {
             String json = pref.getString("courses", null);
             Type listType = new TypeToken<ArrayList<String>>() {
             }.getType();
-            courses.addAll(gson.<Collection<? extends String>>fromJson(json, listType));
+            courses.addAll(gson.fromJson(json, listType));
             setCourseSpinner();
             getCourse(coursesTemp, false);
         }
