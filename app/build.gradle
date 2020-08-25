@@ -18,7 +18,7 @@ try {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
@@ -30,9 +30,9 @@ android {
     defaultConfig {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 73
-        versionName "4.3.6"
+        targetSdkVersion 30
+        versionCode 74
+        versionName "4.3.7"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
