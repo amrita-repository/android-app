@@ -47,11 +47,17 @@ jobs:
         with:
           name: app-release
           path: app-release
+      - name: Fetch version
+        run: |
+          - export GRADLE_PATH=./app/build.gradle
+            export GRADLE_FIELD="versionName"
+            export VERSION_TMP=$(grep $GRADLE_FIELD $GRADLE_PATH | awk '{print $2}')
+            export REPO_VERSION=$(echo $VERSION_TMP | sed -e 's/^"//'  -e 's/"$//')
       - uses: marvinpinto/action-automatic-releases@latest
         name: Uploading to GitHub
         with:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          automatic_release_tag: latest
+          automatic_release_tag: $REPO_VERSION
           prerelease: false
           files: |
             app-release/app-release.apk

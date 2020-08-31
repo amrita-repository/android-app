@@ -309,6 +309,9 @@ public class DownloadsActivity extends BaseActivity {
             fileOptions.add("Open");
             fileOptions.add("Delete");
             fileOptions.add("Rename");
+            if (!file.isDirectory()) {
+                fileOptions.add("Share");
+            }
 
             String currentType = file.getName().substring(file.getName().lastIndexOf('.') + 1);
             if (isExtension(Utils.image, currentType)) {
@@ -337,6 +340,9 @@ public class DownloadsActivity extends BaseActivity {
                             break;
                         case "Delete multiple files":
                             startActivity(new Intent(DownloadsActivity.this, DeleteFilesActivity.class));
+                            break;
+                        case "Share":
+                            Utils.shareFileIntent(DownloadsActivity.this, file);
                             break;
                         default:
                             Utils.showUnexpectedError(DownloadsActivity.this);

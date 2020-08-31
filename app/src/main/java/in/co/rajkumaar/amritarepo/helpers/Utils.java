@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -147,6 +149,42 @@ public class Utils {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
         return sortedMap;
+    }
+
+    public static void shareFileIntent(Context context, File file) {
+        Intent shareFileIntent = new Intent(Intent.ACTION_SEND);
+        Uri data = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+        shareFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        shareFileIntent.putExtra(Intent.EXTRA_STREAM, data);
+        shareFileIntent.setType(getMimeType(context, data));
+        shareFileIntent.putExtra(
+                Intent.EXTRA_TEXT,
+                "Hey there! I got this file from Amrita Repository, the user-friendly, " +
+                        "all-in-one, must-have app for an Amritian. \n" +
+                        "You can get it here : http://bit.ly/amritarepo \n" +
+                        "(or) you can use the Telegram bot : https://t.me/amrepobot \n" +
+                        "\n" +
+                        "Engineered by Rajkumar (https://rajkumaar.co.in)"
+        );
+        if (shareFileIntent.resolveActivity(context.getPackageManager()) != null)
+            context.startActivity(shareFileIntent);
+        else {
+            Utils.showToast(context, "Sorry, there's no appropriate app in the device to open this file.");
+        }
+    }
+
+    public static String getMimeType(Context context, Uri uri) {
+        String mimeType;
+        if (Objects.equals(uri.getScheme(), ContentResolver.SCHEME_CONTENT)) {
+            ContentResolver cr = context.getContentResolver();
+            mimeType = cr.getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri
+                    .toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                    fileExtension.toLowerCase());
+        }
+        return mimeType;
     }
 
     private static Intent getFileChooserIntent(Context context, File file) {
