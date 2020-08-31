@@ -58,7 +58,7 @@ jobs:
   
   playstore-release:
     name: PlayStore Release
-    needs: build
+    needs: github-release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
