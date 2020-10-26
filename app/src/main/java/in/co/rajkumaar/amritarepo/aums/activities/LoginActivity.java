@@ -248,11 +248,10 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Document doc = Jsoup.parse(new String(responseBody));
-                Elements TableElements = doc.getElementsByTag("td");
 
                 try {
                     Elements scripts = doc.select("script[language=JavaScript]");
-                    String script = scripts.get(3).html();
+                    String script = scripts.get(1).html();
                     BufferedReader bufReader = new BufferedReader(new StringReader(script));
                     String line;
                     while ((line = bufReader.readLine()) != null) {
@@ -261,24 +260,18 @@ public class LoginActivity extends BaseActivity {
                             UserData.uuid = studentHashId;
                         }
                     }
+
+                    name = doc.getElementById("userLoginNameToDisplay").attr("value");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-
-                for (Element tableElement : TableElements) {
-                    if (tableElement.attr("class").equals("style3") && tableElement.attr("width").equals("70%")) {
-                        name = tableElement.text();
-                    }
-                }
                 if (name != null && !name.equals("")) {
 
                     try {
                         name = name.replace("Welcome ", "");
-                        name = name.replace(")", "");
-                        String[] result = name.split("\\(");
-                        name = result[0];
                         UserData.name = name;
+                        System.out.println(name);
                         dialog.setMessage("Retrieving data");
                         getCGPA(client);
                     } catch (Exception e) {
@@ -318,6 +311,7 @@ public class LoginActivity extends BaseActivity {
                     finish();
                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                 } catch (Exception e) {
+                    e.printStackTrace();
                     Utils.showToast(LoginActivity.this, getString(R.string.server_error));
                     closeLoginDialog();
                 }

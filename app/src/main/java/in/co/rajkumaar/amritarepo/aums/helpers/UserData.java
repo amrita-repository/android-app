@@ -60,7 +60,7 @@ public class UserData {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Document doc = Jsoup.parse(new String(responseBody));
                 Element form = doc.select("#fm1").first();
-                Element hiddenInput = doc.select("input[name=lt]").first();
+                Element hiddenInput = doc.select("input[name=execution]").first();
                 try {
                     sessionAction = form.attr("action");
                     sessionID = hiddenInput.attr("value");
@@ -82,7 +82,7 @@ public class UserData {
         params.put("username", userName);
         params.put("password", password);
         params.put("_eventId", "submit");
-        params.put("lt", sessionID);
+        params.put("execution", sessionID);
         params.put("submit", "LOGIN");
 
         client.post(domain + sessionAction, params, new AsyncHttpResponseHandler() {
