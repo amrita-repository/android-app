@@ -28,7 +28,6 @@ import com.loopj.android.http.RequestParams;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
@@ -57,6 +56,7 @@ public class LoginActivity extends BaseActivity {
     private CheckBox remember;
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    private Client mainClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity {
         password = findViewById(R.id.password);
         Button login = findViewById(R.id.login);
         remember = findViewById(R.id.remember_me);
-        Client mainClient = new Client(this);
+        mainClient = new Client(this);
         mainClient.clearCookie();
         UserData.client = mainClient.getClient();
 
@@ -219,11 +219,9 @@ public class LoginActivity extends BaseActivity {
         UserData.login(new LogInResponse() {
             @Override
             public void onSuccess() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        getUserData(UserData.client);
-                    }
+                runOnUiThread(() -> {
+                    mainClient.setJSessionIDPathAsRoot();
+                    getUserData(UserData.client);
                 });
             }
 
@@ -271,7 +269,6 @@ public class LoginActivity extends BaseActivity {
                     try {
                         name = name.replace("Welcome ", "");
                         UserData.name = name;
-                        System.out.println(name);
                         dialog.setMessage("Retrieving data");
                         getCGPA(client);
                     } catch (Exception e) {
@@ -300,8 +297,7 @@ public class LoginActivity extends BaseActivity {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Document doc = Jsoup.parse(new String(responseBody));
                 try {
-                    Element CGPA = doc.select("td[width=19%].rowBG1").last();
-                    UserData.CGPA = CGPA.text().trim();
+                    UserData.CGPA = doc.select("#orphan-label-7").text();
                     UserData.username = username.getText().toString();
                     UserData.loggedin = true;
                     Bundle params = new Bundle();
