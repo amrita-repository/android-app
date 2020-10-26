@@ -212,7 +212,7 @@ public class LaunchingActivity extends BaseActivity
                                             intentSemActivity(position, dataAdapter.getItem(position));
                                         }
                                     });
-                                    builder.setNeutralButton("Don\'t show again", new DialogInterface.OnClickListener() {
+                                    builder.setNeutralButton("Don't show again", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             ed.putBoolean("prompt", false);
@@ -454,8 +454,14 @@ public class LaunchingActivity extends BaseActivity
             Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", getString(R.string.my_mail), null));
             it.putExtra(Intent.EXTRA_SUBJECT, "Reg. Feedback for Amrita Repository");
             it.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.my_mail)});
-            if (it.resolveActivity(getPackageManager()) != null)
+            if (it.resolveActivity(getPackageManager()) != null) {
                 startActivity(it);
+            } else {
+                Utils.showToast(
+                        this,
+                        String.format("Email app not found. Drop an email to %s with the feedback", getString(R.string.my_mail))
+                );
+            }
         } else if (id == R.id.nav_share) {
             drawer.closeDrawer(GravityCompat.START);
             Intent sendIntent = new Intent();

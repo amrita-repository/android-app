@@ -4,7 +4,6 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -49,7 +48,7 @@
                 tools:ignore="HardcodedText" />
 
             <ImageView
-                android:id="@+id/kofi"
+                android:id="@+id/gpay"
                 android:layout_width="120dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
@@ -69,73 +68,14 @@
                 android:textStyle="bold"
                 tools:ignore="HardcodedText" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Choose your amount"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
-                android:textColor="@color/red"
-                tools:ignore="HardcodedText" />
-
-            <Spinner
-                android:id="@+id/options"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
-                android:backgroundTint="@color/red"
-                android:textColor="?attr/primaryTextColor"
-                tools:ignore="UnusedAttribute" />
-
-            <CheckBox
-                android:id="@+id/anonymous"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/red"
-                android:buttonTint="?attr/primaryTextColor"
-                android:text="Stay Anonymous"
-                android:textColor="@color/red"
-                tools:ignore="HardcodedText,UnusedAttribute" />
-
-            <com.github.florent37.materialtextfield.MaterialTextField
-                android:id="@+id/email_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/paypal"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                app:mtf_backgroundColor="?attr/primaryTextColor"
-                app:mtf_hasFocus="false"
-                app:mtf_image="@drawable/ic_user"
-                app:mtf_labelColor="?attr/primaryTextColor"
-                app:mtf_openKeyboardOnFocus="false">
-
-                <EditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorAccent"
-                    android:hint="Enter your email here"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/colorPrimary"
-                    android:textColorHint="?attr/primaryTextColor"
-                    tools:ignore="HardcodedText"
-                    tools:targetApi="lollipop" />
-            </com.github.florent37.materialtextfield.MaterialTextField>
-
-            <Button
-                android:id="@+id/buy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="50dp"
-                android:background="@drawable/button"
-                android:textColor="?attr/colorBackground"
-                android:gravity="center"
-                android:text="Donate"
+                android:src="@drawable/paypal"
                 tools:ignore="HardcodedText" />
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
