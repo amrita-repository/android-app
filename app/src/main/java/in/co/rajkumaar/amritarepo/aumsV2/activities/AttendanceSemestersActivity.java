@@ -84,7 +84,7 @@ public class AttendanceSemestersActivity extends BaseActivity {
         sems = new ArrayList<>();
         client.addHeader("Authorization", GlobalData.auth);
         client.addHeader("token", new String(Base64.decode(preferences.getString("token", ""), Base64.DEFAULT)));
-        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/semAtdRes?rollno=" + new String(Base64.decode(preferences.getString("username", ""), Base64.DEFAULT)), new AsyncHttpResponseHandler() {
+        client.get(getString(R.string.aums_domain) + "/DataServices/rest/semAtdRes?rollno=" + new String(Base64.decode(preferences.getString("username", ""), Base64.DEFAULT)), new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {

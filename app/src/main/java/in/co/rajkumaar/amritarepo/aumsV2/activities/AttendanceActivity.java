@@ -65,7 +65,7 @@ public class AttendanceActivity extends BaseActivity {
         client.addHeader("Authorization", GlobalData.auth);
         client.addHeader("token", new String(Base64.decode(prefs.getString("token", ""), Base64.DEFAULT)));
         client.setTimeout(5000);
-        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/attRes?rollno=" + new String(Base64.decode(prefs.getString("username", ""), Base64.DEFAULT)) + "&sem=" + sem, new AsyncHttpResponseHandler() {
+        client.get(getString(R.string.aums_domain) + "/DataServices/rest/attRes?rollno=" + new String(Base64.decode(prefs.getString("username", ""), Base64.DEFAULT)) + "&sem=" + sem, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                 try {
@@ -100,7 +100,7 @@ public class AttendanceActivity extends BaseActivity {
                                                 dialogInterface.dismiss();
                                             }
                                         })
-                                        .setNegativeButton("Don\'t show again", new DialogInterface.OnClickListener() {
+                                        .setNegativeButton("Don't show again", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 prefs.edit().putBoolean("disclaimer", false).apply();

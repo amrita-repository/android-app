@@ -9,8 +9,10 @@ import android.content.SharedPreferences;
 
 import com.loopj.android.http.AsyncHttpClient;
 
+import java.security.KeyStore;
 import java.util.ArrayList;
 
+import in.co.rajkumaar.amritarepo.aums.helpers.CustomSSLFactory;
 import in.co.rajkumaar.amritarepo.aumsV2.models.Semester;
 import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 
@@ -27,6 +29,16 @@ public class GlobalData {
     private static ArrayList<Semester> gradeSemesters;
 
     public static AsyncHttpClient getClient() {
+        // This is literally an unsafe hack to bypass the intermediate CA check by the HTTP client.
+        // This was necessary because AUMS doesn't send its intermediate CA in its certificate chain.
+        try {
+            KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            trustStore.load(null, null);
+            CustomSSLFactory socketFactory = new CustomSSLFactory(trustStore);
+            client.setSSLSocketFactory(socketFactory);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return client;
     }
 

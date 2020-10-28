@@ -82,7 +82,8 @@ public class HomeActivity extends BaseActivity {
         items.add(new HomeItem("Attendance Status", R.drawable.attendance));
         items.add(new HomeItem("Grades", R.drawable.grades));
         items.add(new HomeItem("Marks", R.drawable.marks));
-        items.add(new HomeItem("Course Resources", R.drawable.coursebooks));
+        // Commenting this out since most of the resources are uploaded on Ample/MS Teams recently.
+        // items.add(new HomeItem("Course Resources", R.drawable.coursebooks));
 
         loadSemesterMapping();
 

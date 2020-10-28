@@ -77,4 +77,5 @@
     <string name="not_uploaded_yet">The document you asked for, is not uploaded yet.</string>
     <string name="faq_exams_url">https://intranet.cb.amrita.edu/?q=exam</string>
     <string name="paypal_url">https://paypal.me/rajkumaar23</string>
+    <string name="aums_domain">https://aumscb.amrita.edu</string>
 </resources>

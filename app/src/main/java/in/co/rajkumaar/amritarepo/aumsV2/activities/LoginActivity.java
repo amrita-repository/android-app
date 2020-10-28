@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity {
         progressDialog.show();
         client.addHeader("Authorization", GlobalData.auth);
         client.addHeader("token", GlobalData.loginToken);
-        client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/authRes?rollno="
+        client.get(getString(R.string.aums_domain) + "/DataServices/rest/authRes?rollno="
                 + username.getText().toString() + "&dob=" + dob.getText().toString() + "&user_type=Student", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
@@ -160,7 +160,7 @@ public class LoginActivity extends BaseActivity {
                 progressDialog.show();
                 client.addHeader("Authorization", GlobalData.auth);
                 client.addHeader("token", GlobalData.loginToken);
-                client.get("https://amritavidya.amrita.edu:8444/DataServices/rest/authRes/register?rollno=" +
+                client.get(getString(R.string.aums_domain) + "/DataServices/rest/authRes/register?rollno=" +
                         username.getText().toString() + "&otp=" + otpEditText.getText().toString(), new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int i, Header[] headers, byte[] bytes) {
