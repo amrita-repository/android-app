@@ -10,10 +10,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.1
       - name: Setup Java JDK
-        uses: actions/setup-java@v1.3.0
+        uses: actions/setup-java@v2
         with:
           java-version: 11.0.7
           java-package: jdk
+          distribution: 'zulu'
       - name: Assemble release APK
         run: |
           echo "$GOOGLE_SERVICES" >> app/google-services.json
@@ -65,10 +66,11 @@ jobs:
         uses: actions/checkout@v2.3.1
       
       - name: Setup Java JDK
-        uses: actions/setup-java@v1.3.0
+        uses: actions/setup-java@v2
         with:
           java-version: 11.0.7
           java-package: jdk
+          distribution: 'zulu'
       
       - name: Retrieve serviceAccountJson
         run: |
