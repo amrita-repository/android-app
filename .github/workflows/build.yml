@@ -89,6 +89,6 @@ jobs:
         with:
           serviceAccountJson: api-service-account.json
           packageName: in.co.rajkumaar.amritarepo
-          releaseFile: app-bundle/app-release.aab
+          releaseFiles: app-bundle/app-release.aab
           track: production
           whatsNewDirectory: distribution/
