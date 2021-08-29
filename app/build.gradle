@@ -31,15 +31,15 @@ android {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 77
-        versionName "4.3.10"
+        versionCode 78
+        versionName "4.3.11"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "PLAY_LICENSE_KEY", "\"${props.getProperty("googlePlayLicenseKey")}\""
         buildConfigField "String", "SECRET_HASH", "\"${props.getProperty("secretHash")}\""
-        buildConfigField "String", "PROXY_URL", "\"${props.getProperty("proxyURL")}\""
-        buildConfigField "String", "LIB_CATALOG", "\"http://117.240.224.26:4310/app/library-catalog\""
+        buildConfigField "String", "PROXY_URL", "\"https://ctf.cb.amrita.edu/amritarepo/proxy.php\""
+        buildConfigField "String", "LIB_CATALOG", "\"https://ctf.cb.amrita.edu/amritarepo/library-catalog\""
 
     }
     signingConfigs {
