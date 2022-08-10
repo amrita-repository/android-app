@@ -16,11 +16,6 @@
             android:icon="@drawable/ic_get_app_black_24dp"
             android:title="Downloads" />
         <item
-            android:id="@+id/nav_donate"
-            android:checkable="false"
-            android:icon="@drawable/ic_dollar"
-            android:title="Support" />
-        <item
             android:id="@+id/nav_feedback"
             android:checkable="false"
             android:icon="@drawable/ic_feedback"

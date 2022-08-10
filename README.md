@@ -17,10 +17,6 @@
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge-border.png" height="60" alt="Get Amrita Repository on Google Play" />](https://play.google.com/store/apps/details?id=in.co.rajkumaar.amritarepo "Get Amrita Repository on Google Play")
 
-If you enjoyed this project — or just feeling generous, consider buying me a coffee. Cheers! :beers:
-
-[<img src="blue.svg" height="40" alt="PayPal Link" />](https://paypal.me/rajkumaar23)
-
 </div>
 
 ## Features

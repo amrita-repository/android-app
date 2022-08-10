@@ -18,34 +18,8 @@
         android:id="@+id/items_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/support"
         android:divider="@color/colorBackground"
         android:dividerHeight="0dp"
         android:numColumns="1" />
-
-    <LinearLayout
-        android:id="@+id/support"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/primaryTextColor"
-        android:gravity="center"
-        android:onClick="openSupport"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/donate"
-            android:textColor="?attr/colorBackground"
-            tools:ignore="HardcodedText" />
-
-        <ImageView
-            android:layout_width="20dp"
-            android:contentDescription="@string/right_arrow"
-            android:layout_height="20dp"
-            android:layout_marginTop="2dp"
-            android:src="@drawable/ic_chevron_right_black_24dp" />
-    </LinearLayout>
 
 </RelativeLayout>

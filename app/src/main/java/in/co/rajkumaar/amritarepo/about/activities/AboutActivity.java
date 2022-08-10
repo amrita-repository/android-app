@@ -22,7 +22,6 @@ import java.util.Objects;
 
 import in.co.rajkumaar.amritarepo.R;
 import in.co.rajkumaar.amritarepo.activities.BaseActivity;
-import in.co.rajkumaar.amritarepo.activities.SupportActivity;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
@@ -60,8 +59,8 @@ public class AboutActivity extends BaseActivity {
                 .setCover(R.mipmap.profile_cover)
                 .setLinksAnimated(true)
                 .setDividerDashGap(13)
-                .setName("Rajkumar S")
-                .setSubTitle("Full Stack & Mobile App Developer")
+                .setName("Rajkumar")
+                .setSubTitle("Software Engineer")
                 .setLinksColumnsCount(3)
                 .setBrief("Ever in awe of the wonders that 0s and 1s could create.")
                 .addGitHubLink("rajkumaar23")
@@ -84,12 +83,6 @@ public class AboutActivity extends BaseActivity {
                         showDisclaimer(AboutActivity.this);
                     }
                 })
-                .addAction(BitmapFactory.decodeResource(getResources(), R.drawable.donate), "Donate", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        donate();
-                    }
-                })
                 .addShareAction(R.string.app_name)
                 .setWrapScrollView(true)
                 .setShowAsCard(true)
@@ -104,9 +97,4 @@ public class AboutActivity extends BaseActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
-
-    public void donate() {
-        startActivity(new Intent(this, SupportActivity.class));
-    }
-
 }

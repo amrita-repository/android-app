@@ -353,9 +353,6 @@ public class LaunchingActivity extends BaseActivity
             case "About":
                 startActivity(new Intent(getBaseContext(), AboutActivity.class));
                 break;
-            case "Support":
-                startActivity(new Intent(getBaseContext(), SupportActivity.class));
-                break;
             default:
                 break;
         }
@@ -493,8 +490,6 @@ public class LaunchingActivity extends BaseActivity
                 }
             } else
                 Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
-        } else if (id == R.id.nav_donate) {
-            startActivity(new Intent(getBaseContext(), SupportActivity.class));
         } else if (id == R.id.nav_bugreport) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(getString(R.string.github_issues_url)));
@@ -563,10 +558,6 @@ public class LaunchingActivity extends BaseActivity
             Utils.showToast(this, getString(R.string.update_failed));
             startUpdate();
         }
-    }
-
-    public void openSupport(View view) {
-        startActivity(new Intent(this, SupportActivity.class));
     }
 
     private void startUpdate() {
