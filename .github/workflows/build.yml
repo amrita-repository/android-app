@@ -91,4 +91,5 @@ jobs:
           packageName: in.co.rajkumaar.amritarepo
           releaseFiles: app-bundle/app-release.aab
           track: production
+          status: completed
           whatsNewDirectory: distribution/
