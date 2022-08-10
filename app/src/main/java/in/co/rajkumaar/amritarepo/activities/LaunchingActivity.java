@@ -605,14 +605,9 @@ public class LaunchingActivity extends BaseActivity
             items.add(new Item("#9c27b0", "Academic Timetable", FontAwesomeIcons.fa_calendar));
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
             items.add(new Item("#03a9f4", "Central Library", FontAwesomeIcons.fa_laptop));
-            items.add(new Item("#3f51b5", "Curriculum", FontAwesomeIcons.fa_paperclip));
-            items.add(new Item("#fe5352", "Exam Schedule", FontAwesomeIcons.fa_pencil));
             items.add(new Item("#009688", "Timings", FontAwesomeIcons.fa_clock_o));
-            items.add(new Item("#9c27b0", "News", FontAwesomeIcons.fa_newspaper_o));
             items.add(new Item("#03a9f4", "Study Materials", FontAwesomeIcons.fa_book));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
-            items.add(new Item("#03a9f4", "WiFi Status", FontAwesomeIcons.fa_wifi));
-            items.add(new Item("#116466", "FAQ - Exams", FontAwesomeIcons.fa_question_circle));
             items.add(new Item("#f13c20", "Support", FontAwesomeIcons.fa_dollar));
             items.add(new Item("#259b24", "About", FontAwesomeIcons.fa_info_circle));
         }
