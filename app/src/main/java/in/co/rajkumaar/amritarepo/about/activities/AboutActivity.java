@@ -66,7 +66,7 @@ public class AboutActivity extends BaseActivity {
                 .setBrief("Ever in awe of the wonders that 0s and 1s could create.")
                 .addGitHubLink("rajkumaar23")
                 .addFacebookLink("rajkumaar23")
-                .addInstagramLink("rajkumaar23")
+                .addInstagramLink("rajkumaar2304")
                 .addLinkedInLink("in/rajkumaar23")
                 .addEmailLink("rajkumaar2304@icloud.com")
                 .addWebsiteLink("http://rajkumaar.co.in")
