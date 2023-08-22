@@ -30,9 +30,9 @@ android {
     defaultConfig {
         applicationId "in.co.rajkumaar.amritarepo"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 79
-        versionName "4.3.12"
+        targetSdkVersion 33
+        versionCode 80
+        versionName "4.3.13"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
