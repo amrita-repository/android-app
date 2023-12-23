@@ -580,7 +580,6 @@ public class LaunchingActivity extends BaseActivity
             items.add(new Item("#03a9f4", "Central Library", FontAwesomeIcons.fa_laptop));
             items.add(new Item("#009688", "Timings", FontAwesomeIcons.fa_clock_o));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
-            items.add(new Item("#f13c20", "Support", FontAwesomeIcons.fa_dollar));
             items.add(new Item("#259b24", "About", FontAwesomeIcons.fa_info_circle));
         }
 
