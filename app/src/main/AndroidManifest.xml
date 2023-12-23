@@ -61,10 +61,6 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
-        <activity
-            android:name=".study_materials.StudyMaterialsActivity"
-            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
             android:name=".opac.SearchResultsActivity"
             android:label="Search Results"

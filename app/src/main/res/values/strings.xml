@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2020 RAJKUMAR S
+  ~ Copyright (c) 2023 RAJKUMAR S
   -->
 
 <resources>
@@ -64,10 +64,6 @@
     \n\n2) Connect your mobile device to that WiFi hotspot.
     \n\n3) Press the <u>Start Server</u> button below.
     \n\n4) An URL will be displayed below the button. Open up a browser on your computer and enter this URL and hola! You\'re good to go.</string>
-
-    <string name="study_materials_info">
-        If you are a faculty and would like to add your site on behalf of your department in this application,
-        please drop a mail to rajkumaar2304@icloud.com</string>
     <string name="server_error">An error occurred while connecting to server</string>
     <string name="amrita_file_prefix">https://www.amrita.edu/file/</string>
     <string name="telegram_bot_warning">Telegram is being blocked by few internet providers. If opening this link doesn\'t work for you, kindly install Telegram from PlayStore and search for <b>@amrepobot</b>.</string>

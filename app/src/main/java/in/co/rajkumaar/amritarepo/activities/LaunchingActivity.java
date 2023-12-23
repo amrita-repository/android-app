@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 RAJKUMAR S
+ * Copyright (c) 2023 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.activities;
@@ -74,7 +74,6 @@ import in.co.rajkumaar.amritarepo.news.NewsActivity;
 import in.co.rajkumaar.amritarepo.notifications.NotificationsActivity;
 import in.co.rajkumaar.amritarepo.opac.OPACHomeActivity;
 import in.co.rajkumaar.amritarepo.papers.SemesterActivity;
-import in.co.rajkumaar.amritarepo.study_materials.StudyMaterialsActivity;
 import in.co.rajkumaar.amritarepo.timetable.AcademicTimetableActivity;
 import in.co.rajkumaar.amritarepo.timetable.FacultyTimetableActivity;
 import in.co.rajkumaar.amritarepo.timings.TimingsHomeActivity;
@@ -87,7 +86,7 @@ public class LaunchingActivity extends BaseActivity
     private FirebaseAnalytics mFirebaseAnalytics;
     private AppUpdateManager appUpdateManager;
     private Task<AppUpdateInfo> appUpdateInfoTask;
-    private int APP_UPDATE_REQUEST_CODE = 100;
+    private final int APP_UPDATE_REQUEST_CODE = 100;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -297,23 +296,6 @@ public class LaunchingActivity extends BaseActivity
                 break;
             case "Downloads":
                 startActivity(new Intent(LaunchingActivity.this, DownloadsActivity.class));
-                break;
-            case "Study Materials":
-                if (Utils.isConnected(LaunchingActivity.this)) {
-                    final CharSequence[] depts = {"Computer Science Engineering"};
-                    AlertDialog.Builder departmentDialogBuilder = new AlertDialog.Builder(LaunchingActivity.this);
-                    departmentDialogBuilder.setTitle("Select your Department");
-                    departmentDialogBuilder.setItems(depts, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int item) {
-                            Intent curriculum_open = new Intent(LaunchingActivity.this, StudyMaterialsActivity.class);
-                            curriculum_open.putExtra("department", depts[item]);
-                            startActivity(curriculum_open);
-                        }
-                    });
-                    AlertDialog departmentDialog = departmentDialogBuilder.create();
-                    departmentDialog.show();
-                } else
-                    Utils.showSnackBar(LaunchingActivity.this, "Device not connected to internet");
                 break;
             case "Central Library":
                 if (Utils.isConnected(LaunchingActivity.this)) {
@@ -581,9 +563,9 @@ public class LaunchingActivity extends BaseActivity
 
     class HomeItemAdapter extends BaseAdapter {
 
-        private List<Item> items = new ArrayList<>();
-        private LayoutInflater inflater;
-        private Context context;
+        private final List<Item> items = new ArrayList<>();
+        private final LayoutInflater inflater;
+        private final Context context;
 
         HomeItemAdapter(Context context) {
 
@@ -597,7 +579,6 @@ public class LaunchingActivity extends BaseActivity
             items.add(new Item("#e91e63", "Faculty Timetable", FontAwesomeIcons.fa_users));
             items.add(new Item("#03a9f4", "Central Library", FontAwesomeIcons.fa_laptop));
             items.add(new Item("#009688", "Timings", FontAwesomeIcons.fa_clock_o));
-            items.add(new Item("#03a9f4", "Study Materials", FontAwesomeIcons.fa_book));
             items.add(new Item("#259b24", "Downloads", FontAwesomeIcons.fa_download));
             items.add(new Item("#f13c20", "Support", FontAwesomeIcons.fa_dollar));
             items.add(new Item("#259b24", "About", FontAwesomeIcons.fa_info_circle));
@@ -649,7 +630,7 @@ public class LaunchingActivity extends BaseActivity
 
             private final String color;
             private final String name;
-            private FontAwesomeIcons image;
+            private final FontAwesomeIcons image;
 
             Item(String color, String name, FontAwesomeIcons imageID) {
                 this.color = color;
