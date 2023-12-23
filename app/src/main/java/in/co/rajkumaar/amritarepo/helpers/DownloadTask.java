@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 RAJKUMAR S
+ * Copyright (c) 2023 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.helpers;
@@ -27,9 +27,9 @@ import in.co.rajkumaar.amritarepo.BuildConfig;
 
 public class DownloadTask {
     private static final String TAG = "Download Task";
-    private Context context;
+    private final Context context;
 
-    private String downloadUrl;
+    private final String downloadUrl;
     private String downloadFileName;
 
     private ProgressDialog progressDialog;
@@ -145,6 +145,19 @@ public class DownloadTask {
                     if (!outputFile.exists()) {
                         outputFile.createNewFile();
                         Log.e(TAG, "File Created");
+                    } else {
+                        // If it already exists, find an unused filename with a number prefix
+                        int fileCount = 1;
+                        String baseFileName = downloadFileName.substring(0, downloadFileName.lastIndexOf('.'));
+                        String fileExtension = downloadFileName.substring(downloadFileName.lastIndexOf('.'));
+
+                        do {
+                            downloadFileName = String.format("%s (%d)%s", baseFileName, fileCount, fileExtension);
+                            outputFile = new File(apkStorage, downloadFileName);
+                            fileCount++;
+                        } while (outputFile.exists());
+
+                        Log.e(TAG, "File with a unique name created: " + downloadFileName);
                     }
 
                     FileOutputStream fos = new FileOutputStream(outputFile);//Get OutputStream for NewFile Location
