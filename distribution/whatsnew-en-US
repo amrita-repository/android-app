@@ -1,1 +1,1 @@
-Creates new files (with incremental numbers) instead of overwriting, when the file name already exists!
+Files are now uniquely named with sequential numbers during downloads, preventing overwrites.
