@@ -5,7 +5,7 @@
 
 <div align="center">
 
-![Build](https://github.com/amrita-repository/android-app/workflows/Build/badge.svg) [![Version Badge](https://img.shields.io/endpoint?logo=google-play&url=https://api-playstore.rajkumaar.co.in/version?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) [![Downloads Badge](https://img.shields.io/endpoint?logo=android&url=https://api-playstore.rajkumaar.co.in/downloads?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) [![Rating Badge](https://img.shields.io/endpoint?logo=google-play&url=https://api-playstore.rajkumaar.co.in/rating?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) 
+![Build](https://github.com/amrita-repository/android-app/workflows/Build/badge.svg) [![Version Badge](https://img.shields.io/endpoint?logo=google-play&url=https://api-playstore.rajkumaar.co.in/version?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo) [![Downloads Badge](https://img.shields.io/endpoint?logo=android&url=https://api-playstore.rajkumaar.co.in/downloads?id=in.co.rajkumaar.amritarepo&color=success)](http://bit.ly/amritarepo)
 </div>
 <div align="center">
 
@@ -30,20 +30,11 @@ Your daily academic timetable at your fingertips, with the facility to set as a 
 #### Faculty Timetable:
 View the timetable of all the faculties at Amrita Vishwa Vidyapeetham, Coimbatore.
 
-#### Examination Schedule:
-Examination schedules for all the courses provided in the campus.
-
-#### Curriculum Info:
-All new updated curriculum for all courses in Amrita Vishwa Vidyapeetham.
-
 #### Downloads section:
 Access downloaded resources in the downloads section within the app.
 
 #### AUMS:
 `Amrita University Management System (AUMS)` now much easier to access in Amrita Repository. Check your grades, marks, attendance levels, and course resources.
-
-#### Amrita News:
-Be up-to-date with what's happening at Amrita. Be notified of news articles pulled directly from the Amrita Website.
 
 .... and much more
 
