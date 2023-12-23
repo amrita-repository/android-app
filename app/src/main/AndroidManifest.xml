@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2020 RAJKUMAR S
+  ~ Copyright (c) 2023 RAJKUMAR S
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -61,14 +61,6 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9341647677012996~5941760118" />
-
-        <activity
-            android:name=".study_materials.StudyMaterialsActivity"
-            android:parentActivityName=".activities.LaunchingActivity" />
         <activity
             android:name=".opac.SearchResultsActivity"
             android:label="Search Results"

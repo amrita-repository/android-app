@@ -1,1 +1,4 @@
-No user facing changes in this update, but it contains a mandatory under-the-hood change required by the Google Play Store.
+- During downloads, files are now uniquely named with sequential numbers, preventing overwrites.
+- Resolved an issue that was hindering the functionality of "Useful Sites" / "E-Resources" within the Central Library section.
+- Eliminated the "Study Materials" section, which had not been maintained for a long time.
+- Removed the non-functional link to "Support."

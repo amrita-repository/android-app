@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 RAJKUMAR S
+ * Copyright (c) 2023 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.opac;
@@ -33,7 +33,7 @@ import in.co.rajkumaar.amritarepo.helpers.EncryptedPrefsUtils;
 
 class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
 
-    private Context context;
+    private final Context context;
 
     public OPACAdapter(Context context, ArrayList<OPACHomeItem> items) {
         super(context, 0, items);
@@ -112,6 +112,7 @@ class OPACAdapter extends ArrayAdapter<OPACHomeItem> {
                                         ed.putString("OPAC_password", null);
                                         ed.apply();
                                     }
+                                    dj.cancel();
                                     context.startActivity(new Intent(getContext(), OPACAccountActivity.class)
                                             .putExtra("id", username.getText().toString())
                                             .putExtra("password", password.getText().toString())
