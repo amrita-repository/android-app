@@ -1,1 +1,1 @@
-No user facing changes in this update, but it contains a mandatory under-the-hood change required by the Google Play Store.
+Creates new files (with incremental numbers) instead of overwriting, when the file name already exists!
