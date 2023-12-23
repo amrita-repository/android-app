@@ -146,7 +146,7 @@ public class DownloadTask {
                         outputFile.createNewFile();
                         Log.e(TAG, "File Created");
                     } else {
-                        // If it already exists, find an unused filename with a number prefix
+                        // If it already exists, find an unused filename with a number suffix
                         int fileCount = 1;
                         String baseFileName = downloadFileName.substring(0, downloadFileName.lastIndexOf('.'));
                         String fileExtension = downloadFileName.substring(downloadFileName.lastIndexOf('.'));
