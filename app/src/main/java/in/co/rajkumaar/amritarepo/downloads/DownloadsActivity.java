@@ -1,12 +1,13 @@
 /*
- * Copyright (c) 2020 RAJKUMAR S
+ * Copyright (c) 2023 RAJKUMAR S
  */
 
 package in.co.rajkumaar.amritarepo.downloads;
 
+import static in.co.rajkumaar.amritarepo.helpers.Utils.isExtension;
+
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -41,8 +42,6 @@ import in.co.rajkumaar.amritarepo.downloads.adapters.DocumentsItemAdapter;
 import in.co.rajkumaar.amritarepo.helpers.ClearCache;
 import in.co.rajkumaar.amritarepo.helpers.Utils;
 import in.co.rajkumaar.amritarepo.widgets.ImageWidget;
-
-import static in.co.rajkumaar.amritarepo.helpers.Utils.isExtension;
 
 public class DownloadsActivity extends BaseActivity {
 
@@ -102,20 +101,6 @@ public class DownloadsActivity extends BaseActivity {
         });
 
         new ClearCache().clear(this);
-
-        if (getSharedPreferences("user", MODE_PRIVATE).getBoolean("ftp-dialog", true)) {
-            final Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.ftp_dialog);
-            dialog.findViewById(R.id.okay).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    startActivity(new Intent(getApplicationContext(), FTPActivity.class));
-                }
-            });
-            dialog.show();
-            getSharedPreferences("user", MODE_PRIVATE).edit().putBoolean("ftp-dialog", false).apply();
-        }
 
         if (getIntent().getBooleanExtra("widget", false)) {
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);

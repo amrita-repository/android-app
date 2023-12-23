@@ -7,7 +7,6 @@ package in.co.rajkumaar.amritarepo.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,7 +63,6 @@ import in.co.rajkumaar.amritarepo.about.activities.AboutActivity;
 import in.co.rajkumaar.amritarepo.aums.activities.LoginActivity;
 import in.co.rajkumaar.amritarepo.curriculum.CurriculumActivity;
 import in.co.rajkumaar.amritarepo.downloads.DownloadsActivity;
-import in.co.rajkumaar.amritarepo.downloads.FTPActivity;
 import in.co.rajkumaar.amritarepo.examschedule.ExamCategoryActivity;
 import in.co.rajkumaar.amritarepo.faq.ExamsFAQActivity;
 import in.co.rajkumaar.amritarepo.helpers.ClearCache;
@@ -116,23 +114,6 @@ public class LaunchingActivity extends BaseActivity
                 editor.apply();
             }
         }
-
-        if (pref.getInt("visit", 0) >= 3 && pref.getBoolean("ftp-dialog", true)) {
-            final Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.ftp_dialog);
-            dialog.findViewById(R.id.okay).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                    startActivity(new Intent(getApplicationContext(), FTPActivity.class));
-                }
-            });
-            dialog.show();
-            pref.edit().putBoolean("ftp-dialog", false).apply();
-        } else if (pref.getInt("visit", 0) <= 7) {
-            pref.edit().putInt("visit", pref.getInt("visit", 0) + 1).apply();
-        }
-
 
         //Subscribing to a topic to receive FCM Topic messages
         if (!pref.getBoolean(getString(R.string.subsribedToTopic), false)) {
