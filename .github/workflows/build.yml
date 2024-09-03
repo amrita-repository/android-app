@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download APK
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: app-release
           path: app-release
@@ -79,7 +79,7 @@ jobs:
           SERVICE_ACCOUNT_JSON: '${{ secrets.SERVICE_ACCOUNT_JSON }}'
 
       - name: Download bundle
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4.1.7
         with:
           name: app-bundle
           path: app-bundle
